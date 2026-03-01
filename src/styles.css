@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@500;700;800&display=swap');
 
 :root {
+  --bg-progress: 0;
   --bg: #09090b;
   --surface: rgba(245, 245, 245, 0.06);
   --surface-solid: #101115;
@@ -38,22 +39,32 @@ body {
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
   background:
-    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--accent), transparent 82%), transparent 40%),
-    radial-gradient(circle at 85% 3%, color-mix(in srgb, var(--accent-2), transparent 82%), transparent 38%),
+    radial-gradient(
+      circle at calc(18% + (var(--bg-progress) * 18%)) calc(12% + (var(--bg-progress) * 14%)),
+      color-mix(in srgb, var(--accent), transparent 82%),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at calc(85% - (var(--bg-progress) * 16%)) calc(3% + (var(--bg-progress) * 22%)),
+      color-mix(in srgb, var(--accent-2), transparent 82%),
+      transparent 38%
+    ),
     var(--bg);
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
   overflow-x: hidden;
+  position: relative;
 }
 
 body::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -1;
   opacity: 0.11;
@@ -119,6 +130,8 @@ p {
   top: 0;
   z-index: 40;
   padding-top: 0.8rem;
+  will-change: transform;
+  contain: paint;
 }
 
 .nav {
@@ -129,15 +142,13 @@ p {
   padding: 0.75rem;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-solid), transparent 28%);
-  backdrop-filter: blur(8px);
-  transition: padding 220ms ease, border-color 220ms ease, background 220ms ease;
+  background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+  transition: border-color 220ms ease, background-color 220ms ease;
 }
 
 .site-header.is-scrolled .nav {
-  padding-block: 0.45rem;
   border-color: color-mix(in srgb, var(--accent), var(--line) 75%);
-  background: color-mix(in srgb, var(--surface-solid), transparent 18%);
+  background: color-mix(in srgb, var(--surface-solid), transparent 4%);
 }
 
 .brand {
@@ -216,14 +227,14 @@ a:focus-visible {
   isolation: isolate;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: -15% -6% auto;
-  height: 70%;
-  background: linear-gradient(130deg, color-mix(in srgb, var(--accent), transparent 83%), color-mix(in srgb, var(--accent-2), transparent 84%));
-  filter: blur(20px);
-  z-index: -1;
+.hero__layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero__content {
+  display: grid;
+  gap: 1rem;
 }
 
 .hero__eyebrow {
@@ -239,14 +250,19 @@ a:focus-visible {
 }
 
 .hero__title {
-  font-size: clamp(2.3rem, 15vw, 8.4rem);
+  font-size: clamp(1.8rem, 9.2vw, 5.4rem);
   letter-spacing: -0.05em;
-  max-width: 14ch;
+  max-width: 11ch;
 }
 
 .hero-char {
   display: inline-block;
   will-change: transform;
+}
+
+.hero-word {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .hero__subtitle {
@@ -282,6 +298,30 @@ a:focus-visible {
   font-size: 0.87rem;
   animation: float-hint 1.9s ease-in-out infinite;
 }
+
+.hero__visual {
+  position: relative;
+  min-height: clamp(260px, 48vw, 420px);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.hero__shot {
+  position: absolute;
+  width: clamp(120px, 28vw, 250px);
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  box-shadow: 0 18px 48px rgba(14, 21, 38, 0.24);
+}
+
+.hero__shot--a { top: 8%; left: 8%; transform: rotate(-6deg); }
+.hero__shot--b { top: 6%; right: 7%; transform: rotate(5deg); }
+.hero__shot--c { top: 36%; left: 28%; transform: rotate(-2deg); }
+.hero__shot--d { bottom: 8%; left: 7%; transform: rotate(4deg); }
+.hero__shot--e { bottom: 8%; right: 8%; transform: rotate(-5deg); }
 
 @keyframes float-hint {
   0%,
@@ -614,6 +654,7 @@ a:focus-visible {
 
 .process-sticky {
   display: grid;
+  will-change: transform;
 }
 
 .process-step {
@@ -714,6 +755,44 @@ a:focus-visible {
   transform: rotate(45deg);
 }
 
+.contact-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(1.2rem, 4vw, 2.4rem);
+  background:
+    linear-gradient(
+      130deg,
+      color-mix(in srgb, var(--surface-solid), #ffffff 4%),
+      color-mix(in srgb, var(--surface-solid), #000000 6%)
+    );
+  box-shadow: var(--shadow);
+}
+
+.contact-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.contact-card__text {
+  margin-top: 0.85rem;
+  max-width: 65ch;
+  color: var(--muted);
+}
+
+.contact-card__cta {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
 .site-footer {
   display: grid;
   gap: 0.6rem;
@@ -730,6 +809,14 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: 0.7rem;
   color: var(--muted);
+}
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .content-warning {
@@ -811,6 +898,20 @@ a:focus-visible {
 }
 
 @media (min-width: 960px) {
+  .hero__layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .hero__visual {
+    min-height: clamp(380px, 46vw, 560px);
+  }
+
+  .hero__shot {
+    width: clamp(150px, 15vw, 220px);
+  }
+
   .proof-card {
     padding: 1.7rem;
     height: clamp(320px, 52vh, 430px);

@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 
 const app = document.querySelector('#app');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,19 +38,30 @@ const renderShell = () => {
 
     <main id="main">
       <section class="hero section container" id="hero">
-        <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
-        <h1 class="hero__title" data-slot="hero.title"></h1>
-        <p class="hero__subtitle" data-slot="hero.subtitle"></p>
-        <div class="hero__badges">
-          <span class="pill" data-slot="hero.badge1"></span>
-          <span class="pill" data-slot="hero.badge2"></span>
-          <span class="pill" data-slot="hero.badge3"></span>
+        <div class="hero__layout">
+          <div class="hero__content">
+            <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
+            <h1 class="hero__title" data-slot="hero.title"></h1>
+            <p class="hero__subtitle" data-slot="hero.subtitle"></p>
+            <div class="hero__badges">
+              <span class="pill" data-slot="hero.badge1"></span>
+              <span class="pill" data-slot="hero.badge2"></span>
+              <span class="pill" data-slot="hero.badge3"></span>
+            </div>
+            <div class="hero__cta">
+              <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
+              <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
+            </div>
+            <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
+          </div>
+          <aside class="hero__visual" aria-label="Aperçus de designs de sites">
+            <img class="hero__shot hero__shot--a" src="/illustrations/hero-site-1.svg" alt="Aperçu design site premium" loading="lazy" decoding="async" />
+            <img class="hero__shot hero__shot--b" src="/illustrations/hero-site-2.svg" alt="Aperçu page web moderne" loading="lazy" decoding="async" />
+            <img class="hero__shot hero__shot--c" src="/illustrations/hero-site-3.svg" alt="Aperçu interface service" loading="lazy" decoding="async" />
+            <img class="hero__shot hero__shot--d" src="/illustrations/hero-site-4.svg" alt="Aperçu landing page conversion" loading="lazy" decoding="async" />
+            <img class="hero__shot hero__shot--e" src="/illustrations/hero-site-5.svg" alt="Aperçu site événementiel" loading="lazy" decoding="async" />
+          </aside>
         </div>
-        <div class="hero__cta">
-          <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
-          <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
-        </div>
-        <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
       </section>
 
       <section class="process section container" id="process">
@@ -233,6 +245,18 @@ const renderShell = () => {
             .join('')}
         </div>
       </section>
+
+      <section class="contact section container" id="contact">
+        <div class="contact-card">
+          <p class="contact-card__eyebrow" data-slot="contact.eyebrow"></p>
+          <h2 data-slot="contact.title"></h2>
+          <p class="contact-card__text" data-slot="contact.text"></p>
+          <div class="contact-card__cta">
+            <a class="btn magnetic" data-slot="contact.primaryCta.label" data-slot-href="contact.primaryCta.href"></a>
+            <a class="btn btn--ghost" data-slot="contact.secondaryCta.label" data-slot-href="contact.secondaryCta.href"></a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer section container">
@@ -242,6 +266,11 @@ const renderShell = () => {
         <a data-slot="footer.social1.label" data-slot-href="footer.social1.href"></a>
         <a data-slot="footer.social2.label" data-slot-href="footer.social2.href"></a>
         <a data-slot="footer.social3.label" data-slot-href="footer.social3.href"></a>
+      </div>
+      <div class="site-footer__legal">
+        <a data-slot="footer.legal1.label" data-slot-href="footer.legal1.href"></a>
+        <a data-slot="footer.legal2.label" data-slot-href="footer.legal2.href"></a>
+        <a data-slot="footer.legal3.label" data-slot-href="footer.legal3.href"></a>
       </div>
     </footer>
   `;
@@ -344,17 +373,6 @@ const applyMeta = (slots) => {
   document.head.appendChild(script);
 };
 
-const splitHeroTitle = () => {
-  const heroTitle = document.querySelector('.hero__title');
-  if (!heroTitle) return [];
-  const text = heroTitle.textContent || '';
-  heroTitle.innerHTML = text
-    .split('')
-    .map((char) => `<span class="hero-char">${char === ' ' ? '&nbsp;' : char}</span>`)
-    .join('');
-  return Array.from(heroTitle.querySelectorAll('.hero-char'));
-};
-
 const setupTheme = () => {
   const saved = localStorage.getItem('launch48-theme');
   if (saved === 'light' || saved === 'dark') {
@@ -440,52 +458,100 @@ const setupHaptics = () => {
   });
 };
 
+const scrollToAnchorCenter = (hash, { updateHash = true } = {}) => {
+  if (!hash || hash === '#') return;
+  const target = document.querySelector(hash);
+  if (!target) return;
+
+  const rect = target.getBoundingClientRect();
+  const absoluteTop = window.scrollY + rect.top;
+  const targetY = Math.max(0, absoluteTop - (window.innerHeight - rect.height) / 2);
+  const behavior = prefersReducedMotion ? 'auto' : 'smooth';
+
+  window.scrollTo({ top: targetY, behavior });
+  if (updateHash) {
+    history.pushState(null, '', hash);
+  }
+};
+
+const setupCenteredAnchors = () => {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      event.preventDefault();
+      scrollToAnchorCenter(href);
+    });
+  });
+
+  if (window.location.hash) {
+    window.requestAnimationFrame(() => {
+      scrollToAnchorCenter(window.location.hash, { updateHash: false });
+    });
+  }
+};
+
+const setupBackgroundScroll = () => {
+  const root = document.documentElement;
+  let rafId = null;
+
+  const update = () => {
+    rafId = null;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, window.scrollY / maxScroll);
+    root.style.setProperty('--bg-progress', progress.toFixed(4));
+  };
+
+  const onScroll = () => {
+    if (rafId !== null) return;
+    rafId = window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+};
+
+const setupHeaderScrollState = () => {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+
+  let ticking = false;
+  let isScrolled = false;
+  const threshold = 16;
+
+  const update = () => {
+    ticking = false;
+    const next = window.scrollY > threshold;
+    if (next !== isScrolled) {
+      header.classList.toggle('is-scrolled', next);
+      isScrolled = next;
+    }
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+};
+
 const setupAnimations = () => {
   if (prefersReducedMotion) {
     document.body.classList.add('reduced-motion');
     return;
   }
 
-  const heroChars = splitHeroTitle();
   gsap.from('.hero > *', {
     opacity: 0,
     y: 30,
     stagger: 0.08,
     duration: 0.8,
     ease: 'power2.out'
-  });
-
-  if (heroChars.length > 0) {
-    gsap.to(heroChars, {
-      yPercent: -18,
-      stagger: 0.015,
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-
-    gsap.to('.hero__title', {
-      scale: 1.06,
-      transformOrigin: '0% 0%',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-  }
-
-  ScrollTrigger.create({
-    trigger: document.body,
-    start: 'top top',
-    end: '+=200',
-    onUpdate: (self) => {
-      document.querySelector('.site-header')?.classList.toggle('is-scrolled', self.progress > 0.2);
-    }
   });
 
   gsap.from('.proof-card', {
@@ -563,11 +629,15 @@ const setupAnimations = () => {
   if (processSection && processSticky && processProgressFill && processSteps.length > 0) {
     ScrollTrigger.create({
       trigger: processSection,
-      start: 'top center',
+      start: 'center center',
       end: () => `+=${window.innerHeight * (window.innerWidth < 760 ? 1.45 : 1.9)}`,
       pin: processSticky,
       scrub: true,
-      anticipatePin: 1,
+      pinSpacing: true,
+      pinType: 'fixed',
+      pinReparent: true,
+      anticipatePin: 3,
+      fastScrollEnd: true,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
         gsap.set(processProgressFill, {
@@ -615,6 +685,9 @@ const init = async () => {
   setupCursor();
   setupMagneticButtons();
   setupHaptics();
+  setupCenteredAnchors();
+  setupBackgroundScroll();
+  setupHeaderScrollState();
   setupAnimations();
 
   if (hasError) {

@@ -10,7 +10,6 @@ const fallbackSlots = {
   'meta.title': 'Launch48',
   'meta.description': 'Contenu indisponible.',
   'brand.name': 'Launch48',
-  'brand.tagline': 'Contenu local de secours',
   'hero.title': 'Launch48',
   'hero.subtitle': 'Le fichier content.html est introuvable pour le moment.'
 };
@@ -22,7 +21,6 @@ const renderShell = () => {
       <nav class="nav container" aria-label="Navigation principale">
         <a class="brand" href="#top">
           <span class="brand__name" data-slot="brand.name"></span>
-          <span class="brand__tag" data-slot="brand.tagline"></span>
         </a>
         <div class="nav__links">
           <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
@@ -31,7 +29,7 @@ const renderShell = () => {
           <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
         </div>
         <div class="nav__actions">
-          <button class="theme-toggle" type="button" aria-label="Basculer thème">Theme</button>
+          <button class="theme-toggle" type="button" aria-label="Basculer thème">Clair</button>
           <a class="btn btn--small magnetic" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
       </nav>
@@ -54,6 +52,33 @@ const renderShell = () => {
         <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
       </section>
 
+      <section class="process section container" id="process">
+        <div class="process-sticky">
+          <h2 data-slot="process.title"></h2>
+          <p class="section-intro" data-slot="process.subtitle"></p>
+          <div class="process__progress" aria-hidden="true">
+            <span class="process__progress-fill"></span>
+          </div>
+          <div class="process-grid">
+            <article class="process-step">
+              <span class="process-step__label" data-slot="process.day0.label"></span>
+              <h3 data-slot="process.day0.title"></h3>
+              <p data-slot="process.day0.text"></p>
+            </article>
+            <article class="process-step">
+              <span class="process-step__label" data-slot="process.day1.label"></span>
+              <h3 data-slot="process.day1.title"></h3>
+              <p data-slot="process.day1.text"></p>
+            </article>
+            <article class="process-step">
+              <span class="process-step__label" data-slot="process.day2.label"></span>
+              <h3 data-slot="process.day2.title"></h3>
+              <p data-slot="process.day2.text"></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="proof section" id="proof">
         <div class="container">
           <h2 data-slot="proof.title"></h2>
@@ -62,53 +87,101 @@ const renderShell = () => {
         <div class="proof-track-wrap">
           <div class="proof-track container">
             <article class="proof-card">
-              <h3 data-slot="proof.item1.title"></h3>
-              <p data-slot="proof.item1.text"></p>
+              <div class="proof-card__content">
+                <div class="proof-card__meta-row">
+                  <span class="proof-card__meta" data-slot="proof.item1.meta"></span>
+                  <span class="proof-card__kpi" data-slot="proof.item1.kpi"></span>
+                </div>
+                <h3 data-slot="proof.item1.title"></h3>
+                <p data-slot="proof.item1.text"></p>
+                <ul class="proof-card__points">
+                  <li data-slot="proof.item1.point1"></li>
+                  <li data-slot="proof.item1.point2"></li>
+                </ul>
+              </div>
+              <img class="proof-card__illustration" data-slot-src="proof.item1.illustration" data-slot-alt="proof.item1.illustrationAlt" loading="lazy" decoding="async" />
             </article>
             <article class="proof-card">
-              <h3 data-slot="proof.item2.title"></h3>
-              <p data-slot="proof.item2.text"></p>
+              <div class="proof-card__content">
+                <div class="proof-card__meta-row">
+                  <span class="proof-card__meta" data-slot="proof.item2.meta"></span>
+                  <span class="proof-card__kpi" data-slot="proof.item2.kpi"></span>
+                </div>
+                <h3 data-slot="proof.item2.title"></h3>
+                <p data-slot="proof.item2.text"></p>
+                <ul class="proof-card__points">
+                  <li data-slot="proof.item2.point1"></li>
+                  <li data-slot="proof.item2.point2"></li>
+                </ul>
+              </div>
+              <img class="proof-card__illustration" data-slot-src="proof.item2.illustration" data-slot-alt="proof.item2.illustrationAlt" loading="lazy" decoding="async" />
             </article>
             <article class="proof-card">
-              <h3 data-slot="proof.item3.title"></h3>
-              <p data-slot="proof.item3.text"></p>
+              <div class="proof-card__content">
+                <div class="proof-card__meta-row">
+                  <span class="proof-card__meta" data-slot="proof.item3.meta"></span>
+                  <span class="proof-card__kpi" data-slot="proof.item3.kpi"></span>
+                </div>
+                <h3 data-slot="proof.item3.title"></h3>
+                <p data-slot="proof.item3.text"></p>
+                <ul class="proof-card__points">
+                  <li data-slot="proof.item3.point1"></li>
+                  <li data-slot="proof.item3.point2"></li>
+                </ul>
+              </div>
+              <img class="proof-card__illustration" data-slot-src="proof.item3.illustration" data-slot-alt="proof.item3.illustrationAlt" loading="lazy" decoding="async" />
             </article>
             <article class="proof-card">
-              <h3 data-slot="proof.item4.title"></h3>
-              <p data-slot="proof.item4.text"></p>
+              <div class="proof-card__content">
+                <div class="proof-card__meta-row">
+                  <span class="proof-card__meta" data-slot="proof.item4.meta"></span>
+                  <span class="proof-card__kpi" data-slot="proof.item4.kpi"></span>
+                </div>
+                <h3 data-slot="proof.item4.title"></h3>
+                <p data-slot="proof.item4.text"></p>
+                <ul class="proof-card__points">
+                  <li data-slot="proof.item4.point1"></li>
+                  <li data-slot="proof.item4.point2"></li>
+                </ul>
+              </div>
+              <img class="proof-card__illustration" data-slot-src="proof.item4.illustration" data-slot-alt="proof.item4.illustrationAlt" loading="lazy" decoding="async" />
             </article>
           </div>
         </div>
       </section>
 
       <section class="offer section container" id="offer">
-        <h2 data-slot="offer.title"></h2>
-        <p class="section-intro" data-slot="offer.subtitle"></p>
-        <div class="offer-stack">
-          <article class="offer-card is-active">
-            <h3 data-slot="offer.card1.title"></h3>
-            <ul>
-              <li data-slot="offer.card1.item1"></li>
-              <li data-slot="offer.card1.item2"></li>
-              <li data-slot="offer.card1.item3"></li>
-            </ul>
-          </article>
-          <article class="offer-card">
-            <h3 data-slot="offer.card2.title"></h3>
-            <ul>
-              <li data-slot="offer.card2.item1"></li>
-              <li data-slot="offer.card2.item2"></li>
-              <li data-slot="offer.card2.item3"></li>
-            </ul>
-          </article>
-          <article class="offer-card">
-            <h3 data-slot="offer.card3.title"></h3>
-            <ul>
-              <li data-slot="offer.card3.item1"></li>
-              <li data-slot="offer.card3.item2"></li>
-              <li data-slot="offer.card3.item3"></li>
-            </ul>
-          </article>
+        <div class="offer-layout">
+          <div class="offer-panel">
+            <h2 data-slot="offer.title"></h2>
+            <p class="section-intro" data-slot="offer.subtitle"></p>
+            <div class="offer-panel__meter" aria-hidden="true">
+              <span class="offer-panel__meter-fill"></span>
+            </div>
+          </div>
+
+          <div class="offer-rail">
+            <article class="offer-card offer-card--block" data-offer-index="01">
+              <span class="offer-card__index" aria-hidden="true">01</span>
+              <h3 data-slot="offer.item1.title"></h3>
+              <p data-slot="offer.item1.text"></p>
+            </article>
+            <article class="offer-card offer-card--block" data-offer-index="02">
+              <span class="offer-card__index" aria-hidden="true">02</span>
+              <h3 data-slot="offer.item2.title"></h3>
+              <p data-slot="offer.item2.text"></p>
+            </article>
+            <article class="offer-card offer-card--block" data-offer-index="03">
+              <span class="offer-card__index" aria-hidden="true">03</span>
+              <h3 data-slot="offer.item3.title"></h3>
+              <p data-slot="offer.item3.text"></p>
+            </article>
+            <article class="offer-card offer-card--block" data-offer-index="04">
+              <span class="offer-card__index" aria-hidden="true">04</span>
+              <h3 data-slot="offer.item4.title"></h3>
+              <p data-slot="offer.item4.text"></p>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -126,31 +199,6 @@ const renderShell = () => {
           <article>
             <h3 data-slot="workflow.step3.title"></h3>
             <p data-slot="workflow.step3.text"></p>
-          </article>
-        </div>
-      </section>
-
-      <section class="process section container" id="process">
-        <h2 data-slot="process.title"></h2>
-        <p class="section-intro" data-slot="process.subtitle"></p>
-        <div class="process__progress" aria-hidden="true">
-          <span class="process__progress-fill"></span>
-        </div>
-        <div class="process-grid">
-          <article class="process-step">
-            <span class="process-step__label" data-slot="process.day0.label"></span>
-            <h3 data-slot="process.day0.title"></h3>
-            <p data-slot="process.day0.text"></p>
-          </article>
-          <article class="process-step">
-            <span class="process-step__label" data-slot="process.day1.label"></span>
-            <h3 data-slot="process.day1.title"></h3>
-            <p data-slot="process.day1.text"></p>
-          </article>
-          <article class="process-step">
-            <span class="process-step__label" data-slot="process.day2.label"></span>
-            <h3 data-slot="process.day2.title"></h3>
-            <p data-slot="process.day2.text"></p>
           </article>
         </div>
       </section>
@@ -228,6 +276,22 @@ const injectSlots = (slots) => {
       target.setAttribute('href', value);
     }
   });
+
+  document.querySelectorAll('[data-slot-src]').forEach((target) => {
+    const srcKey = target.getAttribute('data-slot-src');
+    const value = srcKey ? slots[srcKey] : null;
+    if (value) {
+      target.setAttribute('src', value);
+    }
+  });
+
+  document.querySelectorAll('[data-slot-alt]').forEach((target) => {
+    const altKey = target.getAttribute('data-slot-alt');
+    const value = altKey ? slots[altKey] : null;
+    if (value) {
+      target.setAttribute('alt', value);
+    }
+  });
 };
 
 const applyMeta = (slots) => {
@@ -302,7 +366,7 @@ const setupTheme = () => {
 
   const updateLabel = () => {
     const current = document.documentElement.dataset.theme || 'dark';
-    toggle.textContent = current === 'dark' ? 'Light' : 'Dark';
+    toggle.textContent = current === 'dark' ? 'Clair' : 'Sombre';
   };
 
   updateLabel();
@@ -404,7 +468,8 @@ const setupAnimations = () => {
     });
 
     gsap.to('.hero__title', {
-      letterSpacing: '0.05em',
+      scale: 1.06,
+      transformOrigin: '0% 0%',
       scrollTrigger: {
         trigger: '.hero',
         start: 'top top',
@@ -423,79 +488,100 @@ const setupAnimations = () => {
     }
   });
 
-  const proofCards = gsap.utils.toArray('.proof-card');
-  const media = gsap.matchMedia();
-
-  media.add('(min-width: 960px)', () => {
-    const track = document.querySelector('.proof-track');
-    if (proofCards.length < 2 || !track) return;
-
-    gsap.to(proofCards, {
-      xPercent: -100 * (proofCards.length - 1),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.proof-track-wrap',
-        pin: true,
-        scrub: 1,
-        snap: 1 / (proofCards.length - 1),
-        end: () => `+=${track.scrollWidth}`
-      }
-    });
+  gsap.from('.proof-card', {
+    opacity: 0,
+    y: 40,
+    stagger: 0.12,
+    scrollTrigger: {
+      trigger: '.proof-track-wrap',
+      start: 'top 85%'
+    }
   });
 
-  media.add('(max-width: 959px)', () => {
-    gsap.from('.proof-card', {
-      opacity: 0,
-      y: 40,
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: '.proof-track-wrap',
-        start: 'top 85%'
-      }
+  gsap.utils.toArray('.proof-card').forEach((card) => {
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top center',
+      end: 'bottom center',
+      toggleClass: { targets: card, className: 'is-current' }
     });
   });
 
   const offerCards = gsap.utils.toArray('.offer-card');
-  if (offerCards.length > 1) {
-    gsap.set(offerCards.slice(1), { autoAlpha: 0, y: 35 });
+  const offerSection = document.querySelector('#offer');
+  const offerLayout = document.querySelector('.offer-layout');
+  const offerMeterFill = document.querySelector('.offer-panel__meter-fill');
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.offer-stack',
-        start: 'top 14%',
-        end: `+=${offerCards.length * 360}`,
-        scrub: 1,
-        pin: true
-      }
+  if (offerSection && offerLayout && offerCards.length > 0) {
+    gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97, filter: 'blur(6px)' });
+
+    offerCards.forEach((card) => {
+      gsap.to(card, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%',
+          end: 'top 60%',
+          scrub: true,
+          invalidateOnRefresh: true
+        }
+      });
+
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 48%',
+        end: 'bottom 48%',
+        toggleClass: { targets: card, className: 'is-current' }
+      });
     });
 
-    offerCards.forEach((card, index) => {
-      if (index === 0) return;
-      tl.to(offerCards[index - 1], { autoAlpha: 0.15, y: -20, duration: 0.55 }, index * 0.9);
-      tl.to(card, { autoAlpha: 1, y: 0, duration: 0.55 }, index * 0.9);
-    });
+    if (offerMeterFill) {
+      gsap.to(offerMeterFill, {
+        scaleY: 1,
+        transformOrigin: '50% 0%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: offerSection,
+          start: 'top 70%',
+          end: 'bottom 40%',
+          scrub: true,
+          invalidateOnRefresh: true
+        }
+      });
+    }
   }
 
-  gsap.to('.process__progress-fill', {
-    scaleX: 1,
-    transformOrigin: '0% 50%',
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#process',
-      start: 'top 65%',
-      end: 'bottom 25%',
-      scrub: true
-    }
-  });
+  const processSection = document.querySelector('#process');
+  const processSticky = document.querySelector('.process-sticky');
+  const processSteps = gsap.utils.toArray('.process-step');
+  const processProgressFill = document.querySelector('.process__progress-fill');
 
-  gsap.utils.toArray('.process-step').forEach((step) => {
+  if (processSection && processSticky && processProgressFill && processSteps.length > 0) {
     ScrollTrigger.create({
-      trigger: step,
-      start: 'top 70%',
-      end: 'bottom 50%',
-      toggleClass: { targets: step, className: 'is-active' }
+      trigger: processSection,
+      start: 'top center',
+      end: () => `+=${window.innerHeight * (window.innerWidth < 760 ? 1.45 : 1.9)}`,
+      pin: processSticky,
+      scrub: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        gsap.set(processProgressFill, {
+          scaleX: self.progress,
+          transformOrigin: '0% 50%'
+        });
+
+        const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));
+        processSteps.forEach((step, index) => {
+          step.classList.toggle('is-active', index <= currentIndex);
+        });
+      }
     });
-  });
+  }
 
   gsap.from('.pricing', {
     opacity: 0,

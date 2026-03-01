@@ -1,0 +1,16 @@
+<svg width="640" height="360" viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Livraison et déploiement">
+  <defs>
+    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f03f7f"/>
+      <stop offset="100%" stop-color="#2563ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="24" fill="#f5f6fa"/>
+  <rect x="42" y="52" width="556" height="252" rx="18" fill="#ffffff" stroke="#d9dce8"/>
+  <path d="M110 238 L210 138 L290 198 L392 108 L520 220" stroke="url(#g4)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="110" cy="238" r="10" fill="#2563ff"/>
+  <circle cx="210" cy="138" r="10" fill="#2563ff"/>
+  <circle cx="290" cy="198" r="10" fill="#2563ff"/>
+  <circle cx="392" cy="108" r="10" fill="#f03f7f"/>
+  <circle cx="520" cy="220" r="10" fill="#f03f7f"/>
+</svg>

@@ -384,7 +384,12 @@ const setupTheme = () => {
 
   const updateLabel = () => {
     const current = document.documentElement.dataset.theme || 'dark';
-    toggle.textContent = current === 'dark' ? 'Clair' : 'Sombre';
+    const nextTheme = current === 'dark' ? 'light' : 'dark';
+    const nextLabel = nextTheme === 'light' ? 'Clair' : 'Sombre';
+    toggle.textContent = nextLabel;
+    toggle.dataset.nextTheme = nextTheme;
+    toggle.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
+    toggle.setAttribute('title', `Mode ${nextLabel.toLowerCase()}`);
   };
 
   updateLabel();

@@ -183,6 +183,36 @@ p {
   cursor: pointer;
 }
 
+@media (max-width: 759px) {
+  .theme-toggle {
+    position: relative;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    border-radius: 999px;
+    display: inline-block;
+    font-size: 0;
+    line-height: 1;
+    background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+  }
+
+  .theme-toggle::before {
+    content: '☀';
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 0.95rem;
+    line-height: 1;
+    color: color-mix(in srgb, var(--accent), white 15%);
+  }
+
+  .theme-toggle[data-next-theme='dark']::before {
+    content: '☾';
+    font-size: 0.95rem;
+  }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

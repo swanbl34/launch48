@@ -2,27 +2,27 @@
 
 :root {
   --bg-progress: 0;
-  --bg: #09090b;
-  --surface: rgba(245, 245, 245, 0.06);
-  --surface-solid: #101115;
-  --text: #f8f8f8;
-  --muted: #b6b8c6;
+  --bg: #080503;
+  --surface: rgba(255, 226, 196, 0.08);
+  --surface-solid: #140e0a;
+  --text: #fff5ec;
+  --muted: #dfc5b1;
   --line: rgba(255, 255, 255, 0.18);
-  --accent: #67f7c6;
-  --accent-2: #ff4fc2;
+  --accent: #ffbf80;
+  --accent-2: #ff8a3d;
   --danger: #ff455b;
   --shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
 }
 
 :root[data-theme='light'] {
-  --bg: #f7f5f0;
-  --surface: rgba(12, 12, 20, 0.06);
-  --surface-solid: #ffffff;
-  --text: #101018;
-  --muted: #4a4f5f;
+  --bg: #fff4e8;
+  --surface: rgba(140, 78, 22, 0.08);
+  --surface-solid: #fffaf4;
+  --text: #2c1a0f;
+  --muted: #7e5840;
   --line: rgba(16, 16, 24, 0.17);
-  --accent: #0456ff;
-  --accent-2: #f03f7f;
+  --accent: #ffb36b;
+  --accent-2: #f07a2f;
   --danger: #d4203a;
   --shadow: 0 20px 70px rgba(11, 20, 50, 0.12);
 }
@@ -46,12 +46,12 @@ body {
   background:
     radial-gradient(
       circle at calc(18% + (var(--bg-progress) * 18%)) calc(12% + (var(--bg-progress) * 14%)),
-      color-mix(in srgb, var(--accent), transparent 82%),
+      color-mix(in srgb, var(--accent), transparent 74%),
       transparent 40%
     ),
     radial-gradient(
       circle at calc(85% - (var(--bg-progress) * 16%)) calc(3% + (var(--bg-progress) * 22%)),
-      color-mix(in srgb, var(--accent-2), transparent 82%),
+      color-mix(in srgb, var(--accent-2), transparent 75%),
       transparent 38%
     ),
     var(--bg);
@@ -313,8 +313,8 @@ a:focus-visible {
   width: clamp(120px, 28vw, 250px);
   border-radius: 14px;
   border: 1px solid var(--line);
-  background: #ffffff;
-  box-shadow: 0 18px 48px rgba(14, 21, 38, 0.24);
+  background: transparent;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--accent-2), transparent 72%);
 }
 
 .hero__shot--a { top: 8%; left: 8%; transform: rotate(-6deg); }
@@ -974,6 +974,14 @@ a:focus-visible {
 }
 
 @media (max-width: 959px) {
+  .proof-track-wrap {
+    margin-top: 0.6rem;
+  }
+
+  .proof-track {
+    padding-block: 5vh 18vh;
+  }
+
   .proof-card {
     display: block;
     top: clamp(4.8rem, 20vh, 7rem);

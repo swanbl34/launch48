@@ -131,7 +131,7 @@ p {
   z-index: 40;
   padding-top: 0.8rem;
   will-change: transform;
-  contain: paint;
+  overflow: visible;
 }
 
 .nav {
@@ -139,6 +139,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 0.7rem;
+  overflow: visible;
   padding: 0.75rem;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -171,6 +172,63 @@ p {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown--desktop {
+  display: none;
+}
+
+.nav-dropdown__toggle {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 10%);
+  color: inherit;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.38rem 0.72rem;
+  cursor: pointer;
+}
+
+.nav-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  width: max-content;
+  min-width: 230px;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 2%);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 80;
+}
+
+.nav-dropdown__menu a {
+  padding: 0.42rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.nav-dropdown__menu a:hover {
+  background: color-mix(in srgb, var(--surface), transparent 12%);
+  color: var(--text);
+}
+
+.nav-dropdown.is-open .nav-dropdown__menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .theme-toggle {
@@ -631,6 +689,57 @@ a:focus-visible {
   color: var(--muted);
 }
 
+.vertical-needs__head {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.vertical-needs__grid {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.needs-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1rem;
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--surface-solid), #ffffff 4%),
+    color-mix(in srgb, var(--surface-solid), #000000 6%)
+  );
+  transition: border-color 220ms ease, transform 220ms ease;
+}
+
+.needs-card:hover {
+  border-color: color-mix(in srgb, var(--accent), white 22%);
+  transform: translateY(-2px);
+}
+
+.needs-card h3 {
+  font-size: clamp(1.05rem, 3.5vw, 1.45rem);
+}
+
+.needs-card p {
+  margin-top: 0.55rem;
+  color: var(--muted);
+}
+
+.needs-card__price {
+  font-size: 1.07rem;
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.needs-card .btn {
+  margin-top: 0.75rem;
+}
+
+.vertical-needs__footer {
+  margin-top: 1rem;
+}
+
 .workflow-grid {
   margin-top: 1.2rem;
   display: grid;
@@ -886,12 +995,14 @@ a:focus-visible {
 .glitch-hover,
 .btn,
 .nav__links a,
-.site-footer__socials a {
+.site-footer__socials a,
+.nav-dropdown__toggle {
   position: relative;
 }
 
 .nav__links a::after,
-.site-footer__socials a::after {
+.site-footer__socials a::after,
+.nav-dropdown__toggle::after {
   content: '';
   position: absolute;
   left: 0;
@@ -905,7 +1016,8 @@ a:focus-visible {
 }
 
 .nav__links a:hover::after,
-.site-footer__socials a:hover::after {
+.site-footer__socials a:hover::after,
+.nav-dropdown__toggle:hover::after {
   transform: scaleX(1);
 }
 
@@ -917,8 +1029,17 @@ a:focus-visible {
     font-size: 0.92rem;
   }
 
+  .nav-dropdown--desktop {
+    display: block;
+  }
+
+  .nav-dropdown--mobile {
+    display: none;
+  }
+
   .workflow-grid,
-  .process-grid {
+  .process-grid,
+  .vertical-needs__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 

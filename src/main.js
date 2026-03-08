@@ -14,6 +14,56 @@ const fallbackSlots = {
   'hero.title': 'Launch48',
   'hero.subtitle': 'Le fichier content.html est introuvable pour le moment.'
 };
+const verticalNeeds = [
+  {
+    title: 'Site événementiel',
+    description: 'Promouvoir un événement et orienter efficacement vers la billetterie.',
+    price: '1 290 €',
+    href: '/site-evenementiel/'
+  },
+  {
+    title: 'Site consultant / freelance / agence',
+    description: 'Clarifier votre offre et générer des prises de contact qualifiées.',
+    price: '990 €',
+    href: '/site-consultant/'
+  },
+  {
+    title: 'Site lancement de marque / produit',
+    description: 'Créer un storytelling fort et un design impactant pour un lancement.',
+    price: '1 490 €',
+    href: '/site-lancement-marque/'
+  },
+  {
+    title: 'Site restaurant / hospitality',
+    description: 'Mettre en valeur un lieu, sa carte et faciliter la réservation.',
+    price: '1 090 €',
+    href: '/site-restaurant/'
+  },
+  {
+    title: 'Site artiste / créatif / portfolio',
+    description: 'Exposer un univers créatif et professionnaliser la présence en ligne.',
+    price: '890 €',
+    href: '/site-artiste/'
+  },
+  {
+    title: 'Site média / podcast / contenu',
+    description: 'Centraliser les formats et structurer une image éditoriale solide.',
+    price: '1 190 €',
+    href: '/site-media-podcast/'
+  },
+  {
+    title: 'Site association / institutionnel',
+    description: 'Présenter une mission, valoriser les actions et orienter vers l’engagement.',
+    price: '990 €',
+    href: '/site-association/'
+  },
+  {
+    title: 'Site immobilier / location',
+    description: 'Valoriser un bien et générer des demandes qualifiées.',
+    price: '1 090 €',
+    href: '/site-immobilier-location/'
+  }
+];
 
 const renderShell = () => {
   app.innerHTML = `
@@ -28,8 +78,36 @@ const renderShell = () => {
           <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
           <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
           <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
+          <div class="nav-dropdown nav-dropdown--desktop">
+            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop">Verticales</button>
+            <div class="nav-dropdown__menu" id="nav-verticales-menu-desktop">
+              <a href="/offres/">Toutes les offres</a>
+              <a href="/site-evenementiel/">Site événementiel</a>
+              <a href="/site-consultant/">Site consultant</a>
+              <a href="/site-lancement-marque/">Lancement marque</a>
+              <a href="/site-restaurant/">Restaurant</a>
+              <a href="/site-artiste/">Artiste / portfolio</a>
+              <a href="/site-media-podcast/">Média / podcast</a>
+              <a href="/site-association/">Association</a>
+              <a href="/site-immobilier-location/">Immobilier / location</a>
+            </div>
+          </div>
         </div>
         <div class="nav__actions">
+          <div class="nav-dropdown nav-dropdown--mobile">
+            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile">Verticales</button>
+            <div class="nav-dropdown__menu" id="nav-verticales-menu-mobile">
+              <a href="/offres/">Toutes les offres</a>
+              <a href="/site-evenementiel/">Site événementiel</a>
+              <a href="/site-consultant/">Site consultant</a>
+              <a href="/site-lancement-marque/">Lancement marque</a>
+              <a href="/site-restaurant/">Restaurant</a>
+              <a href="/site-artiste/">Artiste / portfolio</a>
+              <a href="/site-media-podcast/">Média / podcast</a>
+              <a href="/site-association/">Association</a>
+              <a href="/site-immobilier-location/">Immobilier / location</a>
+            </div>
+          </div>
           <button class="theme-toggle" type="button" aria-label="Basculer thème">Clair</button>
           <a class="btn btn--small magnetic" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
@@ -194,6 +272,30 @@ const renderShell = () => {
               <p data-slot="offer.item4.text"></p>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section class="vertical-needs section container" id="vertical-needs">
+        <div class="vertical-needs__head">
+          <h2>Des sites pensés pour des besoins concrets</h2>
+          <p class="section-intro">Nous concevons des sites adaptés à des usages précis : événement, lancement de marque, activité de service, média, restauration, portfolio, association, immobilier, etc.</p>
+        </div>
+        <div class="vertical-needs__grid">
+          ${verticalNeeds
+            .map(
+              (item) => `
+                <article class="needs-card">
+                  <h3>${item.title}</h3>
+                  <p>${item.description}</p>
+                  <p class="needs-card__price">À partir de ${item.price}</p>
+                  <a class="btn btn--ghost" href="${item.href}">Voir l'offre</a>
+                </article>
+              `
+            )
+            .join('')}
+        </div>
+        <div class="vertical-needs__footer">
+          <a class="btn magnetic" href="/offres/">Découvrir toutes les offres</a>
         </div>
       </section>
 
@@ -399,6 +501,48 @@ const setupTheme = () => {
     document.documentElement.dataset.theme = next;
     localStorage.setItem('launch48-theme', next);
     updateLabel();
+  });
+};
+
+const setupNavDropdown = () => {
+  const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
+  if (dropdowns.length === 0) return;
+
+  const closeAll = () => {
+    dropdowns.forEach((dropdown) => {
+      dropdown.classList.remove('is-open');
+      const toggle = dropdown.querySelector('.nav-dropdown__toggle');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  dropdowns.forEach((dropdown) => {
+    const toggle = dropdown.querySelector('.nav-dropdown__toggle');
+    if (!toggle) return;
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const willOpen = !dropdown.classList.contains('is-open');
+      closeAll();
+      dropdown.classList.toggle('is-open', willOpen);
+      toggle.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    dropdown.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeAll);
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!dropdowns.some((dropdown) => dropdown.contains(event.target))) {
+      closeAll();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
   });
 };
 
@@ -666,6 +810,16 @@ const setupAnimations = () => {
       start: 'top 82%'
     }
   });
+
+  gsap.from('.needs-card', {
+    opacity: 0,
+    y: 28,
+    stagger: 0.08,
+    scrollTrigger: {
+      trigger: '.vertical-needs',
+      start: 'top 82%'
+    }
+  });
 };
 
 const loadSlots = async () => {
@@ -686,6 +840,7 @@ const init = async () => {
   injectSlots(slots);
   applyMeta(slots);
   setupTheme();
+  setupNavDropdown();
   setupFaq();
   setupCursor();
   setupMagneticButtons();

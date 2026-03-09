@@ -704,6 +704,8 @@ a:focus-visible {
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 1rem;
+  display: grid;
+  gap: 0.55rem;
   background: linear-gradient(
     130deg,
     color-mix(in srgb, var(--surface-solid), #ffffff 4%),
@@ -712,9 +714,18 @@ a:focus-visible {
   transition: border-color 220ms ease, transform 220ms ease;
 }
 
+.needs-card--link {
+  text-decoration: none;
+}
+
 .needs-card:hover {
   border-color: color-mix(in srgb, var(--accent), white 22%);
   transform: translateY(-2px);
+}
+
+.needs-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .needs-card h3 {
@@ -722,7 +733,6 @@ a:focus-visible {
 }
 
 .needs-card p {
-  margin-top: 0.55rem;
   color: var(--muted);
 }
 
@@ -732,12 +742,14 @@ a:focus-visible {
   color: var(--text) !important;
 }
 
-.needs-card .btn {
-  margin-top: 0.75rem;
+.needs-card__cta {
+  margin-top: 0.6rem;
+  width: fit-content;
+  pointer-events: none;
 }
 
 .vertical-needs__footer {
-  margin-top: 1rem;
+  margin-top: clamp(1.8rem, 5vw, 3rem);
 }
 
 .workflow-grid {

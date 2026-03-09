@@ -284,12 +284,12 @@ const renderShell = () => {
           ${verticalNeeds
             .map(
               (item) => `
-                <article class="needs-card">
+                <a class="needs-card needs-card--link" href="${item.href}">
                   <h3>${item.title}</h3>
                   <p>${item.description}</p>
                   <p class="needs-card__price">À partir de ${item.price}</p>
-                  <a class="btn btn--ghost" href="${item.href}">Voir l'offre</a>
-                </article>
+                  <span class="btn btn--ghost needs-card__cta">Voir l'offre</span>
+                </a>
               `
             )
             .join('')}

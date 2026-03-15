@@ -35,6 +35,10 @@ export const OFFERS = [
       primaryCta: 'Créer la landing page de votre événement',
       secondaryCta: 'Voir toutes les offres'
     },
+    preview: {
+      src: '/illustrations/hero-site-5.svg',
+      alt: 'Aperçu d’un site événementiel'
+    },
     sections: [
       {
         title: 'Pour qui / cas d\'usage',
@@ -71,6 +75,10 @@ export const OFFERS = [
       primaryCta: 'Présenter votre expertise avec plus d\'impact',
       secondaryCta: 'Réserver un appel découverte'
     },
+    preview: {
+      src: '/illustrations/hero-site-4.svg',
+      alt: 'Aperçu d’un site consultant'
+    },
     sections: [
       {
         title: 'Les problèmes fréquents',
@@ -106,6 +114,10 @@ export const OFFERS = [
       subtitle: 'Nous créons une expérience visuelle puissante qui structure votre message et convertit vers achat, inscription ou prise de contact.',
       primaryCta: 'Lancer votre marque avec une page à la hauteur',
       secondaryCta: 'Voir toutes les offres'
+    },
+    preview: {
+      src: '/illustrations/hero-site-2.svg',
+      alt: 'Aperçu d’une landing page de lancement de marque'
     },
     sections: [
       {
@@ -147,6 +159,10 @@ export const OFFERS = [
       primaryCta: 'Mettre votre lieu en valeur en ligne',
       secondaryCta: 'Réserver un appel découverte'
     },
+    preview: {
+      src: '/illustrations/hero-site-1.svg',
+      alt: 'Aperçu d’un site restaurant'
+    },
     sections: [
       {
         title: 'Présentation du lieu',
@@ -178,6 +194,10 @@ export const OFFERS = [
       subtitle: 'Nous construisons un site qui centralise vos projets, renforce votre crédibilité et fluidifie la prise de contact.',
       primaryCta: 'Créer un portfolio à votre image',
       secondaryCta: 'Voir toutes les offres'
+    },
+    preview: {
+      src: '/illustrations/hero-site-3.svg',
+      alt: 'Aperçu d’un portfolio créatif'
     },
     sections: [
       {
@@ -215,6 +235,10 @@ export const OFFERS = [
       primaryCta: 'Donner une vraie vitrine à votre média',
       secondaryCta: 'Réserver un appel découverte'
     },
+    preview: {
+      src: '/illustrations/hero-site-4.svg',
+      alt: 'Aperçu d’un site média ou podcast'
+    },
     sections: [
       {
         title: 'Ce que le site doit permettre',
@@ -242,6 +266,10 @@ export const OFFERS = [
       subtitle: 'Nous concevons une structure éditoriale qui explique votre impact, valorise vos actions et facilite l\'engagement.',
       primaryCta: 'Présenter votre projet avec plus de clarté',
       secondaryCta: 'Voir toutes les offres'
+    },
+    preview: {
+      src: '/illustrations/hero-site-5.svg',
+      alt: 'Aperçu d’un site association ou institutionnel'
     },
     sections: [
       {
@@ -278,6 +306,10 @@ export const OFFERS = [
       subtitle: 'Nous structurons une landing page immersive qui met en avant les atouts du lieu et facilite la demande de réservation.',
       primaryCta: 'Valoriser votre bien avec une page premium',
       secondaryCta: 'Réserver un appel découverte'
+    },
+    preview: {
+      src: '/illustrations/hero-site-1.svg',
+      alt: 'Aperçu d’un site immobilier ou location'
     },
     sections: [
       {

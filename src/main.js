@@ -16,48 +16,56 @@ const fallbackSlots = {
 };
 const verticalNeeds = [
   {
+    emoji: '🎟️',
     title: 'Site événementiel',
     description: 'Promouvoir un événement et orienter efficacement vers la billetterie.',
     price: '1 290 €',
     href: '/site-evenementiel/'
   },
   {
+    emoji: '💼',
     title: 'Site consultant / freelance / agence',
     description: 'Clarifier votre offre et générer des prises de contact qualifiées.',
     price: '990 €',
     href: '/site-consultant/'
   },
   {
+    emoji: '🚀',
     title: 'Site lancement de marque / produit',
     description: 'Créer un storytelling fort et un design impactant pour un lancement.',
     price: '1 490 €',
     href: '/site-lancement-marque/'
   },
   {
+    emoji: '🍽️',
     title: 'Site restaurant / hospitality',
     description: 'Mettre en valeur un lieu, sa carte et faciliter la réservation.',
     price: '1 090 €',
     href: '/site-restaurant/'
   },
   {
+    emoji: '🎨',
     title: 'Site artiste / créatif / portfolio',
     description: 'Exposer un univers créatif et professionnaliser la présence en ligne.',
     price: '890 €',
     href: '/site-artiste/'
   },
   {
+    emoji: '🎙️',
     title: 'Site média / podcast / contenu',
     description: 'Centraliser les formats et structurer une image éditoriale solide.',
     price: '1 190 €',
     href: '/site-media-podcast/'
   },
   {
+    emoji: '🤝',
     title: 'Site association / institutionnel',
     description: 'Présenter une mission, valoriser les actions et orienter vers l’engagement.',
     price: '990 €',
     href: '/site-association/'
   },
   {
+    emoji: '🏡',
     title: 'Site immobilier / location',
     description: 'Valoriser un bien et générer des demandes qualifiées.',
     price: '1 090 €',
@@ -79,7 +87,10 @@ const renderShell = () => {
           <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
           <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
           <div class="nav-dropdown nav-dropdown--desktop">
-            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop">Verticales</button>
+            <div class="nav-dropdown__trigger">
+              <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
+              <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop" aria-label="Ouvrir le menu Secteurs"></button>
+            </div>
             <div class="nav-dropdown__menu" id="nav-verticales-menu-desktop">
               <a href="/offres/">Toutes les offres</a>
               <a href="/site-evenementiel/">Site événementiel</a>
@@ -95,7 +106,10 @@ const renderShell = () => {
         </div>
         <div class="nav__actions">
           <div class="nav-dropdown nav-dropdown--mobile">
-            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile">Verticales</button>
+            <div class="nav-dropdown__trigger">
+              <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
+              <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile" aria-label="Ouvrir le menu Secteurs"></button>
+            </div>
             <div class="nav-dropdown__menu" id="nav-verticales-menu-mobile">
               <a href="/offres/">Toutes les offres</a>
               <a href="/site-evenementiel/">Site événementiel</a>
@@ -132,12 +146,36 @@ const renderShell = () => {
             </div>
             <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
           </div>
-          <aside class="hero__visual" aria-label="Aperçus de designs de sites">
-            <img class="hero__shot hero__shot--a" src="/illustrations/hero-site-1.svg" alt="Aperçu design site premium" loading="lazy" decoding="async" />
-            <img class="hero__shot hero__shot--b" src="/illustrations/hero-site-2.svg" alt="Aperçu page web moderne" loading="lazy" decoding="async" />
-            <img class="hero__shot hero__shot--c" src="/illustrations/hero-site-3.svg" alt="Aperçu interface service" loading="lazy" decoding="async" />
-            <img class="hero__shot hero__shot--d" src="/illustrations/hero-site-4.svg" alt="Aperçu landing page conversion" loading="lazy" decoding="async" />
-            <img class="hero__shot hero__shot--e" src="/illustrations/hero-site-5.svg" alt="Aperçu site événementiel" loading="lazy" decoding="async" />
+          <aside class="hero__visual" aria-label="Aperçu de composition de site premium">
+            <div class="hero__visual-card hero__visual-card--main">
+              <div class="hero__visual-toolbar" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <img class="hero__visual-screen" src="/illustrations/hero-site-2.svg" alt="Aperçu principal d'un site premium" loading="lazy" decoding="async" />
+              <div class="hero__visual-caption">
+                <strong>Direction premium</strong>
+                <p>Hero, offre, preuve et CTA structurés pour convertir vite.</p>
+              </div>
+            </div>
+            <div class="hero__visual-card hero__visual-card--panel">
+              <p class="hero__visual-label">Sprint 48h</p>
+              <ul class="hero__visual-list">
+                <li>Brief stratégique</li>
+                <li>Design sur-mesure</li>
+                <li>Intégration propre</li>
+                <li>Mise en ligne rapide</li>
+              </ul>
+            </div>
+            <div class="hero__visual-card hero__visual-card--stat hero__visual-card--stat-a">
+              <p class="hero__visual-metric">Mobile first</p>
+              <span>Lecture claire, CTA visibles, chargement propre.</span>
+            </div>
+            <div class="hero__visual-card hero__visual-card--stat hero__visual-card--stat-b">
+              <img class="hero__visual-thumb" src="/illustrations/hero-site-5.svg" alt="Mini aperçu d'une page événementielle" loading="lazy" decoding="async" />
+              <span>Exemples adaptables selon votre secteur.</span>
+            </div>
           </aside>
         </div>
       </section>
@@ -285,6 +323,7 @@ const renderShell = () => {
             .map(
               (item) => `
                 <a class="needs-card needs-card--link" href="${item.href}">
+                  <span class="needs-card__emoji" aria-hidden="true">${item.emoji}</span>
                   <h3>${item.title}</h3>
                   <p>${item.description}</p>
                   <p class="needs-card__price">À partir de ${item.price}</p>
@@ -296,24 +335,6 @@ const renderShell = () => {
         </div>
         <div class="vertical-needs__footer">
           <a class="btn magnetic" href="/offres/">Découvrir toutes les offres</a>
-        </div>
-      </section>
-
-      <section class="workflow section container" id="workflow">
-        <h2 data-slot="workflow.title"></h2>
-        <div class="workflow-grid">
-          <article>
-            <h3 data-slot="workflow.step1.title"></h3>
-            <p data-slot="workflow.step1.text"></p>
-          </article>
-          <article>
-            <h3 data-slot="workflow.step2.title"></h3>
-            <p data-slot="workflow.step2.text"></p>
-          </article>
-          <article>
-            <h3 data-slot="workflow.step3.title"></h3>
-            <p data-slot="workflow.step3.text"></p>
-          </article>
         </div>
       </section>
 
@@ -507,10 +528,11 @@ const setupTheme = () => {
 const setupNavDropdown = () => {
   const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
   if (dropdowns.length === 0) return;
+  const desktopQuery = window.matchMedia('(min-width: 760px)');
 
   const closeAll = () => {
     dropdowns.forEach((dropdown) => {
-      dropdown.classList.remove('is-open');
+      dropdown.classList.remove('is-open', 'is-hovered');
       const toggle = dropdown.querySelector('.nav-dropdown__toggle');
       if (toggle) {
         toggle.setAttribute('aria-expanded', 'false');
@@ -523,11 +545,26 @@ const setupNavDropdown = () => {
     if (!toggle) return;
 
     toggle.addEventListener('click', (event) => {
+      if (desktopQuery.matches) return;
+      event.preventDefault();
       event.stopPropagation();
       const willOpen = !dropdown.classList.contains('is-open');
       closeAll();
       dropdown.classList.toggle('is-open', willOpen);
       toggle.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    dropdown.addEventListener('mouseenter', () => {
+      if (!desktopQuery.matches) return;
+      closeAll();
+      dropdown.classList.add('is-hovered');
+      toggle.setAttribute('aria-expanded', 'true');
+    });
+
+    dropdown.addEventListener('mouseleave', () => {
+      if (!desktopQuery.matches) return;
+      dropdown.classList.remove('is-hovered');
+      toggle.setAttribute('aria-expanded', 'false');
     });
 
     dropdown.querySelectorAll('a').forEach((link) => {

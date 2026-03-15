@@ -12,7 +12,6 @@ const offerSlug = document.body.dataset.offerSlug || '';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const FALLBACK_OFFER = OFFERS[0];
-
 const setMeta = ({ title, description }) => {
   document.title = title;
 
@@ -56,7 +55,10 @@ const renderHeader = (active = 'home') => `
         <a href="/#process">Process</a>
         <a href="/#contact">Contact</a>
         <div class="nav-dropdown nav-dropdown--desktop">
-          <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop">Verticales</button>
+          <div class="nav-dropdown__trigger">
+            <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
+            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop" aria-label="Ouvrir le menu Secteurs"></button>
+          </div>
           <div class="nav-dropdown__menu" id="nav-verticales-menu-desktop">
             ${verticalMenuLinks}
           </div>
@@ -64,7 +66,10 @@ const renderHeader = (active = 'home') => `
       </div>
       <div class="nav__actions">
         <div class="nav-dropdown nav-dropdown--mobile">
-          <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile">Verticales</button>
+          <div class="nav-dropdown__trigger">
+            <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
+            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile" aria-label="Ouvrir le menu Secteurs"></button>
+          </div>
           <div class="nav-dropdown__menu" id="nav-verticales-menu-mobile">
             ${verticalMenuLinks}
           </div>
@@ -79,7 +84,7 @@ const renderHeader = (active = 'home') => `
 const renderFooter = () => `
   <footer class="site-footer section container">
     <p class="site-footer__name">${SITE.name}</p>
-    <a href="mailto:contact@launch48.dev">contact@launch48.dev</a>
+    <a href="mailto:contact@launch48.fr">contact@launch48.fr</a>
     <div class="site-footer__socials">
       ${SITE.socials.map((social) => `<a href="${social.href}" target="_blank" rel="noreferrer">${social.label}</a>`).join('')}
     </div>
@@ -92,12 +97,31 @@ const renderFooter = () => `
 const renderOfferCard = (offer, variant = 'compact') => {
   if (variant === 'detailed') {
     return `
-      <article class="offer-card" data-reveal>
-        <p class="offer-card__label">${offer.name}</p>
-        <p class="offer-card__target"><strong>Cible:</strong> ${offer.target}</p>
-        <p class="offer-card__benefit"><strong>Bénéfice:</strong> ${offer.benefit}</p>
-        <p class="offer-card__price">À partir de ${offer.priceFrom}</p>
-        <a class="btn btn--ghost" href="${offerPath(offer.slug)}">Voir l'offre</a>
+      <article class="offer-showcase-card" data-reveal>
+        <div class="offer-showcase-card__media">
+          <img
+            class="offer-showcase-card__image"
+            src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+            alt="${offer.preview?.alt || `Aperçu ${offer.name}`}"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="offer-showcase-card__body">
+          <div class="offer-showcase-card__top">
+            <p class="offer-showcase-card__name">${offer.name}</p>
+            <p class="offer-showcase-card__price">À partir de ${offer.priceFrom}</p>
+          </div>
+          <p class="offer-showcase-card__description">${offer.shortDescription}</p>
+          <div class="offer-showcase-card__facts">
+            <p><strong>Cible</strong>${offer.target}</p>
+            <p><strong>Bénéfice</strong>${offer.benefit}</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn" href="${offerPath(offer.slug)}">Voir l'offre</a>
+            <a class="btn btn--ghost" href="${CONTACT.primaryHref}">En parler</a>
+          </div>
+        </div>
       </article>
     `;
   }
@@ -243,10 +267,25 @@ const renderOffersPage = () => {
           ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
           ${asLink('Retour à l\'accueil', '/', 'btn btn--ghost')}
         </div>
+        <div class="hero-highlights">
+          <p><strong>8 secteurs</strong> déjà structurés</p>
+          <p><strong>Dès 890 €</strong> selon le besoin métier</p>
+          <p><strong>Une page claire</strong> pensée pour convertir</p>
+        </div>
       </section>
 
-      <section class="section container">
-        <div class="offers-grid offers-grid--detailed">
+      <section class="section container offers-showcase">
+        <aside class="offers-showcase__intro" data-reveal>
+          <p class="kicker">Choisir votre format</p>
+          <h2>Chaque offre répond à un usage précis</h2>
+          <p>Au lieu d'une même landing page pour tout le monde, nous partons d'un contexte métier concret: vendre des billets, générer des rendez-vous, lancer une marque, valoriser un lieu ou présenter un projet.</p>
+          <div class="offers-showcase__legend">
+            <p><strong>Clarté</strong> structure lisible dès les premières secondes</p>
+            <p><strong>Crédibilité</strong> design, preuve et informations utiles</p>
+            <p><strong>Conversion</strong> CTA et parcours orientés action</p>
+          </div>
+        </aside>
+        <div class="offers-showcase__rail">
           ${OFFERS.map((offer) => renderOfferCard(offer, 'detailed')).join('')}
         </div>
       </section>
@@ -349,10 +388,24 @@ const renderVerticalPage = (slug) => {
           <p><strong>${offer.priceFrom}</strong> prix de départ</p>
           <p><strong>Objectif:</strong> clarté, crédibilité et conversion</p>
         </div>
-        <div class="hero-media" aria-label="Zone visuelle immersive pour photo ou vidéo de couverture">
-          <p>Espace visuel immersif</p>
-          <small>Image ou vidéo hero selon votre direction artistique.</small>
-        </div>
+        <a
+          class="hero-media hero-media--preview"
+          href="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Ouvrir l'aperçu visuel en grand"
+        >
+          <img
+            class="hero-media__image"
+            src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+            alt="${offer.preview?.alt || 'Aperçu visuel du site'}"
+            decoding="async"
+          />
+          <span class="hero-media__caption">
+            <strong>Aperçu de site</strong>
+            <small>Cliquer pour ouvrir l’image</small>
+          </span>
+        </a>
       </section>
 
       <section class="section container vertical-stack">
@@ -410,10 +463,11 @@ const setupTheme = () => {
 const setupNavDropdown = () => {
   const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
   if (dropdowns.length === 0) return;
+  const desktopQuery = window.matchMedia('(min-width: 760px)');
 
   const closeAll = () => {
     dropdowns.forEach((dropdown) => {
-      dropdown.classList.remove('is-open');
+      dropdown.classList.remove('is-open', 'is-hovered');
       const toggle = dropdown.querySelector('.nav-dropdown__toggle');
       if (toggle) {
         toggle.setAttribute('aria-expanded', 'false');
@@ -426,11 +480,26 @@ const setupNavDropdown = () => {
     if (!toggle) return;
 
     toggle.addEventListener('click', (event) => {
+      if (desktopQuery.matches) return;
+      event.preventDefault();
       event.stopPropagation();
       const willOpen = !dropdown.classList.contains('is-open');
       closeAll();
       dropdown.classList.toggle('is-open', willOpen);
       toggle.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    dropdown.addEventListener('mouseenter', () => {
+      if (!desktopQuery.matches) return;
+      closeAll();
+      dropdown.classList.add('is-hovered');
+      toggle.setAttribute('aria-expanded', 'true');
+    });
+
+    dropdown.addEventListener('mouseleave', () => {
+      if (!desktopQuery.matches) return;
+      dropdown.classList.remove('is-hovered');
+      toggle.setAttribute('aria-expanded', 'false');
     });
 
     dropdown.querySelectorAll('a').forEach((link) => {

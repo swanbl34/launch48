@@ -105,27 +105,40 @@ const renderShell = () => {
           </div>
         </div>
         <div class="nav__actions">
-          <div class="nav-dropdown nav-dropdown--mobile">
-            <div class="nav-dropdown__trigger">
-              <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
-              <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile" aria-label="Ouvrir le menu Secteurs"></button>
-            </div>
-            <div class="nav-dropdown__menu" id="nav-verticales-menu-mobile">
-              <a href="/offres/">Toutes les offres</a>
-              <a href="/site-evenementiel/">Site événementiel</a>
-              <a href="/site-consultant/">Site consultant</a>
-              <a href="/site-lancement-marque/">Lancement marque</a>
-              <a href="/site-restaurant/">Restaurant</a>
-              <a href="/site-artiste/">Artiste / portfolio</a>
-              <a href="/site-media-podcast/">Média / podcast</a>
-              <a href="/site-association/">Association</a>
-              <a href="/site-immobilier-location/">Immobilier / location</a>
-            </div>
-          </div>
-          <button class="theme-toggle" type="button" aria-label="Basculer thème">Clair</button>
-          <a class="btn btn--small magnetic" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
+          <button class="theme-toggle nav-theme-mobile" type="button" aria-label="Basculer thème">Clair</button>
+          <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <button class="theme-toggle nav-theme-desktop" type="button" aria-label="Basculer thème">Clair</button>
+          <a class="btn btn--small magnetic nav-cta-desktop" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
       </nav>
+      <div class="nav-mobile container" id="nav-mobile-panel" hidden>
+        <div class="nav-mobile__panel">
+          <div class="nav-mobile__group">
+            <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
+            <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+            <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
+            <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
+            <a href="/offres/">Secteurs</a>
+          </div>
+          <div class="nav-mobile__group nav-mobile__group--muted">
+            <a href="/site-evenementiel/">Site événementiel</a>
+            <a href="/site-consultant/">Site consultant</a>
+            <a href="/site-lancement-marque/">Lancement marque</a>
+            <a href="/site-restaurant/">Restaurant</a>
+            <a href="/site-artiste/">Artiste / portfolio</a>
+            <a href="/site-media-podcast/">Média / podcast</a>
+            <a href="/site-association/">Association</a>
+            <a href="/site-immobilier-location/">Immobilier / location</a>
+        </div>
+        <div class="nav-mobile__footer">
+          <a class="btn magnetic" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
+        </div>
+      </div>
+      </div>
     </header>
 
     <main id="main">
@@ -502,26 +515,52 @@ const setupTheme = () => {
     document.documentElement.dataset.theme = saved;
   }
 
-  const toggle = document.querySelector('.theme-toggle');
-  if (!toggle) return;
-
   const updateLabel = () => {
     const current = document.documentElement.dataset.theme || 'dark';
     const nextTheme = current === 'dark' ? 'light' : 'dark';
     const nextLabel = nextTheme === 'light' ? 'Clair' : 'Sombre';
-    toggle.textContent = nextLabel;
-    toggle.dataset.nextTheme = nextTheme;
-    toggle.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
-    toggle.setAttribute('title', `Mode ${nextLabel.toLowerCase()}`);
+    document.querySelectorAll('.theme-toggle').forEach((toggle) => {
+      toggle.textContent = nextLabel;
+      toggle.dataset.nextTheme = nextTheme;
+      toggle.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
+      toggle.setAttribute('title', `Mode ${nextLabel.toLowerCase()}`);
+    });
   };
 
   updateLabel();
-  toggle.addEventListener('click', () => {
-    const current = document.documentElement.dataset.theme || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem('launch48-theme', next);
-    updateLabel();
+  document.querySelectorAll('.theme-toggle').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('launch48-theme', next);
+      updateLabel();
+    });
+  });
+};
+
+const setupMobileNav = () => {
+  const burger = document.querySelector('.nav-burger');
+  const panel = document.querySelector('.nav-mobile');
+  if (!burger || !panel) return;
+
+  const closeMenu = () => {
+    burger.setAttribute('aria-expanded', 'false');
+    panel.hidden = true;
+  };
+
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    panel.hidden = isOpen;
+  });
+
+  panel.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
   });
 };
 
@@ -581,6 +620,21 @@ const setupNavDropdown = () => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeAll();
   });
+};
+
+const setupResponsiveNavVisibility = () => {
+  const desktopOnlyNodes = document.querySelectorAll('.nav-cta-desktop, .nav-theme-desktop');
+  if (desktopOnlyNodes.length === 0) return;
+
+  const mediaQuery = window.matchMedia('(min-width: 760px)');
+  const sync = () => {
+    desktopOnlyNodes.forEach((node) => {
+      node.hidden = !mediaQuery.matches;
+    });
+  };
+
+  sync();
+  mediaQuery.addEventListener('change', sync);
 };
 
 const setupFaq = () => {
@@ -877,6 +931,8 @@ const init = async () => {
   injectSlots(slots);
   applyMeta(slots);
   setupTheme();
+  setupMobileNav();
+  setupResponsiveNavVisibility();
   setupNavDropdown();
   setupFaq();
   setupCursor();

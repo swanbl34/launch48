@@ -65,19 +65,33 @@ const renderHeader = (active = 'home') => `
         </div>
       </div>
       <div class="nav__actions">
-        <div class="nav-dropdown nav-dropdown--mobile">
-          <div class="nav-dropdown__trigger">
-            <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
-            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-mobile" aria-label="Ouvrir le menu Secteurs"></button>
-          </div>
-          <div class="nav-dropdown__menu" id="nav-verticales-menu-mobile">
-            ${verticalMenuLinks}
-          </div>
-        </div>
-        <button class="theme-toggle" type="button" aria-label="Basculer thème">Clair</button>
-        ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn btn--small magnetic')}
+        <button class="theme-toggle nav-theme-mobile" type="button" aria-label="Basculer thème">Clair</button>
+        <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <button class="theme-toggle nav-theme-desktop" type="button" aria-label="Basculer thème">Clair</button>
+        ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn btn--small magnetic nav-cta-desktop')}
       </div>
     </nav>
+    <div class="nav-mobile container" id="nav-mobile-panel" hidden>
+      <div class="nav-mobile__panel">
+        <div class="nav-mobile__group">
+          <a href="/">Accueil</a>
+          <a href="/offres/">Offres</a>
+          <a href="/#process">Process</a>
+          <a href="/#contact">Contact</a>
+          <a href="/offres/">Secteurs</a>
+        </div>
+        <div class="nav-mobile__group nav-mobile__group--muted">
+          ${verticalMenuLinks}
+        </div>
+        <div class="nav-mobile__footer">
+          ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn magnetic')}
+        </div>
+      </div>
+    </div>
   </header>
 `;
 
@@ -438,25 +452,51 @@ const setupTheme = () => {
     document.documentElement.dataset.theme = savedTheme;
   }
 
-  const themeButton = document.querySelector('.theme-toggle');
-  if (!themeButton) return;
-
   const updateLabel = () => {
     const currentTheme = document.documentElement.dataset.theme || 'dark';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     const nextLabel = nextTheme === 'light' ? 'Clair' : 'Sombre';
-    themeButton.textContent = nextLabel;
-    themeButton.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
-    themeButton.dataset.nextTheme = nextTheme;
+    document.querySelectorAll('.theme-toggle').forEach((themeButton) => {
+      themeButton.textContent = nextLabel;
+      themeButton.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
+      themeButton.dataset.nextTheme = nextTheme;
+    });
   };
 
   updateLabel();
-  themeButton.addEventListener('click', () => {
-    const currentTheme = document.documentElement.dataset.theme || 'dark';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem('launch48-theme', nextTheme);
-    updateLabel();
+  document.querySelectorAll('.theme-toggle').forEach((themeButton) => {
+    themeButton.addEventListener('click', () => {
+      const currentTheme = document.documentElement.dataset.theme || 'dark';
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = nextTheme;
+      localStorage.setItem('launch48-theme', nextTheme);
+      updateLabel();
+    });
+  });
+};
+
+const setupMobileNav = () => {
+  const burger = document.querySelector('.nav-burger');
+  const panel = document.querySelector('.nav-mobile');
+  if (!burger || !panel) return;
+
+  const closeMenu = () => {
+    burger.setAttribute('aria-expanded', 'false');
+    panel.hidden = true;
+  };
+
+  burger.addEventListener('click', () => {
+    const isOpen = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!isOpen));
+    panel.hidden = isOpen;
+  });
+
+  panel.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
   });
 };
 
@@ -518,6 +558,21 @@ const setupNavDropdown = () => {
   });
 };
 
+const setupResponsiveNavVisibility = () => {
+  const desktopOnlyNodes = document.querySelectorAll('.nav-cta-desktop, .nav-theme-desktop');
+  if (desktopOnlyNodes.length === 0) return;
+
+  const mediaQuery = window.matchMedia('(min-width: 760px)');
+  const sync = () => {
+    desktopOnlyNodes.forEach((node) => {
+      node.hidden = !mediaQuery.matches;
+    });
+  };
+
+  sync();
+  mediaQuery.addEventListener('change', sync);
+};
+
 const setupRevealAnimations = () => {
   if (prefersReducedMotion) return;
 
@@ -574,6 +629,8 @@ const init = () => {
   }
 
   setupTheme();
+  setupMobileNav();
+  setupResponsiveNavVisibility();
   setupNavDropdown();
   setupBackgroundProgress();
   setupHeaderScrollState();

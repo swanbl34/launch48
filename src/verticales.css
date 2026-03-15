@@ -469,6 +469,134 @@ body[data-page='vertical'] main > .hero.section {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.quote-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.section--call-embed {
+  padding-top: 1.2rem;
+}
+
+.quote-panel,
+.quote-form-card {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: clamp(1.1rem, 3vw, 1.7rem);
+  background:
+    linear-gradient(130deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 6%));
+  box-shadow: var(--shadow);
+}
+
+.quote-form-card--embed {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  line-height: 0;
+}
+
+.quote-form-card--embed iframe {
+  display: block;
+  width: 100%;
+  height: clamp(760px, 88vh, 980px);
+  min-height: 760px;
+  border-radius: 22px;
+  background: #ffffff;
+}
+
+.quote-panel {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.quote-panel__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.quote-panel__list li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--muted);
+}
+
+.quote-panel__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: linear-gradient(130deg, var(--accent), var(--accent-2));
+}
+
+.launch48-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.launch48-form h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+}
+
+.launch48-form > p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.launch48-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.launch48-form label > span {
+  color: var(--muted);
+}
+
+.launch48-form input,
+.launch48-form select,
+.launch48-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.82rem 0.92rem;
+  background: color-mix(in srgb, var(--surface-solid), transparent 4%);
+  color: var(--text);
+  font: inherit;
+}
+
+.launch48-form textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.launch48-form input::placeholder,
+.launch48-form textarea::placeholder {
+  color: color-mix(in srgb, var(--muted), transparent 15%);
+}
+
+.launch48-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--accent), black 12%);
+  border-radius: 999px;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent), transparent 8%), color-mix(in srgb, var(--accent-2), transparent 5%));
+  color: #040607;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .floating-cta {
   position: fixed;
   right: 1rem;
@@ -490,7 +618,7 @@ body[data-page='vertical'] main > .hero.section {
 
 @media (min-width: 820px) {
   .hero {
-    padding-top: 0.2rem;
+    padding-top: 0.9rem;
   }
 
   .hero-highlights {
@@ -534,6 +662,16 @@ body[data-page='vertical'] main > .hero.section {
   .hero--vertical .hero-media {
     grid-area: media;
     height: 100%;
+  }
+
+  .quote-layout {
+    grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .quote-panel {
+    position: sticky;
+    top: 6.2rem;
   }
 
   .offers-showcase {

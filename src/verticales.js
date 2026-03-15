@@ -99,9 +99,6 @@ const renderFooter = () => `
   <footer class="site-footer section container">
     <p class="site-footer__name">${SITE.name}</p>
     <a href="mailto:contact@launch48.fr">contact@launch48.fr</a>
-    <div class="site-footer__socials">
-      ${SITE.socials.map((social) => `<a href="${social.href}" target="_blank" rel="noreferrer">${social.label}</a>`).join('')}
-    </div>
     <div class="site-footer__legal">
       ${SITE.legalLinks.map((link) => `<a href="${link.href}">${link.label}</a>`).join('')}
     </div>
@@ -315,6 +312,136 @@ const renderOffersPage = () => {
     </main>
     ${renderFooter()}
     ${renderFloatingCta('Discuter de mon projet')}
+  `;
+};
+
+const renderQuotePage = () => {
+  setMeta({
+    title: 'Devis | Launch48',
+    description: 'Décrivez votre projet et recevez rapidement un devis pour votre site Launch48.'
+  });
+
+  app.innerHTML = `
+    ${renderHeader('quote')}
+    <main id="main">
+      <section class="hero section container" data-reveal>
+        <p class="kicker">Devis rapide</p>
+        <h1>Lancez votre site en 48h</h1>
+        <p class="lead">Décrivez votre projet, votre contexte et votre besoin. Vous recevez une réponse rapide avec un cadrage clair.</p>
+      </section>
+
+      <section class="section container section--call-embed">
+        <div class="quote-layout">
+          <article class="quote-panel" data-reveal>
+            <p class="kicker">Avant de commencer</p>
+            <h2>Quelques infos utiles pour aller plus vite</h2>
+            <ul class="quote-panel__list">
+              <li>Le type de site ou de page que vous souhaitez lancer</li>
+              <li>Le nom du projet ou de l'entreprise si vous l'avez déjà</li>
+              <li>Votre objectif principal: vendre, réserver, présenter, générer des leads</li>
+              <li>Votre timing et les éventuelles contraintes de lancement</li>
+            </ul>
+          </article>
+
+          <article class="quote-form-card" data-reveal>
+            <form action="https://formspree.io/f/meerlnrn" method="POST" class="launch48-form">
+              <h3>Lancez votre site en 48h 🚀</h3>
+              <p>Décrivez votre projet et recevez une réponse rapide.</p>
+
+              <label>
+                <span>Nom</span>
+                <input type="text" name="name" placeholder="Votre nom" required />
+              </label>
+
+              <label>
+                <span>Email</span>
+                <input type="email" name="email" placeholder="votre@email.com" required />
+              </label>
+
+              <label>
+                <span>Type de site</span>
+                <select name="project_type" required>
+                  <option value="">Sélectionnez</option>
+                  <option value="event">Événement</option>
+                  <option value="restaurant">Restaurant / Bar</option>
+                  <option value="startup">Startup / Business</option>
+                  <option value="coach">Coach / Consultant</option>
+                  <option value="portfolio">Portfolio</option>
+                  <option value="other">Autre</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Nom du projet / entreprise</span>
+                <input type="text" name="project_name" placeholder="Nom du projet" />
+              </label>
+
+              <label>
+                <span>Avez-vous déjà un nom de domaine ?</span>
+                <select name="domain">
+                  <option value="no">Non</option>
+                  <option value="yes">Oui</option>
+                  <option value="not_sure">Je ne sais pas</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Décrivez rapidement votre projet</span>
+                <textarea name="message" rows="5" placeholder="Objectif du site, contenu, deadline..."></textarea>
+              </label>
+
+              <button type="submit">🚀 Demander mon site</button>
+            </form>
+          </article>
+        </div>
+      </section>
+    </main>
+    ${renderFooter()}
+  `;
+};
+
+const renderCallPage = () => {
+  setMeta({
+    title: 'Réserver un appel | Launch48',
+    description: 'Réservez un appel découverte Launch48 pour parler de votre projet.'
+  });
+
+  app.innerHTML = `
+    ${renderHeader('call')}
+    <main id="main">
+      <section class="hero section container" data-reveal>
+        <p class="kicker">Appel découverte</p>
+        <h1>Réservez un créneau pour parler de votre projet</h1>
+        <p class="lead">Choisissez un moment qui vous convient pour échanger sur votre besoin, votre délai et le bon format de site.</p>
+      </section>
+
+      <section class="section container">
+        <div class="quote-layout">
+          <article class="quote-form-card quote-form-card--embed" data-reveal>
+            <iframe
+              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
+              style="border: 0"
+              width="100%"
+              height="600"
+              frameborder="0"
+              title="Réservation d'appel Launch48"
+            ></iframe>
+          </article>
+
+          <article class="quote-panel" data-reveal>
+            <p class="kicker">Pendant l'appel</p>
+            <h2>On va droit au but</h2>
+            <ul class="quote-panel__list">
+              <li>Clarifier votre objectif principal et votre cible</li>
+              <li>Identifier le bon format de page ou d'offre</li>
+              <li>Valider le timing et les contenus disponibles</li>
+              <li>Vous orienter vers un devis ou une prochaine étape concrète</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+    ${renderFooter()}
   `;
 };
 
@@ -622,6 +749,10 @@ const setupHeaderScrollState = () => {
 const init = () => {
   if (pageType === 'offers') {
     renderOffersPage();
+  } else if (pageType === 'quote') {
+    renderQuotePage();
+  } else if (pageType === 'call') {
+    renderCallPage();
   } else if (pageType === 'vertical') {
     renderVerticalPage(offerSlug);
   } else {

@@ -1,8 +1,8 @@
 export const CONTACT = {
   primaryLabel: 'Demander un devis',
-  primaryHref: 'https://cal.com/votre-profil/devis',
+  primaryHref: '/devis/',
   secondaryLabel: 'Réserver un appel découverte',
-  secondaryHref: 'https://cal.com/votre-profil/call'
+  secondaryHref: '/call/'
 };
 
 export const SITE = {
@@ -12,11 +12,6 @@ export const SITE = {
     { label: 'Mentions légales', href: '/mentions-legales.html' },
     { label: 'Politique de confidentialité', href: '/politique-confidentialite.html' },
     { label: 'CGV', href: '/cgv.html' }
-  ],
-  socials: [
-    { label: 'LinkedIn', href: 'https://linkedin.com/company/launch48' },
-    { label: 'Instagram', href: 'https://instagram.com/launch48' },
-    { label: 'GitHub', href: 'https://github.com/launch48' }
   ]
 };
 

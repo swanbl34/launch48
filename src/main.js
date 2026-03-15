@@ -398,11 +398,6 @@ const renderShell = () => {
     <footer class="site-footer section container">
       <p class="site-footer__name" data-slot="footer.name"></p>
       <a data-slot="footer.email" data-slot-href="footer.email"></a>
-      <div class="site-footer__socials">
-        <a data-slot="footer.social1.label" data-slot-href="footer.social1.href"></a>
-        <a data-slot="footer.social2.label" data-slot-href="footer.social2.href"></a>
-        <a data-slot="footer.social3.label" data-slot-href="footer.social3.href"></a>
-      </div>
       <div class="site-footer__legal">
         <a data-slot="footer.legal1.label" data-slot-href="footer.legal1.href"></a>
         <a data-slot="footer.legal2.label" data-slot-href="footer.legal2.href"></a>

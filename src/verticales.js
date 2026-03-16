@@ -324,12 +324,6 @@ const renderQuotePage = () => {
   app.innerHTML = `
     ${renderHeader('quote')}
     <main id="main">
-      <section class="hero section container" data-reveal>
-        <p class="kicker">Devis rapide</p>
-        <h1>Lancez votre site en 48h</h1>
-        <p class="lead">Décrivez votre projet, votre contexte et votre besoin. Vous recevez une réponse rapide avec un cadrage clair.</p>
-      </section>
-
       <section class="section container section--call-embed">
         <div class="quote-layout">
           <article class="quote-panel" data-reveal>
@@ -409,25 +403,8 @@ const renderCallPage = () => {
   app.innerHTML = `
     ${renderHeader('call')}
     <main id="main">
-      <section class="hero section container" data-reveal>
-        <p class="kicker">Appel découverte</p>
-        <h1>Réservez un créneau pour parler de votre projet</h1>
-        <p class="lead">Choisissez un moment qui vous convient pour échanger sur votre besoin, votre délai et le bon format de site.</p>
-      </section>
-
       <section class="section container">
         <div class="quote-layout">
-          <article class="quote-form-card quote-form-card--embed" data-reveal>
-            <iframe
-              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
-              style="border: 0"
-              width="100%"
-              height="600"
-              frameborder="0"
-              title="Réservation d'appel Launch48"
-            ></iframe>
-          </article>
-
           <article class="quote-panel" data-reveal>
             <p class="kicker">Pendant l'appel</p>
             <h2>On va droit au but</h2>
@@ -437,6 +414,17 @@ const renderCallPage = () => {
               <li>Valider le timing et les contenus disponibles</li>
               <li>Vous orienter vers un devis ou une prochaine étape concrète</li>
             </ul>
+          </article>
+
+          <article class="quote-form-card quote-form-card--embed" data-reveal>
+            <iframe
+              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
+              style="border: 0"
+              width="100%"
+              height="600"
+              frameborder="0"
+              title="Réservation d'appel Launch48"
+            ></iframe>
           </article>
         </div>
       </section>

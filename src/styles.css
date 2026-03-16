@@ -214,6 +214,15 @@ p {
   position: relative;
 }
 
+.nav-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 0.7rem;
+}
+
 .nav-dropdown__trigger {
   display: inline-flex;
   align-items: center;
@@ -1263,6 +1272,10 @@ a:focus-visible {
   font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.contact-card h2 {
+  margin-top: 0.5rem;
 }
 
 .contact-card__text {

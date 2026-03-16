@@ -22,6 +22,11 @@ body[data-page='vertical'] main > .hero.section {
   padding-top: clamp(4.6rem, 10vw, 7.4rem);
 }
 
+body[data-page='quote'] main > .section:first-child,
+body[data-page='call'] main > .section:first-child {
+  padding-top: clamp(4.6rem, 10vw, 7.4rem);
+}
+
 .section-head {
   display: grid;
   gap: 0.65rem;
@@ -395,6 +400,7 @@ body[data-page='vertical'] main > .hero.section {
   font-size: clamp(1.9rem, 5.2vw, 3.9rem);
   letter-spacing: -0.03em;
   max-width: 16ch;
+  margin-top: 0.35rem;
 }
 
 .contact-card__actions {
@@ -507,6 +513,12 @@ body[data-page='vertical'] main > .hero.section {
 .quote-panel {
   display: grid;
   gap: 0.9rem;
+}
+
+.quote-panel h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.7rem);
+  line-height: 1.02;
+  overflow-wrap: anywhere;
 }
 
 .quote-panel__list {

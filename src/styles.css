@@ -62,6 +62,29 @@ body {
   position: relative;
 }
 
+body[data-page='home'],
+body[data-page='quote'] {
+  background:
+    radial-gradient(
+      circle at calc(14% + (var(--bg-progress) * 10%)) calc(44% + (var(--bg-progress) * 18%)),
+      color-mix(in srgb, var(--accent), transparent 82%),
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at calc(86% - (var(--bg-progress) * 12%)) calc(18% + (var(--bg-progress) * 20%)),
+      color-mix(in srgb, var(--accent-2), transparent 84%),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      #3a1f1a 0%,
+      #34231d 24%,
+      #231d19 52%,
+      #151413 76%,
+      #0b0b0b 100%
+    );
+}
+
 body::before {
   content: '';
   position: absolute;

@@ -12,6 +12,11 @@
   --accent-2: #f0b66a;
   --danger: #ff455b;
   --shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+  --ambient-bg-start: #3a1f1a;
+  --ambient-bg-mid-1: #34231d;
+  --ambient-bg-mid-2: #231d19;
+  --ambient-bg-mid-3: #151413;
+  --ambient-bg-end: #0b0b0b;
 }
 
 :root[data-theme='light'] {
@@ -25,6 +30,11 @@
   --accent-2: #f0b66a;
   --danger: #d4203a;
   --shadow: 0 20px 70px rgba(11, 20, 50, 0.12);
+  --ambient-bg-start: #f6e8dc;
+  --ambient-bg-mid-1: #f3e6d6;
+  --ambient-bg-mid-2: #eee3d5;
+  --ambient-bg-mid-3: #e4ddd4;
+  --ambient-bg-end: #d8d1c7;
 }
 
 * {
@@ -77,11 +87,11 @@ body[data-page='quote'] {
     ),
     linear-gradient(
       180deg,
-      #3a1f1a 0%,
-      #34231d 24%,
-      #231d19 52%,
-      #151413 76%,
-      #0b0b0b 100%
+      var(--ambient-bg-start) 0%,
+      var(--ambient-bg-mid-1) 24%,
+      var(--ambient-bg-mid-2) 52%,
+      var(--ambient-bg-mid-3) 76%,
+      var(--ambient-bg-end) 100%
     );
 }
 

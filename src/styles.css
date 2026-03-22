@@ -2,39 +2,43 @@
 
 :root {
   --bg-progress: 0;
-  --bg: #121212;
-  --surface: rgba(246, 241, 232, 0.07);
-  --surface-solid: #1b1b1b;
-  --text: #f6f1e8;
-  --muted: #b9b0a4;
-  --line: rgba(246, 241, 232, 0.16);
-  --accent: #d94f3d;
-  --accent-2: #f0b66a;
-  --danger: #ff455b;
-  --shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
-  --ambient-bg-start: #3a1f1a;
-  --ambient-bg-mid-1: #34231d;
-  --ambient-bg-mid-2: #231d19;
-  --ambient-bg-mid-3: #151413;
-  --ambient-bg-end: #0b0b0b;
+  --bg: #091019;
+  --surface: rgba(237, 245, 255, 0.05);
+  --surface-solid: #0f1723;
+  --text: #f3efe7;
+  --muted: #8ea2ba;
+  --line: rgba(113, 146, 184, 0.20);
+  --accent: #46e4ff;
+  --accent-2: #5f8dff;
+  --accent-3: #63ffe0;
+  --accent-4: #a8d6ff;
+  --danger: #f06e8a;
+  --shadow: 0 24px 90px rgba(2, 8, 18, 0.42);
+  --ambient-bg-start: #132338;
+  --ambient-bg-mid-1: #101a2a;
+  --ambient-bg-mid-2: #0d1420;
+  --ambient-bg-mid-3: #0a1018;
+  --ambient-bg-end: #070b10;
 }
 
 :root[data-theme='light'] {
-  --bg: #f6f1e8;
-  --surface: rgba(18, 18, 18, 0.05);
-  --surface-solid: #fffaf4;
-  --text: #1d1715;
-  --muted: #6e6760;
-  --line: rgba(18, 18, 18, 0.14);
-  --accent: #d94f3d;
-  --accent-2: #f0b66a;
-  --danger: #d4203a;
-  --shadow: 0 20px 70px rgba(11, 20, 50, 0.12);
-  --ambient-bg-start: #f6e8dc;
-  --ambient-bg-mid-1: #f3e6d6;
-  --ambient-bg-mid-2: #eee3d5;
-  --ambient-bg-mid-3: #e4ddd4;
-  --ambient-bg-end: #d8d1c7;
+  --bg: #edf4fb;
+  --surface: rgba(9, 16, 25, 0.04);
+  --surface-solid: #f7fbff;
+  --text: #0d1520;
+  --muted: #617892;
+  --line: rgba(79, 124, 255, 0.14);
+  --accent: #1696e8;
+  --accent-2: #5f8dff;
+  --accent-3: #20d9bb;
+  --accent-4: #8fb7ff;
+  --danger: #d85a74;
+  --shadow: 0 22px 70px rgba(24, 44, 69, 0.12);
+  --ambient-bg-start: #e8f2fc;
+  --ambient-bg-mid-1: #dce9f8;
+  --ambient-bg-mid-2: #cedef1;
+  --ambient-bg-mid-3: #bdd1e8;
+  --ambient-bg-end: #a4bcd8;
 }
 
 * {
@@ -56,15 +60,20 @@ body {
   background:
     radial-gradient(
       circle at calc(18% + (var(--bg-progress) * 18%)) calc(12% + (var(--bg-progress) * 14%)),
-      color-mix(in srgb, var(--accent), transparent 74%),
-      transparent 40%
+      color-mix(in srgb, var(--accent), transparent 82%),
+      transparent 38%
     ),
     radial-gradient(
       circle at calc(85% - (var(--bg-progress) * 16%)) calc(3% + (var(--bg-progress) * 22%)),
-      color-mix(in srgb, var(--accent-2), transparent 75%),
-      transparent 38%
+      color-mix(in srgb, var(--accent-4), transparent 86%),
+      transparent 42%
     ),
-    var(--bg);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ambient-bg-start), var(--bg) 10%),
+      color-mix(in srgb, var(--ambient-bg-mid-2), var(--bg) 18%),
+      var(--bg)
+    );
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
@@ -76,13 +85,18 @@ body[data-page='home'],
 body[data-page='quote'] {
   background:
     radial-gradient(
-      circle at calc(14% + (var(--bg-progress) * 10%)) calc(44% + (var(--bg-progress) * 18%)),
-      color-mix(in srgb, var(--accent), transparent 82%),
-      transparent 36%
+      circle at calc(12% + (var(--bg-progress) * 14%)) calc(38% + (var(--bg-progress) * 16%)),
+      color-mix(in srgb, var(--accent-2), transparent 78%),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at calc(78% - (var(--bg-progress) * 10%)) calc(16% + (var(--bg-progress) * 18%)),
+      color-mix(in srgb, var(--accent-3), transparent 84%),
+      transparent 34%
     ),
     radial-gradient(
       circle at calc(86% - (var(--bg-progress) * 12%)) calc(18% + (var(--bg-progress) * 20%)),
-      color-mix(in srgb, var(--accent-2), transparent 84%),
+      color-mix(in srgb, var(--accent-2), transparent 82%),
       transparent 40%
     ),
     linear-gradient(
@@ -95,6 +109,39 @@ body[data-page='quote'] {
     );
 }
 
+body[data-page='home'] {
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at calc(18% + (var(--bg-progress) * 10%)) calc(24% + (var(--bg-progress) * 12%)),
+      color-mix(in srgb, var(--accent-2), transparent 74%),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at calc(84% - (var(--bg-progress) * 9%)) calc(16% + (var(--bg-progress) * 14%)),
+      color-mix(in srgb, var(--accent), transparent 84%),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at calc(52% + (var(--bg-progress) * 6%)) calc(52% + (var(--bg-progress) * 8%)),
+      color-mix(in srgb, var(--accent-3), transparent 90%),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ambient-bg-start), #05080d 8%) 0%,
+      color-mix(in srgb, var(--ambient-bg-mid-1), #04070b 10%) 22%,
+      color-mix(in srgb, var(--ambient-bg-mid-2), #04070b 12%) 54%,
+      color-mix(in srgb, var(--ambient-bg-mid-3), #03060a 10%) 78%,
+      var(--ambient-bg-end) 100%
+    );
+}
+
+body[data-page='home'] > * {
+  position: relative;
+  z-index: 1;
+}
+
 body::before {
   content: '';
   position: absolute;
@@ -102,8 +149,44 @@ body::before {
   z-index: -1;
   opacity: 0.11;
   pointer-events: none;
-  background-image: repeating-radial-gradient(circle at 0 0, transparent 0 2px, rgba(255, 255, 255, 0.26) 3px 3.5px);
+  background-image: repeating-radial-gradient(circle at 0 0, transparent 0 2px, color-mix(in srgb, var(--line), transparent 24%) 3px 3.5px);
   background-size: 4px 4px;
+}
+
+body[data-page='home']::before {
+  z-index: 0;
+  inset: 0 0 auto 0;
+  height: clamp(380px, 72vh, 760px);
+  opacity: calc(0.52 - (var(--bg-progress) * 0.9));
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--line), transparent 62%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--line), transparent 68%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--line), transparent 92%) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--line), transparent 93%) 1px,
+      transparent 1px
+    );
+  background-size: 72px 72px, 72px 72px, 12px 12px, 12px 12px;
+  background-position: top center, top center, top center, top center;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.94) 56%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.94) 56%, transparent 100%);
+}
+
+body[data-page='home']::after {
+  content: none;
 }
 
 a {
@@ -643,8 +726,8 @@ a:focus-visible {
   border-radius: 28px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent), transparent 72%), transparent 34%),
-    radial-gradient(circle at 88% 20%, color-mix(in srgb, #36a7ff, transparent 78%), transparent 30%),
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent-2), transparent 74%), transparent 34%),
+    radial-gradient(circle at 88% 20%, color-mix(in srgb, var(--accent-3), transparent 78%), transparent 30%),
     linear-gradient(145deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%));
   border: 1px solid color-mix(in srgb, var(--line), white 8%);
   box-shadow: var(--shadow);
@@ -855,11 +938,11 @@ a:focus-visible {
 }
 
 .proof-card:nth-child(3)::after {
-  background: radial-gradient(circle, color-mix(in srgb, #36a7ff, transparent 76%), transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-3), transparent 76%), transparent 70%);
 }
 
 .proof-card:nth-child(4)::after {
-  background: radial-gradient(circle, color-mix(in srgb, #45d7a1, transparent 76%), transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-4), transparent 76%), transparent 70%);
 }
 
 .proof-card__meta-row {

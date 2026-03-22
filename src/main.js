@@ -79,7 +79,7 @@ const renderShell = () => {
     <header class="site-header" id="top">
       <nav class="nav container" aria-label="Navigation principale">
         <a class="brand" href="#top">
-          <span class="brand__name" data-slot="brand.name"></span>
+          <img class="brand__logo" src="/logo-launch48.svg" alt="Launch48" />
         </a>
         <div class="nav__links">
           <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>

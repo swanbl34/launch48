@@ -190,6 +190,16 @@ p {
   align-items: center;
 }
 
+.brand__logo {
+  display: block;
+  width: auto;
+  height: 1.65rem;
+}
+
+:root:not([data-theme='light']) .brand__logo {
+  filter: brightness(0) saturate(100%) invert(95%) sepia(12%) saturate(264%) hue-rotate(334deg) brightness(101%) contrast(92%);
+}
+
 .brand__name {
   font-family: 'Sora', sans-serif;
   font-size: 1rem;

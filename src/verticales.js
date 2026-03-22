@@ -47,7 +47,7 @@ const renderHeader = (active = 'home') => `
   <header class="site-header" id="top">
     <nav class="nav container" aria-label="Navigation principale">
       <a class="brand" href="/">
-        <span class="brand__name">${SITE.name}</span>
+        <img class="brand__logo" src="/logo-launch48.svg" alt="${SITE.name}" />
       </a>
       <div class="nav__links">
         <a href="/">Accueil</a>

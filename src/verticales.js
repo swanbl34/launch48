@@ -121,7 +121,6 @@ const renderOfferCard = (offer, variant = 'compact') => {
         <div class="offer-showcase-card__body">
           <div class="offer-showcase-card__top">
             <p class="offer-showcase-card__name">${offer.name}</p>
-            <p class="offer-showcase-card__price">À partir de ${offer.priceFrom}</p>
           </div>
           <p class="offer-showcase-card__description">${offer.shortDescription}</p>
           <div class="offer-showcase-card__facts">
@@ -141,7 +140,6 @@ const renderOfferCard = (offer, variant = 'compact') => {
     <article class="offer-card" data-reveal>
       <p class="offer-card__label">${offer.name}</p>
       <p class="offer-card__description">${offer.shortDescription}</p>
-      <p class="offer-card__price">À partir de ${offer.priceFrom}</p>
       <a class="btn btn--ghost" href="${offerPath(offer.slug)}">Voir l'offre</a>
     </article>
   `;
@@ -201,7 +199,7 @@ const renderHome = () => {
         </div>
         <div class="hero-highlights">
           <p><strong>8 verticales</strong> prêtes à lancer</p>
-          <p><strong>Dès 890 €</strong> avec structure claire</p>
+          <p><strong>Approche claire</strong> avec structure pensée pour convertir</p>
           <p><strong>Mobile first</strong> et CTA visibles</p>
         </div>
       </section>
@@ -280,7 +278,7 @@ const renderOffersPage = () => {
         </div>
         <div class="hero-highlights">
           <p><strong>8 secteurs</strong> déjà structurés</p>
-          <p><strong>Dès 890 €</strong> selon le besoin métier</p>
+          <p><strong>Formats dédiés</strong> selon le besoin métier</p>
           <p><strong>Une page claire</strong> pensée pour convertir</p>
         </div>
       </section>
@@ -338,7 +336,7 @@ const renderQuotePage = () => {
           </article>
 
           <article class="quote-form-card" data-reveal>
-            <form action="https://formspree.io/f/meerlnrn" method="POST" class="launch48-form">
+            <form action="https://formspree.io/f/xbdpgvgj" method="POST" class="launch48-form">
               <h3>Lancez votre site en 48h 🚀</h3>
               <p>Décrivez votre projet et recevez une réponse rapide.</p>
 
@@ -447,20 +445,6 @@ const renderVerticalSection = (section) => `
   </article>
 `;
 
-const renderPriceBlock = (offer) => `
-  <section class="section container">
-    <article class="price-card" data-reveal>
-      <p class="kicker">Prix</p>
-      <h2>À partir de ${offer.priceFrom}</h2>
-      <p>${offer.pricingNote}</p>
-      <div class="hero-actions">
-        ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
-        ${asLink(CONTACT.secondaryLabel, CONTACT.secondaryHref, 'btn btn--ghost')}
-      </div>
-    </article>
-  </section>
-`;
-
 const renderOptionsBlock = (offer) => `
   <section class="section container">
     <article class="vertical-block" data-reveal>
@@ -484,7 +468,6 @@ const renderOtherNeeds = (offer) => `
           (item) => `
             <article class="offer-card" data-reveal>
               <p class="offer-card__label">${item.name}</p>
-              <p class="offer-card__price">À partir de ${item.priceFrom}</p>
               <a class="btn btn--ghost" href="${offerPath(item.slug)}">Voir l'offre</a>
             </article>
           `
@@ -499,7 +482,7 @@ const renderVerticalPage = (slug) => {
 
   setMeta({
     title: `${offer.name} | Launch48`,
-    description: `${offer.shortDescription} Offre à partir de ${offer.priceFrom}.`
+    description: offer.shortDescription
   });
 
   app.innerHTML = `
@@ -514,8 +497,8 @@ const renderVerticalPage = (slug) => {
           ${asLink(offer.hero.secondaryCta, offer.hero.secondaryCta.includes('offres') ? '/offres/' : CONTACT.secondaryHref, 'btn btn--ghost')}
         </div>
         <div class="hero-highlights hero-highlights--single">
-          <p><strong>${offer.priceFrom}</strong> prix de départ</p>
           <p><strong>Objectif:</strong> clarté, crédibilité et conversion</p>
+          <p><strong>Structure:</strong> contenu lisible et CTA bien placés</p>
         </div>
         <a
           class="hero-media hero-media--preview"
@@ -542,7 +525,6 @@ const renderVerticalPage = (slug) => {
       </section>
 
       ${renderReusableCtaBlock()}
-      ${renderPriceBlock(offer)}
       ${renderOptionsBlock(offer)}
 
       <section class="section container">

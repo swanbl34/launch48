@@ -199,6 +199,25 @@ const renderShell = () => {
           <p class="section-intro" data-slot="process.subtitle"></p>
           <div class="process__progress" aria-hidden="true">
             <span class="process__progress-fill"></span>
+            <span class="process__progress-rocket">
+              <svg class="process__progress-rocket-icon" viewBox="0 0 72 28" role="presentation" focusable="false" aria-hidden="true">
+                <defs>
+                  <linearGradient id="rocket-body" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#dff8ff" />
+                    <stop offset="55%" stop-color="#7fdcff" />
+                    <stop offset="100%" stop-color="#4f87ff" />
+                  </linearGradient>
+                </defs>
+                <path d="M2 14c2.5-2.8 5.8-4.4 9.8-4.8-2.6 1.6-4 3.2-4.3 4.8.3 1.6 1.7 3.2 4.3 4.8-4-.4-7.3-2-9.8-4.8Z" fill="rgba(255,255,255,0.92)" />
+                <path d="M6 14c1.5-1.6 3.6-2.6 6.2-3-1.7 1-2.7 2-2.9 3 .2 1 1.2 2 2.9 3-2.6-.4-4.7-1.4-6.2-3Z" fill="rgba(223,248,255,0.9)" />
+                <path d="M14 14c4-7 13-11 27-10l10 1 4 9-4 9-10 1C27 25 18 21 14 14Z" fill="url(#rocket-body)" />
+                <path d="M43 6 54 4l-4 6Z" fill="#8fb7ff" />
+                <path d="M43 22 54 24l-4-6Z" fill="#63ffe0" />
+                <circle cx="34" cy="14" r="4.2" fill="#132338" />
+                <circle cx="34" cy="14" r="2.2" fill="#dff8ff" />
+                <path d="M55 8h10l4 6-4 6H55l3-6-3-6Z" fill="#dff8ff" />
+              </svg>
+            </span>
           </div>
           <div class="process-grid">
             <article class="process-step">
@@ -339,7 +358,6 @@ const renderShell = () => {
                   <span class="needs-card__emoji" aria-hidden="true">${item.emoji}</span>
                   <h3>${item.title}</h3>
                   <p>${item.description}</p>
-                  <p class="needs-card__price">À partir de ${item.price}</p>
                   <span class="btn btn--ghost needs-card__cta">Voir l'offre</span>
                 </a>
               `
@@ -860,8 +878,9 @@ const setupAnimations = () => {
   const processSticky = document.querySelector('.process-sticky');
   const processSteps = gsap.utils.toArray('.process-step');
   const processProgressFill = document.querySelector('.process__progress-fill');
+  const processProgressRocket = document.querySelector('.process__progress-rocket');
 
-  if (processSection && processSticky && processProgressFill && processSteps.length > 0) {
+  if (processSection && processSticky && processProgressFill && processProgressRocket && processSteps.length > 0) {
     ScrollTrigger.create({
       trigger: processSection,
       start: 'center center',
@@ -878,6 +897,9 @@ const setupAnimations = () => {
         gsap.set(processProgressFill, {
           scaleX: self.progress,
           transformOrigin: '0% 50%'
+        });
+        gsap.set(processProgressRocket, {
+          left: `${gsap.utils.clamp(2, 98, self.progress * 100)}%`
         });
 
         const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));

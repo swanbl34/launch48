@@ -31,8 +31,9 @@ export const OFFERS = [
       secondaryCta: 'Voir toutes les offres'
     },
     preview: {
-      src: '/illustrations/hero-site-5.svg',
-      alt: 'Aperçu d’un site événementiel'
+      src: '/previews/site-evenementiel-home.jpg',
+      alt: 'Capture de la homepage du Gala de l’Excellence Sportive',
+      href: 'http://galadelexcellence-guyane.fr/'
     },
     sections: [
       {
@@ -231,8 +232,9 @@ export const OFFERS = [
       secondaryCta: 'Réserver un appel découverte'
     },
     preview: {
-      src: '/illustrations/hero-site-4.svg',
-      alt: 'Aperçu d’un site média ou podcast'
+      src: '/previews/site-media-podcast-home.jpg',
+      alt: 'Capture de la homepage du média Tripin',
+      href: 'https://tripin-five.vercel.app/'
     },
     sections: [
       {

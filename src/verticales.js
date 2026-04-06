@@ -105,11 +105,23 @@ const renderFooter = () => `
   </footer>
 `;
 
+const getPreviewHref = (offer) => offer.preview?.href || offer.preview?.src || '/illustrations/hero-site-1.svg';
+const getPreviewAriaLabel = (offer) =>
+  offer.preview?.href ? `Ouvrir le site exemple ${offer.name} dans un nouvel onglet` : "Ouvrir l'aperçu visuel en grand";
+const getPreviewCaption = (offer) =>
+  offer.preview?.href ? 'Cliquer pour ouvrir le site exemple' : "Cliquer pour ouvrir l'image";
+
 const renderOfferCard = (offer, variant = 'compact') => {
   if (variant === 'detailed') {
     return `
       <article class="offer-showcase-card" data-reveal>
-        <div class="offer-showcase-card__media">
+        <a
+          class="offer-showcase-card__media"
+          href="${getPreviewHref(offer)}"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="${getPreviewAriaLabel(offer)}"
+        >
           <img
             class="offer-showcase-card__image"
             src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
@@ -117,7 +129,7 @@ const renderOfferCard = (offer, variant = 'compact') => {
             loading="lazy"
             decoding="async"
           />
-        </div>
+        </a>
         <div class="offer-showcase-card__body">
           <div class="offer-showcase-card__top">
             <p class="offer-showcase-card__name">${offer.name}</p>
@@ -502,10 +514,10 @@ const renderVerticalPage = (slug) => {
         </div>
         <a
           class="hero-media hero-media--preview"
-          href="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+          href="${getPreviewHref(offer)}"
           target="_blank"
           rel="noreferrer"
-          aria-label="Ouvrir l'aperçu visuel en grand"
+          aria-label="${getPreviewAriaLabel(offer)}"
         >
           <img
             class="hero-media__image"
@@ -515,7 +527,7 @@ const renderVerticalPage = (slug) => {
           />
           <span class="hero-media__caption">
             <strong>Aperçu de site</strong>
-            <small>Cliquer pour ouvrir l’image</small>
+            <small>${getPreviewCaption(offer)}</small>
           </span>
         </a>
       </section>

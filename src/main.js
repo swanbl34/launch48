@@ -345,6 +345,24 @@ const renderShell = () => {
         </div>
       </section>
 
+      <section class="workflow section container" id="workflow">
+        <h2 data-slot="workflow.title"></h2>
+        <div class="workflow-grid">
+          <article>
+            <h3 data-slot="workflow.step1.title"></h3>
+            <p data-slot="workflow.step1.text"></p>
+          </article>
+          <article>
+            <h3 data-slot="workflow.step2.title"></h3>
+            <p data-slot="workflow.step2.text"></p>
+          </article>
+          <article>
+            <h3 data-slot="workflow.step3.title"></h3>
+            <p data-slot="workflow.step3.text"></p>
+          </article>
+        </div>
+      </section>
+
       <section class="vertical-needs section container" id="vertical-needs">
         <div class="vertical-needs__head">
           <h2>Des sites pensés pour des besoins concrets</h2>
@@ -416,11 +434,20 @@ const renderShell = () => {
     <footer class="site-footer section container">
       <p class="site-footer__name" data-slot="footer.name"></p>
       <a data-slot="footer.email" data-slot-href="footer.email"></a>
+      <div class="site-footer__socials">
+        <a data-slot="footer.social1.label" data-slot-href="footer.social1.href"></a>
+        <a data-slot="footer.social2.label" data-slot-href="footer.social2.href"></a>
+        <a data-slot="footer.social3.label" data-slot-href="footer.social3.href"></a>
+      </div>
       <div class="site-footer__legal">
         <a data-slot="footer.legal1.label" data-slot-href="footer.legal1.href"></a>
         <a data-slot="footer.legal2.label" data-slot-href="footer.legal2.href"></a>
         <a data-slot="footer.legal3.label" data-slot-href="footer.legal3.href"></a>
       </div>
+      <a class="site-footer__powered" href="/" aria-label="Accueil Launch48">
+        <span>Propulsé par</span>
+        <img src="/logo-launch48.svg" alt="" aria-hidden="true" />
+      </a>
     </footer>
   `;
 };
@@ -468,6 +495,36 @@ const injectSlots = (slots) => {
     const value = altKey ? slots[altKey] : null;
     if (value) {
       target.setAttribute('alt', value);
+    }
+  });
+};
+
+const cleanupOptionalContent = () => {
+  const workflowSection = document.querySelector('.workflow');
+  if (workflowSection) {
+    const title = workflowSection.querySelector('h2')?.textContent?.trim();
+    const steps = Array.from(workflowSection.querySelectorAll('.workflow-grid article')).filter((step) => {
+      const heading = step.querySelector('h3')?.textContent?.trim();
+      const text = step.querySelector('p')?.textContent?.trim();
+      return Boolean(heading || text);
+    });
+
+    if (!title || steps.length === 0) {
+      workflowSection.remove();
+    }
+  }
+
+  document.querySelectorAll('.site-footer__socials').forEach((container) => {
+    Array.from(container.querySelectorAll('a')).forEach((link) => {
+      const hasLabel = link.textContent.trim().length > 0;
+      const hasHref = Boolean(link.getAttribute('href'));
+      if (!hasLabel || !hasHref) {
+        link.remove();
+      }
+    });
+
+    if (container.children.length === 0) {
+      container.remove();
     }
   });
 };
@@ -946,6 +1003,7 @@ const init = async () => {
   const { slots, hasError } = await loadSlots();
 
   injectSlots(slots);
+  cleanupOptionalContent();
   applyMeta(slots);
   setupTheme();
   setupMobileNav();

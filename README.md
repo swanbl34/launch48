@@ -64,7 +64,9 @@ Dans `public/content.html`, édite :
 - `pricing.primaryCta.href`
 - `pricing.secondaryCta.href`
 - `footer.email`
-- `footer.social1.href`, `footer.social2.href`, `footer.social3.href`
+- `footer.social1.label` / `footer.social1.href`
+- `footer.social2.label` / `footer.social2.href`
+- `footer.social3.label` / `footer.social3.href`
 
 ## Accessibilité & perf
 

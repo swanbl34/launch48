@@ -12,6 +12,12 @@ const offerSlug = document.body.dataset.offerSlug || '';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const FALLBACK_OFFER = OFFERS[0];
+const QUOTE_PROJECT_OPTIONS = [
+  { value: 'one-page', label: 'Site vitrine / one-page' },
+  ...OFFERS.map((offer) => ({ value: offer.slug, label: offer.name })),
+  { value: 'other', label: 'Autre besoin' }
+];
+
 const setMeta = ({ title, description }) => {
   document.title = title;
 
@@ -102,6 +108,10 @@ const renderFooter = () => `
     <div class="site-footer__legal">
       ${SITE.legalLinks.map((link) => `<a href="${link.href}">${link.label}</a>`).join('')}
     </div>
+    <a class="site-footer__powered" href="/" aria-label="Accueil Launch48">
+      <span>Propulsé par</span>
+      <img src="/logo-launch48.svg" alt="" aria-hidden="true" />
+    </a>
   </footer>
 `;
 
@@ -366,12 +376,7 @@ const renderQuotePage = () => {
                 <span>Type de site</span>
                 <select name="project_type" required>
                   <option value="">Sélectionnez</option>
-                  <option value="event">Événement</option>
-                  <option value="restaurant">Restaurant / Bar</option>
-                  <option value="startup">Startup / Business</option>
-                  <option value="coach">Coach / Consultant</option>
-                  <option value="portfolio">Portfolio</option>
-                  <option value="other">Autre</option>
+                  ${QUOTE_PROJECT_OPTIONS.map((option) => `<option value="${option.value}">${option.label}</option>`).join('')}
                 </select>
               </label>
 

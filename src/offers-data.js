@@ -18,15 +18,15 @@ export const SITE = {
 export const OFFERS = [
   {
     slug: 'site-evenementiel',
-    name: 'Site événementiel',
-    shortDescription: 'Site internet événement et landing page événement pour présenter le programme, centraliser les infos clés et accélérer les ventes billetterie.',
-    target: 'Festivals, soirées, concerts, salons, conférences, événements culturels et corporate.',
-    benefit: 'Un site internet événement qui transforme l\'intérêt en inscriptions, réservations et billets.',
+    name: 'Event / Festival',
+    shortDescription: 'Démo sectorielle pensée pour présenter un événement, rythmer la programmation et rendre la billetterie évidente dès les premiers scrolls.',
+    target: 'Festivals, concerts, conférences, expériences live, salons, formats culturels et activations de marque.',
+    benefit: 'Une démo fictive qui montre comment transformer l\'attention en billets, inscriptions ou demandes partenaires.',
     priceFrom: '1 290 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Le site internet événement qui remplit votre billetterie',
-      subtitle: 'Nous créons une landing page événement en 48h pour présenter programme, date, lieu et CTA sur un site web soirée, concert ou conférence pensé mobile.',
+      title: 'La page event qui met votre rendez-vous en scene',
+      subtitle: 'Cette verticale montre comment Launch48 structure une page festival ou événement avec date, lieu, programmation, ambiance et billetterie visibles immédiatement.',
       primaryCta: 'Créer votre site internet événement',
       secondaryCta: 'Voir toutes les offres'
     },
@@ -36,9 +36,18 @@ export const OFFERS = [
       description: 'Créez un site internet événement en 48h : landing page événement pour soirée, concert, conférence, gala ou festival.'
     },
     preview: {
-      src: '/previews/site-evenementiel-home.jpg',
-      alt: 'Capture de la homepage du Gala de l’Excellence Sportive',
-      href: 'http://galadelexcellence-guyane.fr/'
+      src: '/previews/event-demo-home.png',
+      alt: 'Capture de la démo fictive Event / Festival',
+      href: 'https://launch48-preview.vercel.app/event',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview event dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site internet evenement',
+      title: 'Voir un exemple grand format de site internet evenement',
+      text: "Cette grande preview montre comment une landing page événement peut mettre en avant la date, le lieu, la programmation et la billetterie dans une structure plus claire, plus visuelle et plus orientée conversion.",
+      cta: 'Ouvrir cet exemple de site événement'
     },
     sections: [
       {
@@ -64,15 +73,15 @@ export const OFFERS = [
   },
   {
     slug: 'site-consultant',
-    name: 'Site consultant / freelance / agence',
-    shortDescription: 'Site internet freelance et site vitrine freelance rapide pour clarifier votre offre, rassurer vos prospects et générer des rendez-vous qualifiés.',
-    target: 'Consultants, freelances, agences, coachs et experts indépendants.',
-    benefit: 'Un site internet freelance qui transforme votre expertise en opportunités commerciales.',
+    name: 'Consultant / Expert B2B',
+    shortDescription: 'Démo B2B conçue pour clarifier une offre, asseoir la crédibilité et faire avancer des prises de rendez-vous qualifiées.',
+    target: 'Consultants, experts métier, cabinets, freelances B2B et studios de conseil.',
+    benefit: 'Une démo fictive qui montre comment rendre une expertise complexe lisible, crédible et premium.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Le site internet freelance qui rend votre expertise lisible',
-      subtitle: 'Nous créons un site internet freelance ou consultant en 48h, avec un message clair, une structure crédible et un tunnel de contact pensé conversion.',
+      title: 'La page consultant qui clarifie votre valeur en quelques secondes',
+      subtitle: 'Cette verticale illustre une structure pensée pour le conseil B2B : promesse nette, expertise cadrée, méthode visible et tunnel de contact sans friction.',
       primaryCta: 'Créer votre site internet freelance',
       secondaryCta: 'Réserver un appel découverte'
     },
@@ -82,8 +91,18 @@ export const OFFERS = [
       description: 'Créez un site internet freelance en 48h : site vitrine freelance rapide pour consultant, coach, expert ou agence.'
     },
     preview: {
-      src: '/illustrations/hero-site-4.svg',
-      alt: 'Aperçu d’un site consultant'
+      src: '/previews/consultant-demo-home.png',
+      alt: 'Capture de la démo fictive Consultant / Expert B2B',
+      href: 'https://launch48-preview.vercel.app/consultant',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview consultant dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site internet freelance',
+      title: 'Voir un exemple grand format de site internet freelance',
+      text: "Cette preview illustre comment un site internet freelance ou consultant peut clarifier l'offre, valoriser l'expertise, structurer les références et orienter vers une prise de rendez-vous qualifiée.",
+      cta: 'Ouvrir cet exemple de site consultant'
     },
     sections: [
       {
@@ -127,9 +146,18 @@ export const OFFERS = [
       description: 'Lancez une marque ou un produit avec une landing page premium et un site internet express livré rapidement.'
     },
     preview: {
-      src: '/previews/site-lancement-marque-home.png',
-      alt: 'Capture de la homepage de Shortify',
-      href: 'https://shortify.fr/'
+      src: '/previews/brand-launch-demo-home.png',
+      alt: 'Capture de la démo fictive Lancement de marque / Produit',
+      href: 'https://launch48-preview.vercel.app/brand-launch',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview brand launch dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de landing page de lancement de marque',
+      title: 'Voir un exemple grand format de landing page de lancement de marque',
+      text: "Cette preview montre comment une landing page de lancement de marque ou produit peut installer un univers fort, hiérarchiser le storytelling et guider naturellement vers l'achat, l'inscription ou la prise de contact.",
+      cta: 'Ouvrir cet exemple de landing page'
     },
     sections: [
       {
@@ -159,15 +187,15 @@ export const OFFERS = [
   },
   {
     slug: 'site-restaurant',
-    name: 'Site restaurant / food / hospitality',
-    shortDescription: 'Site internet restaurant rapide et site web commerce local pour valoriser votre ambiance, votre carte et générer plus de réservations.',
-    target: 'Restaurants, coffee shops, bars, concepts food et lieux hospitality.',
-    benefit: 'Un site internet restaurant rapide qui donne envie, inspire confiance et simplifie la réservation.',
+    name: 'Restaurant / Food concept',
+    shortDescription: 'Démo food conçue pour mettre en scène un lieu, sa carte et son identité afin de déclencher réservation, visite ou privatisation.',
+    target: 'Restaurants, coffee shops, bars, concepts food, chefs, lieux hospitality et adresses lifestyle.',
+    benefit: 'Une démo fictive qui montre comment faire ressentir l\'ambiance et simplifier la réservation.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Le site internet restaurant rapide qui donne envie de réserver',
-      subtitle: 'Nous créons un site vitrine restaurant plus accessible qu\'une agence classique, pensé mobile pour mettre en valeur votre lieu, votre carte et vos informations utiles.',
+      title: 'La page food qui donne faim avant meme la reservation',
+      subtitle: 'Cette verticale met en avant une structure pensée pour les concepts food : atmosphère forte, carte lisible, infos utiles et CTA réservation bien placés.',
       primaryCta: 'Créer votre site internet restaurant',
       secondaryCta: 'Réserver un appel découverte'
     },
@@ -177,8 +205,18 @@ export const OFFERS = [
       description: 'Créez un site internet restaurant rapide : site vitrine restaurant pour restaurant, bar, coffee shop ou commerce local.'
     },
     preview: {
-      src: '/illustrations/hero-site-1.svg',
-      alt: 'Aperçu d’un site restaurant'
+      src: '/previews/restaurant-demo-home.png',
+      alt: 'Capture de la démo fictive Restaurant / Food concept',
+      href: 'https://launch48-preview.vercel.app/restaurant',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview restaurant dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site internet restaurant rapide',
+      title: 'Voir un exemple grand format de site internet restaurant',
+      text: "Cette grande capture permet de voir comment un site internet restaurant rapide peut transmettre une ambiance, rendre la carte lisible, afficher les informations utiles et simplifier la réservation sur mobile comme sur desktop.",
+      cta: 'Ouvrir cet exemple de site restaurant'
     },
     sections: [
       {
@@ -200,15 +238,15 @@ export const OFFERS = [
   },
   {
     slug: 'site-artiste',
-    name: 'Site artiste / créatif / portfolio',
-    shortDescription: 'Créer un site portfolio professionnel pour exposer vos projets, renforcer votre image et centraliser vos travaux sur une présence premium.',
-    target: 'Artistes, photographes, vidéastes, designers, DJ, réalisateurs et créatifs indépendants.',
-    benefit: 'Un site portfolio professionnel qui valorise les travaux et déclenche des demandes.',
+    name: 'Artiste / Portfolio créatif',
+    shortDescription: 'Démo portfolio pensée pour exposer un univers, hiérarchiser les projets et transformer un lien en vraie carte de visite créative.',
+    target: 'Artistes, photographes, vidéastes, designers, directeurs artistiques, musiciens et créatifs indépendants.',
+    benefit: 'Une démo fictive qui montre comment rendre un portfolio plus désirable, plus net et plus mémorable.',
     priceFrom: '890 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Créer un site portfolio professionnel à votre image',
-      subtitle: 'Nous concevons un site portfolio professionnel en 48h pour artistes, photographes, vidéastes ou designers qui veulent un lien propre, crédible et mémorable.',
+      title: 'Le portfolio creatif qui laisse une vraie impression',
+      subtitle: 'Cette verticale illustre une page portfolio où la direction artistique, la sélection des travaux et la lecture mobile servent autant l\'image que la prise de contact.',
       primaryCta: 'Créer votre site portfolio professionnel',
       secondaryCta: 'Voir toutes les offres'
     },
@@ -218,8 +256,18 @@ export const OFFERS = [
       description: 'Créez un site portfolio professionnel en 48h pour artiste, photographe, vidéaste, designer ou créatif indépendant.'
     },
     preview: {
-      src: '/illustrations/hero-site-3.svg',
-      alt: 'Aperçu d’un portfolio créatif'
+      src: '/previews/artist-demo-home.png',
+      alt: 'Capture de la démo fictive Artiste / Portfolio créatif',
+      href: 'https://launch48-preview.vercel.app/artist',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview portfolio dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site portfolio professionnel',
+      title: 'Voir un exemple grand format de site portfolio professionnel',
+      text: "Cette preview met en avant une direction artistique plus immersive pour montrer comment créer un site portfolio professionnel capable de valoriser un univers, une sélection de projets et une image plus premium.",
+      cta: 'Ouvrir cet exemple de portfolio créatif'
     },
     sections: [
       {
@@ -267,6 +315,12 @@ export const OFFERS = [
       alt: 'Capture de la homepage du média Tripin',
       href: 'https://tripin-five.vercel.app/'
     },
+    previewSpotlight: {
+      kicker: 'Exemple de site internet média',
+      title: 'Voir un exemple grand format de site internet média',
+      text: "Cette preview montre comment un site internet média ou podcast peut structurer les formats, valoriser les contenus à la une et renforcer la crédibilité d'un projet éditorial auprès du public comme des partenaires.",
+      cta: 'Ouvrir cet exemple de site média'
+    },
     sections: [
       {
         title: 'Ce que le site doit permettre',
@@ -283,15 +337,15 @@ export const OFFERS = [
   },
   {
     slug: 'site-association',
-    name: 'Site association / projet culturel / institutionnel',
-    shortDescription: 'Site internet association rapide pour présenter votre mission, valoriser vos actions et créer un site association plus accessible qu\'une agence classique.',
-    target: 'Associations, collectifs, projets culturels, structures territoriales et événements institutionnels.',
-    benefit: 'Un site internet association rapide qui renforce la confiance et facilite l\'engagement.',
+    name: 'Association / Projet à impact',
+    shortDescription: 'Démo à impact conçue pour expliquer une mission, valoriser des actions concrètes et orienter clairement vers adhésion, don ou bénévolat.',
+    target: 'Associations, collectifs, projets à impact, structures culturelles, initiatives locales et organisations engagées.',
+    benefit: 'Une démo fictive qui montre comment rendre une mission plus claire, plus crédible et plus mobilisatrice.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Le site internet association rapide qui rend votre mission plus claire',
-      subtitle: 'Nous créons un site internet association rapide pour expliquer vos actions, rassurer vos partenaires et orienter vers adhésion, don, bénévolat ou contact.',
+      title: 'La page a impact qui transforme une mission en engagement',
+      subtitle: 'Cette verticale montre comment structurer un site pour raconter une cause, rendre les actions tangibles et guider vers le bon geste: adhérer, donner, participer ou contacter.',
       primaryCta: 'Créer votre site internet association',
       secondaryCta: 'Voir toutes les offres'
     },
@@ -301,8 +355,18 @@ export const OFFERS = [
       description: 'Créez un site internet association rapide, clair et plus accessible qu’une agence classique pour présenter mission, actions et engagement.'
     },
     preview: {
-      src: '/illustrations/hero-site-5.svg',
-      alt: 'Aperçu d’un site association ou institutionnel'
+      src: '/previews/association-demo-home.png',
+      alt: 'Capture de la démo fictive Association / Projet à impact',
+      href: 'https://launch48-preview.vercel.app/association',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview association dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site internet association rapide',
+      title: 'Voir un exemple grand format de site internet association',
+      text: "Cette grande preview illustre comment un site internet association rapide peut expliquer une mission, mettre en avant des actions concrètes et orienter clairement vers l'adhésion, le don, le bénévolat ou le contact.",
+      cta: 'Ouvrir cet exemple de site association'
     },
     sections: [
       {
@@ -328,15 +392,15 @@ export const OFFERS = [
   },
   {
     slug: 'site-immobilier-location',
-    name: 'Site immobilier / location saisonnière / bien à louer',
-    shortDescription: 'Site vitrine immobilier et site internet agent immobilier pour valoriser un bien, rassurer et générer des demandes qualifiées rapidement.',
-    target: 'Locations saisonnières, villas, appartements premium, conciergeries, résidences et petits programmes immobiliers.',
-    benefit: 'Un site vitrine immobilier qui valorise votre bien et facilite la demande.',
+    name: 'Immobilier premium / Real Estate',
+    shortDescription: 'Démo premium pensée pour mettre en valeur un bien, son environnement et son niveau de prestation avec un parcours de demande haut de gamme.',
+    target: 'Biens premium, villas, locations saisonnières haut de gamme, résidences, conciergeries et agences boutique.',
+    benefit: 'Une démo fictive qui montre comment vendre l\'expérience du lieu avant même le premier contact.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Le site vitrine immobilier qui valorise votre bien',
-      subtitle: 'Nous créons un site vitrine immobilier en 48h pour agent immobilier, location saisonnière, villa ou appartement premium, avec une structure pensée confiance et conversion.',
+      title: 'La page real estate qui valorise un bien comme une destination',
+      subtitle: 'Cette verticale illustre une structure immobilière premium avec storytelling du lieu, galerie forte, prestations lisibles et CTA de demande qualifiée.',
       primaryCta: 'Créer votre site vitrine immobilier',
       secondaryCta: 'Réserver un appel découverte'
     },
@@ -346,8 +410,18 @@ export const OFFERS = [
       description: 'Créez un site vitrine immobilier en 48h pour agent immobilier, location saisonnière, villa ou appartement à louer.'
     },
     preview: {
-      src: '/illustrations/hero-site-1.svg',
-      alt: 'Aperçu d’un site immobilier ou location'
+      src: '/previews/real-estate-demo-home.png',
+      alt: 'Capture de la démo fictive Immobilier premium / Real Estate',
+      href: 'https://launch48-preview.vercel.app/real-estate',
+      title: 'Démo fictive',
+      caption: 'Ouvrir la preview real estate dans un nouvel onglet',
+      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+    },
+    previewSpotlight: {
+      kicker: 'Exemple de site vitrine immobilier',
+      title: 'Voir un exemple grand format de site vitrine immobilier',
+      text: "Cette preview montre comment un site vitrine immobilier peut valoriser un bien premium, mettre en scène les prestations, rassurer avec les informations clés et générer des demandes plus qualifiées.",
+      cta: 'Ouvrir cet exemple de site immobilier'
     },
     sections: [
       {
@@ -375,7 +449,7 @@ export const OFFERS = [
 
 export const VERTICAL_DETAILS = {
   'site-evenementiel': {
-    idealFor: ['Festivals', 'Galas', 'Conférences', 'Soirées premium', 'Salons'],
+    idealFor: ['Festivals', 'Concerts', 'Conférences', 'Événements live', 'Salons'],
     painPoints: [
       "Le public voit l'annonce, mais ne comprend pas immédiatement la date, le lieu, le programme et la promesse.",
       "La billetterie est trop faible dans le parcours ou noyée dans le contenu.",
@@ -435,7 +509,7 @@ export const VERTICAL_DETAILS = {
     ]
   },
   'site-consultant': {
-    idealFor: ['Consultants', 'Freelances', 'Agences', 'Coachs', 'Experts'],
+    idealFor: ['Consultants', 'Experts B2B', 'Cabinets', 'Freelances', 'Studios conseil'],
     painPoints: [
       "L'offre semble floue, trop large ou trop abstraite pour déclencher un rendez-vous.",
       'Le site manque de structure et ne transforme pas vraiment la crédibilité en prise de contact.',
@@ -555,7 +629,7 @@ export const VERTICAL_DETAILS = {
     ]
   },
   'site-restaurant': {
-    idealFor: ['Restaurants', 'Bars', 'Coffee shops', 'Lieux food', 'Hospitality'],
+    idealFor: ['Restaurants', 'Bars', 'Coffee shops', 'Food concepts', 'Hospitality'],
     painPoints: [
       "Le lieu a du charme, mais le site ne transmet ni l'ambiance ni le niveau perçu.",
       'Les visiteurs trouvent mal les horaires, la carte, la réservation ou les infos utiles.',
@@ -615,7 +689,7 @@ export const VERTICAL_DETAILS = {
     ]
   },
   'site-artiste': {
-    idealFor: ['Artistes', 'Photographes', 'Vidéastes', 'Designers', 'Performers'],
+    idealFor: ['Artistes', 'Photographes', 'Vidéastes', 'Designers', 'Créatifs indépendants'],
     painPoints: [
       "Le talent est là, mais la présence en ligne ne lui donne pas le cadre qu'il mérite.",
       'Les projets sont dispersés entre réseaux, drives et liens envoyés à la volée.',
@@ -735,7 +809,7 @@ export const VERTICAL_DETAILS = {
     ]
   },
   'site-association': {
-    idealFor: ['Associations', 'Collectifs', 'Culturel', 'Institutionnel', 'Impact'],
+    idealFor: ['Associations', 'Collectifs', 'Projets à impact', 'Culturel', 'Initiatives locales'],
     painPoints: [
       "La mission est forte, mais le site ne l'explique pas assez clairement.",
       "Les actions existent, mais elles sont peu lisibles pour un visiteur extérieur, un partenaire ou un financeur.",
@@ -795,7 +869,7 @@ export const VERTICAL_DETAILS = {
     ]
   },
   'site-immobilier-location': {
-    idealFor: ['Location saisonnière', 'Villa', 'Appartement', 'Bien premium', 'Conciergerie'],
+    idealFor: ['Biens premium', 'Villa', 'Location haut de gamme', 'Conciergerie', 'Agence boutique'],
     painPoints: [
       "Le bien est attractif, mais la page ne le met pas assez en désir ou en confiance.",
       'Les visiteurs doivent chercher les informations essentielles avant de réserver.',

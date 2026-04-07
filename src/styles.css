@@ -986,6 +986,142 @@ a:focus-visible {
   margin-top: 1.5rem;
 }
 
+.projects-mosaic__head {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.projects-mosaic__grid {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.project-card {
+  position: relative;
+  display: grid;
+  min-height: 260px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--surface-solid), #ffffff 4%),
+      color-mix(in srgb, var(--surface-solid), #000000 7%)
+    );
+  box-shadow: var(--shadow);
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent), white 14%);
+}
+
+.project-card__image {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card__overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 0.55rem;
+  padding: 1.05rem;
+  background:
+    linear-gradient(180deg, rgba(7, 11, 16, 0) 0%, rgba(7, 11, 16, 0.32) 18%, rgba(7, 11, 16, 0.78) 54%, rgba(7, 11, 16, 0.96) 100%);
+}
+
+.project-card__overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0.7rem 0.7rem 0.7rem 0.7rem;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 12, 18, 0.16) 0%,
+      rgba(8, 12, 18, 0.36) 28%,
+      rgba(8, 12, 18, 0.84) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.project-card__overlay > * {
+  position: relative;
+  z-index: 1;
+}
+
+.project-card__meta {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.24rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 16, 24, 0.68);
+  color: color-mix(in srgb, var(--text), var(--accent-4) 22%);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  font-size: clamp(1.35rem, 4vw, 2.2rem);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.36);
+}
+
+.project-card p {
+  max-width: 34ch;
+  color: color-mix(in srgb, var(--text), #dce8f7 18%);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+}
+
+.project-card__link {
+  margin-top: 0.25rem;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text);
+  font-weight: 700;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+}
+
+.project-card__link::after {
+  content: '↗';
+  font-size: 0.88rem;
+}
+
+.project-card--cta {
+  min-height: 220px;
+  background:
+    radial-gradient(circle at 16% 16%, color-mix(in srgb, var(--accent), transparent 80%), transparent 28%),
+    radial-gradient(circle at 90% 18%, color-mix(in srgb, var(--accent-2), transparent 82%), transparent 24%),
+    linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--surface-solid), #ffffff 5%),
+      color-mix(in srgb, var(--surface-solid), #000000 5%)
+    );
+}
+
+.project-card__cta-shell {
+  display: grid;
+  align-content: end;
+  gap: 0.55rem;
+  padding: clamp(1.1rem, 3vw, 1.4rem);
+}
+
+.project-card--cta p {
+  max-width: 28ch;
+}
+
 .proof-track {
   width: min(860px, 92vw);
   margin-inline: auto;
@@ -1813,6 +1949,24 @@ a:focus-visible {
   .vertical-needs__grid,
   .reviews__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .projects-mosaic__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(120px, auto);
+  }
+
+  .project-card--feature {
+    grid-column: span 7;
+    grid-row: span 2;
+  }
+
+  .projects-mosaic__grid > .project-card:not(.project-card--feature):not(.project-card--cta) {
+    grid-column: span 5;
+  }
+
+  .project-card--cta {
+    grid-column: 1 / -1;
   }
 
   .proof-card {

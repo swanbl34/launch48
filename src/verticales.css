@@ -27,6 +27,10 @@ body[data-page='call'] main > .section:first-child {
   padding-top: clamp(4.6rem, 10vw, 7.4rem);
 }
 
+body[data-page='vertical'] main > .section:first-child {
+  padding-top: clamp(4.9rem, 10vw, 7.8rem);
+}
+
 .section-head {
   display: grid;
   gap: 0.65rem;
@@ -41,6 +45,270 @@ body[data-page='call'] main > .section:first-child {
 .hero {
   display: grid;
   gap: 1rem;
+}
+
+.vertical-hero {
+  position: relative;
+}
+
+.vertical-hero__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.vertical-hero__content,
+.vertical-hero__summary,
+.vertical-shift__panel,
+.vertical-blueprint__card,
+.vertical-included,
+.option-card {
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.vertical-hero__content {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  border-radius: 30px;
+  padding: clamp(1.15rem, 2.4vw, 1.65rem);
+  background:
+    radial-gradient(circle at 6% 18%, color-mix(in srgb, var(--accent), transparent 72%), transparent 28%),
+    radial-gradient(circle at 96% 12%, color-mix(in srgb, var(--accent-2), transparent 78%), transparent 24%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+}
+
+.vertical-hero__content h1 {
+  font-size: clamp(2.35rem, 5.7vw, 4.9rem);
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+  max-width: 11.4ch;
+}
+
+.vertical-hero__content .lead {
+  max-width: 50ch;
+  font-size: clamp(0.98rem, 1.65vw, 1.14rem);
+}
+
+.vertical-shift__eyebrow,
+.vertical-blueprint__index,
+.option-card__label,
+.vertical-signal-card__label {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 12%);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.vertical-hero__aside {
+  display: grid;
+  gap: 1rem;
+}
+
+.vertical-hero__preview {
+  min-height: clamp(320px, 48vw, 620px);
+}
+
+.vertical-hero__summary {
+  display: grid;
+  gap: 0.72rem;
+  border-radius: 24px;
+  padding: 1.1rem;
+  background:
+    radial-gradient(circle at 92% 16%, color-mix(in srgb, var(--accent-3), transparent 84%), transparent 28%),
+    linear-gradient(150deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 6%));
+}
+
+.vertical-hero__summary-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.74rem;
+}
+
+.vertical-hero__price {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  line-height: 0.95;
+}
+
+.vertical-hero__summary p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.vertical-hero__audience {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.vertical-hero__audience span {
+  display: inline-flex;
+  padding: 0.34rem 0.64rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 8%);
+  background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.vertical-hero__summary-line {
+  display: grid;
+  gap: 0.22rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.vertical-hero__summary-line span {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.vertical-shift {
+  display: grid;
+  gap: 1rem;
+}
+
+.vertical-signals {
+  padding-top: clamp(2.2rem, 6vw, 4.2rem);
+}
+
+.vertical-signals__grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.vertical-signal-card {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 86% 14%, color-mix(in srgb, var(--accent), transparent 88%), transparent 22%),
+    linear-gradient(145deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+  box-shadow: var(--shadow);
+}
+
+.vertical-signal-card h3 {
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+}
+
+.vertical-signal-card p {
+  color: var(--muted);
+  max-width: 30ch;
+}
+
+.vertical-shift__panel {
+  display: grid;
+  gap: 0.9rem;
+  border-radius: 24px;
+  padding: clamp(1rem, 2.8vw, 1.5rem);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+}
+
+.vertical-shift__panel--accent {
+  background:
+    radial-gradient(circle at 88% 14%, color-mix(in srgb, var(--accent), transparent 84%), transparent 24%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 6%));
+  border-color: color-mix(in srgb, var(--accent), var(--line) 48%);
+}
+
+.vertical-shift__panel h3 {
+  font-size: clamp(1.45rem, 3.5vw, 2.2rem);
+}
+
+.vertical-shift__panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.68rem;
+}
+
+.vertical-shift__panel li {
+  position: relative;
+  padding-left: 1rem;
+  color: color-mix(in srgb, var(--text), var(--muted) 42%);
+}
+
+.vertical-shift__panel li::before {
+  content: '';
+  position: absolute;
+  top: 0.52em;
+  left: 0;
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+
+.vertical-blueprint {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.vertical-blueprint__card {
+  display: grid;
+  gap: 0.7rem;
+  border-radius: 22px;
+  padding: clamp(1rem, 2.8vw, 1.35rem);
+  background:
+    linear-gradient(150deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+}
+
+.vertical-blueprint__card h3 {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+}
+
+.vertical-blueprint__card p {
+  color: var(--muted);
+}
+
+.vertical-included {
+  display: grid;
+  gap: 1rem;
+  border-radius: 28px;
+  padding: clamp(1.1rem, 3vw, 1.7rem);
+  background:
+    radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--accent-3), transparent 84%), transparent 28%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+}
+
+.vertical-included__intro {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.vertical-included__intro p:last-child {
+  color: var(--muted);
+}
+
+.vertical-included__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.vertical-included__list span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.72rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--line), transparent 10%);
+  background: color-mix(in srgb, var(--surface-solid), transparent 4%);
+  color: color-mix(in srgb, var(--text), var(--muted) 30%);
 }
 
 .hero-actions {
@@ -522,6 +790,28 @@ body[data-page='call'] main > .section:first-child {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.options-grid--cards {
+  gap: 0.85rem;
+}
+
+.option-card {
+  display: grid;
+  gap: 0.62rem;
+  border-radius: 22px;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--accent-2), transparent 86%), transparent 24%),
+    linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 3%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+}
+
+.option-card h3 {
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+}
+
+.option-card p {
+  color: var(--muted);
+}
+
 .quote-layout {
   display: grid;
   gap: 1rem;
@@ -697,6 +987,29 @@ body[data-page='call'] main > .section:first-child {
     padding-top: 0.9rem;
   }
 
+  .vertical-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 0.94fr);
+    align-items: start;
+    column-gap: 1.05rem;
+  }
+
+  .vertical-signals__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .vertical-shift {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vertical-blueprint {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vertical-included {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
   .hero-highlights {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     max-width: 920px;
@@ -799,6 +1112,12 @@ body[data-page='call'] main > .section:first-child {
   .offer-card,
   .step-card,
   .vertical-block,
+  .vertical-hero__content,
+  .vertical-hero__summary,
+  .vertical-shift__panel,
+  .vertical-blueprint__card,
+  .vertical-included,
+  .option-card,
   .cta-inline__card,
   .contact-card,
   .price-card,

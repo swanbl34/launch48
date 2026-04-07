@@ -2,7 +2,7 @@ import './styles.css';
 import './verticales.css';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { CONTACT, OFFERS, SITE } from './offers-data';
+import { CONTACT, OFFERS, SITE, VERTICAL_DETAILS } from './offers-data';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,13 +71,21 @@ const renderHeader = (active = 'home') => `
         </div>
       </div>
       <div class="nav__actions">
-        <button class="theme-toggle nav-theme-mobile" type="button" aria-label="Basculer thème">Clair</button>
+        <button class="theme-toggle nav-theme-mobile" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+          <span class="theme-toggle__track" aria-hidden="true">
+            <span class="theme-toggle__thumb"></span>
+          </span>
+        </button>
         <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
-        <button class="theme-toggle nav-theme-desktop" type="button" aria-label="Basculer thème">Clair</button>
+        <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+          <span class="theme-toggle__track" aria-hidden="true">
+            <span class="theme-toggle__thumb"></span>
+          </span>
+        </button>
         ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn btn--small magnetic nav-cta-desktop')}
       </div>
     </nav>
@@ -120,6 +128,28 @@ const getPreviewAriaLabel = (offer) =>
   offer.preview?.href ? `Ouvrir le site exemple ${offer.name} dans un nouvel onglet` : "Ouvrir l'aperçu visuel en grand";
 const getPreviewCaption = (offer) =>
   offer.preview?.href ? 'Cliquer pour ouvrir le site exemple' : "Cliquer pour ouvrir l'image";
+
+const getVerticalDetails = (offer) =>
+  VERTICAL_DETAILS[offer.slug] || {
+    idealFor: [offer.name],
+    painPoints: ["Le besoin existe, mais la page actuelle n'aide pas assez à convertir."],
+    outcomes: ['Une page plus claire, plus crédible et plus orientée action.'],
+    pillars: [
+      {
+        label: 'Clarté',
+        title: 'Message mieux hiérarchisé',
+        text: 'La promesse devient plus lisible et plus rapide à comprendre.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Promesse et structure',
+        text: "On construit une page pensée pour le besoin métier et l'action attendue."
+      }
+    ],
+    inclusions: ['Design premium', 'Structure claire', 'CTA bien placés']
+  };
 
 const renderOfferCard = (offer, variant = 'compact') => {
   if (variant === 'detailed') {
@@ -178,8 +208,8 @@ const renderReusableCtaBlock = () => `
     <div class="container cta-inline__card">
       <div>
         <p class="kicker">CTA contact</p>
-        <h2>Un besoin précis ? On vous oriente vers la meilleure offre.</h2>
-        <p>Objectif, contexte, budget, timing: vous obtenez une recommandation claire et une proposition adaptée.</p>
+        <h2>Un besoin précis ? On vous aide a lancer votre site internet rapidement.</h2>
+        <p>Objectif, contexte, budget et timing : vous obtenez une recommandation claire pour creer un site internet professionnel sans agence lourde.</p>
       </div>
       <div class="cta-inline__actions">
         ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
@@ -283,37 +313,37 @@ const renderHome = () => {
 
 const renderOffersPage = () => {
   setMeta({
-    title: 'Offres par verticale | Launch48',
-    description: 'Découvrez toutes les offres Launch48 par besoin métier et accédez à la landing page adaptée à votre activité.'
+    title: 'Creer un site internet professionnel rapidement | Offres Launch48',
+    description: 'Découvrez nos offres pour creer un site internet rapidement : site internet freelance, site internet restaurant rapide, site internet evenement, site vitrine immobilier et plus.'
   });
 
   app.innerHTML = `
     ${renderHeader('offers')}
     <main id="main">
       <section class="hero section container" data-reveal>
-        <p class="kicker">Offres par verticale</p>
-        <h1>Trouvez l'offre adaptée à votre besoin métier</h1>
-        <p class="lead">Nous ne vendons pas simplement un site. Nous concevons des expériences web adaptées à des cas d'usage précis.</p>
+        <p class="kicker">Sites internet par verticale</p>
+        <h1>Choisissez le bon format pour creer votre site internet rapidement</h1>
+        <p class="lead">Launch48 propose des sites internet professionnels pensés par besoin métier : site internet freelance, site internet evenement, site internet restaurant rapide, site internet association rapide ou site vitrine immobilier.</p>
         <div class="hero-actions">
           ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
           ${asLink('Retour à l\'accueil', '/', 'btn btn--ghost')}
         </div>
         <div class="hero-highlights">
-          <p><strong>8 secteurs</strong> déjà structurés</p>
-          <p><strong>Formats dédiés</strong> selon le besoin métier</p>
-          <p><strong>Une page claire</strong> pensée pour convertir</p>
+          <p><strong>Site internet 48h</strong> pour lancer vite</p>
+          <p><strong>Alternative agence web</strong> plus simple et plus directe</p>
+          <p><strong>Site internet cle en main</strong> pense conversion</p>
         </div>
       </section>
 
       <section class="section container offers-showcase">
         <aside class="offers-showcase__intro" data-reveal>
           <p class="kicker">Choisir votre format</p>
-          <h2>Chaque offre répond à un usage précis</h2>
-          <p>Au lieu d'une même landing page pour tout le monde, nous partons d'un contexte métier concret: vendre des billets, générer des rendez-vous, lancer une marque, valoriser un lieu ou présenter un projet.</p>
+          <h2>Chaque site internet repond a une intention d'achat concrete</h2>
+          <p>Au lieu de vendre un site internet generique, Launch48 construit des pages adaptees a des usages reels : vendre des billets, generer des rendez-vous, presenter une expertise, valoriser un bien ou lancer une marque.</p>
           <div class="offers-showcase__legend">
-            <p><strong>Clarté</strong> structure lisible dès les premières secondes</p>
-            <p><strong>Crédibilité</strong> design, preuve et informations utiles</p>
-            <p><strong>Conversion</strong> CTA et parcours orientés action</p>
+            <p><strong>Clarte</strong> message lisible des les premieres secondes</p>
+            <p><strong>SEO</strong> bases propres pour lancer un site web vite</p>
+            <p><strong>Conversion</strong> CTA et parcours orientes action</p>
           </div>
         </aside>
         <div class="offers-showcase__rail">
@@ -324,8 +354,8 @@ const renderOffersPage = () => {
       <section class="section container" id="contact">
         ${renderContactCard({
           kicker: 'Projet spécifique',
-          title: 'Vous avez un besoin spécifique ?',
-          text: 'Nous pouvons aussi créer une landing page sur-mesure pour votre activité.',
+          title: 'Vous avez un besoin specifique ?',
+          text: 'Nous pouvons aussi creer un site internet professionnel sur-mesure pour votre activite.',
           actions: asLink('Discuter de mon projet', CONTACT.primaryHref, 'btn')
         })}
       </section>
@@ -337,8 +367,8 @@ const renderOffersPage = () => {
 
 const renderQuotePage = () => {
   setMeta({
-    title: 'Devis | Launch48',
-    description: 'Décrivez votre projet et recevez rapidement un devis pour votre site Launch48.'
+    title: 'Devis site internet en 48h | Launch48',
+    description: 'Demandez un devis pour creer un site internet professionnel rapidement : site vitrine, landing page et site internet cle en main.'
   });
 
   app.innerHTML = `
@@ -347,20 +377,20 @@ const renderQuotePage = () => {
       <section class="section container section--call-embed">
         <div class="quote-layout">
           <article class="quote-panel" data-reveal>
-            <p class="kicker">Avant de commencer</p>
-            <h2>Quelques infos utiles pour aller plus vite</h2>
+            <p class="kicker">Preparer votre site internet</p>
+            <h2>Les infos utiles pour creer votre site internet rapidement</h2>
             <ul class="quote-panel__list">
-              <li>Le type de site ou de page que vous souhaitez lancer</li>
+              <li>Le type de site internet ou de landing page que vous souhaitez lancer</li>
               <li>Le nom du projet ou de l'entreprise si vous l'avez déjà</li>
-              <li>Votre objectif principal: vendre, réserver, présenter, générer des leads</li>
+              <li>Votre objectif principal : vendre, reserver, presenter, generer des leads</li>
               <li>Votre timing et les éventuelles contraintes de lancement</li>
             </ul>
           </article>
 
           <article class="quote-form-card" data-reveal>
             <form action="https://formspree.io/f/xbdpgvgj" method="POST" class="launch48-form">
-              <h3>Lancez votre site en 48h 🚀</h3>
-              <p>Décrivez votre projet et recevez une réponse rapide.</p>
+              <h3>Creer votre site internet en 48h</h3>
+              <p>Décrivez votre besoin pour obtenir un site internet clé en main ou une alternative simple a une agence web.</p>
 
               <label>
                 <span>Nom</span>
@@ -411,8 +441,8 @@ const renderQuotePage = () => {
 
 const renderCallPage = () => {
   setMeta({
-    title: 'Réserver un appel | Launch48',
-    description: 'Réservez un appel découverte Launch48 pour parler de votre projet.'
+    title: 'Appel decouverte creation site internet | Launch48',
+    description: 'Réservez un appel découverte pour parler de votre site internet professionnel, de votre landing page ou de votre besoin de refonte rapide.'
   });
 
   app.innerHTML = `
@@ -422,10 +452,10 @@ const renderCallPage = () => {
         <div class="quote-layout">
           <article class="quote-panel" data-reveal>
             <p class="kicker">Pendant l'appel</p>
-            <h2>On va droit au but</h2>
+            <h2>On clarifie comment lancer votre site internet vite</h2>
             <ul class="quote-panel__list">
               <li>Clarifier votre objectif principal et votre cible</li>
-              <li>Identifier le bon format de page ou d'offre</li>
+              <li>Identifier le bon format de site internet ou de landing page</li>
               <li>Valider le timing et les contenus disponibles</li>
               <li>Vous orienter vers un devis ou une prochaine étape concrète</li>
             </ul>
@@ -453,23 +483,26 @@ const pickOtherNeeds = (slug) => {
   return others.slice(0, 4);
 };
 
-const renderVerticalSection = (section) => `
-  <article class="vertical-block" data-reveal>
-    <h2>${section.title}</h2>
-    <ul>
-      ${section.items.map((item) => `<li>${item}</li>`).join('')}
-    </ul>
-  </article>
-`;
-
 const renderOptionsBlock = (offer) => `
   <section class="section container">
-    <article class="vertical-block" data-reveal>
-      <h2>Options possibles</h2>
-      <ul class="options-grid">
-        ${offer.options.map((option) => `<li>${option}</li>`).join('')}
-      </ul>
-    </article>
+    <div class="section-head" data-reveal>
+      <p class="kicker">Options</p>
+      <h2>Options pour aller plus loin avec votre ${offer.seo?.keyword || 'site internet'}</h2>
+      <p>On garde un socle simple et performant, puis on ajoute seulement ce qui sert vraiment votre objectif business et votre referencement.</p>
+    </div>
+    <div class="options-grid options-grid--cards">
+      ${offer.options
+        .map(
+          (option) => `
+            <article class="option-card" data-reveal>
+              <span class="option-card__label">Option</span>
+              <h3>${option}</h3>
+              <p>Ajoutable si cela améliore réellement la clarté, la conversion ou l'autonomie du projet.</p>
+            </article>
+          `
+        )
+        .join('')}
+    </div>
   </section>
 `;
 
@@ -496,49 +529,141 @@ const renderOtherNeeds = (offer) => `
 
 const renderVerticalPage = (slug) => {
   const offer = OFFERS.find((item) => item.slug === slug) || FALLBACK_OFFER;
+  const detail = getVerticalDetails(offer);
 
   setMeta({
-    title: `${offer.name} | Launch48`,
-    description: offer.shortDescription
+    title: offer.seo?.title || `${offer.name} | Launch48`,
+    description: offer.seo?.description || offer.shortDescription
   });
 
   app.innerHTML = `
     ${renderHeader('offers')}
     <main id="main">
-      <section class="hero hero--vertical section container" data-reveal>
-        <p class="kicker">${offer.hero.eyebrow}</p>
-        <h1>${offer.hero.title}</h1>
-        <p class="lead">${offer.hero.subtitle}</p>
-        <div class="hero-actions">
-          ${asLink(offer.hero.primaryCta, CONTACT.primaryHref, 'btn')}
-          ${asLink(offer.hero.secondaryCta, offer.hero.secondaryCta.includes('offres') ? '/offres/' : CONTACT.secondaryHref, 'btn btn--ghost')}
+      <section class="vertical-hero section container">
+        <div class="vertical-hero__grid">
+          <div class="vertical-hero__content" data-reveal>
+            <p class="kicker">${offer.hero.eyebrow}</p>
+            <h1>${offer.hero.title}</h1>
+            <p class="lead">${offer.hero.subtitle}</p>
+            <div class="hero-actions">
+              ${asLink(offer.hero.primaryCta, CONTACT.primaryHref, 'btn')}
+              ${asLink(offer.hero.secondaryCta, offer.hero.secondaryCta.includes('offres') ? '/offres/' : CONTACT.secondaryHref, 'btn btn--ghost')}
+            </div>
+          </div>
+
+          <div class="vertical-hero__aside" data-reveal>
+            <a
+              class="hero-media hero-media--preview vertical-hero__preview"
+              href="${getPreviewHref(offer)}"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="${getPreviewAriaLabel(offer)}"
+            >
+              <img
+                class="hero-media__image"
+                src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+                alt="${offer.preview?.alt || 'Aperçu visuel du site'}"
+                decoding="async"
+              />
+              <span class="hero-media__caption">
+                <strong>Aperçu de site</strong>
+                <small>${getPreviewCaption(offer)}</small>
+              </span>
+            </a>
+
+            <article class="vertical-hero__summary">
+              <span class="vertical-hero__summary-label">À partir de</span>
+              <strong class="vertical-hero__price">${offer.priceFrom}</strong>
+              <p>${offer.benefit}</p>
+              <div class="vertical-hero__audience">
+                ${detail.idealFor.map((item) => `<span>${item}</span>`).join('')}
+              </div>
+              <div class="vertical-hero__summary-line">
+                <span>Cible</span>
+                <p>${offer.target}</p>
+              </div>
+            </article>
+          </div>
         </div>
-        <div class="hero-highlights hero-highlights--single">
-          <p><strong>Objectif:</strong> clarté, crédibilité et conversion</p>
-          <p><strong>Structure:</strong> contenu lisible et CTA bien placés</p>
-        </div>
-        <a
-          class="hero-media hero-media--preview"
-          href="${getPreviewHref(offer)}"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="${getPreviewAriaLabel(offer)}"
-        >
-          <img
-            class="hero-media__image"
-            src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
-            alt="${offer.preview?.alt || 'Aperçu visuel du site'}"
-            decoding="async"
-          />
-          <span class="hero-media__caption">
-            <strong>Aperçu de site</strong>
-            <small>${getPreviewCaption(offer)}</small>
-          </span>
-        </a>
       </section>
 
-      <section class="section container vertical-stack">
-        ${offer.sections.map((section) => renderVerticalSection(section)).join('')}
+      <section class="section container vertical-signals">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Pourquoi cette page fonctionne</p>
+          <h2>Pourquoi un ${offer.seo?.keyword || 'site internet'} bien structure convertit mieux</h2>
+          <p>Un bon referencement ne suffit pas. Il faut aussi une page claire, credibile et orientee action pour transformer les visites en demandes.</p>
+        </div>
+        <div class="vertical-signals__grid">
+          ${detail.pillars
+            .map(
+              (pillar) => `
+                <article class="vertical-signal-card" data-reveal>
+                  <span class="vertical-signal-card__label">${pillar.label}</span>
+                  <h3>${pillar.title}</h3>
+                  <p>${pillar.text}</p>
+                </article>
+              `
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="section container">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Ce que la page doit changer</p>
+          <h2>Ce qu'un ${offer.seo?.keyword || 'site internet'} doit corriger pour mieux convertir</h2>
+          <p>Sur ces projets, le vrai sujet n'est pas seulement d'avoir un site. C'est de faire comprendre vite, rassurer au bon moment, puis orienter clairement vers l'action utile.</p>
+        </div>
+        <div class="vertical-shift">
+          <article class="vertical-shift__panel" data-reveal>
+            <span class="vertical-shift__eyebrow">Avant</span>
+            <h3>Ce qui bloque souvent</h3>
+            <ul>
+              ${detail.painPoints.map((item) => `<li>${item}</li>`).join('')}
+            </ul>
+          </article>
+          <article class="vertical-shift__panel vertical-shift__panel--accent" data-reveal>
+            <span class="vertical-shift__eyebrow">Après</span>
+            <h3>Ce que la page doit produire</h3>
+            <ul>
+              ${detail.outcomes.map((item) => `<li>${item}</li>`).join('')}
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section container">
+        <div class="section-head" data-reveal>
+          <p class="kicker">Architecture recommandée</p>
+          <h2>La structure recommandee pour un ${offer.seo?.keyword || 'site internet'}</h2>
+          <p>Chaque page verticale suit un ordre precis : capter l'attention, clarifier le message, creer la confiance, puis convertir sans friction.</p>
+        </div>
+        <div class="vertical-blueprint">
+          ${detail.flow
+            .map(
+              (step) => `
+                <article class="vertical-blueprint__card" data-reveal>
+                  <span class="vertical-blueprint__index">${step.label}</span>
+                  <h3>${step.title}</h3>
+                  <p>${step.text}</p>
+                </article>
+              `
+            )
+            .join('')}
+        </div>
+      </section>
+
+      <section class="section container">
+        <div class="vertical-included" data-reveal>
+          <div class="vertical-included__intro">
+            <p class="kicker">Inclus dans la formule</p>
+            <h2>Ce que nous mettons dans votre ${offer.seo?.keyword || 'site internet'}</h2>
+            <p>Launch48 pose une base volontairement claire : une page forte, un design assume, un contenu hierarchise et des CTA visibles la ou ils doivent l'etre.</p>
+          </div>
+          <div class="vertical-included__list">
+            ${detail.inclusions.map((item) => `<span>${item}</span>`).join('')}
+          </div>
+        </div>
       </section>
 
       ${renderReusableCtaBlock()}
@@ -548,7 +673,7 @@ const renderVerticalPage = (slug) => {
         ${renderContactCard({
           kicker: 'CTA final',
           title: offer.finalCta,
-          text: 'On construit une page alignée avec vos objectifs business, votre image et votre rythme de mise en ligne.',
+          text: `On construit un ${offer.seo?.keyword || 'site internet'} aligne avec vos objectifs business, votre image et votre rythme de mise en ligne.`,
           actions: asLink(offer.finalCta, CONTACT.primaryHref, 'btn')
         })}
       </section>
@@ -569,11 +694,14 @@ const setupTheme = () => {
   const updateLabel = () => {
     const currentTheme = document.documentElement.dataset.theme || 'dark';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    const nextLabel = nextTheme === 'light' ? 'Clair' : 'Sombre';
+    const currentLabel = currentTheme === 'light' ? 'clair' : 'sombre';
+    const nextLabel = nextTheme === 'light' ? 'clair' : 'sombre';
     document.querySelectorAll('.theme-toggle').forEach((themeButton) => {
-      themeButton.textContent = nextLabel;
-      themeButton.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
+      themeButton.dataset.theme = currentTheme;
       themeButton.dataset.nextTheme = nextTheme;
+      themeButton.setAttribute('aria-checked', String(currentTheme === 'light'));
+      themeButton.setAttribute('aria-label', `Activer le mode ${nextLabel}`);
+      themeButton.setAttribute('title', `Thème actuel : ${currentLabel}`);
     });
   };
 

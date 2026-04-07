@@ -105,13 +105,21 @@ const renderShell = () => {
           </div>
         </div>
         <div class="nav__actions">
-          <button class="theme-toggle nav-theme-mobile" type="button" aria-label="Basculer thème">Clair</button>
+          <button class="theme-toggle nav-theme-mobile" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+            <span class="theme-toggle__track" aria-hidden="true">
+              <span class="theme-toggle__thumb"></span>
+            </span>
+          </button>
           <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
             <span></span>
             <span></span>
             <span></span>
           </button>
-          <button class="theme-toggle nav-theme-desktop" type="button" aria-label="Basculer thème">Clair</button>
+          <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+            <span class="theme-toggle__track" aria-hidden="true">
+              <span class="theme-toggle__thumb"></span>
+            </span>
+          </button>
           <a class="btn btn--small magnetic nav-cta-desktop" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
       </nav>
@@ -307,6 +315,45 @@ const renderShell = () => {
               <img class="proof-card__illustration" data-slot-src="proof.item4.illustration" data-slot-alt="proof.item4.illustrationAlt" loading="lazy" decoding="async" />
             </article>
           </div>
+        </div>
+      </section>
+
+      <section class="reviews section container" id="reviews">
+        <div class="reviews__head">
+          <h2 data-slot="reviews.title"></h2>
+          <p class="section-intro" data-slot="reviews.subtitle"></p>
+        </div>
+        <div class="reviews__grid">
+          <article class="review-card">
+            <div class="review-card__person">
+              <img class="review-card__avatar" data-slot-src="reviews.item1.photo" data-slot-alt="reviews.item1.photoAlt" loading="lazy" decoding="async" />
+              <div class="review-card__meta">
+                <strong data-slot="reviews.item1.name"></strong>
+                <span data-slot="reviews.item1.role"></span>
+              </div>
+            </div>
+            <p class="review-card__quote" data-slot="reviews.item1.quote"></p>
+          </article>
+          <article class="review-card">
+            <div class="review-card__person">
+              <img class="review-card__avatar" data-slot-src="reviews.item2.photo" data-slot-alt="reviews.item2.photoAlt" loading="lazy" decoding="async" />
+              <div class="review-card__meta">
+                <strong data-slot="reviews.item2.name"></strong>
+                <span data-slot="reviews.item2.role"></span>
+              </div>
+            </div>
+            <p class="review-card__quote" data-slot="reviews.item2.quote"></p>
+          </article>
+          <article class="review-card">
+            <div class="review-card__person">
+              <img class="review-card__avatar" data-slot-src="reviews.item3.photo" data-slot-alt="reviews.item3.photoAlt" loading="lazy" decoding="async" />
+              <div class="review-card__meta">
+                <strong data-slot="reviews.item3.name"></strong>
+                <span data-slot="reviews.item3.role"></span>
+              </div>
+            </div>
+            <p class="review-card__quote" data-slot="reviews.item3.quote"></p>
+          </article>
         </div>
       </section>
 
@@ -527,6 +574,12 @@ const cleanupOptionalContent = () => {
       container.remove();
     }
   });
+
+  document.querySelectorAll('.review-card__avatar').forEach((image) => {
+    if (!image.getAttribute('src')) {
+      image.remove();
+    }
+  });
 };
 
 const applyMeta = (slots) => {
@@ -588,12 +641,14 @@ const setupTheme = () => {
   const updateLabel = () => {
     const current = document.documentElement.dataset.theme || 'dark';
     const nextTheme = current === 'dark' ? 'light' : 'dark';
-    const nextLabel = nextTheme === 'light' ? 'Clair' : 'Sombre';
+    const currentLabel = current === 'light' ? 'clair' : 'sombre';
+    const nextLabel = nextTheme === 'light' ? 'clair' : 'sombre';
     document.querySelectorAll('.theme-toggle').forEach((toggle) => {
-      toggle.textContent = nextLabel;
+      toggle.dataset.theme = current;
       toggle.dataset.nextTheme = nextTheme;
-      toggle.setAttribute('aria-label', `Activer le mode ${nextLabel.toLowerCase()}`);
-      toggle.setAttribute('title', `Mode ${nextLabel.toLowerCase()}`);
+      toggle.setAttribute('aria-checked', String(current === 'light'));
+      toggle.setAttribute('aria-label', `Activer le mode ${nextLabel}`);
+      toggle.setAttribute('title', `Thème actuel : ${currentLabel}`);
     });
   };
 

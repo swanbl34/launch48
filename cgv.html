@@ -6,7 +6,6 @@
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>CGV | Launch48</title>
     <meta name="description" content="Conditions Générales de Vente de Launch48." />
-    <link rel="stylesheet" href="/src/legal.css" />
   </head>
   <body class="legal-page">
     <header class="site-header legal-header">
@@ -20,7 +19,14 @@
           <a href="/devis/">Devis</a>
           <a href="/call/">Call</a>
         </div>
-        <a class="btn btn--small" href="/devis/">Demander un devis</a>
+        <div class="legal-nav__actions">
+          <button class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+            <span class="theme-toggle__track" aria-hidden="true">
+              <span class="theme-toggle__thumb"></span>
+            </span>
+          </button>
+          <a class="btn btn--small" href="/devis/">Demander un devis</a>
+        </div>
       </nav>
     </header>
 
@@ -104,5 +110,6 @@
         <img src="/logo-launch48.svg" alt="" aria-hidden="true" />
       </a>
     </footer>
+    <script type="module" src="/src/legal.js"></script>
   </body>
 </html>

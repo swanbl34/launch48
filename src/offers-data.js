@@ -19,16 +19,21 @@ export const OFFERS = [
   {
     slug: 'site-evenementiel',
     name: 'Site événementiel',
-    shortDescription: 'Promouvoir un événement, centraliser les infos clés et accélérer les ventes billetterie.',
-    target: 'Festivals, soirées, salons, conférences, événements culturels et corporate.',
-    benefit: 'Une page claire qui transforme l\'intérêt en inscriptions et billets.',
+    shortDescription: 'Site internet événement et landing page événement pour présenter le programme, centraliser les infos clés et accélérer les ventes billetterie.',
+    target: 'Festivals, soirées, concerts, salons, conférences, événements culturels et corporate.',
+    benefit: 'Un site internet événement qui transforme l\'intérêt en inscriptions, réservations et billets.',
     priceFrom: '1 290 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Une landing page qui remplit votre événement',
-      subtitle: 'Nous structurons un site orienté conversion pour présenter le programme, rassurer les visiteurs et les rediriger rapidement vers la billetterie.',
-      primaryCta: 'Créer la landing page de votre événement',
+      title: 'Le site internet événement qui remplit votre billetterie',
+      subtitle: 'Nous créons une landing page événement en 48h pour présenter programme, date, lieu et CTA sur un site web soirée, concert ou conférence pensé mobile.',
+      primaryCta: 'Créer votre site internet événement',
       secondaryCta: 'Voir toutes les offres'
+    },
+    seo: {
+      keyword: 'site internet événement',
+      title: 'Site internet événement et landing page événement | Launch48',
+      description: 'Créez un site internet événement en 48h : landing page événement pour soirée, concert, conférence, gala ou festival.'
     },
     preview: {
       src: '/previews/site-evenementiel-home.jpg',
@@ -55,21 +60,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif évolue selon le nombre de sections, les besoins en pages annexes et les options spécifiques.',
     options: ['Compte à rebours', 'Page programmation / line-up', 'Page partenaires', 'Formulaire bénévoles / exposants / presse', 'Carte / accès', 'Multilingue', 'Tracking Meta / Google', 'Intégration newsletter'],
-    finalCta: 'Créer la landing page de votre événement'
+    finalCta: 'Créer votre site internet événement'
   },
   {
     slug: 'site-consultant',
     name: 'Site consultant / freelance / agence',
-    shortDescription: 'Clarifier votre offre, rassurer vos prospects et générer des prises de rendez-vous qualifiées.',
+    shortDescription: 'Site internet freelance et site vitrine freelance rapide pour clarifier votre offre, rassurer vos prospects et générer des rendez-vous qualifiés.',
     target: 'Consultants, freelances, agences, coachs et experts indépendants.',
-    benefit: 'Un site qui transforme votre expertise en opportunités commerciales.',
+    benefit: 'Un site internet freelance qui transforme votre expertise en opportunités commerciales.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Présentez votre expertise avec clarté et impact',
-      subtitle: 'Nous construisons une page qui explique votre valeur, crédibilise votre positionnement et pousse à la prise de contact.',
-      primaryCta: 'Présenter votre expertise avec plus d\'impact',
+      title: 'Le site internet freelance qui rend votre expertise lisible',
+      subtitle: 'Nous créons un site internet freelance ou consultant en 48h, avec un message clair, une structure crédible et un tunnel de contact pensé conversion.',
+      primaryCta: 'Créer votre site internet freelance',
       secondaryCta: 'Réserver un appel découverte'
+    },
+    seo: {
+      keyword: 'site internet freelance',
+      title: 'Site internet freelance et site vitrine freelance rapide | Launch48',
+      description: 'Créez un site internet freelance en 48h : site vitrine freelance rapide pour consultant, coach, expert ou agence.'
     },
     preview: {
       src: '/illustrations/hero-site-4.svg',
@@ -95,25 +105,31 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif varie selon le niveau de personnalisation des sections et les intégrations demandées.',
     options: ['Tunnel de prise de rendez-vous', 'Page étude de cas', 'Page offres détaillées', 'Intégration Calendly', 'Blog', 'Lead magnet / téléchargement PDF'],
-    finalCta: 'Présenter votre expertise avec plus d\'impact'
+    finalCta: 'Créer votre site internet freelance'
   },
   {
     slug: 'site-lancement-marque',
     name: 'Site lancement de marque / produit',
-    shortDescription: 'Lancer une marque ou un produit avec un storytelling fort et un design premium orienté désir.',
+    shortDescription: 'Landing page de lancement de marque ou produit pour lancer un site web vite avec un storytelling fort et un design premium orienté désir.',
     target: 'Nouvelles marques, lancements produit, DNVB, collections capsule, campagnes marketing.',
-    benefit: 'Une landing page qui met en scène votre différence et oriente vers l\'action.',
+    benefit: 'Une landing page de lancement qui met en scène votre différence et oriente vers l\'action.',
     priceFrom: '1 490 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Une landing immersive pour lancer votre marque',
-      subtitle: 'Nous créons une expérience visuelle puissante qui structure votre message et convertit vers achat, inscription ou prise de contact.',
-      primaryCta: 'Lancer votre marque avec une page à la hauteur',
+      title: 'La landing page de lancement qui installe votre marque',
+      subtitle: 'Nous créons une landing page de lancement en 48h pour lancer une marque, un produit ou une campagne avec une expérience visuelle forte et un CTA net.',
+      primaryCta: 'Lancer votre marque avec une landing page premium',
       secondaryCta: 'Voir toutes les offres'
     },
+    seo: {
+      keyword: 'landing page de lancement de marque',
+      title: 'Landing page lancement de marque / produit | Launch48',
+      description: 'Lancez une marque ou un produit avec une landing page premium et un site internet express livré rapidement.'
+    },
     preview: {
-      src: '/illustrations/hero-site-2.svg',
-      alt: 'Aperçu d’une landing page de lancement de marque'
+      src: '/previews/site-lancement-marque-home.png',
+      alt: 'Capture de la homepage de Shortify',
+      href: 'https://shortify.fr/'
     },
     sections: [
       {
@@ -139,21 +155,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif dépend du niveau de storytelling, du volume de contenus et des options de campagne.',
     options: ['Précommande', 'Formulaire de liste d\'attente', 'Intégration email marketing', 'Mini catalogue', 'Social proof', 'Page campagne ads dédiée'],
-    finalCta: 'Lancer votre marque avec une page à la hauteur'
+    finalCta: 'Lancer votre marque avec une landing page premium'
   },
   {
     slug: 'site-restaurant',
     name: 'Site restaurant / food / hospitality',
-    shortDescription: 'Valoriser un lieu, son ambiance et sa carte tout en facilitant réservation et contact.',
+    shortDescription: 'Site internet restaurant rapide et site web commerce local pour valoriser votre ambiance, votre carte et générer plus de réservations.',
     target: 'Restaurants, coffee shops, bars, concepts food et lieux hospitality.',
-    benefit: 'Un site qui donne envie, inspire confiance et simplifie la réservation.',
+    benefit: 'Un site internet restaurant rapide qui donne envie, inspire confiance et simplifie la réservation.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Un site qui donne faim et remplit vos services',
-      subtitle: 'Nous créons une vitrine visuelle et claire pour mettre en avant votre univers, vos menus et les informations pratiques essentielles.',
-      primaryCta: 'Mettre votre lieu en valeur en ligne',
+      title: 'Le site internet restaurant rapide qui donne envie de réserver',
+      subtitle: 'Nous créons un site vitrine restaurant plus accessible qu\'une agence classique, pensé mobile pour mettre en valeur votre lieu, votre carte et vos informations utiles.',
+      primaryCta: 'Créer votre site internet restaurant',
       secondaryCta: 'Réserver un appel découverte'
+    },
+    seo: {
+      keyword: 'site internet restaurant rapide',
+      title: 'Site internet restaurant rapide et site web commerce local | Launch48',
+      description: 'Créez un site internet restaurant rapide : site vitrine restaurant pour restaurant, bar, coffee shop ou commerce local.'
     },
     preview: {
       src: '/illustrations/hero-site-1.svg',
@@ -175,21 +196,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif varie selon les pages additionnelles, les contenus photos/vidéos et les intégrations externes.',
     options: ['Page privatisation', 'Page événements', 'Menu téléchargeable', 'Réservation intégrée', 'Version multilingue', 'Bloc avis clients'],
-    finalCta: 'Mettre votre lieu en valeur en ligne'
+    finalCta: 'Créer votre site internet restaurant'
   },
   {
     slug: 'site-artiste',
     name: 'Site artiste / créatif / portfolio',
-    shortDescription: 'Exposer un univers créatif avec une présence professionnelle, lisible et premium.',
+    shortDescription: 'Créer un site portfolio professionnel pour exposer vos projets, renforcer votre image et centraliser vos travaux sur une présence premium.',
     target: 'Artistes, photographes, vidéastes, designers, DJ, réalisateurs et créatifs indépendants.',
-    benefit: 'Une vitrine claire qui valorise les travaux et déclenche des demandes.',
+    benefit: 'Un site portfolio professionnel qui valorise les travaux et déclenche des demandes.',
     priceFrom: '890 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Un portfolio qui porte votre signature visuelle',
-      subtitle: 'Nous construisons un site qui centralise vos projets, renforce votre crédibilité et fluidifie la prise de contact.',
-      primaryCta: 'Créer un portfolio à votre image',
+      title: 'Créer un site portfolio professionnel à votre image',
+      subtitle: 'Nous concevons un site portfolio professionnel en 48h pour artistes, photographes, vidéastes ou designers qui veulent un lien propre, crédible et mémorable.',
+      primaryCta: 'Créer votre site portfolio professionnel',
       secondaryCta: 'Voir toutes les offres'
+    },
+    seo: {
+      keyword: 'site portfolio professionnel',
+      title: 'Créer un site portfolio professionnel | Launch48',
+      description: 'Créez un site portfolio professionnel en 48h pour artiste, photographe, vidéaste, designer ou créatif indépendant.'
     },
     preview: {
       src: '/illustrations/hero-site-3.svg',
@@ -215,21 +241,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif évolue selon la profondeur du portfolio et les modules spécifiques de diffusion.',
     options: ['Page projet détaillée', 'Page booking', 'EPK / press kit', 'Player audio / vidéo', 'Agenda / dates', 'Boutique simple'],
-    finalCta: 'Créer un portfolio à votre image'
+    finalCta: 'Créer votre site portfolio professionnel'
   },
   {
     slug: 'site-media-podcast',
     name: 'Site média / podcast / contenu',
-    shortDescription: 'Structurer vos contenus, vos formats et votre image éditoriale sur une base claire et professionnelle.',
+    shortDescription: 'Site internet média ou podcast professionnel pour structurer vos contenus, mieux présenter vos formats et faciliter les partenariats.',
     target: 'Podcasts, médias indépendants, émissions, chaînes de contenu et projets éditoriaux.',
-    benefit: 'Une vitrine éditoriale qui valorise vos épisodes et facilite les partenariats.',
+    benefit: 'Un site média professionnel qui valorise vos contenus et vos collaborations.',
     priceFrom: '1 190 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Donnez une vraie vitrine à votre média',
-      subtitle: 'Nous organisons vos formats, vos contenus et vos points de contact pour améliorer lisibilité, crédibilité et conversion.',
-      primaryCta: 'Donner une vraie vitrine à votre média',
+      title: 'Le site internet média qui donne du poids à vos contenus',
+      subtitle: 'Nous créons un site internet média ou podcast professionnel pour centraliser vos formats, clarifier votre ligne éditoriale et améliorer la conversion.',
+      primaryCta: 'Créer votre site média professionnel',
       secondaryCta: 'Réserver un appel découverte'
+    },
+    seo: {
+      keyword: 'site internet média',
+      title: 'Site internet média et podcast professionnel | Launch48',
+      description: 'Créez un site internet média ou podcast professionnel pour présenter vos formats, contenus phares et opportunités de partenariat.'
     },
     preview: {
       src: '/previews/site-media-podcast-home.jpg',
@@ -248,21 +279,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif dépend du volume de contenus, des pages de formats et des modules d\'abonnement.',
     options: ['Blog / articles', 'Pages formats détaillées', 'Espace partenaires', 'Formulaire invité / partenariat', 'Newsletter', 'Archive de contenus'],
-    finalCta: 'Donner une vraie vitrine à votre média'
+    finalCta: 'Créer votre site média professionnel'
   },
   {
     slug: 'site-association',
     name: 'Site association / projet culturel / institutionnel',
-    shortDescription: 'Présenter une mission, valoriser l\'impact et orienter vers l\'engagement ou la prise de contact.',
+    shortDescription: 'Site internet association rapide pour présenter votre mission, valoriser vos actions et créer un site association plus accessible qu\'une agence classique.',
     target: 'Associations, collectifs, projets culturels, structures territoriales et événements institutionnels.',
-    benefit: 'Une présence web claire qui renforce la confiance et l\'action.',
+    benefit: 'Un site internet association rapide qui renforce la confiance et facilite l\'engagement.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Présentez votre mission avec clarté et crédibilité',
-      subtitle: 'Nous concevons une structure éditoriale qui explique votre impact, valorise vos actions et facilite l\'engagement.',
-      primaryCta: 'Présenter votre projet avec plus de clarté',
+      title: 'Le site internet association rapide qui rend votre mission plus claire',
+      subtitle: 'Nous créons un site internet association rapide pour expliquer vos actions, rassurer vos partenaires et orienter vers adhésion, don, bénévolat ou contact.',
+      primaryCta: 'Créer votre site internet association',
       secondaryCta: 'Voir toutes les offres'
+    },
+    seo: {
+      keyword: 'site internet association rapide',
+      title: 'Site internet association rapide | Launch48',
+      description: 'Créez un site internet association rapide, clair et plus accessible qu’une agence classique pour présenter mission, actions et engagement.'
     },
     preview: {
       src: '/illustrations/hero-site-5.svg',
@@ -288,21 +324,26 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif évolue selon la profondeur éditoriale, les formulaires et les espaces ressources demandés.',
     options: ['Formulaire bénévolat', 'Formulaire adhésion', 'Espace ressources', 'Page dons', 'Agenda', 'Page presse'],
-    finalCta: 'Présenter votre projet avec plus de clarté'
+    finalCta: 'Créer votre site internet association'
   },
   {
     slug: 'site-immobilier-location',
     name: 'Site immobilier / location saisonnière / bien à louer',
-    shortDescription: 'Valoriser un bien avec une présentation premium qui rassure et génère des demandes qualifiées.',
+    shortDescription: 'Site vitrine immobilier et site internet agent immobilier pour valoriser un bien, rassurer et générer des demandes qualifiées rapidement.',
     target: 'Locations saisonnières, villas, appartements premium, conciergeries, résidences et petits programmes immobiliers.',
-    benefit: 'Une landing claire qui simplifie la réservation et augmente la confiance.',
+    benefit: 'Un site vitrine immobilier qui valorise votre bien et facilite la demande.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'Valorisez votre bien avec une page premium',
-      subtitle: 'Nous structurons une landing page immersive qui met en avant les atouts du lieu et facilite la demande de réservation.',
-      primaryCta: 'Valoriser votre bien avec une page premium',
+      title: 'Le site vitrine immobilier qui valorise votre bien',
+      subtitle: 'Nous créons un site vitrine immobilier en 48h pour agent immobilier, location saisonnière, villa ou appartement premium, avec une structure pensée confiance et conversion.',
+      primaryCta: 'Créer votre site vitrine immobilier',
       secondaryCta: 'Réserver un appel découverte'
+    },
+    seo: {
+      keyword: 'site vitrine immobilier',
+      title: 'Site vitrine immobilier et site internet agent immobilier | Launch48',
+      description: 'Créez un site vitrine immobilier en 48h pour agent immobilier, location saisonnière, villa ou appartement à louer.'
     },
     preview: {
       src: '/illustrations/hero-site-1.svg',
@@ -328,6 +369,489 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif varie selon le nombre de biens, les intégrations externes et les versions linguistiques.',
     options: ['Calendrier externe', 'Formulaire de demande', 'Carte', 'Plusieurs biens', 'Version multilingue', 'Page activités autour'],
-    finalCta: 'Valoriser votre bien avec une page premium'
+    finalCta: 'Créer votre site vitrine immobilier'
   }
 ];
+
+export const VERTICAL_DETAILS = {
+  'site-evenementiel': {
+    idealFor: ['Festivals', 'Galas', 'Conférences', 'Soirées premium', 'Salons'],
+    painPoints: [
+      "Le public voit l'annonce, mais ne comprend pas immédiatement la date, le lieu, le programme et la promesse.",
+      "La billetterie est trop faible dans le parcours ou noyée dans le contenu.",
+      "Le projet perd en crédibilité faute d'infos pratiques, de partenaires visibles et de structure claire."
+    ],
+    outcomes: [
+      'Une page qui donne envie en quelques secondes et oriente vite vers la billetterie.',
+      'Un parcours clair entre promesse, programme, preuves visuelles et informations utiles.',
+      'Une présence web qui rassure les visiteurs, les partenaires et les sponsors.'
+    ],
+    pillars: [
+      {
+        label: 'Conversion',
+        title: 'Billetterie prioritaire',
+        text: "Chaque bloc ramène vers l'action clé: acheter, réserver ou s'inscrire."
+      },
+      {
+        label: 'Clarté',
+        title: 'Infos utiles sans friction',
+        text: 'Date, lieu, accès, programmation, FAQ et contacts sont hiérarchisés proprement.'
+      },
+      {
+        label: 'Image',
+        title: "Désir + crédibilité",
+        text: "Direction visuelle, photos, partenaires et ambiance renforcent la valeur perçue de l'événement."
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Promesse, date, lieu, CTA',
+        text: "On ouvre avec l'essentiel: ce qui se passe, pourquoi venir, quand, où, et comment réserver."
+      },
+      {
+        label: '02',
+        title: 'Programme et moments forts',
+        text: 'On structure la programmation pour donner envie sans perdre le visiteur dans une page confuse.'
+      },
+      {
+        label: '03',
+        title: 'Preuves et réassurance',
+        text: 'Galerie, partenaires, FAQ, accès et éléments de confiance rassurent avant la décision.'
+      },
+      {
+        label: '04',
+        title: 'Rappel fort à la conversion',
+        text: "On ferme la page avec un CTA très lisible pour capter les ventes et les inscriptions de dernière minute."
+      }
+    ],
+    inclusions: [
+      'Hero de lancement pensé mobile',
+      'Bloc billetterie / inscription bien visible',
+      'Structure programme ou temps forts',
+      'Section infos pratiques',
+      'FAQ orientée objections',
+      'Footer complet et CTA répétés'
+    ]
+  },
+  'site-consultant': {
+    idealFor: ['Consultants', 'Freelances', 'Agences', 'Coachs', 'Experts'],
+    painPoints: [
+      "L'offre semble floue, trop large ou trop abstraite pour déclencher un rendez-vous.",
+      'Le site manque de structure et ne transforme pas vraiment la crédibilité en prise de contact.',
+      "La promesse est noyée dans un discours trop long, trop vague ou trop générique."
+    ],
+    outcomes: [
+      'Une page qui explique clairement votre valeur en quelques secondes.',
+      'Un parcours qui rassure avec méthode, références, résultats et CTA bien placés.',
+      'Une présence plus premium qui soutient repositionnement, montée en gamme et prospection.'
+    ],
+    pillars: [
+      {
+        label: 'Positionnement',
+        title: 'Offre plus nette',
+        text: 'On clarifie qui vous aidez, sur quoi, et avec quelle promesse concrète.'
+      },
+      {
+        label: 'Crédibilité',
+        title: 'Preuve mieux cadrée',
+        text: 'Références, méthode, résultats et signaux de sérieux sont mis au bon endroit.'
+      },
+      {
+        label: 'Lead gen',
+        title: 'Prise de contact naturelle',
+        text: "La page guide vers l'appel, le devis ou le formulaire sans forcer artificiellement."
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Promesse + cible + angle',
+        text: 'On pose un positionnement lisible immédiatement, sans jargon et sans ambiguïté.'
+      },
+      {
+        label: '02',
+        title: 'Offres et méthode',
+        text: 'On montre comment vous intervenez, ce que vous apportez et comment se passe la collaboration.'
+      },
+      {
+        label: '03',
+        title: 'Preuves sociales et résultats',
+        text: 'On injecte les éléments qui transforment la confiance en intention de contact.'
+      },
+      {
+        label: '04',
+        title: 'CTA rendez-vous ou devis',
+        text: 'On conclut avec un tunnel simple et assumé vers la prochaine étape.'
+      }
+    ],
+    inclusions: [
+      'Hero avec promesse métier forte',
+      'Bloc offres / services lisibles',
+      'Méthode de travail structurée',
+      'Preuves, cas ou références',
+      'FAQ de réassurance',
+      'CTA prise de rendez-vous'
+    ]
+  },
+  'site-lancement-marque': {
+    idealFor: ['Lancement de marque', 'Produit', 'DNVB', 'Drop', 'Campagne'],
+    painPoints: [
+      "Le lancement manque de scène, donc le message n'imprime pas.",
+      'Le site présente le produit, mais ne crée ni désir ni tension narrative.',
+      "Le trafic arrive, mais la page ne transforme pas l'attention en action claire."
+    ],
+    outcomes: [
+      'Une page qui installe immédiatement un univers et une promesse différenciante.',
+      'Un storytelling qui donne du relief au produit, à la marque et au moment de lancement.',
+      "Un parcours net vers achat, précommande, liste d'attente ou prise de contact."
+    ],
+    pillars: [
+      {
+        label: 'Storytelling',
+        title: 'Narration de lancement',
+        text: 'Le site devient une scène qui installe le ton, la tension et la différence de la marque.'
+      },
+      {
+        label: 'Désir',
+        title: 'Impact visuel assumé',
+        text: "Le design sert l'envie, la mémorisation et la valeur perçue."
+      },
+      {
+        label: 'Action',
+        title: 'CTA parfaitement aligné',
+        text: 'Précommande, liste d’attente ou vente: la page pousse vers un objectif unique et net.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Univers + angle de marque',
+        text: 'On ouvre sur une direction forte, pas sur une simple fiche produit.'
+      },
+      {
+        label: '02',
+        title: 'Produit, bénéfices, différence',
+        text: 'On structure les arguments pour créer de la tension et de la préférence.'
+      },
+      {
+        label: '03',
+        title: 'Visuels, rythme, crédibilité',
+        text: 'On construit un tempo premium entre images, preuves et informations utiles.'
+      },
+      {
+        label: '04',
+        title: 'Conversion de campagne',
+        text: "On ferme avec un CTA puissant pensé pour capter l'élan du lancement."
+      }
+    ],
+    inclusions: [
+      'Hero immersif et direction visuelle forte',
+      'Storytelling de marque ou de produit',
+      'Blocs bénéfices et différenciation',
+      'Sections visuelles éditorialisées',
+      'CTA principal répété',
+      'Base prête pour campagne ou ads'
+    ]
+  },
+  'site-restaurant': {
+    idealFor: ['Restaurants', 'Bars', 'Coffee shops', 'Lieux food', 'Hospitality'],
+    painPoints: [
+      "Le lieu a du charme, mais le site ne transmet ni l'ambiance ni le niveau perçu.",
+      'Les visiteurs trouvent mal les horaires, la carte, la réservation ou les infos utiles.',
+      "La page n'aide pas assez à passer de la curiosité à la réservation."
+    ],
+    outcomes: [
+      'Une vitrine qui donne faim, met le lieu en scène et renforce la désirabilité.',
+      'Un accès immédiat aux informations qui comptent vraiment avant de venir.',
+      'Une page qui simplifie la réservation, la prise de contact et la découverte du concept.'
+    ],
+    pillars: [
+      {
+        label: 'Atmosphère',
+        title: 'Un site qui fait ressentir le lieu',
+        text: 'Le design doit évoquer une ambiance, pas seulement afficher des blocs de texte.'
+      },
+      {
+        label: 'Utilité',
+        title: 'Les infos clés en un regard',
+        text: 'Carte, horaires, adresse, réservation et accès deviennent immédiats.'
+      },
+      {
+        label: 'Conversion',
+        title: 'Réserver sans hésiter',
+        text: 'Le parcours pousse naturellement vers la table, le contact ou la venue.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Ambiance, promesse, réservation',
+        text: 'On ouvre sur le ton du lieu et sur une action simple pour réserver ou contacter.'
+      },
+      {
+        label: '02',
+        title: 'Concept et identité',
+        text: 'On raconte juste assez pour donner de la profondeur au lieu et à son positionnement.'
+      },
+      {
+        label: '03',
+        title: 'Carte, photos, informations utiles',
+        text: 'On fait remonter les éléments qui aident vraiment le visiteur à choisir.'
+      },
+      {
+        label: '04',
+        title: 'Rappel réservation / accès',
+        text: 'On termine avec un bloc très clair pour convertir la visite en passage à l’action.'
+      }
+    ],
+    inclusions: [
+      "Hero visuel orienté désir",
+      'Bloc concept / histoire du lieu',
+      'Galerie ou visuels clés',
+      'Carte / menu / temps forts',
+      'Horaires et accès',
+      'CTA réservation ou contact'
+    ]
+  },
+  'site-artiste': {
+    idealFor: ['Artistes', 'Photographes', 'Vidéastes', 'Designers', 'Performers'],
+    painPoints: [
+      "Le talent est là, mais la présence en ligne ne lui donne pas le cadre qu'il mérite.",
+      'Les projets sont dispersés entre réseaux, drives et liens envoyés à la volée.',
+      "Le site ne transforme pas assez la sensibilité artistique en crédibilité professionnelle."
+    ],
+    outcomes: [
+      'Un portfolio qui pose un univers clair et immédiatement identifiable.',
+      'Une page qui centralise les travaux, les projets phares et les demandes entrantes.',
+      'Une présence plus premium pour booker, partager, exposer ou collaborer.'
+    ],
+    pillars: [
+      {
+        label: 'Signature',
+        title: 'Un univers qui se lit vite',
+        text: 'Le site doit refléter une identité, pas simplement empiler des images.'
+      },
+      {
+        label: 'Sélection',
+        title: 'Les bons projets en avant',
+        text: 'On hiérarchise les travaux pour montrer la force, la cohérence et la direction.'
+      },
+      {
+        label: 'Professionnalisation',
+        title: 'Un lien qu’on envoie avec confiance',
+        text: 'Le portfolio devient un support propre pour booker, pitcher ou convaincre.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Signature visuelle et accroche',
+        text: 'On ouvre avec une direction claire qui annonce le ton et la personnalité.'
+      },
+      {
+        label: '02',
+        title: 'Travaux et projets sélectionnés',
+        text: 'On met en scène les pièces qui racontent le mieux votre niveau et votre angle.'
+      },
+      {
+        label: '03',
+        title: 'Bio, posture, services éventuels',
+        text: 'On ajoute juste ce qu’il faut pour donner du contexte sans casser le rythme.'
+      },
+      {
+        label: '04',
+        title: 'Contact, booking, réseaux',
+        text: 'On simplifie la demande entrante avec un CTA évident et une sortie propre.'
+      }
+    ],
+    inclusions: [
+      'Hero signature ou cover forte',
+      'Sélection de projets clés',
+      'Bloc bio / posture / démarche',
+      'Sections services ou booking si utile',
+      'CTA contact bien visible',
+      'Réseaux et sortie premium'
+    ]
+  },
+  'site-media-podcast': {
+    idealFor: ['Podcasts', 'Médias', 'Formats vidéo', 'Éditorial', 'Contenu de marque'],
+    painPoints: [
+      'Les contenus existent, mais la marque média manque de structure et de hiérarchie.',
+      'Les visiteurs comprennent mal les formats, les épisodes ou les opportunités de collaboration.',
+      "La page ne donne pas assez de poids éditorial au projet."
+    ],
+    outcomes: [
+      'Une vitrine média plus nette, plus crédible et plus professionnelle.',
+      'Des formats mieux présentés pour faciliter écoute, découverte et partage.',
+      'Un support plus sérieux pour les partenaires, invités et sponsors.'
+    ],
+    pillars: [
+      {
+        label: 'Éditorial',
+        title: 'Un média qui se tient',
+        text: 'On donne une vraie structure de marque aux contenus et aux formats.'
+      },
+      {
+        label: 'Lisibilité',
+        title: 'Formats et contenus mieux présentés',
+        text: 'Le visiteur comprend rapidement quoi regarder, écouter ou explorer.'
+      },
+      {
+        label: 'Business',
+        title: 'Partenariats facilités',
+        text: 'La page soutient aussi la prise de contact, les invités et les collaborations.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Concept et ligne éditoriale',
+        text: "On pose l'identité du média et la promesse des formats dès l'entrée."
+      },
+      {
+        label: '02',
+        title: 'Formats, émissions, contenus phares',
+        text: 'On hiérarchise ce que le visiteur doit découvrir en premier.'
+      },
+      {
+        label: '03',
+        title: 'Crédibilité, partenaires, relais',
+        text: 'On ajoute les bons signaux de poids éditorial et d’attractivité.'
+      },
+      {
+        label: '04',
+        title: 'CTA collaboration ou contact',
+        text: 'On ferme avec un parcours simple vers partenariat, invitation ou prise de contact.'
+      }
+    ],
+    inclusions: [
+      'Hero média ou podcast',
+      'Bloc concept et formats',
+      'Mise en avant de contenus phares',
+      'Section partenaires / collabs',
+      'CTA contact / partenariat',
+      'Base évolutive pour archive ou newsletter'
+    ]
+  },
+  'site-association': {
+    idealFor: ['Associations', 'Collectifs', 'Culturel', 'Institutionnel', 'Impact'],
+    painPoints: [
+      "La mission est forte, mais le site ne l'explique pas assez clairement.",
+      "Les actions existent, mais elles sont peu lisibles pour un visiteur extérieur, un partenaire ou un financeur.",
+      "La page n'oriente pas assez vers l'engagement, le contact ou le soutien."
+    ],
+    outcomes: [
+      'Une page qui explique la mission, les actions et la valeur du projet avec clarté.',
+      'Une présence plus crédible auprès du public, des partenaires et des institutions.',
+      'Un support plus efficace pour engager, faire adhérer, contacter ou soutenir.'
+    ],
+    pillars: [
+      {
+        label: 'Mission',
+        title: 'Expliquer sans diluer',
+        text: 'Le visiteur comprend rapidement qui vous êtes, pourquoi vous existez et ce que vous faites.'
+      },
+      {
+        label: 'Impact',
+        title: 'Rendre l’action visible',
+        text: 'Les programmes, les résultats et les temps forts deviennent concrets et lisibles.'
+      },
+      {
+        label: 'Engagement',
+        title: 'Donner une porte d’entrée',
+        text: 'Contact, adhésion, bénévolat, ressource ou partenariat: la prochaine étape est claire.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Mission et promesse publique',
+        text: 'On pose une entrée claire pour comprendre le projet sans jargon institutionnel.'
+      },
+      {
+        label: '02',
+        title: 'Actions, programmes, initiatives',
+        text: 'On montre ce que vous faites réellement et pour qui.'
+      },
+      {
+        label: '03',
+        title: 'Preuves, partenaires, ressources',
+        text: 'On renforce la crédibilité et l’utilité de la structure.'
+      },
+      {
+        label: '04',
+        title: 'Engagement ou contact',
+        text: 'On conclut avec la meilleure porte d’entrée selon votre objectif principal.'
+      }
+    ],
+    inclusions: [
+      'Hero mission claire',
+      'Bloc actions ou programmes',
+      'Section impact / preuves',
+      'Partenaires ou relais',
+      'CTA engagement / contact',
+      'Structure éditoriale rassurante'
+    ]
+  },
+  'site-immobilier-location': {
+    idealFor: ['Location saisonnière', 'Villa', 'Appartement', 'Bien premium', 'Conciergerie'],
+    painPoints: [
+      "Le bien est attractif, mais la page ne le met pas assez en désir ou en confiance.",
+      'Les visiteurs doivent chercher les informations essentielles avant de réserver.',
+      "Le site manque de structure pour rassurer et filtrer des demandes de qualité."
+    ],
+    outcomes: [
+      'Une page premium qui valorise les atouts du lieu dès les premières secondes.',
+      'Un parcours clair entre photos, caractéristiques, localisation et réservation.',
+      'Une meilleure confiance avant la demande, le contact ou la réservation.'
+    ],
+    pillars: [
+      {
+        label: 'Désir',
+        title: 'Le lieu mieux mis en scène',
+        text: 'On vend une expérience, pas seulement une liste de caractéristiques.'
+      },
+      {
+        label: 'Confiance',
+        title: 'Les bonnes réponses au bon moment',
+        text: 'Capacité, équipements, localisation, FAQ et conditions deviennent immédiats.'
+      },
+      {
+        label: 'Qualification',
+        title: 'Demandes plus nettes',
+        text: 'La page filtre mieux les visiteurs et facilite les prises de contact utiles.'
+      }
+    ],
+    flow: [
+      {
+        label: '01',
+        title: 'Promesse du lieu + visuel fort',
+        text: 'On ouvre sur la meilleure facette du bien et sur une invitation claire à réserver.'
+      },
+      {
+        label: '02',
+        title: 'Atouts, équipements, capacité',
+        text: 'On fait remonter ce qui aide vraiment à se projeter et à comparer.'
+      },
+      {
+        label: '03',
+        title: 'Galerie, environnement, localisation',
+        text: 'On donne de la matière pour rassurer et déclencher la préférence.'
+      },
+      {
+        label: '04',
+        title: 'Réservation ou demande',
+        text: 'On conclut avec un tunnel simple pour capter les demandes sérieuses.'
+      }
+    ],
+    inclusions: [
+      'Hero premium orienté projection',
+      'Bloc atouts du bien',
+      'Galerie et éléments de réassurance',
+      'Section équipements / localisation',
+      'FAQ et infos utiles',
+      'CTA réservation ou demande'
+    ]
+  }
+};

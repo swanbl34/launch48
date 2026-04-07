@@ -124,10 +124,65 @@ const renderFooter = () => `
 `;
 
 const getPreviewHref = (offer) => offer.preview?.href || offer.preview?.src || '/illustrations/hero-site-1.svg';
+const getPreviewTitle = (offer) => offer.preview?.title || 'Aperçu de site';
 const getPreviewAriaLabel = (offer) =>
-  offer.preview?.href ? `Ouvrir le site exemple ${offer.name} dans un nouvel onglet` : "Ouvrir l'aperçu visuel en grand";
+  offer.preview?.ariaLabel ||
+  (offer.preview?.href ? `Ouvrir la preview ${offer.name} dans un nouvel onglet` : "Ouvrir l'aperçu visuel en grand");
 const getPreviewCaption = (offer) =>
-  offer.preview?.href ? 'Cliquer pour ouvrir le site exemple' : "Cliquer pour ouvrir l'image";
+  offer.preview?.caption || (offer.preview?.href ? 'Ouvrir la preview dans un nouvel onglet' : "Cliquer pour ouvrir l'image");
+const getPreviewNote = (offer) => offer.preview?.note || '';
+const getPreviewSpotlightContent = (offer) => ({
+  kicker: offer.previewSpotlight?.kicker || `Exemple de ${offer.seo?.keyword || 'site internet'}`,
+  title: offer.previewSpotlight?.title || `Voir un exemple grand format de ${offer.seo?.keyword || 'site internet'}`,
+  text:
+    offer.previewSpotlight?.text ||
+    `Cette grande preview permet de visualiser plus concrètement la structure, le design et la hiérarchie d'un ${offer.seo?.keyword || 'site internet'} pensé pour convertir.`,
+  cta: offer.previewSpotlight?.cta || 'Ouvrir la preview'
+});
+
+const renderPreviewSpotlight = (offer) => `
+  <section class="section container" id="preview-demo">
+    ${(() => {
+      const content = getPreviewSpotlightContent(offer);
+      return `
+    <div class="section-head" data-reveal>
+      <p class="kicker">${content.kicker}</p>
+      <h2>${content.title}</h2>
+      <p>${content.text}</p>
+    </div>
+    <div class="vertical-preview-spotlight" data-reveal>
+      <a
+        class="hero-media hero-media--preview vertical-preview-spotlight__media"
+        href="${getPreviewHref(offer)}"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="${getPreviewAriaLabel(offer)}"
+      >
+        <img
+          class="hero-media__image"
+          src="${offer.preview?.src || '/illustrations/hero-site-1.svg'}"
+          alt="${offer.preview?.alt || 'Aperçu visuel du site'}"
+          decoding="async"
+        />
+        <span class="hero-media__caption">
+          <strong>${getPreviewTitle(offer)}</strong>
+          <small>${getPreviewCaption(offer)}</small>
+        </span>
+      </a>
+      <div class="vertical-preview-spotlight__content">
+        <p class="vertical-preview-spotlight__eyebrow">Accès direct</p>
+        <h3>Ouvrir la page exemple en plein format</h3>
+        <p>Cette capture reprend la démo complète de la verticale pour montrer le niveau de direction visuelle, de hiérarchie et de finition attendu sur ce type de site.</p>
+        <div class="hero-actions">
+          ${asLink(content.cta, getPreviewHref(offer), 'btn')}
+        </div>
+        ${getPreviewNote(offer) ? `<p class="vertical-preview-spotlight__note">${getPreviewNote(offer)}</p>` : ''}
+      </div>
+    </div>
+      `;
+    })()}
+  </section>
+`;
 
 const getVerticalDetails = (offer) =>
   VERTICAL_DETAILS[offer.slug] || {
@@ -324,6 +379,7 @@ const renderOffersPage = () => {
         <p class="kicker">Sites internet par verticale</p>
         <h1>Choisissez le bon format pour creer votre site internet rapidement</h1>
         <p class="lead">Launch48 propose des sites internet professionnels pensés par besoin métier : site internet freelance, site internet evenement, site internet restaurant rapide, site internet association rapide ou site vitrine immobilier.</p>
+        <p class="lead">Les previews ci-dessous sont des démonstrations fictives créées pour illustrer chaque expertise, pas des sites clients existants.</p>
         <div class="hero-actions">
           ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
           ${asLink('Retour à l\'accueil', '/', 'btn btn--ghost')}
@@ -566,10 +622,11 @@ const renderVerticalPage = (slug) => {
                 decoding="async"
               />
               <span class="hero-media__caption">
-                <strong>Aperçu de site</strong>
+                <strong>${getPreviewTitle(offer)}</strong>
                 <small>${getPreviewCaption(offer)}</small>
               </span>
             </a>
+            ${getPreviewNote(offer) ? `<p class="vertical-hero__demo-note">${getPreviewNote(offer)}</p>` : ''}
 
             <article class="vertical-hero__summary">
               <span class="vertical-hero__summary-label">À partir de</span>
@@ -652,6 +709,8 @@ const renderVerticalPage = (slug) => {
             .join('')}
         </div>
       </section>
+
+      ${renderPreviewSpotlight(offer)}
 
       <section class="section container">
         <div class="vertical-included" data-reveal>

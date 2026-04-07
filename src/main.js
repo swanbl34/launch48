@@ -16,60 +16,68 @@ const fallbackSlots = {
 };
 const verticalNeeds = [
   {
-    emoji: '🎟️',
     title: 'Site événementiel',
     description: 'Promouvoir un événement et orienter efficacement vers la billetterie.',
     price: '1 290 €',
-    href: '/site-evenementiel/'
+    href: '/site-evenementiel/',
+    previewSrc: '/previews/event-demo-home.png',
+    previewAlt: 'Aperçu de la démo Event / Festival'
   },
   {
-    emoji: '💼',
     title: 'Site consultant / freelance / agence',
     description: 'Clarifier votre offre et générer des prises de contact qualifiées.',
     price: '990 €',
-    href: '/site-consultant/'
+    href: '/site-consultant/',
+    previewSrc: '/previews/consultant-demo-home.png',
+    previewAlt: 'Aperçu de la démo Consultant / Expert B2B'
   },
   {
-    emoji: '🚀',
     title: 'Site lancement de marque / produit',
     description: 'Créer un storytelling fort et un design impactant pour un lancement.',
     price: '1 490 €',
-    href: '/site-lancement-marque/'
+    href: '/site-lancement-marque/',
+    previewSrc: '/previews/brand-launch-demo-home.png',
+    previewAlt: 'Aperçu de la démo Lancement de marque / Produit'
   },
   {
-    emoji: '🍽️',
     title: 'Site restaurant / hospitality',
     description: 'Mettre en valeur un lieu, sa carte et faciliter la réservation.',
     price: '1 090 €',
-    href: '/site-restaurant/'
+    href: '/site-restaurant/',
+    previewSrc: '/previews/restaurant-demo-home.png',
+    previewAlt: 'Aperçu de la démo Restaurant / Food concept'
   },
   {
-    emoji: '🎨',
     title: 'Site artiste / créatif / portfolio',
     description: 'Exposer un univers créatif et professionnaliser la présence en ligne.',
     price: '890 €',
-    href: '/site-artiste/'
+    href: '/site-artiste/',
+    previewSrc: '/previews/artist-demo-home.png',
+    previewAlt: 'Aperçu de la démo Artiste / Portfolio créatif'
   },
   {
-    emoji: '🎙️',
     title: 'Site média / podcast / contenu',
     description: 'Centraliser les formats et structurer une image éditoriale solide.',
     price: '1 190 €',
-    href: '/site-media-podcast/'
+    href: '/site-media-podcast/',
+    previewSrc: '/previews/site-media-podcast-home.jpg',
+    previewAlt: 'Aperçu de la démo Média / Podcast'
   },
   {
-    emoji: '🤝',
     title: 'Site association / institutionnel',
     description: 'Présenter une mission, valoriser les actions et orienter vers l’engagement.',
     price: '990 €',
-    href: '/site-association/'
+    href: '/site-association/',
+    previewSrc: '/previews/association-demo-home.png',
+    previewAlt: 'Aperçu de la démo Association / Projet à impact'
   },
   {
-    emoji: '🏡',
     title: 'Site immobilier / location',
     description: 'Valoriser un bien et générer des demandes qualifiées.',
     price: '1 090 €',
-    href: '/site-immobilier-location/'
+    href: '/site-immobilier-location/',
+    previewSrc: '/previews/real-estate-demo-home.png',
+    previewAlt: 'Aperçu de la démo Immobilier premium / Real Estate'
   }
 ];
 
@@ -247,65 +255,29 @@ const renderShell = () => {
         </div>
       </section>
 
-      <section class="projects-mosaic section container" id="projects">
-        <div class="projects-mosaic__head">
-          <h2 data-slot="projects.title"></h2>
-          <p class="section-intro" data-slot="projects.subtitle"></p>
+      <section class="vertical-needs section container" id="vertical-needs">
+        <div class="vertical-needs__head">
+          <h2>Des sites pensés pour des besoins concrets</h2>
+          <p class="section-intro">Nous concevons des sites adaptés à des usages précis : événement, lancement de marque, activité de service, média, restauration, portfolio, association, immobilier, etc.</p>
         </div>
-        <div class="projects-mosaic__grid">
-          <a
-            class="project-card project-card--feature"
-            data-slot-href="projects.item1.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item1.image" data-slot-alt="projects.item1.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item1.meta"></span>
-              <h3 data-slot="projects.item1.title"></h3>
-              <p data-slot="projects.item1.text"></p>
-              <span class="project-card__link" data-slot="projects.item1.cta"></span>
-            </div>
-          </a>
-
-          <a
-            class="project-card"
-            data-slot-href="projects.item2.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item2.image" data-slot-alt="projects.item2.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item2.meta"></span>
-              <h3 data-slot="projects.item2.title"></h3>
-              <p data-slot="projects.item2.text"></p>
-              <span class="project-card__link" data-slot="projects.item2.cta"></span>
-            </div>
-          </a>
-
-          <a
-            class="project-card"
-            data-slot-href="projects.item3.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item3.image" data-slot-alt="projects.item3.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item3.meta"></span>
-              <h3 data-slot="projects.item3.title"></h3>
-              <p data-slot="projects.item3.text"></p>
-              <span class="project-card__link" data-slot="projects.item3.cta"></span>
-            </div>
-          </a>
-
-          <a class="project-card project-card--cta" data-slot-href="projects.item4.href">
-            <div class="project-card__cta-shell">
-              <span class="project-card__meta" data-slot="projects.item4.meta"></span>
-              <h3 data-slot="projects.item4.title"></h3>
-              <p data-slot="projects.item4.text"></p>
-              <span class="project-card__link" data-slot="projects.item4.cta"></span>
-            </div>
-          </a>
+        <div class="vertical-needs__grid">
+          ${verticalNeeds
+            .map(
+              (item) => `
+                <a class="needs-card needs-card--link" href="${item.href}">
+                  <div class="needs-card__media">
+                    <img class="needs-card__image" src="${item.previewSrc}" alt="${item.previewAlt}" loading="lazy" decoding="async" />
+                  </div>
+                  <h3>${item.title}</h3>
+                  <p>${item.description}</p>
+                  <span class="btn btn--ghost needs-card__cta">Voir l'offre</span>
+                </a>
+              `
+            )
+            .join('')}
+        </div>
+        <div class="vertical-needs__footer">
+          <a class="btn magnetic" href="/offres/">Découvrir toutes les offres</a>
         </div>
       </section>
 
@@ -472,27 +444,65 @@ const renderShell = () => {
         </div>
       </section>
 
-      <section class="vertical-needs section container" id="vertical-needs">
-        <div class="vertical-needs__head">
-          <h2>Des sites pensés pour des besoins concrets</h2>
-          <p class="section-intro">Nous concevons des sites adaptés à des usages précis : événement, lancement de marque, activité de service, média, restauration, portfolio, association, immobilier, etc.</p>
+      <section class="projects-mosaic section container" id="projects">
+        <div class="projects-mosaic__head">
+          <h2 data-slot="projects.title"></h2>
+          <p class="section-intro" data-slot="projects.subtitle"></p>
         </div>
-        <div class="vertical-needs__grid">
-          ${verticalNeeds
-            .map(
-              (item) => `
-                <a class="needs-card needs-card--link" href="${item.href}">
-                  <span class="needs-card__emoji" aria-hidden="true">${item.emoji}</span>
-                  <h3>${item.title}</h3>
-                  <p>${item.description}</p>
-                  <span class="btn btn--ghost needs-card__cta">Voir l'offre</span>
-                </a>
-              `
-            )
-            .join('')}
-        </div>
-        <div class="vertical-needs__footer">
-          <a class="btn magnetic" href="/offres/">Découvrir toutes les offres</a>
+        <div class="projects-mosaic__grid">
+          <a
+            class="project-card project-card--feature"
+            data-slot-href="projects.item1.href"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img class="project-card__image" data-slot-src="projects.item1.image" data-slot-alt="projects.item1.imageAlt" loading="lazy" decoding="async" />
+            <div class="project-card__overlay">
+              <span class="project-card__meta" data-slot="projects.item1.meta"></span>
+              <h3 data-slot="projects.item1.title"></h3>
+              <p data-slot="projects.item1.text"></p>
+              <span class="project-card__link" data-slot="projects.item1.cta"></span>
+            </div>
+          </a>
+
+          <a
+            class="project-card"
+            data-slot-href="projects.item2.href"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img class="project-card__image" data-slot-src="projects.item2.image" data-slot-alt="projects.item2.imageAlt" loading="lazy" decoding="async" />
+            <div class="project-card__overlay">
+              <span class="project-card__meta" data-slot="projects.item2.meta"></span>
+              <h3 data-slot="projects.item2.title"></h3>
+              <p data-slot="projects.item2.text"></p>
+              <span class="project-card__link" data-slot="projects.item2.cta"></span>
+            </div>
+          </a>
+
+          <a
+            class="project-card"
+            data-slot-href="projects.item3.href"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img class="project-card__image" data-slot-src="projects.item3.image" data-slot-alt="projects.item3.imageAlt" loading="lazy" decoding="async" />
+            <div class="project-card__overlay">
+              <span class="project-card__meta" data-slot="projects.item3.meta"></span>
+              <h3 data-slot="projects.item3.title"></h3>
+              <p data-slot="projects.item3.text"></p>
+              <span class="project-card__link" data-slot="projects.item3.cta"></span>
+            </div>
+          </a>
+
+          <a class="project-card project-card--cta" data-slot-href="projects.item4.href">
+            <div class="project-card__cta-shell">
+              <span class="project-card__meta" data-slot="projects.item4.meta"></span>
+              <h3 data-slot="projects.item4.title"></h3>
+              <p data-slot="projects.item4.text"></p>
+              <span class="project-card__link" data-slot="projects.item4.cta"></span>
+            </div>
+          </a>
         </div>
       </section>
 

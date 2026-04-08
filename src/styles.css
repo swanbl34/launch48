@@ -1277,10 +1277,16 @@ a:focus-visible {
     justify-content: center;
   }
 
+.hero-carousel__hint {
+  text-align: center;
+  font-size: 0.68rem;
+}
+
+@media (min-width: 760px) {
   .hero-carousel__hint {
-    text-align: center;
-    font-size: 0.68rem;
+    display: none;
   }
+}
 }
 
 @keyframes float-hint {

@@ -81,6 +81,74 @@ const verticalNeeds = [
   }
 ];
 
+const renderHeroCarousel = () => `
+  <div class="hero-carousel" data-hero-carousel>
+    <div class="hero-carousel__header">
+      <p class="hero-carousel__eyebrow">Exemples de sites Launch48</p>
+      <p class="hero-carousel__status" data-carousel-status aria-live="polite">1 / ${verticalNeeds.length}</p>
+    </div>
+    <div class="hero-carousel__viewport">
+      ${verticalNeeds
+        .map(
+          (item, index) => `
+            <article
+              class="hero-carousel__slide${index === 0 ? ' is-active' : ''}"
+              data-carousel-slide
+              aria-hidden="${index === 0 ? 'false' : 'true'}"
+            >
+              <a class="hero-carousel__card" href="${item.href}" aria-label="Voir l'offre ${item.title}">
+                <div class="hero-carousel__frame">
+                  <img
+                    class="hero-carousel__image"
+                    src="${item.previewSrc}"
+                    alt="${item.previewAlt}"
+                    loading="${index === 0 ? 'eager' : 'lazy'}"
+                    decoding="async"
+                  />
+                </div>
+                <div class="hero-carousel__body">
+                  <div class="hero-carousel__copy">
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                  </div>
+                  <span class="hero-carousel__cta">Voir l'offre</span>
+                </div>
+              </a>
+            </article>
+          `
+        )
+        .join('')}
+    </div>
+    <div class="hero-carousel__footer">
+      <button class="hero-carousel__arrow" type="button" data-carousel-prev aria-label="Capture précédente">
+        <span aria-hidden="true">←</span>
+      </button>
+      <div class="hero-carousel__nav">
+        <div class="hero-carousel__dots" role="tablist" aria-label="Choisir une capture de site">
+          ${verticalNeeds
+            .map(
+              (item, index) => `
+                <button
+                  class="hero-carousel__dot${index === 0 ? ' is-active' : ''}"
+                  type="button"
+                  role="tab"
+                  aria-selected="${index === 0 ? 'true' : 'false'}"
+                  aria-label="${item.title}"
+                  data-carousel-dot="${index}"
+                ></button>
+              `
+            )
+            .join('')}
+        </div>
+        <p class="hero-carousel__hint">Défilement automatique</p>
+      </div>
+      <button class="hero-carousel__arrow" type="button" data-carousel-next aria-label="Capture suivante">
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+`;
+
 const renderShell = () => {
   app.innerHTML = `
     <div class="cursor" aria-hidden="true"></div>
@@ -175,36 +243,8 @@ const renderShell = () => {
             </div>
             <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
           </div>
-          <aside class="hero__visual" aria-label="Aperçu de composition de site premium">
-            <div class="hero__visual-card hero__visual-card--main">
-              <div class="hero__visual-toolbar" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <img class="hero__visual-screen" src="/illustrations/hero-site-2.svg" alt="Aperçu principal d'un site premium" loading="lazy" decoding="async" />
-              <div class="hero__visual-caption">
-                <strong>Direction premium</strong>
-                <p>Hero, offre, preuve et CTA structurés pour convertir vite.</p>
-              </div>
-            </div>
-            <div class="hero__visual-card hero__visual-card--panel">
-              <p class="hero__visual-label">Sprint 48h</p>
-              <ul class="hero__visual-list">
-                <li>Brief stratégique</li>
-                <li>Design sur-mesure</li>
-                <li>Intégration propre</li>
-                <li>Mise en ligne rapide</li>
-              </ul>
-            </div>
-            <div class="hero__visual-card hero__visual-card--stat hero__visual-card--stat-a">
-              <p class="hero__visual-metric">Mobile first</p>
-              <span>Lecture claire, CTA visibles, chargement propre.</span>
-            </div>
-            <div class="hero__visual-card hero__visual-card--stat hero__visual-card--stat-b">
-              <img class="hero__visual-thumb" src="/illustrations/hero-site-5.svg" alt="Mini aperçu d'une page événementielle" loading="lazy" decoding="async" />
-              <span>Exemples adaptables selon votre secteur.</span>
-            </div>
+          <aside class="hero__visual" aria-label="Carrousel des captures de sites Launch48">
+            ${renderHeroCarousel()}
           </aside>
         </div>
       </section>
@@ -977,6 +1017,200 @@ const setupHeaderScrollState = () => {
   window.addEventListener('resize', onScroll, { passive: true });
 };
 
+const setupHeroCarousel = () => {
+  const carousel = document.querySelector('[data-hero-carousel]');
+  if (!carousel) return;
+
+  const viewport = carousel.querySelector('.hero-carousel__viewport');
+  const slides = Array.from(carousel.querySelectorAll('[data-carousel-slide]'));
+  const dots = Array.from(carousel.querySelectorAll('[data-carousel-dot]'));
+  const previousButton = carousel.querySelector('[data-carousel-prev]');
+  const nextButton = carousel.querySelector('[data-carousel-next]');
+  const status = carousel.querySelector('[data-carousel-status]');
+  const hint = carousel.querySelector('.hero-carousel__hint');
+
+  if (!viewport || slides.length <= 1) return;
+
+  const isMobileCarousel = () => window.innerWidth < 760;
+  let currentIndex = 0;
+  let autoplayId = null;
+  let autoplayResumeId = null;
+  let scrollFrame = null;
+
+  const setActiveSlide = (nextIndex) => {
+    currentIndex = (nextIndex + slides.length) % slides.length;
+
+    slides.forEach((slide, index) => {
+      const isActive = index === currentIndex;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', String(!isActive));
+    });
+
+    dots.forEach((dot, index) => {
+      const isActive = index === currentIndex;
+      dot.classList.toggle('is-active', isActive);
+      dot.setAttribute('aria-selected', String(isActive));
+    });
+
+    if (status) {
+      status.textContent = `${currentIndex + 1} / ${slides.length}`;
+    }
+
+    if (hint) {
+      hint.textContent = isMobileCarousel() ? 'Glisser pour parcourir' : 'Défilement automatique';
+    }
+  };
+
+  const stopAutoplay = () => {
+    if (autoplayId === null) return;
+    window.clearInterval(autoplayId);
+    autoplayId = null;
+  };
+
+  const clearAutoplayResume = () => {
+    if (autoplayResumeId === null) return;
+    window.clearTimeout(autoplayResumeId);
+    autoplayResumeId = null;
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay();
+    autoplayId = window.setInterval(() => {
+      goToSlide(currentIndex + 1);
+    }, isMobileCarousel() ? 4800 : 4200);
+  };
+
+  const scheduleAutoplayResume = () => {
+    clearAutoplayResume();
+    autoplayResumeId = window.setTimeout(() => {
+      startAutoplay();
+    }, isMobileCarousel() ? 2400 : 1200);
+  };
+
+  const syncActiveSlideFromScroll = () => {
+    scrollFrame = null;
+
+    const closestIndex = slides.reduce(
+      (nearestIndex, slide, index, collection) => {
+        const currentDistance = Math.abs(slide.offsetLeft - viewport.scrollLeft);
+        const nearestDistance = Math.abs(collection[nearestIndex].offsetLeft - viewport.scrollLeft);
+        return currentDistance < nearestDistance ? index : nearestIndex;
+      },
+      0
+    );
+
+    setActiveSlide(closestIndex);
+  };
+
+  const goToSlide = (nextIndex, { behavior } = {}) => {
+    const normalizedIndex = (nextIndex + slides.length) % slides.length;
+
+    if (isMobileCarousel()) {
+      viewport.scrollTo({
+        left: slides[normalizedIndex].offsetLeft,
+        behavior: behavior || (prefersReducedMotion ? 'auto' : 'smooth')
+      });
+      setActiveSlide(normalizedIndex);
+      return;
+    }
+
+    setActiveSlide(normalizedIndex);
+  };
+
+  previousButton?.addEventListener('click', () => {
+    goToSlide(currentIndex - 1);
+    startAutoplay();
+  });
+
+  nextButton?.addEventListener('click', () => {
+    goToSlide(currentIndex + 1);
+    startAutoplay();
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      goToSlide(index);
+      startAutoplay();
+    });
+  });
+
+  viewport.addEventListener(
+    'scroll',
+    () => {
+      if (!isMobileCarousel()) return;
+      stopAutoplay();
+      scheduleAutoplayResume();
+      if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame);
+      scrollFrame = window.requestAnimationFrame(syncActiveSlideFromScroll);
+    },
+    { passive: true }
+  );
+
+  viewport.addEventListener(
+    'touchstart',
+    () => {
+      stopAutoplay();
+      clearAutoplayResume();
+    },
+    { passive: true }
+  );
+
+  viewport.addEventListener(
+    'touchend',
+    () => {
+      scheduleAutoplayResume();
+    },
+    { passive: true }
+  );
+
+  viewport.addEventListener(
+    'pointerdown',
+    () => {
+      if (!isMobileCarousel()) return;
+      stopAutoplay();
+      clearAutoplayResume();
+    },
+    { passive: true }
+  );
+
+  viewport.addEventListener(
+    'pointerup',
+    () => {
+      if (!isMobileCarousel()) return;
+      scheduleAutoplayResume();
+    },
+    { passive: true }
+  );
+
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('focusin', stopAutoplay);
+  carousel.addEventListener('focusout', (event) => {
+    if (event.relatedTarget instanceof Node && carousel.contains(event.relatedTarget)) return;
+    startAutoplay();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAutoplay();
+      clearAutoplayResume();
+      return;
+    }
+    startAutoplay();
+  });
+
+  window.addEventListener('resize', () => {
+    stopAutoplay();
+    clearAutoplayResume();
+    goToSlide(currentIndex, { behavior: 'auto' });
+    startAutoplay();
+  });
+
+  setActiveSlide(0);
+  goToSlide(0, { behavior: 'auto' });
+  startAutoplay();
+};
+
 const setupAnimations = () => {
   if (prefersReducedMotion) {
     document.body.classList.add('reduced-motion');
@@ -1065,33 +1299,45 @@ const setupAnimations = () => {
   const processProgressRocket = document.querySelector('.process__progress-rocket');
 
   if (processSection && processSticky && processProgressFill && processProgressRocket && processSteps.length > 0) {
-    ScrollTrigger.create({
-      trigger: processSection,
-      start: 'center center',
-      end: () => `+=${window.innerHeight * (window.innerWidth < 760 ? 1.45 : 1.9)}`,
-      pin: processSticky,
-      scrub: true,
-      pinSpacing: true,
-      pinType: 'fixed',
-      pinReparent: true,
-      anticipatePin: 3,
-      fastScrollEnd: true,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        gsap.set(processProgressFill, {
-          scaleX: self.progress,
-          transformOrigin: '0% 50%'
-        });
-        gsap.set(processProgressRocket, {
-          left: `${gsap.utils.clamp(2, 98, self.progress * 100)}%`
-        });
+    const updateProcessProgress = (self) => {
+      gsap.set(processProgressFill, {
+        scaleX: self.progress,
+        transformOrigin: '0% 50%'
+      });
+      gsap.set(processProgressRocket, {
+        left: `${gsap.utils.clamp(2, 98, self.progress * 100)}%`
+      });
 
-        const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));
-        processSteps.forEach((step, index) => {
-          step.classList.toggle('is-active', index <= currentIndex);
-        });
-      }
-    });
+      const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));
+      processSteps.forEach((step, index) => {
+        step.classList.toggle('is-active', index <= currentIndex);
+      });
+    };
+
+    if (window.innerWidth < 760) {
+      ScrollTrigger.create({
+        trigger: processSection,
+        start: 'center center',
+        end: () => `+=${window.innerHeight * 1.45}`,
+        pin: processSticky,
+        scrub: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
+        onUpdate: updateProcessProgress
+      });
+    } else {
+      ScrollTrigger.create({
+        trigger: processSection,
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
+        onUpdate: updateProcessProgress
+      });
+    }
   }
 
   gsap.from('.pricing', {
@@ -1143,6 +1389,7 @@ const init = async () => {
   setupCenteredAnchors();
   setupBackgroundScroll();
   setupHeaderScrollState();
+  setupHeroCarousel();
   setupAnimations();
 
   if (hasError) {

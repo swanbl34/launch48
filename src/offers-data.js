@@ -21,11 +21,11 @@ export const OFFERS = [
     name: 'Event / Festival',
     shortDescription: 'Démo sectorielle pensée pour présenter un événement, rythmer la programmation et rendre la billetterie évidente dès les premiers scrolls.',
     target: 'Festivals, concerts, conférences, expériences live, salons, formats culturels et activations de marque.',
-    benefit: 'Une démo fictive qui montre comment transformer l\'attention en billets, inscriptions ou demandes partenaires.',
+    benefit: 'Un exemple de site qui montre comment transformer l\'attention en billets, inscriptions ou demandes partenaires.',
     priceFrom: '1 290 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'La page event qui met votre rendez-vous en scene',
+      title: 'La page event qui met votre rendez-vous en scène',
       subtitle: 'Cette verticale montre comment Launch48 structure une page festival ou événement avec date, lieu, programmation, ambiance et billetterie visibles immédiatement.',
       primaryCta: 'Créer votre site internet événement',
       secondaryCta: 'Voir toutes les offres'
@@ -37,15 +37,15 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/event-demo-home.png',
-      alt: 'Capture de la démo fictive Event / Festival',
+      alt: 'Capture de l\'exemple de site Event / Festival',
       href: 'https://launch48-preview.vercel.app/event',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview event dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
-      kicker: 'Exemple de site internet evenement',
-      title: 'Voir un exemple grand format de site internet evenement',
+      kicker: 'Exemple de site internet événement',
+      title: 'Voir un exemple grand format de site internet événement',
       text: "Cette grande preview montre comment une landing page événement peut mettre en avant la date, le lieu, la programmation et la billetterie dans une structure plus claire, plus visuelle et plus orientée conversion.",
       cta: 'Ouvrir cet exemple de site événement'
     },
@@ -76,7 +76,7 @@ export const OFFERS = [
     name: 'Consultant / Expert B2B',
     shortDescription: 'Démo B2B conçue pour clarifier une offre, asseoir la crédibilité et faire avancer des prises de rendez-vous qualifiées.',
     target: 'Consultants, experts métier, cabinets, freelances B2B et studios de conseil.',
-    benefit: 'Une démo fictive qui montre comment rendre une expertise complexe lisible, crédible et premium.',
+    benefit: 'Un exemple de site qui montre comment rendre une expertise complexe lisible, crédible et premium.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
@@ -92,11 +92,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/consultant-demo-home.png',
-      alt: 'Capture de la démo fictive Consultant / Expert B2B',
+      alt: 'Capture de l\'exemple de site Consultant / Expert B2B',
       href: 'https://launch48-preview.vercel.app/consultant',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview consultant dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de site internet freelance',
@@ -147,11 +147,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/brand-launch-demo-home.png',
-      alt: 'Capture de la démo fictive Lancement de marque / Produit',
+      alt: 'Capture de l\'exemple de site Lancement de marque / Produit',
       href: 'https://launch48-preview.vercel.app/brand-launch',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview brand launch dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de landing page de lancement de marque',
@@ -190,11 +190,11 @@ export const OFFERS = [
     name: 'Restaurant / Food concept',
     shortDescription: 'Démo food conçue pour mettre en scène un lieu, sa carte et son identité afin de déclencher réservation, visite ou privatisation.',
     target: 'Restaurants, coffee shops, bars, concepts food, chefs, lieux hospitality et adresses lifestyle.',
-    benefit: 'Une démo fictive qui montre comment faire ressentir l\'ambiance et simplifier la réservation.',
+    benefit: 'Un exemple de site qui montre comment faire ressentir l\'ambiance et simplifier la réservation.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'La page food qui donne faim avant meme la reservation',
+      title: 'La page food qui donne faim avant même la réservation',
       subtitle: 'Cette verticale met en avant une structure pensée pour les concepts food : atmosphère forte, carte lisible, infos utiles et CTA réservation bien placés.',
       primaryCta: 'Créer votre site internet restaurant',
       secondaryCta: 'Réserver un appel découverte'
@@ -206,11 +206,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/restaurant-demo-home.png',
-      alt: 'Capture de la démo fictive Restaurant / Food concept',
+      alt: 'Capture de l\'exemple de site Restaurant / Food concept',
       href: 'https://launch48-preview.vercel.app/restaurant',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview restaurant dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de site internet restaurant rapide',
@@ -241,7 +241,7 @@ export const OFFERS = [
     name: 'Artiste / Portfolio créatif',
     shortDescription: 'Démo portfolio pensée pour exposer un univers, hiérarchiser les projets et transformer un lien en vraie carte de visite créative.',
     target: 'Artistes, photographes, vidéastes, designers, directeurs artistiques, musiciens et créatifs indépendants.',
-    benefit: 'Une démo fictive qui montre comment rendre un portfolio plus désirable, plus net et plus mémorable.',
+    benefit: 'Un exemple de site qui montre comment rendre un portfolio plus désirable, plus net et plus mémorable.',
     priceFrom: '890 €',
     hero: {
       eyebrow: 'Offre verticale',
@@ -257,11 +257,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/artist-demo-home.png',
-      alt: 'Capture de la démo fictive Artiste / Portfolio créatif',
+      alt: 'Capture de l\'exemple de site Artiste / Portfolio créatif',
       href: 'https://launch48-preview.vercel.app/artist',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview portfolio dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de site portfolio professionnel',
@@ -340,11 +340,11 @@ export const OFFERS = [
     name: 'Association / Projet à impact',
     shortDescription: 'Démo à impact conçue pour expliquer une mission, valoriser des actions concrètes et orienter clairement vers adhésion, don ou bénévolat.',
     target: 'Associations, collectifs, projets à impact, structures culturelles, initiatives locales et organisations engagées.',
-    benefit: 'Une démo fictive qui montre comment rendre une mission plus claire, plus crédible et plus mobilisatrice.',
+    benefit: 'Un exemple de site qui montre comment rendre une mission plus claire, plus crédible et plus mobilisatrice.',
     priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
-      title: 'La page a impact qui transforme une mission en engagement',
+      title: 'La page à impact qui transforme une mission en engagement',
       subtitle: 'Cette verticale montre comment structurer un site pour raconter une cause, rendre les actions tangibles et guider vers le bon geste: adhérer, donner, participer ou contacter.',
       primaryCta: 'Créer votre site internet association',
       secondaryCta: 'Voir toutes les offres'
@@ -356,11 +356,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/association-demo-home.png',
-      alt: 'Capture de la démo fictive Association / Projet à impact',
+      alt: 'Capture de l\'exemple de site Association / Projet à impact',
       href: 'https://launch48-preview.vercel.app/association',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview association dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de site internet association rapide',
@@ -395,7 +395,7 @@ export const OFFERS = [
     name: 'Immobilier premium / Real Estate',
     shortDescription: 'Démo premium pensée pour mettre en valeur un bien, son environnement et son niveau de prestation avec un parcours de demande haut de gamme.',
     target: 'Biens premium, villas, locations saisonnières haut de gamme, résidences, conciergeries et agences boutique.',
-    benefit: 'Une démo fictive qui montre comment vendre l\'expérience du lieu avant même le premier contact.',
+    benefit: 'Un exemple de site qui montre comment vendre l\'expérience du lieu avant même le premier contact.',
     priceFrom: '1 090 €',
     hero: {
       eyebrow: 'Offre verticale',
@@ -411,11 +411,11 @@ export const OFFERS = [
     },
     preview: {
       src: '/previews/real-estate-demo-home.png',
-      alt: 'Capture de la démo fictive Immobilier premium / Real Estate',
+      alt: 'Capture de l\'exemple de site Immobilier premium / Real Estate',
       href: 'https://launch48-preview.vercel.app/real-estate',
-      title: 'Démo fictive',
+      title: 'Preview',
       caption: 'Ouvrir la preview real estate dans un nouvel onglet',
-      note: "Concept fictif créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
+      note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
       kicker: 'Exemple de site vitrine immobilier',

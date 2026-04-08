@@ -263,8 +263,8 @@ const renderReusableCtaBlock = () => `
     <div class="container cta-inline__card">
       <div>
         <p class="kicker">CTA contact</p>
-        <h2>Un besoin précis ? On vous aide a lancer votre site internet rapidement.</h2>
-        <p>Objectif, contexte, budget et timing : vous obtenez une recommandation claire pour creer un site internet professionnel sans agence lourde.</p>
+        <h2>Un besoin précis ? On vous aide à lancer votre site internet rapidement.</h2>
+        <p>Objectif, contexte, budget et timing : vous obtenez une recommandation claire pour créer un site internet professionnel sans agence lourde.</p>
       </div>
       <div class="cta-inline__actions">
         ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
@@ -368,8 +368,8 @@ const renderHome = () => {
 
 const renderOffersPage = () => {
   setMeta({
-    title: 'Creer un site internet professionnel rapidement | Offres Launch48',
-    description: 'Découvrez nos offres pour creer un site internet rapidement : site internet freelance, site internet restaurant rapide, site internet evenement, site vitrine immobilier et plus.'
+    title: 'Créer un site internet professionnel rapidement | Offres Launch48',
+    description: 'Découvrez nos offres pour créer un site internet rapidement : site internet freelance, site internet restaurant rapide, site internet événement, site vitrine immobilier et plus.'
   });
 
   app.innerHTML = `
@@ -377,9 +377,9 @@ const renderOffersPage = () => {
     <main id="main">
       <section class="hero section container" data-reveal>
         <p class="kicker">Sites internet par verticale</p>
-        <h1>Choisissez le bon format pour creer votre site internet rapidement</h1>
-        <p class="lead">Launch48 propose des sites internet professionnels pensés par besoin métier : site internet freelance, site internet evenement, site internet restaurant rapide, site internet association rapide ou site vitrine immobilier.</p>
-        <p class="lead">Les previews ci-dessous sont des démonstrations fictives créées pour illustrer chaque expertise, pas des sites clients existants.</p>
+        <h1>Choisissez le bon format pour créer votre site internet rapidement</h1>
+        <p class="lead">Launch48 propose des sites internet professionnels pensés par besoin métier : site internet freelance, site internet événement, site internet restaurant rapide, site internet association rapide ou site vitrine immobilier.</p>
+        <p class="lead">Les previews ci-dessous sont des exemples de sites créés par Launch48 pour illustrer chaque expertise. Il ne s'agit pas de sites clients existants.</p>
         <div class="hero-actions">
           ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn')}
           ${asLink('Retour à l\'accueil', '/', 'btn btn--ghost')}
@@ -387,19 +387,19 @@ const renderOffersPage = () => {
         <div class="hero-highlights">
           <p><strong>Site internet 48h</strong> pour lancer vite</p>
           <p><strong>Alternative agence web</strong> plus simple et plus directe</p>
-          <p><strong>Site internet cle en main</strong> pense conversion</p>
+          <p><strong>Site internet clé en main</strong> pensé conversion</p>
         </div>
       </section>
 
       <section class="section container offers-showcase">
         <aside class="offers-showcase__intro" data-reveal>
           <p class="kicker">Choisir votre format</p>
-          <h2>Chaque site internet repond a une intention d'achat concrete</h2>
-          <p>Au lieu de vendre un site internet generique, Launch48 construit des pages adaptees a des usages reels : vendre des billets, generer des rendez-vous, presenter une expertise, valoriser un bien ou lancer une marque.</p>
+          <h2>Chaque site internet répond à une intention d'achat concrète</h2>
+          <p>Au lieu de vendre un site internet générique, Launch48 construit des pages adaptées à des usages réels : vendre des billets, générer des rendez-vous, présenter une expertise, valoriser un bien ou lancer une marque.</p>
           <div class="offers-showcase__legend">
-            <p><strong>Clarte</strong> message lisible des les premieres secondes</p>
+            <p><strong>Clarté</strong> message lisible dès les premières secondes</p>
             <p><strong>SEO</strong> bases propres pour lancer un site web vite</p>
-            <p><strong>Conversion</strong> CTA et parcours orientes action</p>
+            <p><strong>Conversion</strong> CTA et parcours orientés action</p>
           </div>
         </aside>
         <div class="offers-showcase__rail">
@@ -410,8 +410,8 @@ const renderOffersPage = () => {
       <section class="section container" id="contact">
         ${renderContactCard({
           kicker: 'Projet spécifique',
-          title: 'Vous avez un besoin specifique ?',
-          text: 'Nous pouvons aussi creer un site internet professionnel sur-mesure pour votre activite.',
+          title: 'Vous avez un besoin spécifique ?',
+          text: 'Nous pouvons aussi créer un site internet professionnel sur-mesure pour votre activité.',
           actions: asLink('Discuter de mon projet', CONTACT.primaryHref, 'btn')
         })}
       </section>
@@ -424,7 +424,7 @@ const renderOffersPage = () => {
 const renderQuotePage = () => {
   setMeta({
     title: 'Devis site internet en 48h | Launch48',
-    description: 'Demandez un devis pour creer un site internet professionnel rapidement : site vitrine, landing page et site internet cle en main.'
+    description: 'Demandez un devis pour créer un site internet professionnel rapidement : site vitrine, landing page et site internet clé en main.'
   });
 
   app.innerHTML = `
@@ -433,20 +433,20 @@ const renderQuotePage = () => {
       <section class="section container section--call-embed">
         <div class="quote-layout">
           <article class="quote-panel" data-reveal>
-            <p class="kicker">Preparer votre site internet</p>
-            <h2>Les infos utiles pour creer votre site internet rapidement</h2>
+            <p class="kicker">Préparer votre site internet</p>
+            <h2>Les infos utiles pour créer votre site internet rapidement</h2>
             <ul class="quote-panel__list">
               <li>Le type de site internet ou de landing page que vous souhaitez lancer</li>
               <li>Le nom du projet ou de l'entreprise si vous l'avez déjà</li>
-              <li>Votre objectif principal : vendre, reserver, presenter, generer des leads</li>
+              <li>Votre objectif principal : vendre, réserver, présenter, générer des leads</li>
               <li>Votre timing et les éventuelles contraintes de lancement</li>
             </ul>
           </article>
 
           <article class="quote-form-card" data-reveal>
             <form action="https://formspree.io/f/xbdpgvgj" method="POST" class="launch48-form">
-              <h3>Creer votre site internet en 48h</h3>
-              <p>Décrivez votre besoin pour obtenir un site internet clé en main ou une alternative simple a une agence web.</p>
+              <h3>Créer votre site internet en 48h</h3>
+              <p>Décrivez votre besoin pour obtenir un site internet clé en main ou une alternative simple à une agence web.</p>
 
               <label>
                 <span>Nom</span>
@@ -692,8 +692,8 @@ const renderVerticalPage = (slug) => {
       <section class="section container">
         <div class="section-head" data-reveal>
           <p class="kicker">Architecture recommandée</p>
-          <h2>La structure recommandee pour un ${offer.seo?.keyword || 'site internet'}</h2>
-          <p>Chaque page verticale suit un ordre precis : capter l'attention, clarifier le message, creer la confiance, puis convertir sans friction.</p>
+          <h2>La structure recommandée pour un ${offer.seo?.keyword || 'site internet'}</h2>
+          <p>Chaque page verticale suit un ordre précis : capter l'attention, clarifier le message, créer la confiance, puis convertir sans friction.</p>
         </div>
         <div class="vertical-blueprint">
           ${detail.flow
@@ -717,7 +717,7 @@ const renderVerticalPage = (slug) => {
           <div class="vertical-included__intro">
             <p class="kicker">Inclus dans la formule</p>
             <h2>Ce que nous mettons dans votre ${offer.seo?.keyword || 'site internet'}</h2>
-            <p>Launch48 pose une base volontairement claire : une page forte, un design assume, un contenu hierarchise et des CTA visibles la ou ils doivent l'etre.</p>
+            <p>Launch48 pose une base volontairement claire : une page forte, un design assumé, un contenu hiérarchisé et des CTA visibles là où ils doivent l'être.</p>
           </div>
           <div class="vertical-included__list">
             ${detail.inclusions.map((item) => `<span>${item}</span>`).join('')}

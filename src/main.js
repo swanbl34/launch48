@@ -1036,6 +1036,7 @@ const setupHeroCarousel = () => {
   let autoplayId = null;
   let autoplayResumeId = null;
   let scrollFrame = null;
+  let lastWheelNavigationAt = 0;
 
   const setActiveSlide = (nextIndex) => {
     currentIndex = (nextIndex + slides.length) % slides.length;
@@ -1180,6 +1181,29 @@ const setupHeroCarousel = () => {
       scheduleAutoplayResume();
     },
     { passive: true }
+  );
+
+  viewport.addEventListener(
+    'wheel',
+    (event) => {
+      if (isMobileCarousel()) return;
+
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : 0;
+      if (Math.abs(delta) < 18) return;
+
+      const now = Date.now();
+      if (now - lastWheelNavigationAt < 650) {
+        event.preventDefault();
+        return;
+      }
+
+      lastWheelNavigationAt = now;
+      event.preventDefault();
+      stopAutoplay();
+      scheduleAutoplayResume();
+      goToSlide(currentIndex + (delta > 0 ? 1 : -1));
+    },
+    { passive: false }
   );
 
   carousel.addEventListener('mouseenter', stopAutoplay);

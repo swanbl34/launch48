@@ -27,13 +27,13 @@ export const OFFERS = [
       eyebrow: 'Offre verticale',
       title: 'La page event qui met votre rendez-vous en scène',
       subtitle: 'Cette verticale montre comment Launch48 structure une page festival ou événement avec date, lieu, programmation, ambiance et billetterie visibles immédiatement.',
-      primaryCta: 'Créer votre site internet événement',
+      primaryCta: 'Créer votre site internet événementel',
       secondaryCta: 'Voir toutes les offres'
     },
     seo: {
-      keyword: 'site internet événement',
-      title: 'Site internet événement et landing page événement | Launch48',
-      description: 'Créez un site internet événement en 48h : landing page événement pour soirée, concert, conférence, gala ou festival.'
+      keyword: 'site internet événementel',
+      title: 'Site internet événementel et landing page événement | Launch48',
+      description: 'Créez un site internet événementel en 48h : landing page événement pour soirée, concert, conférence, gala ou festival.'
     },
     preview: {
       src: '/previews/event-demo-home.png',
@@ -44,10 +44,10 @@ export const OFFERS = [
       note: "Exemple de site créé par Launch48 pour illustrer cette expertise. Il ne s'agit pas d'un site client."
     },
     previewSpotlight: {
-      kicker: 'Exemple de site internet événement',
-      title: 'Voir un exemple grand format de site internet événement',
+      kicker: 'Exemple de site internet événementel',
+      title: 'Voir un exemple grand format de site internet événementel',
       text: "Cette grande preview montre comment une landing page événement peut mettre en avant la date, le lieu, la programmation et la billetterie dans une structure plus claire, plus visuelle et plus orientée conversion.",
-      cta: 'Ouvrir cet exemple de site événement'
+      cta: 'Ouvrir cet exemple de site événementiel'
     },
     sections: [
       {
@@ -69,7 +69,7 @@ export const OFFERS = [
     ],
     pricingNote: 'Le tarif évolue selon le nombre de sections, les besoins en pages annexes et les options spécifiques.',
     options: ['Compte à rebours', 'Page programmation / line-up', 'Page partenaires', 'Formulaire bénévoles / exposants / presse', 'Carte / accès', 'Multilingue', 'Tracking Meta / Google', 'Intégration newsletter'],
-    finalCta: 'Créer votre site internet événement'
+    finalCta: 'Créer votre site internet événementel'
   },
   {
     slug: 'site-consultant',

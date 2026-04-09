@@ -8,6 +8,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         devis: resolve(__dirname, 'devis/index.html'),
         call: resolve(__dirname, 'call/index.html'),
+        partenaires: resolve(__dirname, 'partenaires/index.html'),
         offres: resolve(__dirname, 'offres/index.html'),
         siteEvenementiel: resolve(__dirname, 'site-evenementiel/index.html'),
         siteConsultant: resolve(__dirname, 'site-consultant/index.html'),

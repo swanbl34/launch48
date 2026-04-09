@@ -15,6 +15,7 @@ const FALLBACK_OFFER = OFFERS[0];
 const QUOTE_PROJECT_OPTIONS = [
   { value: 'one-page', label: 'Site vitrine / one-page' },
   ...OFFERS.map((offer) => ({ value: offer.slug, label: offer.name })),
+  { value: 'partner', label: 'Partenaire' },
   { value: 'other', label: 'Autre besoin' }
 ];
 
@@ -544,7 +545,7 @@ const renderOptionsBlock = (offer) => `
     <div class="section-head" data-reveal>
       <p class="kicker">Options</p>
       <h2>Options pour aller plus loin avec votre ${offer.seo?.keyword || 'site internet'}</h2>
-      <p>On garde un socle simple et performant, puis on ajoute seulement ce qui sert vraiment votre objectif business et votre referencement.</p>
+      <p>On garde un socle simple et performant, puis on ajoute seulement ce qui sert vraiment votre objectif business et votre référencement.</p>
     </div>
     <div class="options-grid options-grid--cards">
       ${offer.options
@@ -647,8 +648,8 @@ const renderVerticalPage = (slug) => {
       <section class="section container vertical-signals">
         <div class="section-head" data-reveal>
           <p class="kicker">Pourquoi cette page fonctionne</p>
-          <h2>Pourquoi un ${offer.seo?.keyword || 'site internet'} bien structure convertit mieux</h2>
-          <p>Un bon referencement ne suffit pas. Il faut aussi une page claire, credibile et orientee action pour transformer les visites en demandes.</p>
+          <h2>Pourquoi un ${offer.seo?.keyword || 'site internet'} bien structuré convertit mieux</h2>
+          <p>Un bon référencement ne suffit pas. Il faut aussi une page claire, crédible et orientée vers l'action pour transformer les visites en demandes.</p>
         </div>
         <div class="vertical-signals__grid">
           ${detail.pillars

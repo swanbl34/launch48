@@ -484,68 +484,6 @@ const renderShell = () => {
         </div>
       </section>
 
-      <section class="projects-mosaic section container" id="projects">
-        <div class="projects-mosaic__head">
-          <h2 data-slot="projects.title"></h2>
-          <p class="section-intro" data-slot="projects.subtitle"></p>
-        </div>
-        <div class="projects-mosaic__grid">
-          <a
-            class="project-card project-card--feature"
-            data-slot-href="projects.item1.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item1.image" data-slot-alt="projects.item1.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item1.meta"></span>
-              <h3 data-slot="projects.item1.title"></h3>
-              <p data-slot="projects.item1.text"></p>
-              <span class="project-card__link" data-slot="projects.item1.cta"></span>
-            </div>
-          </a>
-
-          <a
-            class="project-card"
-            data-slot-href="projects.item2.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item2.image" data-slot-alt="projects.item2.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item2.meta"></span>
-              <h3 data-slot="projects.item2.title"></h3>
-              <p data-slot="projects.item2.text"></p>
-              <span class="project-card__link" data-slot="projects.item2.cta"></span>
-            </div>
-          </a>
-
-          <a
-            class="project-card"
-            data-slot-href="projects.item3.href"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img class="project-card__image" data-slot-src="projects.item3.image" data-slot-alt="projects.item3.imageAlt" loading="lazy" decoding="async" />
-            <div class="project-card__overlay">
-              <span class="project-card__meta" data-slot="projects.item3.meta"></span>
-              <h3 data-slot="projects.item3.title"></h3>
-              <p data-slot="projects.item3.text"></p>
-              <span class="project-card__link" data-slot="projects.item3.cta"></span>
-            </div>
-          </a>
-
-          <a class="project-card project-card--cta" data-slot-href="projects.item4.href">
-            <div class="project-card__cta-shell">
-              <span class="project-card__meta" data-slot="projects.item4.meta"></span>
-              <h3 data-slot="projects.item4.title"></h3>
-              <p data-slot="projects.item4.text"></p>
-              <span class="project-card__link" data-slot="projects.item4.cta"></span>
-            </div>
-          </a>
-        </div>
-      </section>
-
       <section class="pricing section container" id="pricing">
         <h2 data-slot="pricing.title"></h2>
         <p class="pricing__price" data-slot="pricing.price"></p>
@@ -598,6 +536,7 @@ const renderShell = () => {
         <a data-slot="footer.social2.label" data-slot-href="footer.social2.href"></a>
         <a data-slot="footer.social3.label" data-slot-href="footer.social3.href"></a>
       </div>
+      <a class="btn btn--small site-footer__cta" href="/partenaires/">Devenir partenaire</a>
       <div class="site-footer__legal">
         <a data-slot="footer.legal1.label" data-slot-href="footer.legal1.href"></a>
         <a data-slot="footer.legal2.label" data-slot-href="footer.legal2.href"></a>

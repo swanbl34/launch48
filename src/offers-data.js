@@ -313,7 +313,7 @@ export const OFFERS = [
     preview: {
       src: '/previews/site-media-podcast-home.jpg',
       alt: 'Capture de la homepage du média Tripin',
-      href: 'https://tripin-five.vercel.app/'
+      href: 'https://www.tripinculture.fr/'
     },
     previewSpotlight: {
       kicker: 'Exemple de site internet média',

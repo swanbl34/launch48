@@ -530,16 +530,25 @@ p {
     min-width: 0;
   }
 
+  .hero {
+    min-height: 100svh;
+  }
+
   .hf-3,
   .hf-4,
   .hf-7 {
     display: none;
   }
 
-  .hf-1 { top: 8%; left: 2%; }
-  .hf-2 { top: 8%; right: 2%; }
-  .hf-5 { bottom: 10%; right: 2%; }
-  .hf-6 { bottom: 10%; left: 2%; }
+  .hero__cta {
+    flex-wrap: nowrap;
+  }
+
+  .hero__cta .btn {
+    flex: 1;
+    font-size: 0.88rem;
+    padding: 0.75rem 0.8rem;
+  }
 
   .contact-card h2 {
     margin-top: 0.7rem;
@@ -961,6 +970,13 @@ a:focus-visible {
 .hf-5 { bottom: 20%; right: 10%; animation-delay: 0.32s; color: var(--accent); border-color: color-mix(in srgb, var(--accent), transparent 55%); }
 .hf-6 { bottom: 26%; left: 7%;   animation-delay: 0.45s; color: var(--accent-3); border-color: color-mix(in srgb, var(--accent-3), transparent 55%); }
 .hf-7 { top: 36%; right: 2%;     animation-delay: 0.18s; }
+
+@media (max-width: 759px) {
+  .hf-1 { top: 14%; left: 3%; }
+  .hf-2 { top: 14%; right: 3%; }
+  .hf-5 { bottom: 10%; right: 3%; top: auto; }
+  .hf-6 { bottom: 10%; left: 3%; top: auto; }
+}
 
 
 @keyframes float-hint {

@@ -182,7 +182,6 @@ const renderShell = () => {
             <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
             <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
           </div>
-          <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
         </div>
       </section>
 
@@ -1163,9 +1162,8 @@ const setupAnimations = () => {
         start: 'center center',
         end: () => `+=${window.innerHeight * 1.45}`,
         pin: processSticky,
-        scrub: true,
+        scrub: 1,
         pinSpacing: true,
-        anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: updateProcessProgress

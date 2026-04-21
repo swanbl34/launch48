@@ -81,74 +81,6 @@ const verticalNeeds = [
   }
 ];
 
-const renderHeroCarousel = () => `
-  <div class="hero-carousel" data-hero-carousel>
-    <div class="hero-carousel__header">
-      <p class="hero-carousel__eyebrow">Exemples de sites Launch48</p>
-      <p class="hero-carousel__status" data-carousel-status aria-live="polite">1 / ${verticalNeeds.length}</p>
-    </div>
-    <div class="hero-carousel__viewport">
-      ${verticalNeeds
-        .map(
-          (item, index) => `
-            <article
-              class="hero-carousel__slide${index === 0 ? ' is-active' : ''}"
-              data-carousel-slide
-              aria-hidden="${index === 0 ? 'false' : 'true'}"
-            >
-              <a class="hero-carousel__card" href="${item.href}" aria-label="Voir l'offre ${item.title}">
-                <div class="hero-carousel__frame">
-                  <img
-                    class="hero-carousel__image"
-                    src="${item.previewSrc}"
-                    alt="${item.previewAlt}"
-                    loading="${index === 0 ? 'eager' : 'lazy'}"
-                    decoding="async"
-                  />
-                </div>
-                <div class="hero-carousel__body">
-                  <div class="hero-carousel__copy">
-                    <h3>${item.title}</h3>
-                    <p>${item.description}</p>
-                  </div>
-                  <span class="hero-carousel__cta">Voir l'offre</span>
-                </div>
-              </a>
-            </article>
-          `
-        )
-        .join('')}
-    </div>
-    <div class="hero-carousel__footer">
-      <button class="hero-carousel__arrow" type="button" data-carousel-prev aria-label="Capture précédente">
-        <span aria-hidden="true">←</span>
-      </button>
-      <div class="hero-carousel__nav">
-        <div class="hero-carousel__dots" role="tablist" aria-label="Choisir une capture de site">
-          ${verticalNeeds
-            .map(
-              (item, index) => `
-                <button
-                  class="hero-carousel__dot${index === 0 ? ' is-active' : ''}"
-                  type="button"
-                  role="tab"
-                  aria-selected="${index === 0 ? 'true' : 'false'}"
-                  aria-label="${item.title}"
-                  data-carousel-dot="${index}"
-                ></button>
-              `
-            )
-            .join('')}
-        </div>
-        <p class="hero-carousel__hint">Défilement automatique</p>
-      </div>
-      <button class="hero-carousel__arrow" type="button" data-carousel-next aria-label="Capture suivante">
-        <span aria-hidden="true">→</span>
-      </button>
-    </div>
-  </div>
-`;
-
 const renderShell = () => {
   app.innerHTML = `
     <div class="cursor" aria-hidden="true"></div>
@@ -227,25 +159,30 @@ const renderShell = () => {
 
     <main id="main">
       <section class="hero section container" id="hero">
-        <div class="hero__layout">
-          <div class="hero__content">
-            <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
-            <h1 class="hero__title" data-slot="hero.title"></h1>
-            <p class="hero__subtitle" data-slot="hero.subtitle"></p>
-            <div class="hero__badges">
-              <span class="pill" data-slot="hero.badge1"></span>
-              <span class="pill" data-slot="hero.badge2"></span>
-              <span class="pill" data-slot="hero.badge3"></span>
-            </div>
-            <div class="hero__cta">
-              <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
-              <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
-            </div>
-            <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
+        <div class="hero-deco" aria-hidden="true">
+          <div class="hero-orb--a" data-hero-orb-a></div>
+          <div class="hero-orb--b" data-hero-orb-b></div>
+          <div class="hero-ring" data-hero-ring></div>
+          <div class="hero-cross hc-1"></div>
+          <div class="hero-cross hc-2"></div>
+          <div class="hero-cross hc-3"></div>
+          <span class="hero-float hf-1" data-speed="0.08" data-mouse-depth="0.3">Landing page</span>
+          <span class="hero-float hf-2" data-speed="0.12" data-mouse-depth="0.4">One page</span>
+          <span class="hero-float hf-3" data-speed="0.05" data-mouse-depth="0.2">Vitrine</span>
+          <span class="hero-float hf-4" data-speed="0.15" data-mouse-depth="0.35">Événement</span>
+          <span class="hero-float hf-5" data-speed="0.18" data-mouse-depth="0.25">Portfolio</span>
+          <span class="hero-float hf-6" data-speed="0.10" data-mouse-depth="0.3">E-commerce</span>
+          <span class="hero-float hf-7" data-speed="0.14" data-mouse-depth="0.4">Food</span>
+        </div>
+        <div class="hero__content">
+          <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
+          <h1 class="hero__title" data-typewriter-segments="Un site pro, livré en 48h."></h1>
+          <p class="hero__subtitle" data-slot="hero.subtitle"></p>
+          <div class="hero__cta">
+            <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
+            <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
           </div>
-          <aside class="hero__visual" aria-label="Carrousel des captures de sites Launch48">
-            ${renderHeroCarousel()}
-          </aside>
+          <p class="hero__scroll-hint" data-slot="hero.scrollHint"></p>
         </div>
       </section>
 
@@ -900,10 +837,15 @@ const setupCursor = () => {
   if (window.matchMedia('(pointer: coarse)').matches) return;
   const cursor = document.querySelector('.cursor');
   if (!cursor) return;
+  document.body.classList.add('has-custom-cursor');
 
   window.addEventListener('pointermove', (event) => {
-    cursor.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+    cursor.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(-50%, -50%)`;
     cursor.classList.add('is-visible');
+  });
+
+  window.addEventListener('pointerleave', () => {
+    cursor.classList.remove('is-visible');
   });
 
   document.querySelectorAll('a, button').forEach((node) => {
@@ -1018,223 +960,99 @@ const setupHeaderScrollState = () => {
   window.addEventListener('resize', onScroll, { passive: true });
 };
 
-const setupHeroCarousel = () => {
-  const carousel = document.querySelector('[data-hero-carousel]');
-  if (!carousel) return;
-
-  const viewport = carousel.querySelector('.hero-carousel__viewport');
-  const slides = Array.from(carousel.querySelectorAll('[data-carousel-slide]'));
-  const dots = Array.from(carousel.querySelectorAll('[data-carousel-dot]'));
-  const previousButton = carousel.querySelector('[data-carousel-prev]');
-  const nextButton = carousel.querySelector('[data-carousel-next]');
-  const status = carousel.querySelector('[data-carousel-status]');
-  const hint = carousel.querySelector('.hero-carousel__hint');
-
-  if (!viewport || slides.length <= 1) return;
-
-  const isMobileCarousel = () => window.innerWidth < 760;
-  let currentIndex = 0;
-  let autoplayId = null;
-  let autoplayResumeId = null;
-  let scrollFrame = null;
-  let lastWheelNavigationAt = 0;
-
-  const setActiveSlide = (nextIndex) => {
-    currentIndex = (nextIndex + slides.length) % slides.length;
-
-    slides.forEach((slide, index) => {
-      const isActive = index === currentIndex;
-      slide.classList.toggle('is-active', isActive);
-      slide.setAttribute('aria-hidden', String(!isActive));
-    });
-
-    dots.forEach((dot, index) => {
-      const isActive = index === currentIndex;
-      dot.classList.toggle('is-active', isActive);
-      dot.setAttribute('aria-selected', String(isActive));
-    });
-
-    if (status) {
-      status.textContent = `${currentIndex + 1} / ${slides.length}`;
-    }
-
-    if (hint) {
-      hint.textContent = isMobileCarousel() ? 'Glisser pour parcourir' : 'Défilement automatique';
-    }
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayId === null) return;
-    window.clearInterval(autoplayId);
-    autoplayId = null;
-  };
-
-  const clearAutoplayResume = () => {
-    if (autoplayResumeId === null) return;
-    window.clearTimeout(autoplayResumeId);
-    autoplayResumeId = null;
-  };
-
-  const startAutoplay = () => {
-    stopAutoplay();
-    autoplayId = window.setInterval(() => {
-      goToSlide(currentIndex + 1);
-    }, isMobileCarousel() ? 4800 : 4200);
-  };
-
-  const scheduleAutoplayResume = () => {
-    clearAutoplayResume();
-    autoplayResumeId = window.setTimeout(() => {
-      startAutoplay();
-    }, isMobileCarousel() ? 2400 : 1200);
-  };
-
-  const syncActiveSlideFromScroll = () => {
-    scrollFrame = null;
-
-    const closestIndex = slides.reduce(
-      (nearestIndex, slide, index, collection) => {
-        const currentDistance = Math.abs(slide.offsetLeft - viewport.scrollLeft);
-        const nearestDistance = Math.abs(collection[nearestIndex].offsetLeft - viewport.scrollLeft);
-        return currentDistance < nearestDistance ? index : nearestIndex;
-      },
-      0
-    );
-
-    setActiveSlide(closestIndex);
-  };
-
-  const goToSlide = (nextIndex, { behavior } = {}) => {
-    const normalizedIndex = (nextIndex + slides.length) % slides.length;
-
-    if (isMobileCarousel()) {
-      viewport.scrollTo({
-        left: slides[normalizedIndex].offsetLeft,
-        behavior: behavior || (prefersReducedMotion ? 'auto' : 'smooth')
+const setupHeroParallax = () => {
+  const heroEl     = document.querySelector('.hero');
+  const heroFloats = document.querySelectorAll('.hero-float[data-speed]');
+  const heroCross  = document.querySelectorAll('.hero-cross');
+  const heroRing   = document.querySelector('[data-hero-ring]');
+  const heroOrbA   = document.querySelector('[data-hero-orb-a]');
+  const heroOrbB   = document.querySelector('[data-hero-orb-b]');
+  if (!heroEl) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const h1 = heroEl.querySelector('.hero__title[data-typewriter-segments]');
+    if (h1) {
+      const segs = h1.dataset.typewriterSegments.split('|');
+      segs.forEach((seg, i) => {
+        h1.insertAdjacentText('beforeend', seg);
+        if (i < segs.length - 1) h1.insertAdjacentHTML('beforeend', '<br>');
       });
-      setActiveSlide(normalizedIndex);
-      return;
     }
+    return;
+  }
 
-    setActiveSlide(normalizedIndex);
-  };
-
-  previousButton?.addEventListener('click', () => {
-    goToSlide(currentIndex - 1);
-    startAutoplay();
-  });
-
-  nextButton?.addEventListener('click', () => {
-    goToSlide(currentIndex + 1);
-    startAutoplay();
-  });
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      goToSlide(index);
-      startAutoplay();
-    });
-  });
-
-  viewport.addEventListener(
-    'scroll',
-    () => {
-      if (!isMobileCarousel()) return;
-      stopAutoplay();
-      scheduleAutoplayResume();
-      if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame);
-      scrollFrame = window.requestAnimationFrame(syncActiveSlideFromScroll);
-    },
-    { passive: true }
-  );
-
-  viewport.addEventListener(
-    'touchstart',
-    () => {
-      stopAutoplay();
-      clearAutoplayResume();
-    },
-    { passive: true }
-  );
-
-  viewport.addEventListener(
-    'touchend',
-    () => {
-      scheduleAutoplayResume();
-    },
-    { passive: true }
-  );
-
-  viewport.addEventListener(
-    'pointerdown',
-    () => {
-      if (!isMobileCarousel()) return;
-      stopAutoplay();
-      clearAutoplayResume();
-    },
-    { passive: true }
-  );
-
-  viewport.addEventListener(
-    'pointerup',
-    () => {
-      if (!isMobileCarousel()) return;
-      scheduleAutoplayResume();
-    },
-    { passive: true }
-  );
-
-  viewport.addEventListener(
-    'wheel',
-    (event) => {
-      if (isMobileCarousel()) return;
-
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : 0;
-      if (Math.abs(delta) < 18) return;
-
-      const now = Date.now();
-      if (now - lastWheelNavigationAt < 650) {
-        event.preventDefault();
-        return;
+  // Typewriter
+  (function () {
+    const el = heroEl.querySelector('.hero__title[data-typewriter-segments]');
+    if (!el) return;
+    const segments = el.dataset.typewriterSegments.split('|');
+    const cursor = document.createElement('span');
+    cursor.className = 'type-cursor';
+    el.appendChild(cursor);
+    let si = 0, ci = 0;
+    function typeNext() {
+      if (si >= segments.length) return;
+      const seg = segments[si];
+      if (ci < seg.length) {
+        cursor.insertAdjacentText('beforebegin', seg[ci]);
+        ci++;
+        setTimeout(typeNext, 38);
+      } else {
+        si++;
+        ci = 0;
+        if (si < segments.length) {
+          cursor.insertAdjacentHTML('beforebegin', '<br>');
+          setTimeout(typeNext, 38 * 4);
+        }
       }
-
-      lastWheelNavigationAt = now;
-      event.preventDefault();
-      stopAutoplay();
-      scheduleAutoplayResume();
-      goToSlide(currentIndex + (delta > 0 ? 1 : -1));
-    },
-    { passive: false }
-  );
-
-  carousel.addEventListener('mouseenter', stopAutoplay);
-  carousel.addEventListener('mouseleave', startAutoplay);
-  carousel.addEventListener('focusin', stopAutoplay);
-  carousel.addEventListener('focusout', (event) => {
-    if (event.relatedTarget instanceof Node && carousel.contains(event.relatedTarget)) return;
-    startAutoplay();
-  });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stopAutoplay();
-      clearAutoplayResume();
-      return;
     }
-    startAutoplay();
-  });
+    setTimeout(typeNext, 320);
+  }());
 
-  window.addEventListener('resize', () => {
-    stopAutoplay();
-    clearAutoplayResume();
-    goToSlide(currentIndex, { behavior: 'auto' });
-    startAutoplay();
-  });
+  // Parallax + mouse
+  let sy = 0, mx = 0, my = 0, lx = 0, ly = 0, rafId;
+  function lp(a, b, t) { return a + (b - a) * t; }
 
-  setActiveSlide(0);
-  goToSlide(0, { behavior: 'auto' });
-  startAutoplay();
+  window.addEventListener('scroll', () => { sy = window.scrollY; }, { passive: true });
+  heroEl.addEventListener('mousemove', (e) => {
+    const r = heroEl.getBoundingClientRect();
+    mx = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+    my = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+  });
+  heroEl.addEventListener('mouseleave', () => { mx = 0; my = 0; });
+
+  function tick() {
+    rafId = requestAnimationFrame(tick);
+    lx = lp(lx, mx, 0.055);
+    ly = lp(ly, my, 0.055);
+    const t = performance.now() / 1000;
+
+    heroFloats.forEach((el, i) => {
+      const ss    = parseFloat(el.dataset.speed      || 0);
+      const md    = parseFloat(el.dataset.mouseDepth || 0.3);
+      const phase = i * (Math.PI * 2 / heroFloats.length);
+      const freq  = 0.45 + i * 0.07;
+      const amp   = 10 + (i % 3) * 5;
+      const osc   = Math.sin(t * freq + phase) * amp;
+      el.style.transform = `translate(${(lx * md * 40).toFixed(2)}px, ${(sy * ss + ly * md * 28 + osc).toFixed(2)}px)`;
+    });
+
+    heroCross.forEach((el, i) => {
+      const d = [0.50, 0.20, 0.38][i] || 0.3;
+      el.style.transform = `translate(${(lx * d * 16).toFixed(2)}px, ${(ly * d * 10).toFixed(2)}px)`;
+    });
+
+    if (heroRing) {
+      heroRing.style.transform =
+        `translate(calc(-50% + ${(lx * 10).toFixed(2)}px), calc(-50% + ${(sy * 0.04 + ly * 7).toFixed(2)}px)) rotate(${(sy * 0.016 + lx * 2.5).toFixed(2)}deg)`;
+    }
+    if (heroOrbA) heroOrbA.style.transform = `translate(${(lx * -18).toFixed(2)}px, ${(sy * -0.07 + ly * -12).toFixed(2)}px)`;
+    if (heroOrbB) heroOrbB.style.transform = `translate(${(lx *  14).toFixed(2)}px, ${(sy *  0.05 + ly *   9).toFixed(2)}px)`;
+  }
+
+  tick();
+  window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
 };
+
 
 const setupAnimations = () => {
   if (prefersReducedMotion) {
@@ -1242,7 +1060,7 @@ const setupAnimations = () => {
     return;
   }
 
-  gsap.from('.hero > *', {
+  gsap.from('.hero__content > *', {
     opacity: 0,
     y: 30,
     stagger: 0.08,
@@ -1414,7 +1232,7 @@ const init = async () => {
   setupCenteredAnchors();
   setupBackgroundScroll();
   setupHeaderScrollState();
-  setupHeroCarousel();
+  setupHeroParallax();
   setupAnimations();
 
   if (hasError) {

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "launch48",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "marmite-site",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/swanbadol/Codage/marmite-site && python3 -m http.server 8080"],
+      "port": 8080
+    }
+  ]
+}

@@ -1159,9 +1159,13 @@ const setupAnimations = () => {
     if (window.innerWidth < 760) {
       ScrollTrigger.create({
         trigger: processSection,
-        start: 'top center',
-        end: 'bottom center',
+        start: 'center center',
+        end: () => `+=${window.innerHeight * 1.45}`,
+        pin: processSticky,
         scrub: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: updateProcessProgress
       });

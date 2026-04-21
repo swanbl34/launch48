@@ -550,15 +550,6 @@ p {
     padding: 0.75rem 0.8rem;
   }
 
-  #process {
-    min-height: 220vh;
-  }
-
-  .process-sticky {
-    position: sticky;
-    top: clamp(4.5rem, 10vh, 6rem);
-  }
-
   .contact-card h2 {
     margin-top: 0.7rem;
   }

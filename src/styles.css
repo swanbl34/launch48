@@ -81,7 +81,7 @@ body {
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
 }
 

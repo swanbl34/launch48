@@ -1658,6 +1658,20 @@ a:focus-visible {
   will-change: transform;
 }
 
+@media (max-width: 759px) {
+  #process {
+    /* Espace de scroll suffisant pour l'effet sticky (remplace le pinSpacing GSAP) */
+    min-height: 200vh;
+    min-height: 200dvh;
+  }
+  .process-sticky {
+    position: sticky;
+    top: 0;
+    will-change: auto;
+    padding-block: 2rem;
+  }
+}
+
 .process-step {
   padding: 1rem;
   border: 1px solid var(--line);

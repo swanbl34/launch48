@@ -1258,14 +1258,13 @@ const setupAnimations = () => {
     };
 
     if (window.innerWidth < 760) {
+      // Mobile : position sticky CSS (compositor natif, sans jitter iOS)
+      // Le ScrollTrigger ne gère que la barre de progression, pas le pin
       ScrollTrigger.create({
         trigger: processSection,
-        start: 'center center',
-        end: () => `+=${window.innerHeight * 1.45}`,
-        pin: processSticky,
+        start: 'top top',
+        end: 'bottom bottom',
         scrub: true,
-        pinSpacing: true,
-        anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: updateProcessProgress

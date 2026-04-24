@@ -1258,19 +1258,17 @@ const setupAnimations = () => {
     };
 
     if (window.innerWidth < 760) {
-      // Mobile : aucune animation scroll-driven (pin/scrub = jitter iOS)
-      // Les steps sont toujours visibles via CSS, simple fade-in à l'entrée
-      gsap.from(processSteps, {
-        opacity: 0,
-        y: 20,
-        stagger: 0.12,
-        duration: 0.5,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: processSection,
-          start: 'top 75%',
-          once: true
-        }
+      ScrollTrigger.create({
+        trigger: processSection,
+        start: 'center center',
+        end: () => `+=${window.innerHeight * 1.45}`,
+        pin: processSticky,
+        scrub: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
+        onUpdate: updateProcessProgress
       });
     } else {
       ScrollTrigger.create({

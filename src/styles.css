@@ -1658,25 +1658,6 @@ a:focus-visible {
   will-change: transform;
 }
 
-@media (max-width: 759px) {
-  /* Sur mobile : désactive l'animation scroll-driven pour éviter le jitter iOS */
-  .process__progress {
-    display: none;
-  }
-  .process-step {
-    opacity: 1 !important;
-    border-color: color-mix(in srgb, var(--accent), white 12%);
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent), transparent 86%),
-      color-mix(in srgb, var(--accent-2), transparent 92%)
-    );
-  }
-  .process-sticky {
-    will-change: auto;
-  }
-}
-
 .process-step {
   padding: 1rem;
   border: 1px solid var(--line);

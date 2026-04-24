@@ -1659,16 +1659,21 @@ a:focus-visible {
 }
 
 @media (max-width: 759px) {
-  #process {
-    /* Espace de scroll suffisant pour l'effet sticky (remplace le pinSpacing GSAP) */
-    min-height: 200vh;
-    min-height: 200dvh;
+  /* Sur mobile : désactive l'animation scroll-driven pour éviter le jitter iOS */
+  .process__progress {
+    display: none;
+  }
+  .process-step {
+    opacity: 1 !important;
+    border-color: color-mix(in srgb, var(--accent), white 12%);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--accent), transparent 86%),
+      color-mix(in srgb, var(--accent-2), transparent 92%)
+    );
   }
   .process-sticky {
-    position: sticky;
-    top: 0;
     will-change: auto;
-    padding-block: 2rem;
   }
 }
 

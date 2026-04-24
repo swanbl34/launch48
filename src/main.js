@@ -1258,16 +1258,19 @@ const setupAnimations = () => {
     };
 
     if (window.innerWidth < 760) {
-      // Mobile : position sticky CSS (compositor natif, sans jitter iOS)
-      // Le ScrollTrigger ne gère que la barre de progression, pas le pin
-      ScrollTrigger.create({
-        trigger: processSection,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-        fastScrollEnd: true,
-        invalidateOnRefresh: true,
-        onUpdate: updateProcessProgress
+      // Mobile : aucune animation scroll-driven (pin/scrub = jitter iOS)
+      // Les steps sont toujours visibles via CSS, simple fade-in à l'entrée
+      gsap.from(processSteps, {
+        opacity: 0,
+        y: 20,
+        stagger: 0.12,
+        duration: 0.5,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: processSection,
+          start: 'top 75%',
+          once: true
+        }
       });
     } else {
       ScrollTrigger.create({

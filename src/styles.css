@@ -1742,27 +1742,19 @@ a:focus-visible {
   border: 1px solid var(--line);
   border-radius: 20px;
   padding: clamp(1.2rem, 3vw, 1.75rem);
-  background: linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%));
-  box-shadow: var(--shadow);
+  background: var(--surface-solid);
   display: flex;
   flex-direction: column;
-  /* Pas de transform dans transition sur mobile — évite la création
-     de compositor layers GPU inutiles qui causent le jitter iOS */
-  transition: border-color 220ms ease;
-  position: relative;
 }
 
 .pc.pc--featured {
   border-color: color-mix(in srgb, var(--accent), var(--line) 38%);
-  background:
-    linear-gradient(140deg, color-mix(in srgb, var(--accent), transparent 88%), color-mix(in srgb, var(--accent-2), transparent 92%)),
-    linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+  background: color-mix(in srgb, var(--accent), var(--surface-solid) 6%);
 }
 
-/* Hover uniquement sur vrais pointeurs (desktop) */
 @media (hover: hover) {
   .pc {
-    transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+    transition: border-color 220ms ease, transform 220ms ease;
   }
   .pc:hover {
     transform: translateY(-3px);
@@ -1887,7 +1879,7 @@ a:focus-visible {
 }
 
 .pc--featured .pc__cta {
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent), transparent 8%), color-mix(in srgb, var(--accent-2), transparent 5%));
+  background: var(--accent);
   border-color: transparent;
   color: #040607;
 }

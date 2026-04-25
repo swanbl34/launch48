@@ -1739,8 +1739,8 @@ a:focus-visible {
 }
 
 .pc--featured {
-  border-color: color-mix(in srgb, var(--accent), var(--line) 38%);
-  background: color-mix(in srgb, var(--accent), var(--surface-solid) 6%);
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface-solid));
 }
 
 @media (hover: hover) {

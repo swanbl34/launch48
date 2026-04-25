@@ -522,16 +522,6 @@ p {
 }
 
 @media (max-width: 759px) {
-  /* Process section : CSS sticky natif au lieu du GSAP pin
-     (pas de position:fixed = pas de jitter iOS) */
-  #process {
-    min-height: 210vh;
-  }
-  .process-sticky {
-    position: sticky;
-    top: 5rem;
-  }
-
   .nav {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;

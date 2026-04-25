@@ -1270,16 +1270,17 @@ const setupAnimations = () => {
     };
 
     if (window.innerWidth < 760) {
-      // Mobile : CSS sticky gère le collage (pas de position:fixed = pas de jitter iOS),
-      // simple scroll listener pour la progression — 0 GSAP pin.
-      const handleProcessScroll = () => {
-        const rect = processSection.getBoundingClientRect();
-        const scrollableH = Math.max(1, processSection.offsetHeight - window.innerHeight);
-        const progress = Math.max(0, Math.min(1, -rect.top / scrollableH));
-        updateProcessProgress(progress);
-      };
-      window.addEventListener('scroll', handleProcessScroll, { passive: true });
-      handleProcessScroll();
+      ScrollTrigger.create({
+        trigger: processSection,
+        start: 'center center',
+        end: () => `+=${window.innerHeight * 1.45}`,
+        pin: processSticky,
+        scrub: true,
+        pinSpacing: true,
+        fastScrollEnd: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => updateProcessProgress(self.progress)
+      });
     } else {
       ScrollTrigger.create({
         trigger: processSection,

@@ -522,6 +522,16 @@ p {
 }
 
 @media (max-width: 759px) {
+  /* Process section : CSS sticky natif au lieu du GSAP pin
+     (pas de position:fixed = pas de jitter iOS) */
+  #process {
+    min-height: 210vh;
+  }
+  .process-sticky {
+    position: sticky;
+    top: 5rem;
+  }
+
   .nav {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -1632,14 +1642,15 @@ a:focus-visible {
 .process__progress-rocket {
   position: absolute;
   top: 50%;
-  left: 2%;
+  left: 0;
   z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 3.2rem;
   height: 1.7rem;
-  transform: translate(-50%, -50%) scaleX(-1);
+  /* transform géré en JS via translateX(px) translateY(-50%) scaleX(-1) */
+  transform: translateX(0) translateY(-50%) scaleX(-1);
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 

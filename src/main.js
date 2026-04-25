@@ -1171,30 +1171,64 @@ const setupAnimations = () => {
   const offerMeterFill = document.querySelector('.offer-panel__meter-fill');
 
   if (offerSection && offerLayout && offerCards.length > 0) {
-    gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97 });
+    const isMobileTouch = window.matchMedia('(pointer: coarse)').matches;
 
-    offerCards.forEach((card) => {
-      gsap.to(card, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
+    if (isMobileTouch) {
+      // Mobile : IntersectionObserver — pas de scrub, pas de will-change forcé par GSAP,
+      // pas de GPU layers supplémentaires pendant le scroll.
+      offerCards.forEach((card) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(24px)';
+        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      });
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      offerCards.forEach((card) => observer.observe(card));
+
+      offerCards.forEach((card) => {
+        ScrollTrigger.create({
           trigger: card,
-          start: 'top 80%',
-          end: 'top 60%',
-          scrub: true,
-          invalidateOnRefresh: true
-        }
+          start: 'top 48%',
+          end: 'bottom 48%',
+          toggleClass: { targets: card, className: 'is-current' }
+        });
       });
+    } else {
+      gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97 });
 
-      ScrollTrigger.create({
-        trigger: card,
-        start: 'top 48%',
-        end: 'bottom 48%',
-        toggleClass: { targets: card, className: 'is-current' }
+      offerCards.forEach((card) => {
+        gsap.to(card, {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            end: 'top 60%',
+            scrub: true,
+            invalidateOnRefresh: true
+          }
+        });
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 48%',
+          end: 'bottom 48%',
+          toggleClass: { targets: card, className: 'is-current' }
+        });
       });
-    });
+    }
 
     if (offerMeterFill) {
       gsap.to(offerMeterFill, {
@@ -1219,33 +1253,33 @@ const setupAnimations = () => {
   const processProgressRocket = document.querySelector('.process__progress-rocket');
 
   if (processSection && processSticky && processProgressFill && processProgressRocket && processSteps.length > 0) {
-    const updateProcessProgress = (self) => {
-      gsap.set(processProgressFill, {
-        scaleX: self.progress,
-        transformOrigin: '0% 50%'
-      });
-      gsap.set(processProgressRocket, {
-        left: `${gsap.utils.clamp(2, 98, self.progress * 100)}%`
-      });
+    const updateProcessProgress = (progress) => {
+      // scaleX sur la barre : composited, pas de layout
+      processProgressFill.style.transform = `scaleX(${progress})`;
+      processProgressFill.style.transformOrigin = '0% 50%';
 
-      const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));
+      // translateX au lieu de left : composited, pas de layout reflow
+      const barWidth = processProgressFill.parentElement?.offsetWidth || 0;
+      const rocketPx = Math.max(0, Math.min(barWidth, progress * barWidth));
+      processProgressRocket.style.transform = `translateX(${rocketPx}px) translateY(-50%) scaleX(-1)`;
+
+      const currentIndex = Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length));
       processSteps.forEach((step, index) => {
         step.classList.toggle('is-active', index <= currentIndex);
       });
     };
 
     if (window.innerWidth < 760) {
-      ScrollTrigger.create({
-        trigger: processSection,
-        start: 'center center',
-        end: () => `+=${window.innerHeight * 1.45}`,
-        pin: processSticky,
-        scrub: true,
-        pinSpacing: true,
-        fastScrollEnd: true,
-        invalidateOnRefresh: true,
-        onUpdate: updateProcessProgress
-      });
+      // Mobile : CSS sticky gère le collage (pas de position:fixed = pas de jitter iOS),
+      // simple scroll listener pour la progression — 0 GSAP pin.
+      const handleProcessScroll = () => {
+        const rect = processSection.getBoundingClientRect();
+        const scrollableH = Math.max(1, processSection.offsetHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, -rect.top / scrollableH));
+        updateProcessProgress(progress);
+      };
+      window.addEventListener('scroll', handleProcessScroll, { passive: true });
+      handleProcessScroll();
     } else {
       ScrollTrigger.create({
         trigger: processSection,
@@ -1254,7 +1288,7 @@ const setupAnimations = () => {
         scrub: true,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
-        onUpdate: updateProcessProgress
+        onUpdate: (self) => updateProcessProgress(self.progress)
       });
     }
   }

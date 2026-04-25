@@ -1159,14 +1159,13 @@ const setupAnimations = () => {
   const offerMeterFill = document.querySelector('.offer-panel__meter-fill');
 
   if (offerSection && offerLayout && offerCards.length > 0) {
-    gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97, filter: 'blur(6px)' });
+    gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97 });
 
     offerCards.forEach((card) => {
       gsap.to(card, {
         autoAlpha: 1,
         y: 0,
         scale: 1,
-        filter: 'blur(0px)',
         ease: 'power2.out',
         scrollTrigger: {
           trigger: card,
@@ -1231,7 +1230,6 @@ const setupAnimations = () => {
         pin: processSticky,
         scrub: true,
         pinSpacing: true,
-        anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
         onUpdate: updateProcessProgress

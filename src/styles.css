@@ -255,7 +255,6 @@ p {
   top: 0;
   z-index: 40;
   padding-top: 0.8rem;
-  will-change: transform;
   overflow: visible;
 }
 
@@ -1637,7 +1636,6 @@ a:focus-visible {
   height: 1.7rem;
   transform: translate(-50%, -50%) scaleX(-1);
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-  will-change: left;
 }
 
 .process__progress-rocket-icon {
@@ -1655,7 +1653,6 @@ a:focus-visible {
 
 .process-sticky {
   display: grid;
-  will-change: transform;
 }
 
 .process-step {

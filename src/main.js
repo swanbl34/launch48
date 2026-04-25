@@ -1249,13 +1249,20 @@ const setupAnimations = () => {
     }
   }
 
-  gsap.from('.pricing', {
-    opacity: 0,
-    y: 60,
-    scrollTrigger: {
-      trigger: '.pricing',
-      start: 'top 82%'
-    }
+  // Reveal sur les éléments individuels plutôt que la section entière
+  // (évite une texture GPU géante sur iOS qui cause le jitter page)
+  gsap.utils.toArray('.pricing-head, .pc').forEach((el) => {
+    gsap.from(el, {
+      autoAlpha: 0,
+      y: 24,
+      duration: 0.6,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        once: true
+      }
+    });
   });
 
   gsap.from('.needs-card', {

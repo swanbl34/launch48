@@ -863,7 +863,6 @@ a:focus-visible {
   right: -8%;
   background: radial-gradient(circle, rgba(70, 228, 255, 0.18) 0%, rgba(70, 228, 255, 0.06) 50%, transparent 100%);
   filter: blur(70px);
-  will-change: transform;
 }
 
 .hero-orb--b {
@@ -875,7 +874,6 @@ a:focus-visible {
   left: -6%;
   background: radial-gradient(circle, rgba(95, 141, 255, 0.14) 0%, rgba(95, 141, 255, 0.05) 50%, transparent 100%);
   filter: blur(70px);
-  will-change: transform;
 }
 
 .hero-ring {
@@ -887,7 +885,6 @@ a:focus-visible {
   aspect-ratio: 1;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--line), transparent 30%);
-  will-change: transform;
 }
 
 .hero-ring::before {
@@ -956,9 +953,17 @@ a:focus-visible {
   -webkit-backdrop-filter: blur(10px);
   color: var(--muted);
   white-space: nowrap;
-  will-change: transform;
   opacity: 0;
   animation: chip-in 0.5s ease forwards;
+}
+
+@media (hover: hover) {
+  .hero-orb--a,
+  .hero-orb--b,
+  .hero-ring,
+  .hero-float {
+    will-change: transform;
+  }
 }
 
 @keyframes chip-in {

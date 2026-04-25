@@ -978,6 +978,12 @@ const setupCenteredAnchors = () => {
 };
 
 const setupBackgroundScroll = () => {
+  // Sur mobile/tactile : on ne met pas à jour --bg-progress au scroll.
+  // Chaque mise à jour force le browser à recalculer 3+ radial-gradient
+  // + l'opacity du ::before sur toute la page → repaint full-page à 60fps
+  // → le compositor iOS doit re-composer toutes les couches → tremblement global.
+  if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+
   const root = document.documentElement;
   let rafId = null;
 
@@ -1046,7 +1052,9 @@ const setupHeroParallax = () => {
     return;
   }
 
-  // Typewriter
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
+  // Typewriter (tous appareils)
   (function () {
     const el = heroEl.querySelector('.hero__title[data-typewriter-segments]');
     if (!el) return;
@@ -1074,7 +1082,11 @@ const setupHeroParallax = () => {
     setTimeout(typeNext, 320);
   }());
 
-  // Parallax + mouse
+  // Parallax + mouse : désactivé sur mobile/tactile.
+  // Sur iOS, le RAF continu sur 7+ éléments will-change:transform
+  // maintient des couches GPU actives même hors-écran → surcharge le compositor.
+  if (isTouchDevice) return;
+
   let sy = 0, mx = 0, my = 0, lx = 0, ly = 0, rafId;
   function lp(a, b, t) { return a + (b - a) * t; }
 

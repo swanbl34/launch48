@@ -78,6 +78,7 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
   overflow-x: clip;
+  touch-action: pan-y;
   position: relative;
 }
 

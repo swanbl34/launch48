@@ -92,6 +92,8 @@ const renderShell = () => {
         <div class="nav__links">
           <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
           <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+          <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
+          <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
           <div class="nav-dropdown nav-dropdown--desktop">
             <div class="nav-dropdown__trigger">
               <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
@@ -134,6 +136,8 @@ const renderShell = () => {
           <div class="nav-mobile__group">
             <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
             <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+            <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
+            <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
             <a href="/offres/">Secteurs</a>
           </div>
           <div class="nav-mobile__group nav-mobile__group--muted">
@@ -479,83 +483,12 @@ const renderShell = () => {
       </section>
 
       <section class="pricing section container" id="pricing">
-        <div class="pricing-head">
-          <span class="kicker">Tarifs</span>
-          <h2>Des forfaits taillés<br>pour votre besoin</h2>
-          <p>Domaine + hébergement offerts la première année. Prix TTC.</p>
-        </div>
-        <div class="pricing-cards">
-          <div class="pc">
-            <div class="pc__name">One Page</div>
-            <div class="pc__sub">1 page scrollable</div>
-            <div class="pc__price-label">à partir de</div>
-            <div class="pc__price">590 €</div>
-            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
-            <div class="pc__divider"></div>
-            <div class="pc__features">
-              <div class="pc__feat">Design mobile-first</div>
-              <div class="pc__feat">Structure conversion</div>
-              <div class="pc__feat">SEO technique de base</div>
-              <div class="pc__feat">Formulaire de contact</div>
-            </div>
-            <div class="pc__tags">
-              <span class="pc__tag">Freelance</span>
-              <span class="pc__tag">Événement</span>
-              <span class="pc__tag">Lancement</span>
-            </div>
-            <a href="/devis/?forfait=one-page" class="pc__cta">Demander un devis</a>
-          </div>
-          <div class="pc pc--featured">
-            <div class="pc__badge">Best-seller</div>
-            <div class="pc__name">Site 3 pages</div>
-            <div class="pc__sub">Home + principale + conversion</div>
-            <div class="pc__price-label">à partir de</div>
-            <div class="pc__price">890 €</div>
-            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
-            <div class="pc__divider"></div>
-            <div class="pc__features">
-              <div class="pc__feat">Design mobile-first</div>
-              <div class="pc__feat">Structure conversion</div>
-              <div class="pc__feat">SEO technique de base</div>
-              <div class="pc__feat">Formulaire de contact</div>
-              <div class="pc__feat">1 objectif par page</div>
-            </div>
-            <div class="pc__tags">
-              <span class="pc__tag">PME</span>
-              <span class="pc__tag">Restaurant</span>
-              <span class="pc__tag">Artisan</span>
-              <span class="pc__tag">Créateur</span>
-            </div>
-            <a href="/devis/?forfait=3-pages" class="pc__cta">Demander un devis</a>
-          </div>
-          <div class="pc">
-            <div class="pc__name">Site 5 pages +</div>
-            <div class="pc__sub">3 pages + pages secondaires</div>
-            <div class="pc__price-label">à partir de</div>
-            <div class="pc__price">1 290 €</div>
-            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
-            <div class="pc__divider"></div>
-            <div class="pc__features">
-              <div class="pc__feat">Tout le forfait 3 pages</div>
-              <div class="pc__feat">Pages verticales métier</div>
-              <div class="pc__feat">FAQ / Équipe / Blog</div>
-              <div class="pc__feat">Architecture SEO étendue</div>
-            </div>
-            <div class="pc__tags">
-              <span class="pc__tag">Cabinet</span>
-              <span class="pc__tag">Agence</span>
-              <span class="pc__tag">Immobilier</span>
-              <span class="pc__tag">Événement</span>
-            </div>
-            <a href="/devis/?forfait=5-pages" class="pc__cta">Demander un devis</a>
-          </div>
-          <div class="pc pc--custom">
-            <div class="pc__body">
-              <div class="pc__name">Sur mesure</div>
-              <div class="pc__sub">Besoin spécifique ? E-commerce, refonte, intégration CRM… On s'adapte à votre projet.</div>
-            </div>
-            <a href="/devis/?forfait=sur-mesure" class="pc__cta">Nous contacter</a>
-          </div>
+        <h2 data-slot="pricing.title"></h2>
+        <p class="pricing__price" data-slot="pricing.price"></p>
+        <p class="pricing__note" data-slot="pricing.note"></p>
+        <div class="pricing__cta">
+          <a class="btn magnetic" data-slot="pricing.primaryCta.label" data-slot-href="pricing.primaryCta.href"></a>
+          <a class="btn btn--ghost" data-slot="pricing.secondaryCta.label" data-slot-href="pricing.secondaryCta.href"></a>
         </div>
       </section>
 
@@ -978,12 +911,6 @@ const setupCenteredAnchors = () => {
 };
 
 const setupBackgroundScroll = () => {
-  // Sur mobile/tactile : on ne met pas à jour --bg-progress au scroll.
-  // Chaque mise à jour force le browser à recalculer 3+ radial-gradient
-  // + l'opacity du ::before sur toute la page → repaint full-page à 60fps
-  // → le compositor iOS doit re-composer toutes les couches → tremblement global.
-  if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
-
   const root = document.documentElement;
   let rafId = null;
 
@@ -1052,9 +979,7 @@ const setupHeroParallax = () => {
     return;
   }
 
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-
-  // Typewriter (tous appareils)
+  // Typewriter
   (function () {
     const el = heroEl.querySelector('.hero__title[data-typewriter-segments]');
     if (!el) return;
@@ -1082,11 +1007,7 @@ const setupHeroParallax = () => {
     setTimeout(typeNext, 320);
   }());
 
-  // Parallax + mouse : désactivé sur mobile/tactile.
-  // Sur iOS, le RAF continu sur 7+ éléments will-change:transform
-  // maintient des couches GPU actives même hors-écran → surcharge le compositor.
-  if (isTouchDevice) return;
-
+  // Parallax + mouse
   let sy = 0, mx = 0, my = 0, lx = 0, ly = 0, rafId;
   function lp(a, b, t) { return a + (b - a) * t; }
 
@@ -1171,64 +1092,31 @@ const setupAnimations = () => {
   const offerMeterFill = document.querySelector('.offer-panel__meter-fill');
 
   if (offerSection && offerLayout && offerCards.length > 0) {
-    const isMobileTouch = window.matchMedia('(pointer: coarse)').matches;
+    gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97, filter: 'blur(6px)' });
 
-    if (isMobileTouch) {
-      // Mobile : IntersectionObserver — pas de scrub, pas de will-change forcé par GSAP,
-      // pas de GPU layers supplémentaires pendant le scroll.
-      offerCards.forEach((card) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(24px)';
-        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      });
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = '1';
-              entry.target.style.transform = 'translateY(0)';
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      offerCards.forEach((card) => observer.observe(card));
-
-      offerCards.forEach((card) => {
-        ScrollTrigger.create({
+    offerCards.forEach((card) => {
+      gsap.to(card, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        ease: 'power2.out',
+        scrollTrigger: {
           trigger: card,
-          start: 'top 48%',
-          end: 'bottom 48%',
-          toggleClass: { targets: card, className: 'is-current' }
-        });
+          start: 'top 80%',
+          end: 'top 60%',
+          scrub: true,
+          invalidateOnRefresh: true
+        }
       });
-    } else {
-      gsap.set(offerCards, { autoAlpha: 0, y: 42, scale: 0.97 });
 
-      offerCards.forEach((card) => {
-        gsap.to(card, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 80%',
-            end: 'top 60%',
-            scrub: true,
-            invalidateOnRefresh: true
-          }
-        });
-
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 48%',
-          end: 'bottom 48%',
-          toggleClass: { targets: card, className: 'is-current' }
-        });
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 48%',
+        end: 'bottom 48%',
+        toggleClass: { targets: card, className: 'is-current' }
       });
-    }
+    });
 
     if (offerMeterFill) {
       gsap.to(offerMeterFill, {
@@ -1253,17 +1141,16 @@ const setupAnimations = () => {
   const processProgressRocket = document.querySelector('.process__progress-rocket');
 
   if (processSection && processSticky && processProgressFill && processProgressRocket && processSteps.length > 0) {
-    const updateProcessProgress = (progress) => {
-      // scaleX sur la barre : composited, pas de layout
-      processProgressFill.style.transform = `scaleX(${progress})`;
-      processProgressFill.style.transformOrigin = '0% 50%';
+    const updateProcessProgress = (self) => {
+      gsap.set(processProgressFill, {
+        scaleX: self.progress,
+        transformOrigin: '0% 50%'
+      });
+      gsap.set(processProgressRocket, {
+        left: `${gsap.utils.clamp(2, 98, self.progress * 100)}%`
+      });
 
-      // translateX au lieu de left : composited, pas de layout reflow
-      const barWidth = processProgressFill.parentElement?.offsetWidth || 0;
-      const rocketPx = Math.max(0, Math.min(barWidth, progress * barWidth));
-      processProgressRocket.style.transform = `translateX(${rocketPx}px) translateY(-50%) scaleX(-1)`;
-
-      const currentIndex = Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length));
+      const currentIndex = Math.min(processSteps.length - 1, Math.floor(self.progress * processSteps.length));
       processSteps.forEach((step, index) => {
         step.classList.toggle('is-active', index <= currentIndex);
       });
@@ -1277,9 +1164,10 @@ const setupAnimations = () => {
         pin: processSticky,
         scrub: true,
         pinSpacing: true,
+        anticipatePin: 1,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
-        onUpdate: (self) => updateProcessProgress(self.progress)
+        onUpdate: updateProcessProgress
       });
     } else {
       ScrollTrigger.create({
@@ -1289,13 +1177,19 @@ const setupAnimations = () => {
         scrub: true,
         fastScrollEnd: true,
         invalidateOnRefresh: true,
-        onUpdate: (self) => updateProcessProgress(self.progress)
+        onUpdate: updateProcessProgress
       });
     }
   }
 
-  // Pricing section : aucune animation GSAP (section statique)
-  // pour éviter tout GPU layer supplémentaire sur iOS
+  gsap.from('.pricing', {
+    opacity: 0,
+    y: 60,
+    scrollTrigger: {
+      trigger: '.pricing',
+      start: 'top 82%'
+    }
+  });
 
   gsap.from('.needs-card', {
     opacity: 0,

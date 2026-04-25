@@ -479,40 +479,6 @@ const renderShell = () => {
       </section>
 
       <section class="pricing section container" id="pricing">
-        <style>
-          .pricing { padding: clamp(1.5rem, 4vw, 2.5rem); }
-          .pricing-head { margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
-          .pricing-head .kicker { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 0.33rem 0.8rem; margin-bottom: 1rem; }
-          .pricing-head h2 { font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.97; color: var(--text); margin-bottom: 0.65rem; }
-          .pricing-head p { font-size: clamp(0.9rem, 2vw, 1.05rem); color: var(--muted); max-width: 52ch; }
-          .pricing-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.75rem, 2vw, 1rem); align-items: start; }
-          .pc { border: 1px solid var(--line); border-radius: 20px; padding: clamp(1.2rem, 3vw, 1.75rem); background: linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%)); box-shadow: var(--shadow); display: flex; flex-direction: column; transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease; position: relative; overflow: hidden; }
-          .pc:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent), var(--line) 55%); }
-          .pc.pc--featured { border-color: color-mix(in srgb, var(--accent), var(--line) 38%); background: linear-gradient(140deg, color-mix(in srgb, var(--accent), transparent 88%), color-mix(in srgb, var(--accent-2), transparent 92%)), linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%)); }
-          .pc.pc--featured:hover { border-color: color-mix(in srgb, var(--accent), var(--line) 20%); }
-          .pc__badge { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.28rem 0.7rem; border-radius: 999px; background: color-mix(in srgb, var(--accent), transparent 80%); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent), transparent 60%); margin-bottom: 1rem; width: fit-content; }
-          .pc__name { font-family: 'Sora', sans-serif; font-size: clamp(1rem, 2.2vw, 1.2rem); font-weight: 700; color: var(--text); margin-bottom: 0.25rem; letter-spacing: -0.02em; }
-          .pc__sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
-          .pc__price-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.2rem; }
-          .pc__price { font-family: 'Sora', sans-serif; font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 800; color: var(--text); letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.3rem; }
-          .pc__price-note { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.2rem; }
-          .pc__divider { border: none; border-top: 1px solid var(--line); margin-bottom: 1.1rem; }
-          .pc__features { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
-          .pc__feat { font-size: 0.82rem; color: color-mix(in srgb, var(--text), var(--muted) 28%); display: flex; align-items: flex-start; gap: 0.55rem; line-height: 1.4; }
-          .pc__feat::before { content: "—"; color: var(--muted); flex-shrink: 0; }
-          .pc__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
-          .pc__tag { font-size: 0.68rem; padding: 0.25rem 0.65rem; border-radius: 999px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
-          .pc__cta { display: block; width: 100%; text-align: center; margin-top: 1.4rem; padding: 0.7rem 1rem; border-radius: 999px; font-size: 0.82rem; font-weight: 500; text-decoration: none; border: 1px solid var(--line); color: var(--text); background: var(--surface); transition: border-color 220ms ease, background 220ms ease, transform 220ms ease; }
-          .pc__cta:hover { border-color: color-mix(in srgb, var(--accent), var(--line) 40%); background: color-mix(in srgb, var(--accent), transparent 92%); transform: translateY(-1px); }
-          .pc--featured .pc__cta { background: linear-gradient(120deg, color-mix(in srgb, var(--accent), transparent 8%), color-mix(in srgb, var(--accent-2), transparent 5%)); border-color: transparent; color: #040607; }
-          .pc--featured .pc__cta:hover { filter: brightness(1.08); }
-          .pc--custom { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-direction: row; margin-top: 0.25rem; }
-          .pc--custom .pc__body { flex: 1; }
-          .pc--custom .pc__name { font-size: clamp(1.05rem, 2.5vw, 1.3rem); }
-          .pc--custom .pc__sub { margin-bottom: 0; }
-          .pc--custom .pc__cta { width: auto; white-space: nowrap; margin-top: 0; flex-shrink: 0; padding: 0.7rem 1.6rem; }
-          @media (max-width: 680px) { .pricing-cards { grid-template-columns: 1fr; } .pc--custom { flex-direction: column; align-items: flex-start; } .pc--custom .pc__cta { width: 100%; margin-top: 1.2rem; } }
-        </style>
         <div class="pricing-head">
           <span class="kicker">Tarifs</span>
           <h2>Des forfaits taillés<br>pour votre besoin</h2>

@@ -483,12 +483,83 @@ const renderShell = () => {
       </section>
 
       <section class="pricing section container" id="pricing">
-        <h2 data-slot="pricing.title"></h2>
-        <p class="pricing__price" data-slot="pricing.price"></p>
-        <p class="pricing__note" data-slot="pricing.note"></p>
-        <div class="pricing__cta">
-          <a class="btn magnetic" data-slot="pricing.primaryCta.label" data-slot-href="pricing.primaryCta.href"></a>
-          <a class="btn btn--ghost" data-slot="pricing.secondaryCta.label" data-slot-href="pricing.secondaryCta.href"></a>
+        <div class="pricing-head">
+          <span class="kicker">Tarifs</span>
+          <h2>Des forfaits taillés<br>pour votre besoin</h2>
+          <p>Domaine + hébergement offerts la première année. Prix TTC.</p>
+        </div>
+        <div class="pricing-cards">
+          <div class="pc">
+            <div class="pc__name">One Page</div>
+            <div class="pc__sub">1 page scrollable</div>
+            <div class="pc__price-label">à partir de</div>
+            <div class="pc__price">590 €</div>
+            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
+            <hr class="pc__divider">
+            <div class="pc__features">
+              <div class="pc__feat">Design mobile-first</div>
+              <div class="pc__feat">Structure conversion</div>
+              <div class="pc__feat">SEO technique de base</div>
+              <div class="pc__feat">Formulaire de contact</div>
+            </div>
+            <div class="pc__tags">
+              <span class="pc__tag">Freelance</span>
+              <span class="pc__tag">Événement</span>
+              <span class="pc__tag">Lancement</span>
+            </div>
+            <a href="/devis/?forfait=one-page" class="pc__cta">Demander un devis</a>
+          </div>
+          <div class="pc pc--featured">
+            <div class="pc__badge">Best-seller</div>
+            <div class="pc__name">Site 3 pages</div>
+            <div class="pc__sub">Home + principale + conversion</div>
+            <div class="pc__price-label">à partir de</div>
+            <div class="pc__price">890 €</div>
+            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
+            <hr class="pc__divider">
+            <div class="pc__features">
+              <div class="pc__feat">Design mobile-first</div>
+              <div class="pc__feat">Structure conversion</div>
+              <div class="pc__feat">SEO technique de base</div>
+              <div class="pc__feat">Formulaire de contact</div>
+              <div class="pc__feat">1 objectif par page</div>
+            </div>
+            <div class="pc__tags">
+              <span class="pc__tag">PME</span>
+              <span class="pc__tag">Restaurant</span>
+              <span class="pc__tag">Artisan</span>
+              <span class="pc__tag">Créateur</span>
+            </div>
+            <a href="/devis/?forfait=3-pages" class="pc__cta">Demander un devis</a>
+          </div>
+          <div class="pc">
+            <div class="pc__name">Site 5 pages +</div>
+            <div class="pc__sub">3 pages + pages secondaires</div>
+            <div class="pc__price-label">à partir de</div>
+            <div class="pc__price">1 290 €</div>
+            <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
+            <hr class="pc__divider">
+            <div class="pc__features">
+              <div class="pc__feat">Tout le forfait 3 pages</div>
+              <div class="pc__feat">Pages verticales métier</div>
+              <div class="pc__feat">FAQ / Équipe / Blog</div>
+              <div class="pc__feat">Architecture SEO étendue</div>
+            </div>
+            <div class="pc__tags">
+              <span class="pc__tag">Cabinet</span>
+              <span class="pc__tag">Agence</span>
+              <span class="pc__tag">Immobilier</span>
+              <span class="pc__tag">Événement</span>
+            </div>
+            <a href="/devis/?forfait=5-pages" class="pc__cta">Demander un devis</a>
+          </div>
+          <div class="pc pc--custom">
+            <div class="pc__body">
+              <div class="pc__name">Sur mesure</div>
+              <div class="pc__sub">Besoin spécifique ? E-commerce, refonte, intégration CRM… On s'adapte à votre projet.</div>
+            </div>
+            <a href="/devis/?forfait=sur-mesure" class="pc__cta">Nous contacter</a>
+          </div>
         </div>
       </section>
 

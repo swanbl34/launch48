@@ -1746,14 +1746,10 @@ a:focus-visible {
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  /* Pas de transform dans transition sur mobile — évite la création
+     de compositor layers GPU inutiles qui causent le jitter iOS */
+  transition: border-color 220ms ease;
   position: relative;
-  overflow: hidden;
-}
-
-.pc:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--accent), var(--line) 55%);
 }
 
 .pc.pc--featured {
@@ -1763,8 +1759,18 @@ a:focus-visible {
     linear-gradient(140deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%));
 }
 
-.pc.pc--featured:hover {
-  border-color: color-mix(in srgb, var(--accent), var(--line) 20%);
+/* Hover uniquement sur vrais pointeurs (desktop) */
+@media (hover: hover) {
+  .pc {
+    transition: border-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  }
+  .pc:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent), var(--line) 55%);
+  }
+  .pc.pc--featured:hover {
+    border-color: color-mix(in srgb, var(--accent), var(--line) 20%);
+  }
 }
 
 .pc__badge {
@@ -1877,13 +1883,7 @@ a:focus-visible {
   border: 1px solid var(--line);
   color: var(--text);
   background: var(--surface);
-  transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
-}
-
-.pc__cta:hover {
-  border-color: color-mix(in srgb, var(--accent), var(--line) 40%);
-  background: color-mix(in srgb, var(--accent), transparent 92%);
-  transform: translateY(-1px);
+  transition: border-color 220ms ease, background 220ms ease;
 }
 
 .pc--featured .pc__cta {
@@ -1892,8 +1892,18 @@ a:focus-visible {
   color: #040607;
 }
 
-.pc--featured .pc__cta:hover {
-  filter: brightness(1.08);
+@media (hover: hover) {
+  .pc__cta {
+    transition: border-color 220ms ease, background 220ms ease, transform 220ms ease;
+  }
+  .pc__cta:hover {
+    border-color: color-mix(in srgb, var(--accent), var(--line) 40%);
+    background: color-mix(in srgb, var(--accent), transparent 92%);
+    transform: translateY(-1px);
+  }
+  .pc--featured .pc__cta:hover {
+    filter: brightness(1.08);
+  }
 }
 
 .pc--custom {

@@ -92,8 +92,6 @@ const renderShell = () => {
         <div class="nav__links">
           <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
           <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
-          <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
-          <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
           <div class="nav-dropdown nav-dropdown--desktop">
             <div class="nav-dropdown__trigger">
               <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
@@ -136,8 +134,6 @@ const renderShell = () => {
           <div class="nav-mobile__group">
             <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
             <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
-            <a data-slot="nav.link3.label" data-slot-href="nav.link3.href"></a>
-            <a data-slot="nav.link4.label" data-slot-href="nav.link4.href"></a>
             <a href="/offres/">Secteurs</a>
           </div>
           <div class="nav-mobile__group nav-mobile__group--muted">

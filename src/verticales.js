@@ -58,8 +58,6 @@ const renderHeader = (active = 'home') => `
       </a>
       <div class="nav__links">
         <a href="/">Accueil</a>
-        <a href="/offres/">Offres</a>
-        <a href="/#process">Process</a>
         <a href="/#contact">Contact</a>
         <div class="nav-dropdown nav-dropdown--desktop">
           <div class="nav-dropdown__trigger">
@@ -94,8 +92,6 @@ const renderHeader = (active = 'home') => `
       <div class="nav-mobile__panel">
         <div class="nav-mobile__group">
           <a href="/">Accueil</a>
-          <a href="/offres/">Offres</a>
-          <a href="/#process">Process</a>
           <a href="/#contact">Contact</a>
           <a href="/offres/">Secteurs</a>
         </div>
@@ -114,6 +110,11 @@ const renderFooter = () => `
   <footer class="site-footer section container">
     <p class="site-footer__name">${SITE.name}</p>
     <a href="mailto:contact@launch48.fr">contact@launch48.fr</a>
+    <div class="site-footer__socials">
+      <a href="https://www.linkedin.com/company/launch48-fr/">LinkedIn</a>
+      <a href="https://www.instagram.com/launch48.fr/">Instagram</a>
+    </div>
+    <a class="btn btn--small site-footer__cta" href="/partenaires/">Devenir partenaire</a>
     <div class="site-footer__legal">
       ${SITE.legalLinks.map((link) => `<a href="${link.href}">${link.label}</a>`).join('')}
     </div>
@@ -460,6 +461,17 @@ const renderQuotePage = () => {
               </label>
 
               <label>
+                <span>Forfait souhaité</span>
+                <select name="forfait" id="forfait-select">
+                  <option value="">Pas encore décidé</option>
+                  <option value="one-page">One Page — à partir de 590 €</option>
+                  <option value="3-pages">Site 3 pages — à partir de 890 €</option>
+                  <option value="5-pages">Site 5 pages + — à partir de 1 290 €</option>
+                  <option value="sur-mesure">Sur mesure</option>
+                </select>
+              </label>
+
+              <label>
                 <span>Type de site</span>
                 <select name="project_type" required>
                   <option value="">Sélectionnez</option>
@@ -494,6 +506,12 @@ const renderQuotePage = () => {
     </main>
     ${renderFooter()}
   `;
+
+  const forfaitParam = new URLSearchParams(window.location.search).get('forfait');
+  if (forfaitParam) {
+    const select = document.getElementById('forfait-select');
+    if (select) select.value = forfaitParam;
+  }
 };
 
 const renderCallPage = () => {

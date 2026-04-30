@@ -510,7 +510,7 @@ const renderShell = () => {
             <div class="pc__name">Site 3 pages</div>
             <div class="pc__sub">Home + principale + conversion</div>
             <div class="pc__price-label">à partir de</div>
-            <div class="pc__price">890 €</div>
+            <div class="pc__price">990 €</div>
             <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
             <hr class="pc__divider">
             <div class="pc__features">

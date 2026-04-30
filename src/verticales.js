@@ -465,7 +465,7 @@ const renderQuotePage = () => {
                 <select name="forfait" id="forfait-select">
                   <option value="">Pas encore décidé</option>
                   <option value="one-page">One Page — à partir de 590 €</option>
-                  <option value="3-pages">Site 3 pages — à partir de 890 €</option>
+                  <option value="3-pages">Site 3 pages — à partir de 990 €</option>
                   <option value="5-pages">Site 5 pages + — à partir de 1 290 €</option>
                   <option value="sur-mesure">Sur mesure</option>
                 </select>

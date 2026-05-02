@@ -1116,7 +1116,8 @@ body[data-page='vertical'] main > .section:first-child {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 24px;
-  background: color-mix(in srgb, var(--surface-solid), transparent 5%);
+  background: #ffffff;
+  color-scheme: light;
   box-shadow: var(--shadow);
 }
 
@@ -1125,7 +1126,8 @@ body[data-page='vertical'] main > .section:first-child {
   width: 100%;
   height: clamp(720px, 92vh, 940px);
   border: 0;
-  background: var(--surface-solid);
+  background: #ffffff;
+  color-scheme: light;
 }
 
 .audit-reassurance {

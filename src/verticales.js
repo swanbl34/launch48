@@ -524,7 +524,7 @@ const renderCallPage = () => {
     description: 'Réservez un audit stratégique gratuit de 15 minutes avec Launch48. Repartez avec un plan d\'action clair pour votre site web.'
   });
 
-  const calendlyUrl = 'https://calendly.com/launch48/audit-gratuit?hide_gdpr_banner=1&background_color=091019&text_color=f3efe7&primary_color=63ffe0';
+  const bookingUrl = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true';
 
   app.innerHTML = `
     ${renderHeader('call')}
@@ -606,8 +606,8 @@ const renderCallPage = () => {
         </div>
         <article class="audit-calendly" data-reveal>
           <iframe
-            src="${calendlyUrl}"
-            title="Réserver un audit stratégique gratuit Launch48"
+            src="${bookingUrl}"
+            title="Réserver un audit stratégique gratuit Launch48 via Google Calendar"
             data-analytics-id="audit-calendly-embed"
             loading="lazy"
           ></iframe>

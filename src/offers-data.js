@@ -132,7 +132,7 @@ export const OFFERS = [
     shortDescription: 'Landing page de lancement de marque ou produit pour lancer un site web vite avec un storytelling fort et un design premium orienté désir.',
     target: 'Nouvelles marques, lancements produit, DNVB, collections capsule, campagnes marketing.',
     benefit: 'Une landing page de lancement qui met en scène votre différence et oriente vers l\'action.',
-    priceFrom: '1 490 €',
+    priceFrom: '1 290 €',
     hero: {
       eyebrow: 'Offre verticale',
       title: 'La landing page de lancement qui installe votre marque',
@@ -191,7 +191,7 @@ export const OFFERS = [
     shortDescription: 'Démo food conçue pour mettre en scène un lieu, sa carte et son identité afin de déclencher réservation, visite ou privatisation.',
     target: 'Restaurants, coffee shops, bars, concepts food, chefs, lieux hospitality et adresses lifestyle.',
     benefit: 'Un exemple de site qui montre comment faire ressentir l\'ambiance et simplifier la réservation.',
-    priceFrom: '1 090 €',
+    priceFrom: '590 €',
     hero: {
       eyebrow: 'Offre verticale',
       title: 'La page food qui donne faim avant même la réservation',
@@ -242,7 +242,7 @@ export const OFFERS = [
     shortDescription: 'Démo portfolio pensée pour exposer un univers, hiérarchiser les projets et transformer un lien en vraie carte de visite créative.',
     target: 'Artistes, photographes, vidéastes, designers, directeurs artistiques, musiciens et créatifs indépendants.',
     benefit: 'Un exemple de site qui montre comment rendre un portfolio plus désirable, plus net et plus mémorable.',
-    priceFrom: '890 €',
+    priceFrom: '590 €',
     hero: {
       eyebrow: 'Offre verticale',
       title: 'Le portfolio creatif qui laisse une vraie impression',
@@ -297,7 +297,7 @@ export const OFFERS = [
     shortDescription: 'Site internet média ou podcast professionnel pour structurer vos contenus, mieux présenter vos formats et faciliter les partenariats.',
     target: 'Podcasts, médias indépendants, émissions, chaînes de contenu et projets éditoriaux.',
     benefit: 'Un site média professionnel qui valorise vos contenus et vos collaborations.',
-    priceFrom: '1 190 €',
+    priceFrom: '1 290 €',
     hero: {
       eyebrow: 'Offre verticale',
       title: 'Le site internet média qui donne du poids à vos contenus',
@@ -396,7 +396,7 @@ export const OFFERS = [
     shortDescription: 'Démo premium pensée pour mettre en valeur un bien, son environnement et son niveau de prestation avec un parcours de demande haut de gamme.',
     target: 'Biens premium, villas, locations saisonnières haut de gamme, résidences, conciergeries et agences boutique.',
     benefit: 'Un exemple de site qui montre comment vendre l\'expérience du lieu avant même le premier contact.',
-    priceFrom: '1 090 €',
+    priceFrom: '990 €',
     hero: {
       eyebrow: 'Offre verticale',
       title: 'La page real estate qui valorise un bien comme une destination',

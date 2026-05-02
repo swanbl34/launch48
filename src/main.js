@@ -34,7 +34,7 @@ const verticalNeeds = [
   {
     title: 'Site lancement de marque / produit',
     description: 'Créer un storytelling fort et un design impactant pour un lancement.',
-    price: '1 490 €',
+    price: '1 290 €',
     href: '/site-lancement-marque/',
     previewSrc: '/previews/brand-launch-demo-home.png',
     previewAlt: 'Aperçu de la démo Lancement de marque / Produit'
@@ -42,7 +42,7 @@ const verticalNeeds = [
   {
     title: 'Site restaurant / hospitality',
     description: 'Mettre en valeur un lieu, sa carte et faciliter la réservation.',
-    price: '1 090 €',
+    price: '590 €',
     href: '/site-restaurant/',
     previewSrc: '/previews/restaurant-demo-home.png',
     previewAlt: 'Aperçu de la démo Restaurant / Food concept'
@@ -50,7 +50,7 @@ const verticalNeeds = [
   {
     title: 'Site artiste / créatif / portfolio',
     description: 'Exposer un univers créatif et professionnaliser la présence en ligne.',
-    price: '890 €',
+    price: '590 €',
     href: '/site-artiste/',
     previewSrc: '/previews/artist-demo-home.png',
     previewAlt: 'Aperçu de la démo Artiste / Portfolio créatif'
@@ -58,7 +58,7 @@ const verticalNeeds = [
   {
     title: 'Site média / podcast / contenu',
     description: 'Centraliser les formats et structurer une image éditoriale solide.',
-    price: '1 190 €',
+    price: '1 290 €',
     href: '/site-media-podcast/',
     previewSrc: '/previews/site-media-podcast-home.jpg',
     previewAlt: 'Aperçu de la démo Média / Podcast'
@@ -74,7 +74,7 @@ const verticalNeeds = [
   {
     title: 'Site immobilier / location',
     description: 'Valoriser un bien et générer des demandes qualifiées.',
-    price: '1 090 €',
+    price: '990 €',
     href: '/site-immobilier-location/',
     previewSrc: '/previews/real-estate-demo-home.png',
     previewAlt: 'Aperçu de la démo Immobilier premium / Real Estate'

@@ -545,6 +545,7 @@
   const progressTextEl = document.getElementById('progress-text');
   const progressPercentEl = document.getElementById('progress-percent');
   const progressFillEl = document.getElementById('progress-fill');
+  const formspreeEndpoint = 'https://formspree.io/f/xbdpgvgj';
 
   // ========== RENDER QUESTION ==========
   function renderQuestion() {
@@ -595,9 +596,43 @@
     emailSection.classList.remove('hidden');
   }
 
-  document.getElementById('email-submit').addEventListener('click', () => {
+  const formatAnswersForFormspree = () => answers
+    .map((answerIndex, questionIndex) => {
+      const question = questions[questionIndex];
+      const selected = question.options[answerIndex];
+      return `${questionIndex + 1}. ${question.q}\nRéponse: ${selected.label} (${selected.points} pts)`;
+    })
+    .join('\n\n');
+
+  async function sendQuizLead({ email, firstname, tier }) {
+    const formData = new FormData();
+    formData.append('source', 'quiz-conversion');
+    formData.append('_subject', `Nouveau lead quiz Launch48 - ${firstname}`);
+    formData.append('subject', `Nouveau lead quiz Launch48 - ${firstname}`);
+    formData.append('name', firstname);
+    formData.append('firstname', firstname);
+    formData.append('email', email);
+    formData.append('score', `${score}/100`);
+    formData.append('tier', tier.label);
+    formData.append('tier_key', tier.key);
+    formData.append('answers', formatAnswersForFormspree());
+    formData.append('message', `Lead issu du quiz conversion Launch48.\n\nScore: ${score}/100\nNiveau: ${tier.label}\n\nRéponses:\n${formatAnswersForFormspree()}`);
+
+    const response = await fetch(formspreeEndpoint, {
+      method: 'POST',
+      body: formData,
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) {
+      throw new Error('Formspree submission failed');
+    }
+  }
+
+  document.getElementById('email-submit').addEventListener('click', async () => {
     const email = document.getElementById('email-input').value.trim();
     const firstname = document.getElementById('firstname-input').value.trim();
+    const submitButton = document.getElementById('email-submit');
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
@@ -609,23 +644,19 @@
       return;
     }
 
-    // ⚙️ INTÉGRATION : remplacer ce bloc par ton appel API/webhook
-    // Exemples : Brevo, Mailchimp, ConvertKit, Zapier, n8n, ou ton backend
-    /*
-    fetch('/api/lead-magnet-subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        firstname,
-        score,
-        answers,
-        source: 'quiz-conversion'
-      })
-    });
-    */
+    const tier = getTier(score);
+    const initialLabel = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Envoi du diagnostic...';
 
-    showResult(firstname);
+    try {
+      await sendQuizLead({ email, firstname, tier });
+      showResult(firstname, tier);
+    } catch {
+      alert("Impossible d'envoyer le diagnostic pour le moment. Réessaie dans quelques instants.");
+      submitButton.disabled = false;
+      submitButton.textContent = initialLabel;
+    }
   });
 
   // ========== TIERS & RESULT ==========
@@ -691,11 +722,11 @@
     };
   }
 
-  function showResult(firstname) {
+  function showResult(firstname, currentTier = getTier(score)) {
     emailSection.classList.add('hidden');
     resultSection.classList.remove('hidden');
 
-    const tier = getTier(score);
+    const tier = currentTier;
 
     // Animate score counter
     const scoreEl = document.getElementById('score-value');

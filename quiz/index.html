@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ton site est-il prêt à convertir ? — Le test en 60 sec | Launch48</title>
+<meta name="description" content="Découvre en 60 secondes si ton site est conçu pour convertir tes visiteurs en clients. Analyse personnalisée + recos par mail." />
+<link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
+<meta property="og:title" content="Ton site est-il prêt à convertir ? | Launch48" />
+<meta property="og:description" content="Fais le test en 60 secondes et découvre les priorités pour améliorer la conversion de ton site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://launch48.fr/quiz/" />
+<meta property="og:image" content="/opengraph.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="/opengraph.jpg" />
+<meta name="theme-color" content="#091019" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-BE27RNS6K0');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #091019;
+    --text: #f3efe7;
+    --cyan: #46e4ff;
+    --blue: #5f8dff;
+    --green: #63ffe0;
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-2: rgba(255, 255, 255, 0.025);
+    --border: rgba(243, 239, 231, 0.12);
+    --border-strong: rgba(243, 239, 231, 0.25);
+    --font-heading: 'Sora', system-ui, sans-serif;
+    --font-body: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  /* ========== HEADER ========== */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .badge {
+    display: inline-block;
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .subtitle {
+    color: var(--text);
+    opacity: 0.65;
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ========== PROGRESS BAR ========== */
+  .progress-wrap {
+    margin-bottom: 28px;
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text);
+    opacity: 0.6;
+    margin-bottom: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--surface-2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--cyan);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ========== QUESTION CARD ========== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+  }
+
+  .question-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.35;
+    margin-bottom: 24px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .option:hover {
+    border-color: var(--cyan);
+    background: rgba(70, 228, 255, 0.05);
+  }
+
+  .option .marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .option:hover .marker {
+    border-color: var(--cyan);
+  }
+
+  /* ========== EMAIL CAPTURE ========== */
+  .email-card .question-text {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .email-subtext {
+    color: var(--text);
+    opacity: 0.7;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .email-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s ease;
+  }
+  .email-input:focus {
+    outline: none;
+    border-color: var(--cyan);
+  }
+  .email-input::placeholder {
+    color: var(--text);
+    opacity: 0.4;
+  }
+  .cta-primary {
+    width: 100%;
+    background: var(--cyan);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 24px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s ease;
+  }
+  .cta-primary:hover { opacity: 0.92; }
+  .cta-primary:active { transform: scale(0.98); }
+  .cta-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .privacy-note {
+    text-align: center;
+    color: var(--text);
+    opacity: 0.5;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  /* ========== RESULT ========== */
+  .result-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .score-display {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 1;
+    margin: 12px 0 8px;
+  }
+  .score-display .max { opacity: 0.3; font-size: 28px; }
+  .result-tier {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .result-summary {
+    color: var(--text);
+    opacity: 0.75;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .recos-section {
+    margin-top: 28px;
+  }
+  .recos-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+    color: var(--text);
+    opacity: 0.9;
+  }
+  .reco-item {
+    background: var(--surface-2);
+    border-left: 2px solid var(--green);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-radius: 0 8px 8px 0;
+  }
+  .reco-item-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .reco-item-desc {
+    font-size: 13px;
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  .next-step {
+    background: rgba(70, 228, 255, 0.06);
+    border: 1px solid rgba(70, 228, 255, 0.2);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    margin-top: 28px;
+  }
+  .next-step-pretitle {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .next-step-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .next-step-desc {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .cta-secondary {
+    display: inline-block;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 12px;
+    transition: all 0.2s ease;
+  }
+  .cta-secondary:hover {
+    background: var(--surface);
+  }
+
+  /* ========== UTILITIES ========== */
+  .hidden { display: none !important; }
+  .seo-hidden-block {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: normal;
+    border: 0;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== MOBILE ========== */
+  @media (max-width: 600px) {
+    h1 { font-size: 26px; }
+    .card { padding: 24px 20px; }
+    .question-text { font-size: 18px; }
+    .score-display { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ========== INTRO ========== -->
+  <div id="intro" class="header">
+    <div class="badge">QUIZ · 60 SEC · GRATUIT</div>
+    <h1>Ton site est-il prêt à convertir ?</h1>
+    <p class="subtitle">7 questions pour découvrir si ton site transforme tes visiteurs en clients — ou les fait fuir. Score personnalisé + recos par mail.</p>
+  </div>
+
+  <!-- ========== QUIZ ========== -->
+  <div id="quiz-section">
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Question 1 sur 7</span>
+        <span id="progress-percent">14%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="card fade-in" id="question-card">
+      <div class="question-text" id="question-text"></div>
+      <div class="options" id="options"></div>
+    </div>
+  </div>
+
+  <!-- ========== EMAIL CAPTURE ========== -->
+  <div id="email-section" class="hidden">
+    <div class="card email-card fade-in">
+      <div class="badge" style="margin-bottom: 16px;">DERNIÈRE ÉTAPE</div>
+      <div class="question-text">Où on t'envoie ton diagnostic complet ?</div>
+      <p class="email-subtext">Ton score + un PDF de recos personnalisées selon tes réponses. Livré dans la minute.</p>
+      <input type="email" class="email-input" id="email-input" placeholder="ton@email.com" />
+      <input type="text" class="email-input" id="firstname-input" placeholder="Ton prénom" />
+      <button class="cta-primary" id="email-submit">Recevoir mon diagnostic →</button>
+      <p class="privacy-note">🔒 Tes données restent confidentielles. Désinscription en 1 clic.</p>
+    </div>
+  </div>
+
+  <!-- ========== RESULT ========== -->
+  <div id="result-section" class="hidden">
+    <div class="card fade-in">
+      <div class="result-header">
+        <div class="badge" id="result-badge">TON DIAGNOSTIC</div>
+        <div class="score-display"><span id="score-value">0</span><span class="max"> / 100</span></div>
+        <div class="result-tier" id="result-tier"></div>
+        <p class="result-summary" id="result-summary"></p>
+      </div>
+
+      <div class="recos-section">
+        <div class="recos-title">Tes 3 priorités</div>
+        <div id="recos-list"></div>
+      </div>
+
+      <div class="next-step">
+        <div class="next-step-pretitle">PROCHAINE ÉTAPE</div>
+        <div class="next-step-title" id="next-step-title"></div>
+        <p class="next-step-desc" id="next-step-desc"></p>
+        <a href="/call/#calendly" class="cta-primary" style="display: inline-block; text-decoration: none; padding: 14px 28px;">Réserver mon audit gratuit →</a>
+        <div>
+          <a href="/" class="cta-secondary">Découvrir Launch48</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="seo-hidden-block" aria-hidden="true" tabindex="-1">
+  <h2>Quiz gratuit pour savoir si un site internet est prêt à convertir</h2>
+  <p>Ce test Launch48 aide les entrepreneurs, freelances, artisans, restaurants, créateurs, associations, consultants, agences et porteurs de projet à évaluer rapidement la capacité de leur site internet à transformer les visiteurs en prospects, demandes de devis, réservations ou appels découverte. Le quiz analyse les fondamentaux d'un site vitrine efficace : clarté de l'offre, promesse visible, appels à l'action, expérience mobile, vitesse d'affichage, éléments de réassurance, collecte d'emails et suivi des statistiques.</p>
+  <p>Un site professionnel ne doit pas seulement être esthétique. Il doit aider un visiteur à comprendre l'activité en quelques secondes, savoir pourquoi faire confiance, identifier l'action suivante et passer à l'étape sans friction. Ce diagnostic gratuit donne un score de conversion et des recommandations selon les réponses. Il permet d'identifier si le site a besoin d'une simple optimisation, d'une meilleure structure de landing page, d'un audit de conversion, d'une refonte ou d'une création rapide avec une architecture claire.</p>
+  <h3>Diagnostic conversion pour site vitrine, landing page et one-page</h3>
+  <p>Le quiz s'adresse aux personnes qui veulent améliorer un site vitrine, lancer une landing page, créer une one-page professionnelle, préparer une refonte de site web, améliorer leur référencement local, augmenter leurs prises de contact ou mieux convertir leur trafic existant. Il couvre les points essentiels avant de lancer une campagne Google Ads, publier sur les réseaux sociaux, envoyer du trafic depuis LinkedIn, Instagram ou une newsletter, ou demander un devis pour un nouveau site.</p>
+  <ul>
+    <li>Test de clarté de la page d'accueil et de la proposition de valeur.</li>
+    <li>Analyse des boutons d'action et de la hiérarchie des appels à l'action.</li>
+    <li>Vérification de l'expérience mobile, de la lisibilité et de la rapidité.</li>
+    <li>Contrôle des preuves de confiance : témoignages, chiffres, garanties, références.</li>
+    <li>Évaluation de la capture de leads, newsletter, formulaire, lead magnet ou mini-audit.</li>
+    <li>Identification des priorités pour augmenter les demandes de devis et les appels qualifiés.</li>
+  </ul>
+  <h3>Launch48 : création de site internet rapide et orientée conversion</h3>
+  <p>Launch48 conçoit des sites vitrines, one-pages, landing pages et pages de conversion pour les entreprises qui veulent aller vite sans sacrifier la clarté, le design mobile-first, le SEO technique de base et la structure commerciale. Ce quiz gratuit permet de comprendre si un site existant est suffisamment clair et crédible ou s'il bloque la conversion. Il complète l'audit gratuit de 15 minutes proposé par Launch48 pour définir la bonne structure, le bon nombre de pages, les contenus prioritaires et les actions concrètes à mener.</p>
+</section>
+
+<script>
+  // ========== DATA ==========
+  const questions = [
+    {
+      q: "En arrivant sur ta home, on comprend ton offre en combien de temps ?",
+      options: [
+        { label: "Moins de 5 secondes — c'est ultra clair", points: 15 },
+        { label: "Entre 5 et 15 secondes", points: 8 },
+        { label: "Plus de 15 secondes, il faut chercher", points: 3 },
+        { label: "Honnêtement... je sais pas si c'est clair", points: 0 }
+      ]
+    },
+    {
+      q: "Combien de CTAs (boutons d'action) as-tu sur ta home ?",
+      options: [
+        { label: "Plusieurs, à différents niveaux d'engagement", points: 15 },
+        { label: "Un seul, bien visible", points: 10 },
+        { label: "Plusieurs, mais qui font tous la même chose", points: 5 },
+        { label: "Aucun, ou caché en bas de page", points: 0 }
+      ]
+    },
+    {
+      q: "Sur mobile, ton site est…",
+      options: [
+        { label: "Impeccable — tout fonctionne, c'est rapide", points: 15 },
+        { label: "Correct, mais quelques détails à revoir", points: 8 },
+        { label: "Bof — ça scrolle mal, des trucs débordent", points: 3 },
+        { label: "Je n'ai jamais vraiment testé", points: 0 }
+      ]
+    },
+    {
+      q: "Tu as des éléments de réassurance (témoignages, chiffres, garanties) ?",
+      options: [
+        { label: "Oui, plusieurs et bien visibles", points: 15 },
+        { label: "Quelques-uns, dispersés", points: 8 },
+        { label: "Juste un ou deux, en bas de page", points: 3 },
+        { label: "Aucun pour l'instant", points: 0 }
+      ]
+    },
+    {
+      q: "Ton site capture-t-il des emails (newsletter, lead magnet, etc.) ?",
+      options: [
+        { label: "Oui, avec un vrai lead magnet incitatif", points: 15 },
+        { label: "Une newsletter classique", points: 8 },
+        { label: "Juste un formulaire de contact", points: 3 },
+        { label: "Non, rien", points: 0 }
+      ]
+    },
+    {
+      q: "Combien de temps prend ton site à s'afficher ?",
+      options: [
+        { label: "Instantané, moins de 2 sec", points: 15 },
+        { label: "Entre 2 et 4 secondes", points: 8 },
+        { label: "Plus de 4 secondes", points: 3 },
+        { label: "Aucune idée", points: 0 }
+      ]
+    },
+    {
+      q: "Tu mesures combien de visiteurs tu reçois et ce qu'ils font ?",
+      options: [
+        { label: "Oui, j'ai des stats détaillées (Plausible, GA, etc.)", points: 10 },
+        { label: "Quelques chiffres basiques", points: 5 },
+        { label: "Non, pas vraiment", points: 0 },
+        { label: "Je n'y ai jamais pensé", points: 0 }
+      ]
+    }
+  ];
+
+  // ========== STATE ==========
+  let currentQuestion = 0;
+  let score = 0;
+  const answers = [];
+
+  const introEl = document.getElementById('intro');
+  const quizSection = document.getElementById('quiz-section');
+  const emailSection = document.getElementById('email-section');
+  const resultSection = document.getElementById('result-section');
+  const questionTextEl = document.getElementById('question-text');
+  const optionsEl = document.getElementById('options');
+  const progressTextEl = document.getElementById('progress-text');
+  const progressPercentEl = document.getElementById('progress-percent');
+  const progressFillEl = document.getElementById('progress-fill');
+
+  // ========== RENDER QUESTION ==========
+  function renderQuestion() {
+    const q = questions[currentQuestion];
+    questionTextEl.textContent = q.q;
+    optionsEl.innerHTML = '';
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.innerHTML = `<span class="marker"></span><span>${opt.label}</span>`;
+      btn.addEventListener('click', () => selectAnswer(opt.points, idx));
+      optionsEl.appendChild(btn);
+    });
+
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    progressTextEl.textContent = `Question ${currentQuestion + 1} sur ${questions.length}`;
+    progressPercentEl.textContent = `${Math.round(progress)}%`;
+    progressFillEl.style.width = `${progress}%`;
+  }
+
+  // ========== SELECT ANSWER ==========
+  function selectAnswer(points, idx) {
+    score += points;
+    answers.push(idx);
+
+    const card = document.getElementById('question-card');
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(-8px)';
+    card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+
+    setTimeout(() => {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      } else {
+        showEmailCapture();
+      }
+    }, 250);
+  }
+
+  // ========== EMAIL CAPTURE ==========
+  function showEmailCapture() {
+    introEl.classList.add('hidden');
+    quizSection.classList.add('hidden');
+    emailSection.classList.remove('hidden');
+  }
+
+  document.getElementById('email-submit').addEventListener('click', () => {
+    const email = document.getElementById('email-input').value.trim();
+    const firstname = document.getElementById('firstname-input').value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      alert('Merci de saisir un email valide.');
+      return;
+    }
+    if (!firstname) {
+      alert('Merci de saisir ton prénom.');
+      return;
+    }
+
+    // ⚙️ INTÉGRATION : remplacer ce bloc par ton appel API/webhook
+    // Exemples : Brevo, Mailchimp, ConvertKit, Zapier, n8n, ou ton backend
+    /*
+    fetch('/api/lead-magnet-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        firstname,
+        score,
+        answers,
+        source: 'quiz-conversion'
+      })
+    });
+    */
+
+    showResult(firstname);
+  });
+
+  // ========== TIERS & RESULT ==========
+  function getTier(score) {
+    if (score >= 80) return {
+      key: 'excellent',
+      label: 'Site optimisé conversion',
+      summary: "Bravo, ton site est dans le top 10%. La structure tient la route, les CTAs sont en place, la mécanique est claire. Reste à passer à la vitesse supérieure : SEO, lead magnet avancé, A/B testing.",
+      recos: [
+        { t: "A/B test tes hero sections", d: "Tu es prêt pour des tests granulaires. Teste 2 promesses différentes pendant 30 jours." },
+        { t: "Lance une stratégie SEO", d: "Articles de fond ciblant des intentions commerciales. C'est ton prochain levier de croissance." },
+        { t: "Crée un funnel email avancé", d: "Séquences segmentées selon comportement, scoring de leads, automation." }
+      ],
+      next: {
+        title: "Tu veux pousser plus loin ?",
+        desc: "Un audit gratuit de 15 min pour identifier les 2-3 leviers qui peuvent doubler ta conversion."
+      }
+    };
+
+    if (score >= 55) return {
+      key: 'good',
+      label: "Bonnes bases, axes d'amélioration clairs",
+      summary: "Ton site fonctionne, mais il laisse de l'argent sur la table. Quelques ajustements ciblés peuvent significativement booster ta conversion sans tout refaire.",
+      recos: [
+        { t: "Restructure tes CTAs en 3 niveaux", d: "Chaud (achat), tiède (RDV), froid (lead magnet). Tu captures 3x plus de prospects." },
+        { t: "Ajoute un lead magnet incitatif", d: "Un quiz, un mini-audit ou un PDF utile. Capture les visiteurs froids qui sinon partent." },
+        { t: "Renforce tes éléments de réassurance", d: "Témoignages chiffrés, garanties, social proof — juste avant ton CTA principal." }
+      ],
+      next: {
+        title: "Identifions ensemble tes priorités",
+        desc: "15 min d'audit gratuit pour cibler les 2-3 actions qui auront le plus d'impact sur ton CA."
+      }
+    };
+
+    if (score >= 30) return {
+      key: 'medium',
+      label: 'Ton site freine ton business',
+      summary: "Tu as un site, mais il ne joue pas son rôle de machine à clients. Plusieurs fondamentaux manquent — la bonne nouvelle : ce sont les plus rentables à corriger.",
+      recos: [
+        { t: "Clarifie ta promesse en 5 sec max", d: "Un visiteur doit comprendre ton offre instantanément, dès la hero. Sinon il part." },
+        { t: "Mets en place des CTAs visibles", d: "Au moins 1 CTA par écran, avec des verbes d'action clairs (\"Réserver\", \"Lancer\", \"Recevoir\")." },
+        { t: "Optimise mobile en priorité", d: "70% de ton trafic est mobile. Si l'expérience est mauvaise, tout le reste ne sert à rien." }
+      ],
+      next: {
+        title: "Construisons un site qui convertit",
+        desc: "Un audit gratuit de 15 min pour cadrer les fondations d'un site qui ramène vraiment des clients."
+      }
+    };
+
+    return {
+      key: 'low',
+      label: 'Ton site n\'existe pas (vraiment)',
+      summary: "Soit tu n'as pas de site, soit il existe mais il ne sert à rien stratégiquement. Plutôt que de t'acharner à le rafistoler, repartir d'une base propre est souvent plus rentable.",
+      recos: [
+        { t: "Définis ton objectif business prioritaire", d: "Un site = un objectif (vendre, capter, réserver). Sans ça, aucune optimisation ne marche." },
+        { t: "Repars d'une structure éprouvée", d: "3 pages bien faites > 15 pages confuses. Hero clair, page de conversion, page de contact." },
+        { t: "Lance vite, optimise après", d: "Mieux vaut un site simple en ligne demain qu'un site parfait dans 6 mois. La vitesse compte." }
+      ],
+      next: {
+        title: "Lance ton site en 48h",
+        desc: "On structure, on conçoit, on livre. À partir de 890€, domaine + hébergement inclus. Audit gratuit pour démarrer."
+      }
+    };
+  }
+
+  function showResult(firstname) {
+    emailSection.classList.add('hidden');
+    resultSection.classList.remove('hidden');
+
+    const tier = getTier(score);
+
+    // Animate score counter
+    const scoreEl = document.getElementById('score-value');
+    let displayScore = 0;
+    const increment = Math.max(1, Math.ceil(score / 30));
+    const counter = setInterval(() => {
+      displayScore += increment;
+      if (displayScore >= score) {
+        displayScore = score;
+        clearInterval(counter);
+      }
+      scoreEl.textContent = displayScore;
+    }, 30);
+
+    // Personalize with firstname
+    document.getElementById('result-tier').textContent = `${firstname}, ${tier.label.toLowerCase()}`;
+    document.getElementById('result-summary').textContent = tier.summary;
+
+    // Render recos
+    const recosListEl = document.getElementById('recos-list');
+    recosListEl.innerHTML = '';
+    tier.recos.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'reco-item';
+      div.innerHTML = `<div class="reco-item-title">${r.t}</div><div class="reco-item-desc">${r.d}</div>`;
+      recosListEl.appendChild(div);
+    });
+
+    document.getElementById('next-step-title').textContent = tier.next.title;
+    document.getElementById('next-step-desc').textContent = tier.next.desc;
+
+    // Scroll smooth en haut du résultat
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ========== INIT ==========
+  renderQuestion();
+</script>
+
+</body>
+</html>

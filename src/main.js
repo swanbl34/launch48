@@ -92,6 +92,7 @@ const renderShell = () => {
         <div class="nav__links">
           <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
           <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+          <a href="/quiz/">Quiz</a>
           <a href="/blog/">Blog</a>
           <div class="nav-dropdown nav-dropdown--desktop">
             <div class="nav-dropdown__trigger">
@@ -135,6 +136,7 @@ const renderShell = () => {
           <div class="nav-mobile__group">
             <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
             <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+            <a href="/quiz/">Quiz conversion</a>
             <a href="/blog/">Blog</a>
             <a href="/offres/">Secteurs</a>
           </div>
@@ -179,6 +181,24 @@ const renderShell = () => {
           <div class="hero__cta">
             <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
             <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="quiz-home-cta section container" aria-labelledby="quiz-home-title">
+        <div class="quiz-home-cta__panel" data-reveal>
+          <div class="quiz-home-cta__content">
+            <p class="kicker">Test gratuit</p>
+            <h2 id="quiz-home-title">Votre site convertit-il vraiment ?</h2>
+            <p>Répondez à 7 questions rapides pour repérer les blocages de clarté, de confiance et de conversion qui peuvent freiner vos demandes de devis.</p>
+          </div>
+          <div class="quiz-home-cta__aside">
+            <div class="quiz-home-cta__stats" aria-label="Détails du quiz">
+              <span>60 sec</span>
+              <span>7 questions</span>
+              <span>Score immédiat</span>
+            </div>
+            <a class="btn magnetic" href="/quiz/">Faire le quiz gratuit</a>
           </div>
         </div>
       </section>
@@ -627,6 +647,7 @@ const renderShell = () => {
         <a data-slot="footer.social1.label" data-slot-href="footer.social1.href"></a>
         <a data-slot="footer.social2.label" data-slot-href="footer.social2.href"></a>
         <a data-slot="footer.social3.label" data-slot-href="footer.social3.href"></a>
+        <a href="/quiz/">Quiz conversion</a>
         <a href="/blog/">Blog</a>
       </div>
       <a class="btn btn--small site-footer__cta" href="/partenaires/">Devenir partenaire</a>

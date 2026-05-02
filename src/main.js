@@ -253,6 +253,31 @@ const renderShell = () => {
         </div>
       </section>
 
+      <section class="before-after section container" aria-labelledby="before-after-title">
+        <div class="before-after__head">
+          <span class="kicker" data-slot="beforeAfter.eyebrow"></span>
+          <h2 id="before-after-title" data-slot="beforeAfter.title"></h2>
+        </div>
+        <div class="before-after__panel">
+          <div class="before-after__column">
+            <h3 data-slot="beforeAfter.beforeTitle"></h3>
+            <ul>
+              <li><span class="before-after__mark before-after__mark--bad" aria-hidden="true">🔴</span><span data-slot="beforeAfter.before1"></span></li>
+              <li><span class="before-after__mark before-after__mark--bad" aria-hidden="true">🔴</span><span data-slot="beforeAfter.before2"></span></li>
+              <li><span class="before-after__mark before-after__mark--bad" aria-hidden="true">🔴</span><span data-slot="beforeAfter.before3"></span></li>
+            </ul>
+          </div>
+          <div class="before-after__column before-after__column--after">
+            <h3 data-slot="beforeAfter.afterTitle"></h3>
+            <ul>
+              <li><span class="before-after__mark before-after__mark--good" aria-hidden="true">🟢</span><span data-slot="beforeAfter.after1"></span></li>
+              <li><span class="before-after__mark before-after__mark--good" aria-hidden="true">🟢</span><span data-slot="beforeAfter.after2"></span></li>
+              <li><span class="before-after__mark before-after__mark--good" aria-hidden="true">🟢</span><span data-slot="beforeAfter.after3"></span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section class="proof section" id="proof">
         <div class="container">
           <h2 data-slot="proof.title"></h2>
@@ -395,24 +420,6 @@ const renderShell = () => {
               <p data-slot="offer.item4.text"></p>
             </article>
           </div>
-        </div>
-      </section>
-
-      <section class="workflow section container" id="workflow">
-        <h2 data-slot="workflow.title"></h2>
-        <div class="workflow-grid">
-          <article>
-            <h3 data-slot="workflow.step1.title"></h3>
-            <p data-slot="workflow.step1.text"></p>
-          </article>
-          <article>
-            <h3 data-slot="workflow.step2.title"></h3>
-            <p data-slot="workflow.step2.text"></p>
-          </article>
-          <article>
-            <h3 data-slot="workflow.step3.title"></h3>
-            <p data-slot="workflow.step3.text"></p>
-          </article>
         </div>
       </section>
 
@@ -559,6 +566,24 @@ const renderShell = () => {
         </div>
       </section>
 
+      <section class="trust-strip container" aria-label="Garanties Launch48">
+        <div class="trust-strip__intro">
+          <span data-slot="trust.eyebrow"></span>
+          <p data-slot="trust.text"></p>
+        </div>
+        <div class="trust-strip__grid">
+          <article class="trust-metric">
+            <span data-slot="trust.item1.label"></span>
+          </article>
+          <article class="trust-metric">
+            <span data-slot="trust.item2.label"></span>
+          </article>
+          <article class="trust-metric">
+            <span data-slot="trust.item3.label"></span>
+          </article>
+        </div>
+      </section>
+
       <section class="faq section container" id="faq">
         <h2 data-slot="faq.title"></h2>
         <div class="faq-list">
@@ -664,20 +689,6 @@ const injectSlots = (slots) => {
 };
 
 const cleanupOptionalContent = () => {
-  const workflowSection = document.querySelector('.workflow');
-  if (workflowSection) {
-    const title = workflowSection.querySelector('h2')?.textContent?.trim();
-    const steps = Array.from(workflowSection.querySelectorAll('.workflow-grid article')).filter((step) => {
-      const heading = step.querySelector('h3')?.textContent?.trim();
-      const text = step.querySelector('p')?.textContent?.trim();
-      return Boolean(heading || text);
-    });
-
-    if (!title || steps.length === 0) {
-      workflowSection.remove();
-    }
-  }
-
   document.querySelectorAll('.site-footer__socials').forEach((container) => {
     Array.from(container.querySelectorAll('a')).forEach((link) => {
       const hasLabel = link.textContent.trim().length > 0;

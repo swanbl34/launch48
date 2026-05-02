@@ -935,6 +935,228 @@ body[data-page='vertical'] main > .section:first-child {
   background: linear-gradient(130deg, var(--accent), var(--accent-2));
 }
 
+.quote-response-note {
+  display: grid;
+  gap: 0.18rem;
+  border: 1px solid color-mix(in srgb, var(--accent-3), var(--line) 38%);
+  border-radius: 16px;
+  padding: 0.82rem 0.95rem;
+  background:
+    radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--accent-3), transparent 80%), transparent 32%),
+    color-mix(in srgb, var(--accent-3), transparent 92%);
+}
+
+.quote-response-note strong {
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.98rem;
+}
+
+.quote-response-note span {
+  color: color-mix(in srgb, var(--text), var(--muted) 36%);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.audit-page {
+  display: grid;
+}
+
+.audit-hero {
+  padding-top: clamp(4.6rem, 10vw, 7.4rem);
+}
+
+.audit-hero__content {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 1rem;
+  max-width: 920px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  padding: clamp(1.15rem, 4vw, 2rem);
+  background:
+    radial-gradient(circle at 8% 16%, color-mix(in srgb, var(--accent-3), transparent 78%), transparent 28%),
+    radial-gradient(circle at 92% 10%, color-mix(in srgb, var(--accent-2), transparent 82%), transparent 26%),
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-solid), #ffffff 4%), color-mix(in srgb, var(--surface-solid), #000000 7%));
+  box-shadow: var(--shadow);
+}
+
+.audit-hero__content h1 {
+  max-width: 11ch;
+  font-size: clamp(2.65rem, 8vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.audit-hero__actions {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+}
+
+.audit-hero__actions p {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.audit-section {
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.4rem);
+}
+
+.audit-section--compact {
+  padding-block: clamp(2.2rem, 6vw, 4.6rem);
+}
+
+.audit-section .section-head h2 {
+  max-width: 760px;
+  font-size: clamp(1.8rem, 5vw, 3.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.audit-steps {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.audit-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(0.95rem, 2.8vw, 1.25rem);
+  background: color-mix(in srgb, var(--surface-solid), transparent 14%);
+}
+
+.audit-step__number {
+  display: inline-grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 32%);
+  background: color-mix(in srgb, var(--accent), transparent 86%);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+}
+
+.audit-step h3 {
+  font-size: clamp(1.08rem, 3vw, 1.45rem);
+  line-height: 1.1;
+}
+
+.audit-step p {
+  margin-top: 0.32rem;
+  color: var(--muted);
+}
+
+.audit-outcome {
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--accent-3), var(--line) 44%);
+  border-radius: 26px;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  background:
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--accent-3), transparent 78%), transparent 28%),
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-3), transparent 90%), color-mix(in srgb, var(--surface-solid), transparent 6%));
+  box-shadow: var(--shadow);
+}
+
+.audit-outcome h2 {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+}
+
+.audit-checklist,
+.audit-reassurance {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.audit-checklist li,
+.audit-reassurance p {
+  position: relative;
+  padding-left: 1.65rem;
+  color: color-mix(in srgb, var(--text), var(--muted) 18%);
+}
+
+.audit-checklist li::before,
+.audit-reassurance p::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent-3);
+  font-weight: 800;
+}
+
+.audit-explain {
+  display: grid;
+  gap: 0.8rem;
+  max-width: 860px;
+  border-left: 1px solid color-mix(in srgb, var(--accent), transparent 28%);
+  padding-left: clamp(1rem, 3vw, 1.4rem);
+}
+
+.audit-explain > p:not(.kicker) {
+  color: color-mix(in srgb, var(--text), var(--muted) 26%);
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.audit-calendly {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 5%);
+  box-shadow: var(--shadow);
+}
+
+.audit-calendly iframe {
+  display: block;
+  width: 100%;
+  height: clamp(720px, 92vh, 940px);
+  border: 0;
+  background: var(--surface-solid);
+}
+
+.audit-reassurance {
+  border-block: 1px solid var(--line);
+  padding-block: clamp(1rem, 3vw, 1.25rem);
+}
+
+.audit-final {
+  padding-top: clamp(2.4rem, 7vw, 5rem);
+}
+
+.audit-final__content {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.audit-final__content > p {
+  color: var(--accent-3);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.audit-final__content h2 {
+  max-width: 720px;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  line-height: 1;
+}
+
 .launch48-form {
   display: grid;
   gap: 0.9rem;
@@ -1123,6 +1345,29 @@ body[data-page='vertical'] main > .section:first-child {
   .quote-panel {
     position: sticky;
     top: 6.2rem;
+  }
+
+  .audit-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .audit-reassurance {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .audit-final__content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .audit-final__content > p,
+  .audit-final__content h2 {
+    grid-column: 1;
+  }
+
+  .audit-final__content .btn {
+    grid-column: 2;
+    grid-row: 1 / span 2;
   }
 
   .offers-showcase {

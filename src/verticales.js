@@ -449,6 +449,10 @@ const renderQuotePage = () => {
             <form action="https://formspree.io/f/xbdpgvgj" method="POST" class="launch48-form">
               <h3>Créer votre site internet en 48h</h3>
               <p>Décrivez votre besoin pour obtenir un site internet clé en main ou une alternative simple à une agence web.</p>
+              <div class="quote-response-note" role="note">
+                <strong>Réponse dans la journée.</strong>
+                <span>On lit chaque demande rapidement et on vous répond avec une première estimation ou la bonne prochaine étape.</span>
+              </div>
 
               <label>
                 <span>Nom</span>
@@ -516,36 +520,110 @@ const renderQuotePage = () => {
 
 const renderCallPage = () => {
   setMeta({
-    title: 'Appel decouverte creation site internet | Launch48',
-    description: 'Réservez un appel découverte pour parler de votre site internet professionnel, de votre landing page ou de votre besoin de refonte rapide.'
+    title: 'Audit gratuit de 15 min — Launch48',
+    description: 'Réservez un audit stratégique gratuit de 15 minutes avec Launch48. Repartez avec un plan d\'action clair pour votre site web.'
   });
+
+  const calendlyUrl = 'https://calendly.com/launch48/audit-gratuit?hide_gdpr_banner=1&background_color=091019&text_color=f3efe7&primary_color=63ffe0';
 
   app.innerHTML = `
     ${renderHeader('call')}
-    <main id="main">
-      <section class="section container">
-        <div class="quote-layout">
-          <article class="quote-panel" data-reveal>
-            <p class="kicker">Pendant l'appel</p>
-            <h2>On clarifie comment lancer votre site internet vite</h2>
-            <ul class="quote-panel__list">
-              <li>Clarifier votre objectif principal et votre cible</li>
-              <li>Identifier le bon format de site internet ou de landing page</li>
-              <li>Valider le timing et les contenus disponibles</li>
-              <li>Vous orienter vers un devis ou une prochaine étape concrète</li>
-            </ul>
-          </article>
+    <main id="main" class="audit-page">
+      <section class="audit-hero section container">
+        <div class="audit-hero__content" data-reveal>
+          <p class="kicker">AUDIT STRATÉGIQUE · 15 MIN · GRATUIT</p>
+          <h1>Clarifions votre projet en 15 minutes.</h1>
+          <p class="lead">Un appel court, structuré, et utile. Vous repartez avec une vision claire du site qu'il vous faut — que vous choisissiez Launch48 ou non.</p>
+          <div class="audit-hero__actions">
+            <a class="btn magnetic" href="#calendly" data-analytics-id="audit-cta-hero">Réserver mon audit gratuit →</a>
+            <p>15 min · En visio · Sans engagement</p>
+          </div>
+        </div>
+      </section>
 
-          <article class="quote-form-card quote-form-card--embed" data-reveal>
-            <iframe
-              src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
-              style="border: 0"
-              width="100%"
-              height="600"
-              frameborder="0"
-              title="Réservation d'appel Launch48"
-            ></iframe>
+      <section class="audit-section section container">
+        <div class="section-head" data-reveal>
+          <p class="kicker">CE QU'ON FAIT ENSEMBLE</p>
+          <h2>Un audit structuré pour transformer une idée floue en plan d'action.</h2>
+        </div>
+        <div class="audit-steps" data-reveal>
+          <article class="audit-step">
+            <span class="audit-step__number">1</span>
+            <div>
+              <h3>Identifier l'objectif business prioritaire</h3>
+              <p>Vendre, capter des leads, réserver : on clarifie ce que votre site doit vraiment produire.</p>
+            </div>
           </article>
+          <article class="audit-step">
+            <span class="audit-step__number">2</span>
+            <div>
+              <h3>Choisir le bon format</h3>
+              <p>Site vitrine, landing page, ou structure multi-pages : on choisit le format le plus utile.</p>
+            </div>
+          </article>
+          <article class="audit-step">
+            <span class="audit-step__number">3</span>
+            <div>
+              <h3>Évaluer ce qui est prêt</h3>
+              <p>Textes, visuels, marque : on repère ce qui existe déjà et ce qui reste à produire.</p>
+            </div>
+          </article>
+          <article class="audit-step">
+            <span class="audit-step__number">4</span>
+            <div>
+              <h3>Repartir avec un plan d'action clair</h3>
+              <p>Devis Launch48 ou recommandation honnête : vous repartez avec une prochaine étape concrète.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="audit-section section container">
+        <article class="audit-outcome" data-reveal>
+          <p class="kicker">À LA FIN DES 15 MINUTES</p>
+          <h2>Vous repartez avec :</h2>
+          <ul class="audit-checklist">
+            <li>La promesse claire de votre site en 1 phrase</li>
+            <li>La structure recommandée (nombre de pages, sections)</li>
+            <li>Le timing réaliste pour votre lancement</li>
+            <li>Un devis personnalisé si Launch48 est la bonne solution</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="audit-section audit-section--compact section container">
+        <article class="audit-explain" data-reveal>
+          <p class="kicker">POURQUOI C'EST GRATUIT ?</p>
+          <p>Parce qu'un appel de 15 min permet de savoir en 5 minutes si on peut vous aider — ou pas. C'est efficace pour vous, c'est efficace pour nous. Pas de pitch commercial, pas de pression : juste un échange utile.</p>
+        </article>
+      </section>
+
+      <section class="audit-section section container" id="calendly">
+        <div class="section-head" data-reveal>
+          <p class="kicker">RÉSERVEZ VOTRE CRÉNEAU</p>
+          <h2>Choisissez l'horaire qui vous arrange.</h2>
+          <p>Disponibilités sous 48h · Confirmation immédiate · Annulation possible à tout moment</p>
+        </div>
+        <article class="audit-calendly" data-reveal>
+          <iframe
+            src="${calendlyUrl}"
+            title="Réserver un audit stratégique gratuit Launch48"
+            data-analytics-id="audit-calendly-embed"
+            loading="lazy"
+          ></iframe>
+        </article>
+        <div class="audit-reassurance" data-reveal>
+          <p><strong>Pas de pitch commercial</strong> — on cherche d'abord à comprendre</p>
+          <p><strong>Reco honnête</strong> — on vous le dit si Launch48 n'est pas adapté</p>
+          <p><strong>Annulation libre</strong> — un imprévu ? Reprogrammez en 1 clic</p>
+        </div>
+      </section>
+
+      <section class="audit-final section container">
+        <div class="audit-final__content" data-reveal>
+          <p>Vous hésitez encore ?</p>
+          <h2>L'audit ne vous engage à rien. 15 minutes pour y voir clair.</h2>
+          <a class="btn btn--ghost" href="#calendly" data-analytics-id="audit-cta-final">Voir les créneaux disponibles</a>
         </div>
       </section>
     </main>

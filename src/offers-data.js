@@ -1,7 +1,7 @@
 export const CONTACT = {
   primaryLabel: 'Lancer mon site en 48h →',
   primaryHref: '/devis/',
-  secondaryLabel: 'Réserver un appel de 15 min',
+  secondaryLabel: 'Auditer mon projet en 15 min',
   secondaryHref: '/call/'
 };
 
@@ -83,7 +83,7 @@ export const OFFERS = [
       title: 'La page consultant qui clarifie votre valeur en quelques secondes',
       subtitle: 'Cette verticale illustre une structure pensée pour le conseil B2B : promesse nette, expertise cadrée, méthode visible et tunnel de contact sans friction.',
       primaryCta: 'Créer votre site internet freelance',
-      secondaryCta: 'Réserver un appel de 15 min'
+      secondaryCta: 'Auditer mon projet en 15 min'
     },
     seo: {
       keyword: 'site internet freelance',
@@ -197,7 +197,7 @@ export const OFFERS = [
       title: 'La page food qui donne faim avant même la réservation',
       subtitle: 'Cette verticale met en avant une structure pensée pour les concepts food : atmosphère forte, carte lisible, infos utiles et CTA réservation bien placés.',
       primaryCta: 'Créer votre site internet restaurant',
-      secondaryCta: 'Réserver un appel de 15 min'
+      secondaryCta: 'Auditer mon projet en 15 min'
     },
     seo: {
       keyword: 'site internet restaurant rapide',
@@ -303,7 +303,7 @@ export const OFFERS = [
       title: 'Le site internet média qui donne du poids à vos contenus',
       subtitle: 'Nous créons un site internet média ou podcast professionnel pour centraliser vos formats, clarifier votre ligne éditoriale et améliorer la conversion.',
       primaryCta: 'Créer votre site média professionnel',
-      secondaryCta: 'Réserver un appel de 15 min'
+      secondaryCta: 'Auditer mon projet en 15 min'
     },
     seo: {
       keyword: 'site internet média',
@@ -402,7 +402,7 @@ export const OFFERS = [
       title: 'La page real estate qui valorise un bien comme une destination',
       subtitle: 'Cette verticale illustre une structure immobilière premium avec storytelling du lieu, galerie forte, prestations lisibles et CTA de demande qualifiée.',
       primaryCta: 'Créer votre site vitrine immobilier',
-      secondaryCta: 'Réserver un appel de 15 min'
+      secondaryCta: 'Auditer mon projet en 15 min'
     },
     seo: {
       keyword: 'site vitrine immobilier',

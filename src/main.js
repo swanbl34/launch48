@@ -503,7 +503,7 @@ const renderShell = () => {
               <span class="pc__tag">Événement</span>
               <span class="pc__tag">Lancement</span>
             </div>
-            <a href="/devis/?forfait=one-page" class="pc__cta">Demander un devis</a>
+            <a href="/devis/?forfait=one-page" class="pc__cta">Lancer mon site en 48h →</a>
           </div>
           <div class="pc pc--featured">
             <div class="pc__badge">Best-seller</div>
@@ -526,7 +526,7 @@ const renderShell = () => {
               <span class="pc__tag">Artisan</span>
               <span class="pc__tag">Créateur</span>
             </div>
-            <a href="/devis/?forfait=3-pages" class="pc__cta">Demander un devis</a>
+            <a href="/devis/?forfait=3-pages" class="pc__cta">Lancer mon site en 48h →</a>
           </div>
           <div class="pc">
             <div class="pc__name">Site 5 pages +</div>
@@ -547,7 +547,7 @@ const renderShell = () => {
               <span class="pc__tag">Immobilier</span>
               <span class="pc__tag">Événement</span>
             </div>
-            <a href="/devis/?forfait=5-pages" class="pc__cta">Demander un devis</a>
+            <a href="/devis/?forfait=5-pages" class="pc__cta">Lancer mon site en 48h →</a>
           </div>
           <div class="pc pc--custom">
             <div class="pc__body">
@@ -607,6 +607,7 @@ const renderShell = () => {
         <a data-slot="footer.legal2.label" data-slot-href="footer.legal2.href"></a>
         <a data-slot="footer.legal3.label" data-slot-href="footer.legal3.href"></a>
       </div>
+      <p class="site-footer__note" data-slot="footer.domainFootnote"></p>
       <a class="site-footer__powered" href="/" aria-label="Accueil Launch48">
         <span>Propulsé par</span>
         <img src="/logo-launch48.svg" alt="" aria-hidden="true" />

@@ -59,6 +59,7 @@ const renderHeader = (active = 'home') => `
       <div class="nav__links">
         <a href="/">Accueil</a>
         <a href="/#contact">Contact</a>
+        <a href="/blog/">Blog</a>
         <div class="nav-dropdown nav-dropdown--desktop">
           <div class="nav-dropdown__trigger">
             <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
@@ -93,6 +94,7 @@ const renderHeader = (active = 'home') => `
         <div class="nav-mobile__group">
           <a href="/">Accueil</a>
           <a href="/#contact">Contact</a>
+          <a href="/blog/">Blog</a>
           <a href="/offres/">Secteurs</a>
         </div>
         <div class="nav-mobile__group nav-mobile__group--muted">
@@ -113,6 +115,7 @@ const renderFooter = () => `
     <div class="site-footer__socials">
       <a href="https://www.linkedin.com/company/launch48-fr/">LinkedIn</a>
       <a href="https://www.instagram.com/launch48.fr/">Instagram</a>
+      <a href="/blog/">Blog</a>
     </div>
     <a class="btn btn--small site-footer__cta" href="/partenaires/">Devenir partenaire</a>
     <div class="site-footer__legal">

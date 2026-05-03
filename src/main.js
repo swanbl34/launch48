@@ -1257,26 +1257,6 @@ const setupHeroParallax = () => {
   function lp(a, b, t) { return a + (b - a) * t; }
 
   if (isMobileViewport()) {
-    function tickMobile() {
-      rafId = requestAnimationFrame(tickMobile);
-      const t = performance.now() / 1000;
-
-      heroFloats.forEach((el, i) => {
-        const phase = i * (Math.PI * 2 / Math.max(1, heroFloats.length));
-        const freq = 0.36 + i * 0.045;
-        const ampX = 3 + (i % 2) * 1.5;
-        const ampY = 5 + (i % 3) * 2;
-        el.style.transform = `translate3d(${(Math.cos(t * freq + phase) * ampX).toFixed(2)}px, ${(Math.sin(t * freq + phase) * ampY).toFixed(2)}px, 0)`;
-      });
-
-      heroCross.forEach((el, i) => {
-        const phase = i * 1.7;
-        el.style.transform = `translate3d(${(Math.cos(t * 0.32 + phase) * 2).toFixed(2)}px, ${(Math.sin(t * 0.38 + phase) * 2).toFixed(2)}px, 0)`;
-      });
-    }
-
-    tickMobile();
-    window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
     return;
   }
 
@@ -1328,14 +1308,6 @@ const setupAnimations = () => {
     return;
   }
 
-  gsap.from('.hero__content > *', {
-    opacity: 0,
-    y: 30,
-    stagger: 0.08,
-    duration: 0.8,
-    ease: 'power2.out'
-  });
-
   if (isMobileViewport()) {
     const processSteps = gsap.utils.toArray('.process-step');
     const processProgressFill = document.querySelector('.process__progress-fill');
@@ -1357,6 +1329,14 @@ const setupAnimations = () => {
 
     return;
   }
+
+  gsap.from('.hero__content > *', {
+    opacity: 0,
+    y: 30,
+    stagger: 0.08,
+    duration: 0.8,
+    ease: 'power2.out'
+  });
 
   gsap.from('.proof-card', {
     opacity: 0,

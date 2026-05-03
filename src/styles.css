@@ -2553,12 +2553,61 @@ a:focus-visible {
 }
 
 @media (max-width: 759px) {
+  .hero-deco {
+    display: none;
+  }
+
+  .hero,
+  .hero__content,
+  .quiz-home-cta,
+  .quiz-home-cta__panel,
+  #process,
+  .process-sticky,
+  .process-step {
+    isolation: auto;
+    transform: none;
+    will-change: auto;
+  }
+
+  .hero__content {
+    gap: 0.85rem;
+  }
+
+  .hero__title {
+    min-height: 0;
+  }
+
+  .hero .btn,
+  .quiz-home-cta .btn,
+  .process-step {
+    box-shadow: none;
+    transition: none;
+  }
+
   .quiz-home-cta.section {
     padding-bottom: clamp(2rem, 8vw, 3rem);
   }
 
+  .quiz-home-cta__panel {
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+    box-shadow: none;
+  }
+
+  .quiz-home-cta__content h2 {
+    max-width: 12ch;
+  }
+
+  .quiz-home-cta__stats span {
+    background: transparent;
+  }
+
   #process.section {
     padding-top: clamp(2rem, 8vw, 3rem);
+  }
+
+  .process__progress {
+    display: none;
   }
 
   .process-sticky {
@@ -2589,6 +2638,12 @@ a:focus-visible {
   .offer-card,
   .process-step {
     transition: none;
+  }
+
+  .process-step.is-active {
+    background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+    box-shadow: none;
+    transform: none;
   }
 }
 

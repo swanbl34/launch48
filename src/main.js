@@ -7,6 +7,7 @@ ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 
 const app = document.querySelector('#app');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobileViewport = () => window.matchMedia('(max-width: 759px)').matches;
 const fallbackSlots = {
   'meta.title': 'Launch48',
   'meta.description': 'Contenu indisponible.',
@@ -1029,6 +1030,8 @@ const setupCenteredAnchors = () => {
 };
 
 const setupBackgroundScroll = () => {
+  if (isMobileViewport()) return;
+
   const root = document.documentElement;
   let rafId = null;
 
@@ -1124,6 +1127,8 @@ const setupHeroParallax = () => {
     }
     setTimeout(typeNext, 320);
   }());
+
+  if (isMobileViewport()) return;
 
   // Parallax + mouse
   let sy = 0, mx = 0, my = 0, lx = 0, ly = 0, rafId;
@@ -1274,12 +1279,51 @@ const setupAnimations = () => {
       });
     };
 
-    const isTouchMobile = window.matchMedia('(max-width: 759px), (pointer: coarse)').matches;
+    if (isMobileViewport()) {
+      let rafId = null;
+      let activeProcessIndex = -1;
+
+      const updateMobileProcessProgress = () => {
+        rafId = null;
+        const rect = processSection.getBoundingClientRect();
+        const start = window.innerHeight * 0.78;
+        const end = window.innerHeight * 0.35 - rect.height;
+        const progress = gsap.utils.clamp(0, 1, (start - rect.top) / Math.max(1, start - end));
+        const progressWidth = processProgressFill.parentElement?.clientWidth || 0;
+        const rocketX = gsap.utils.clamp(0, progressWidth, progressWidth * (0.02 + progress * 0.96));
+
+        processProgressFill.style.transformOrigin = '0% 50%';
+        processProgressFill.style.transform = `scaleX(${progress.toFixed(4)})`;
+        processProgressRocket.style.transform = `translate3d(${rocketX.toFixed(2)}px, -50%, 0) translateX(-50%) scaleX(-1)`;
+
+        const currentIndex = Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length));
+        if (currentIndex !== activeProcessIndex) {
+          activeProcessIndex = currentIndex;
+          processSteps.forEach((step, index) => {
+            step.classList.toggle('is-active', index <= currentIndex);
+          });
+        }
+      };
+
+      const requestUpdate = () => {
+        if (rafId !== null) return;
+        rafId = window.requestAnimationFrame(updateMobileProcessProgress);
+      };
+
+      updateMobileProcessProgress();
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate, { passive: true });
+      window.addEventListener('orientationchange', requestUpdate, { passive: true });
+      window.addEventListener('pagehide', () => {
+        if (rafId !== null) cancelAnimationFrame(rafId);
+      }, { once: true });
+      return;
+    }
 
     ScrollTrigger.create({
       trigger: processSection,
-      start: isTouchMobile ? 'top 78%' : 'top center',
-      end: isTouchMobile ? 'bottom 35%' : 'bottom center',
+      start: 'top center',
+      end: 'bottom center',
       scrub: true,
       fastScrollEnd: true,
       invalidateOnRefresh: true,

@@ -916,6 +916,11 @@ a:focus-visible {
   .process-sticky {
     will-change: auto;
   }
+
+  .process__progress-rocket {
+    left: 0;
+    will-change: transform;
+  }
 }
 
 .hero__scroll-hint {

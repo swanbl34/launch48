@@ -1356,7 +1356,9 @@ const setupAnimations = () => {
 
 const loadSlots = async () => {
   try {
-    const response = await fetch('/content.html', { cache: 'no-store' });
+    const response = await fetch('/content.html', {
+      cache: import.meta.env.DEV ? 'no-store' : 'force-cache'
+    });
     if (!response.ok) throw new Error('content.html non disponible');
     const html = await response.text();
     return { slots: parseSlotsFromHtml(html), hasError: false };

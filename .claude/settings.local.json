@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3)",
+      "Bash(sed -i '' \"s/gsap.from\\('.hero > \\\\*', {/gsap.from\\('.hero__content > *', {/\" /Users/swanbadol/Codage/launch48/src/main.js)",
+      "Bash(sed -i '' 's/setupHeroCarousel\\(\\);/setupHeroParallax\\(\\);/' /Users/swanbadol/Codage/launch48/src/main.js)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git revert *)",
+      "Bash(git checkout *)",
+      "Bash(node -e ' *)",
+      "Bash(node --input-type=module)",
+      "Bash(git commit -m 'fix\\(pricing\\): corriger couleur card featured — color-mix inversé *)",
+      "Bash(git commit -m 'fix: overflow-x clip sur html pour bloquer le scroll horizontal *)",
+      "Bash(git commit -m 'fix: overflow-x clip sur body \\(pas sur html\\) — corrige scroll horizontal sans casser sticky *)",
+      "Bash(git commit -m 'fix: touch-action pan-y pour bloquer le scroll horizontal tactile iOS *)"
+    ]
+  }
+}

@@ -27,7 +27,106 @@
   </head>
   <body data-page="home">
     <a class="skip-link" href="#main">Aller au contenu</a>
-    <div id="app"></div>
+    <div id="app">
+      <header class="site-header" id="top">
+        <nav class="nav container" aria-label="Navigation principale">
+          <a class="brand" href="#top">
+            <img class="brand__logo" src="/logo-launch48.svg" alt="Launch48" />
+          </a>
+          <div class="nav__links">
+            <a href="#process">Sprint 48h</a>
+            <a href="#pricing">Tarifs</a>
+            <a href="/quiz/">Quiz</a>
+            <a href="/blog/">Blog</a>
+            <a href="/offres/">Secteurs</a>
+          </div>
+          <div class="nav__actions">
+            <button class="theme-toggle nav-theme-mobile" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+              <span class="theme-toggle__track" aria-hidden="true">
+                <span class="theme-toggle__thumb"></span>
+              </span>
+            </button>
+            <button class="nav-burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
+              <span class="theme-toggle__track" aria-hidden="true">
+                <span class="theme-toggle__thumb"></span>
+              </span>
+            </button>
+            <a class="btn btn--small nav-cta-desktop" href="/devis/">Lancer mon site en 48h →</a>
+          </div>
+        </nav>
+      </header>
+
+      <main id="main">
+        <section class="hero section container" id="hero">
+          <div class="hero-deco" aria-hidden="true">
+            <span class="hero-float hf-1">Landing page</span>
+            <span class="hero-float hf-2">One page</span>
+            <span class="hero-float hf-5">Portfolio</span>
+            <span class="hero-float hf-6">E-commerce</span>
+          </div>
+          <div class="hero__content">
+            <p class="hero__eyebrow">Création de site internet express</p>
+            <h1 class="hero__title">Un site pro, livré en 48h.</h1>
+            <p class="hero__subtitle">Design moderne, mobile-first, optimisé conversion.<br>À partir de 590€ — domaine et hébergement inclus.*</p>
+            <div class="hero__cta">
+              <a class="btn" href="/devis/">Lancer mon site en 48h →</a>
+              <a class="btn btn--ghost" href="/call/">Auditer mon projet en 15 min</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="quiz-home-cta section container" aria-labelledby="quiz-home-title">
+          <div class="quiz-home-cta__panel">
+            <div class="quiz-home-cta__content">
+              <p class="kicker">Test gratuit</p>
+              <h2 id="quiz-home-title">Votre site convertit-il vraiment ?</h2>
+              <p>Répondez à 7 questions rapides pour repérer les blocages de clarté, de confiance et de conversion qui peuvent freiner vos demandes de devis.</p>
+            </div>
+            <div class="quiz-home-cta__aside">
+              <div class="quiz-home-cta__stats" aria-label="Détails du quiz">
+                <span>60 sec</span>
+                <span>7 questions</span>
+                <span>Score immédiat</span>
+              </div>
+              <a class="btn" href="/quiz/">Faire le quiz gratuit</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="process section container" id="process">
+          <div class="process-sticky">
+            <h2>Le sprint pour créer votre site internet en 48h</h2>
+            <p class="section-intro">Un process court, lisible et orienté résultat pour lancer un site web vite.</p>
+            <div class="process__progress" aria-hidden="true">
+              <span class="process__progress-fill"></span>
+              <span class="process__progress-rocket"></span>
+            </div>
+            <div class="process-grid">
+              <article class="process-step is-active">
+                <span class="process-step__label">J0</span>
+                <h3>Brief</h3>
+                <p>Kickoff, positionnement, mots-clés SEO et collecte des contenus.</p>
+              </article>
+              <article class="process-step is-active">
+                <span class="process-step__label">J1</span>
+                <h3>Prototype</h3>
+                <p>Design, maquette fonctionnelle et premier rendu interactif du site internet.</p>
+              </article>
+              <article class="process-step is-active">
+                <span class="process-step__label">J2</span>
+                <h3>Livraison & mise en ligne</h3>
+                <p>Dernières retouches, mise en ligne et livraison de votre site internet professionnel.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

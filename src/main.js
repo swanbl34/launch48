@@ -299,7 +299,7 @@ const renderShell = () => {
         </div>
         <div class="hero__content">
           <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
-          <h1 class="hero__title" data-typewriter-segments="Un site pro, livré en 48h."></h1>
+          <h1 class="hero__title" data-typewriter-segments="Un site pro, livré en 48h.">Un site pro, livré en 48h.</h1>
           <p class="hero__subtitle" data-slot="hero.subtitle"></p>
           <div class="hero__cta">
             <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
@@ -1226,6 +1226,8 @@ const setupHeroParallax = () => {
   (function () {
     const el = heroEl.querySelector('.hero__title[data-typewriter-segments]');
     if (!el) return;
+    if (isMobileViewport()) return;
+    el.textContent = '';
     const segments = el.dataset.typewriterSegments.split('|');
     const cursor = document.createElement('span');
     cursor.className = 'type-cursor';

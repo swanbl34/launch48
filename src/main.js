@@ -206,8 +206,8 @@ const renderShell = () => {
 
       <section class="process section container" id="process">
         <div class="process-sticky">
-          <h2 data-slot="process.title"></h2>
-          <p class="section-intro" data-slot="process.subtitle"></p>
+          <h2 data-slot="process.title">Le sprint pour créer votre site internet en 48h</h2>
+          <p class="section-intro" data-slot="process.subtitle">Un process court, lisible et orienté résultat pour lancer un site web vite.</p>
           <div class="process__progress" aria-hidden="true">
             <span class="process__progress-fill"></span>
             <span class="process__progress-rocket">
@@ -232,19 +232,19 @@ const renderShell = () => {
           </div>
           <div class="process-grid">
             <article class="process-step">
-              <span class="process-step__label" data-slot="process.day0.label"></span>
-              <h3 data-slot="process.day0.title"></h3>
-              <p data-slot="process.day0.text"></p>
+              <span class="process-step__label" data-slot="process.day0.label">J0</span>
+              <h3 data-slot="process.day0.title">Brief</h3>
+              <p data-slot="process.day0.text">Kickoff, positionnement, mots-clés SEO et collecte des contenus.</p>
             </article>
             <article class="process-step">
-              <span class="process-step__label" data-slot="process.day1.label"></span>
-              <h3 data-slot="process.day1.title"></h3>
-              <p data-slot="process.day1.text"></p>
+              <span class="process-step__label" data-slot="process.day1.label">J1</span>
+              <h3 data-slot="process.day1.title">Prototype</h3>
+              <p data-slot="process.day1.text">Design, maquette fonctionnelle et premier rendu interactif du site internet.</p>
             </article>
             <article class="process-step">
-              <span class="process-step__label" data-slot="process.day2.label"></span>
-              <h3 data-slot="process.day2.title"></h3>
-              <p data-slot="process.day2.text"></p>
+              <span class="process-step__label" data-slot="process.day2.label">J2</span>
+              <h3 data-slot="process.day2.title">Livraison & mise en ligne</h3>
+              <p data-slot="process.day2.text">Dernières retouches, mise en ligne et livraison de votre site internet professionnel.</p>
             </article>
           </div>
         </div>

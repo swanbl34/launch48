@@ -2575,6 +2575,27 @@ a:focus-visible {
   }
 }
 
+@media (max-width: 759px) {
+  .quiz-home-cta.section {
+    padding-bottom: clamp(2rem, 8vw, 3rem);
+  }
+
+  #process.section {
+    padding-top: clamp(2rem, 8vw, 3rem);
+  }
+
+  .proof-track {
+    gap: 1rem;
+    padding-block: 1.2rem 2rem;
+  }
+
+  .proof-card {
+    position: relative;
+    top: auto;
+    min-height: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

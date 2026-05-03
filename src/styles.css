@@ -912,6 +912,10 @@ a:focus-visible {
   .quiz-home-cta__stats {
     justify-content: flex-start;
   }
+
+  .process-sticky {
+    will-change: auto;
+  }
 }
 
 .hero__scroll-hint {

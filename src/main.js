@@ -1274,30 +1274,17 @@ const setupAnimations = () => {
       });
     };
 
-    if (window.innerWidth < 760) {
-      ScrollTrigger.create({
-        trigger: processSection,
-        start: 'center center',
-        end: () => `+=${window.innerHeight * 1.45}`,
-        pin: processSticky,
-        scrub: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        fastScrollEnd: true,
-        invalidateOnRefresh: true,
-        onUpdate: updateProcessProgress
-      });
-    } else {
-      ScrollTrigger.create({
-        trigger: processSection,
-        start: 'top center',
-        end: 'bottom center',
-        scrub: true,
-        fastScrollEnd: true,
-        invalidateOnRefresh: true,
-        onUpdate: updateProcessProgress
-      });
-    }
+    const isTouchMobile = window.matchMedia('(max-width: 759px), (pointer: coarse)').matches;
+
+    ScrollTrigger.create({
+      trigger: processSection,
+      start: isTouchMobile ? 'top 78%' : 'top center',
+      end: isTouchMobile ? 'bottom 35%' : 'bottom center',
+      scrub: true,
+      fastScrollEnd: true,
+      invalidateOnRefresh: true,
+      onUpdate: updateProcessProgress
+    });
   }
 
   gsap.from('.pricing', {

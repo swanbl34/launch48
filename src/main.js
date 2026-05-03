@@ -1210,15 +1210,19 @@ const setupHeroParallax = () => {
   const heroOrbA   = document.querySelector('[data-hero-orb-a]');
   const heroOrbB   = document.querySelector('[data-hero-orb-b]');
   if (!heroEl) return;
+
+  const renderTypewriterText = (el) => {
+    const segments = el.dataset.typewriterSegments.split('|');
+    el.textContent = '';
+    segments.forEach((seg, i) => {
+      el.insertAdjacentText('beforeend', seg);
+      if (i < segments.length - 1) el.insertAdjacentHTML('beforeend', '<br>');
+    });
+  };
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const h1 = heroEl.querySelector('.hero__title[data-typewriter-segments]');
-    if (h1) {
-      const segs = h1.dataset.typewriterSegments.split('|');
-      segs.forEach((seg, i) => {
-        h1.insertAdjacentText('beforeend', seg);
-        if (i < segs.length - 1) h1.insertAdjacentHTML('beforeend', '<br>');
-      });
-    }
+    if (h1) renderTypewriterText(h1);
     return;
   }
 
@@ -1226,30 +1230,50 @@ const setupHeroParallax = () => {
   (function () {
     const el = heroEl.querySelector('.hero__title[data-typewriter-segments]');
     if (!el) return;
-    if (isMobileViewport()) return;
-    el.textContent = '';
+    const fullText = el.dataset.typewriterSegments.replace(/\|/g, ' ');
+    const startDelay = isMobileViewport() ? 160 : 320;
+    const letterDelay = isMobileViewport() ? 32 : 38;
+    const reservedHeight = el.offsetHeight;
+    const keepStaticUntilStart = isMobileViewport();
+    if (reservedHeight > 0) el.style.minHeight = `${reservedHeight}px`;
+    el.setAttribute('aria-label', fullText);
     const segments = el.dataset.typewriterSegments.split('|');
     const cursor = document.createElement('span');
     cursor.className = 'type-cursor';
-    el.appendChild(cursor);
-    let si = 0, ci = 0;
-    function typeNext() {
-      if (si >= segments.length) return;
-      const seg = segments[si];
-      if (ci < seg.length) {
-        cursor.insertAdjacentText('beforebegin', seg[ci]);
-        ci++;
-        setTimeout(typeNext, 38);
-      } else {
-        si++;
-        ci = 0;
-        if (si < segments.length) {
-          cursor.insertAdjacentHTML('beforebegin', '<br>');
-          setTimeout(typeNext, 38 * 4);
-        }
-      }
+    cursor.setAttribute('aria-hidden', 'true');
+    if (!keepStaticUntilStart) {
+      el.textContent = '';
+      el.appendChild(cursor);
     }
-    setTimeout(typeNext, 320);
+
+    const tokens = segments.flatMap((segment, segmentIndex) => {
+      const chars = [...segment];
+      return segmentIndex < segments.length - 1 ? [...chars, '\n'] : chars;
+    });
+
+    const renderUntil = (count) => {
+      el.textContent = '';
+      const fragment = document.createDocumentFragment();
+      tokens.slice(0, count).forEach((token) => {
+        fragment.appendChild(token === '\n' ? document.createElement('br') : document.createTextNode(token));
+      });
+      el.appendChild(fragment);
+      el.appendChild(cursor);
+    };
+
+    let startedAt = 0;
+    function typeNext(now = performance.now()) {
+      if (!startedAt) startedAt = now;
+      const elapsed = now - startedAt;
+      const visibleCount = Math.min(tokens.length, Math.max(1, Math.floor(elapsed / letterDelay)));
+      renderUntil(visibleCount);
+      if (visibleCount >= tokens.length) {
+        el.style.minHeight = '';
+        return;
+      }
+      setTimeout(() => typeNext(), 34);
+    }
+    setTimeout(() => typeNext(), startDelay);
   }());
 
   // Parallax + mouse

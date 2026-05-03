@@ -918,8 +918,22 @@ a:focus-visible {
   }
 
   .process__progress-rocket {
-    left: 0;
+    left: 100%;
     will-change: transform;
+  }
+
+  .proof-track {
+    padding-block: 1.2rem 2rem;
+  }
+
+  .proof-card {
+    position: relative;
+    top: auto;
+  }
+
+  .offer-card,
+  .process-step {
+    transition: none;
   }
 }
 

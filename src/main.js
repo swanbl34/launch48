@@ -1128,11 +1128,33 @@ const setupHeroParallax = () => {
     setTimeout(typeNext, 320);
   }());
 
-  if (isMobileViewport()) return;
-
   // Parallax + mouse
   let sy = 0, mx = 0, my = 0, lx = 0, ly = 0, rafId;
   function lp(a, b, t) { return a + (b - a) * t; }
+
+  if (isMobileViewport()) {
+    function tickMobile() {
+      rafId = requestAnimationFrame(tickMobile);
+      const t = performance.now() / 1000;
+
+      heroFloats.forEach((el, i) => {
+        const phase = i * (Math.PI * 2 / Math.max(1, heroFloats.length));
+        const freq = 0.36 + i * 0.045;
+        const ampX = 3 + (i % 2) * 1.5;
+        const ampY = 5 + (i % 3) * 2;
+        el.style.transform = `translate3d(${(Math.cos(t * freq + phase) * ampX).toFixed(2)}px, ${(Math.sin(t * freq + phase) * ampY).toFixed(2)}px, 0)`;
+      });
+
+      heroCross.forEach((el, i) => {
+        const phase = i * 1.7;
+        el.style.transform = `translate3d(${(Math.cos(t * 0.32 + phase) * 2).toFixed(2)}px, ${(Math.sin(t * 0.38 + phase) * 2).toFixed(2)}px, 0)`;
+      });
+    }
+
+    tickMobile();
+    window.addEventListener('pagehide', () => cancelAnimationFrame(rafId), { once: true });
+    return;
+  }
 
   window.addEventListener('scroll', () => { sy = window.scrollY; }, { passive: true });
   heroEl.addEventListener('mousemove', (e) => {
@@ -1189,6 +1211,28 @@ const setupAnimations = () => {
     duration: 0.8,
     ease: 'power2.out'
   });
+
+  if (isMobileViewport()) {
+    const processSteps = gsap.utils.toArray('.process-step');
+    const processProgressFill = document.querySelector('.process__progress-fill');
+    const processProgressRocket = document.querySelector('.process__progress-rocket');
+
+    if (processProgressFill) {
+      processProgressFill.style.transformOrigin = '0% 50%';
+      processProgressFill.style.transform = 'scaleX(1)';
+    }
+
+    if (processProgressRocket) {
+      processProgressRocket.style.left = '100%';
+      processProgressRocket.style.transform = 'translate(-100%, -50%) scaleX(-1)';
+    }
+
+    processSteps.forEach((step) => {
+      step.classList.add('is-active');
+    });
+
+    return;
+  }
 
   gsap.from('.proof-card', {
     opacity: 0,
@@ -1278,47 +1322,6 @@ const setupAnimations = () => {
         step.classList.toggle('is-active', index <= currentIndex);
       });
     };
-
-    if (isMobileViewport()) {
-      let rafId = null;
-      let activeProcessIndex = -1;
-
-      const updateMobileProcessProgress = () => {
-        rafId = null;
-        const rect = processSection.getBoundingClientRect();
-        const start = window.innerHeight * 0.78;
-        const end = window.innerHeight * 0.35 - rect.height;
-        const progress = gsap.utils.clamp(0, 1, (start - rect.top) / Math.max(1, start - end));
-        const progressWidth = processProgressFill.parentElement?.clientWidth || 0;
-        const rocketX = gsap.utils.clamp(0, progressWidth, progressWidth * (0.02 + progress * 0.96));
-
-        processProgressFill.style.transformOrigin = '0% 50%';
-        processProgressFill.style.transform = `scaleX(${progress.toFixed(4)})`;
-        processProgressRocket.style.transform = `translate3d(${rocketX.toFixed(2)}px, -50%, 0) translateX(-50%) scaleX(-1)`;
-
-        const currentIndex = Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length));
-        if (currentIndex !== activeProcessIndex) {
-          activeProcessIndex = currentIndex;
-          processSteps.forEach((step, index) => {
-            step.classList.toggle('is-active', index <= currentIndex);
-          });
-        }
-      };
-
-      const requestUpdate = () => {
-        if (rafId !== null) return;
-        rafId = window.requestAnimationFrame(updateMobileProcessProgress);
-      };
-
-      updateMobileProcessProgress();
-      window.addEventListener('scroll', requestUpdate, { passive: true });
-      window.addEventListener('resize', requestUpdate, { passive: true });
-      window.addEventListener('orientationchange', requestUpdate, { passive: true });
-      window.addEventListener('pagehide', () => {
-        if (rafId !== null) cancelAnimationFrame(rafId);
-      }, { once: true });
-      return;
-    }
 
     ScrollTrigger.create({
       trigger: processSection,

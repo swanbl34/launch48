@@ -2691,14 +2691,17 @@ a:focus-visible {
   }
 
   .proof-track {
-    gap: 1rem;
-    padding-block: 1.2rem 2rem;
+    gap: clamp(3.5rem, 18svh, 7rem);
+    padding-block: clamp(2rem, 12svh, 4.5rem) clamp(7rem, 30svh, 12rem);
   }
 
   .proof-card {
-    position: relative;
-    top: auto;
+    position: sticky;
+    top: clamp(5.4rem, 14svh, 6.8rem);
+    align-self: start;
     min-height: 0;
+    transition: none;
+    will-change: auto;
   }
 
   .offer-card,

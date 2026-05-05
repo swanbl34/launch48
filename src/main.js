@@ -296,13 +296,15 @@ const renderShell = () => {
           <span class="hero-float hf-5" data-speed="0.18" data-mouse-depth="0.25">Portfolio</span>
           <span class="hero-float hf-6" data-speed="0.10" data-mouse-depth="0.3">E-commerce</span>
           <span class="hero-float hf-7" data-speed="0.14" data-mouse-depth="0.4">Food</span>
+          <span class="hero-float hf-8" data-speed="0.09" data-mouse-depth="0.25">Audit express</span>
+          <span class="hero-float hf-9" data-speed="0.11" data-mouse-depth="0.28">SEO prêt</span>
         </div>
         <div class="hero__content">
           <p class="hero__eyebrow" data-slot="hero.eyebrow"></p>
           <h1 class="hero__title" data-typewriter-segments="Un site pro, livré en 48h.">Un site pro, livré en 48h.</h1>
           <p class="hero__subtitle" data-slot="hero.subtitle"></p>
           <div class="hero__cta">
-            <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href"></a>
+            <a class="btn magnetic" data-slot="hero.primaryCta.label" data-slot-href="hero.primaryCta.href" data-mobile-label="Lancer mon site en 48h"></a>
             <a class="btn btn--ghost" data-slot="hero.secondaryCta.label" data-slot-href="hero.secondaryCta.href"></a>
           </div>
         </div>

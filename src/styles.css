@@ -579,6 +579,17 @@ p {
     padding: 0.75rem 0.8rem;
   }
 
+  .hero__cta .btn:first-child {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .hero__cta .btn:first-child::after {
+    content: attr(data-mobile-label);
+    font-size: 0.88rem;
+    line-height: 1.15;
+  }
+
   .trust-strip {
     grid-template-columns: 1fr;
     gap: 0.95rem;
@@ -1095,6 +1106,8 @@ a:focus-visible {
 .hf-5 { bottom: 20%; right: 10%; animation-delay: 0.32s; color: var(--accent); border-color: color-mix(in srgb, var(--accent), transparent 55%); }
 .hf-6 { bottom: 26%; left: 7%;   animation-delay: 0.45s; color: var(--accent-3); border-color: color-mix(in srgb, var(--accent-3), transparent 55%); }
 .hf-7 { top: 36%; right: 2%;     animation-delay: 0.18s; }
+.hf-8,
+.hf-9 { display: none; }
 
 @media (max-width: 759px) {
   .hf-1 { top: 14%; left: 3%; }
@@ -2602,7 +2615,16 @@ a:focus-visible {
     display: none;
   }
 
+  .hf-8,
+  .hf-9 {
+    display: inline-flex;
+  }
+
   .hero-float {
+    --mobile-chip-base-x: 0px;
+    --mobile-chip-x: 2px;
+    --mobile-chip-y: 12px;
+    --mobile-chip-rotate: 0.8deg;
     opacity: 0.86;
     padding: 0.34rem 0.72rem;
     border-radius: 999px;
@@ -2619,13 +2641,19 @@ a:focus-visible {
   .hf-1 {
     top: 10%;
     left: 0;
-    animation-duration: 5.4s;
+    --mobile-chip-x: 3px;
+    --mobile-chip-y: 13px;
+    --mobile-chip-rotate: -1deg;
+    animation-duration: 4.9s;
   }
 
   .hf-2 {
     top: 10%;
     right: 0;
-    animation-duration: 6.1s;
+    --mobile-chip-x: -3px;
+    --mobile-chip-y: 11px;
+    --mobile-chip-rotate: 1.1deg;
+    animation-duration: 5.4s;
     animation-delay: -1.5s;
   }
 
@@ -2633,7 +2661,10 @@ a:focus-visible {
     top: auto;
     right: 2%;
     bottom: 12%;
-    animation-duration: 5.9s;
+    --mobile-chip-x: -4px;
+    --mobile-chip-y: 14px;
+    --mobile-chip-rotate: -0.9deg;
+    animation-duration: 5.2s;
     animation-delay: -2.4s;
   }
 
@@ -2641,17 +2672,43 @@ a:focus-visible {
     top: auto;
     left: 2%;
     bottom: 12%;
-    animation-duration: 6.4s;
+    --mobile-chip-x: 4px;
+    --mobile-chip-y: 12px;
+    --mobile-chip-rotate: 1deg;
+    animation-duration: 5.7s;
     animation-delay: -3.2s;
+  }
+
+  .hf-8 {
+    top: 6%;
+    left: 50%;
+    --mobile-chip-base-x: -50%;
+    --mobile-chip-x: 2px;
+    --mobile-chip-y: 13px;
+    --mobile-chip-rotate: 0.9deg;
+    animation-duration: 5s;
+    animation-delay: -0.9s;
+  }
+
+  .hf-9 {
+    top: auto;
+    left: 50%;
+    bottom: 5%;
+    --mobile-chip-base-x: -50%;
+    --mobile-chip-x: -2px;
+    --mobile-chip-y: 14px;
+    --mobile-chip-rotate: -0.8deg;
+    animation-duration: 5.5s;
+    animation-delay: -2.1s;
   }
 
   @keyframes mobile-chip-float {
     0%,
     100% {
-      transform: translate3d(0, 0, 0);
+      transform: translate3d(var(--mobile-chip-base-x), 0, 0);
     }
     50% {
-      transform: translate3d(0, 7px, 0);
+      transform: translate3d(calc(var(--mobile-chip-base-x) + var(--mobile-chip-x)), var(--mobile-chip-y), 0) rotate(var(--mobile-chip-rotate));
     }
   }
 

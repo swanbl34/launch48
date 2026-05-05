@@ -1326,6 +1326,55 @@ const setupHeroParallax = () => {
 };
 
 
+const setupMobileProcessScroll = () => {
+  const processSection = document.querySelector('#process');
+  const processSteps = Array.from(document.querySelectorAll('.process-step'));
+  const processProgressFill = document.querySelector('.process__progress-fill');
+  const processProgressRocket = document.querySelector('.process__progress-rocket');
+
+  if (!processSection || !processProgressFill || !processProgressRocket || processSteps.length === 0) return;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  let ticking = false;
+
+  const applyProgress = () => {
+    ticking = false;
+
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+    const sectionTop = processSection.getBoundingClientRect().top + window.scrollY;
+    const sectionHeight = processSection.offsetHeight || 1;
+    const startY = sectionTop - viewportHeight * 0.72;
+    const endY = sectionTop + sectionHeight - viewportHeight * 0.32;
+    const progress = clamp((window.scrollY - startY) / Math.max(1, endY - startY), 0, 1);
+    const progressPercent = clamp(2 + progress * 96, 2, 98);
+    const currentIndex = Math.min(processSteps.length - 1, Math.floor(progress * processSteps.length));
+
+    processProgressFill.style.transformOrigin = '0% 50%';
+    processProgressFill.style.transform = `scaleX(${progress.toFixed(4)})`;
+    processProgressRocket.style.left = `${progressPercent.toFixed(2)}%`;
+    processProgressRocket.style.transform = 'translate(-50%, -50%) scaleX(-1)';
+
+    processSteps.forEach((step, index) => {
+      step.classList.toggle('is-active', index <= currentIndex);
+    });
+  };
+
+  const requestUpdate = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(applyProgress);
+  };
+
+  requestUpdate();
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate, { passive: true });
+  window.addEventListener('pagehide', () => {
+    window.removeEventListener('scroll', requestUpdate);
+    window.removeEventListener('resize', requestUpdate);
+  }, { once: true });
+};
+
+
 const setupAnimations = () => {
   if (prefersReducedMotion) {
     document.body.classList.add('reduced-motion');
@@ -1333,24 +1382,7 @@ const setupAnimations = () => {
   }
 
   if (isMobileViewport()) {
-    const processSteps = gsap.utils.toArray('.process-step');
-    const processProgressFill = document.querySelector('.process__progress-fill');
-    const processProgressRocket = document.querySelector('.process__progress-rocket');
-
-    if (processProgressFill) {
-      processProgressFill.style.transformOrigin = '0% 50%';
-      processProgressFill.style.transform = 'scaleX(1)';
-    }
-
-    if (processProgressRocket) {
-      processProgressRocket.style.left = '100%';
-      processProgressRocket.style.transform = 'translate(-100%, -50%) scaleX(-1)';
-    }
-
-    processSteps.forEach((step) => {
-      step.classList.add('is-active');
-    });
-
+    setupMobileProcessScroll();
     return;
   }
 

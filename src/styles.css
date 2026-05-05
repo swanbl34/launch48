@@ -49,6 +49,7 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  background-color: var(--ambient-bg-start);
 }
 
 html {
@@ -77,6 +78,7 @@ html {
       color-mix(in srgb, var(--ambient-bg-mid-3), #03060a 10%) 78%,
       var(--ambient-bg-end) 100%
     );
+  background-color: var(--ambient-bg-start);
 }
 
 body {
@@ -97,6 +99,7 @@ body {
       color-mix(in srgb, var(--ambient-bg-mid-2), var(--bg) 18%),
       var(--bg)
     );
+  background-color: var(--ambient-bg-start);
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
@@ -136,6 +139,7 @@ body[data-page='quote'] {
       var(--ambient-bg-mid-3) 76%,
       var(--ambient-bg-end) 100%
     );
+  background-color: var(--ambient-bg-start);
 }
 
 body[data-page='home'] {
@@ -164,6 +168,7 @@ body[data-page='home'] {
       color-mix(in srgb, var(--ambient-bg-mid-3), #03060a 10%) 78%,
       var(--ambient-bg-end) 100%
     );
+  background-color: var(--ambient-bg-start);
 }
 
 body[data-page='home'] > * {

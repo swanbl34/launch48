@@ -53,7 +53,30 @@ body {
 
 html {
   scroll-behavior: smooth;
-  background: var(--bg);
+  background:
+    radial-gradient(
+      circle at calc(18% + (var(--bg-progress) * 10%)) calc(24% + (var(--bg-progress) * 12%)),
+      color-mix(in srgb, var(--accent-2), transparent 74%),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at calc(84% - (var(--bg-progress) * 9%)) calc(16% + (var(--bg-progress) * 14%)),
+      color-mix(in srgb, var(--accent), transparent 84%),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at calc(52% + (var(--bg-progress) * 6%)) calc(52% + (var(--bg-progress) * 8%)),
+      color-mix(in srgb, var(--accent-3), transparent 90%),
+      transparent 34%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ambient-bg-start), #05080d 8%) 0%,
+      color-mix(in srgb, var(--ambient-bg-mid-1), #04070b 10%) 22%,
+      color-mix(in srgb, var(--ambient-bg-mid-2), #04070b 12%) 54%,
+      color-mix(in srgb, var(--ambient-bg-mid-3), #03060a 10%) 78%,
+      var(--ambient-bg-end) 100%
+    );
 }
 
 body {
@@ -2553,7 +2576,7 @@ a:focus-visible {
 }
 
 @media (max-width: 759px) {
-  #proof {
+  #offer {
     display: none;
   }
 
@@ -2683,6 +2706,82 @@ a:focus-visible {
     min-width: 0;
     font-size: 0.94rem;
     overflow-wrap: anywhere;
+  }
+
+  .vertical-needs__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(78%, 22rem);
+    grid-template-columns: none;
+    gap: 0.85rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.05rem 0 0.85rem;
+    scrollbar-width: none;
+  }
+
+  .vertical-needs__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .needs-card {
+    min-width: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .needs-card__media {
+    min-height: clamp(150px, 42vw, 190px);
+  }
+
+  .projects-mosaic__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(84%, 24rem);
+    grid-template-columns: none;
+    grid-auto-rows: auto;
+    gap: 0.9rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.05rem 0 0.9rem;
+    scrollbar-width: none;
+  }
+
+  .projects-mosaic__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-card,
+  .project-card--feature,
+  .project-card--cta,
+  .projects-mosaic__grid > .project-card:not(.project-card--feature):not(.project-card--cta) {
+    grid-column: auto;
+    grid-row: auto;
+    min-width: 0;
+    min-height: clamp(300px, 82vw, 380px);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .project-card__image {
+    min-height: clamp(300px, 82vw, 380px);
+  }
+
+  .project-card__overlay {
+    padding: 0.95rem;
+  }
+
+  .project-card h3 {
+    font-size: clamp(1.35rem, 8vw, 1.9rem);
+  }
+
+  .project-card p {
+    max-width: none;
+    font-size: 0.92rem;
   }
 
   .quiz-home-cta.section {

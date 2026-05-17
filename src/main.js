@@ -241,11 +241,6 @@ const renderShell = () => {
               <span class="theme-toggle__thumb"></span>
             </span>
           </button>
-          <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
           <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
             <span class="theme-toggle__track" aria-hidden="true">
               <span class="theme-toggle__thumb"></span>
@@ -254,31 +249,68 @@ const renderShell = () => {
           <a class="btn btn--small magnetic nav-cta-desktop" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
       </nav>
-      <div class="nav-mobile container" id="nav-mobile-panel" hidden>
-        <div class="nav-mobile__panel">
-          <div class="nav-mobile__group">
-            <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
-            <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
-            <a href="/quiz/">Quiz conversion</a>
-            <a href="/blog/">Blog</a>
-            <a href="/offres/">Secteurs</a>
-          </div>
-          <div class="nav-mobile__group nav-mobile__group--muted">
-            <a href="/site-evenementiel/">Site événementiel</a>
-            <a href="/site-consultant/">Site consultant</a>
-            <a href="/site-lancement-marque/">Lancement marque</a>
-            <a href="/site-restaurant/">Restaurant</a>
-            <a href="/site-artiste/">Artiste / portfolio</a>
-            <a href="/site-media-podcast/">Média / podcast</a>
-            <a href="/site-association/">Association</a>
-            <a href="/site-immobilier-location/">Immobilier / location</a>
+    </header>
+
+    <nav class="mobile-app-nav" aria-label="Navigation mobile rapide">
+      <a class="mobile-app-nav__item" href="#top" data-nav-section="top" aria-label="Accueil">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M4.5 11.2 12 5l7.5 6.2v7.3a1 1 0 0 1-1 1h-4.1v-5.4H9.6v5.4H5.5a1 1 0 0 1-1-1v-7.3Z" />
+        </svg>
+        <span>Accueil</span>
+      </a>
+      <a class="mobile-app-nav__item" href="#process" data-nav-section="process" aria-label="Sprint 48h">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 12.5h14M5 6.5h10M5 18.5h7" />
+        </svg>
+        <span>Sprint</span>
+      </a>
+      <a class="mobile-app-nav__item" href="#pricing" data-nav-section="pricing" aria-label="Tarifs">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6.5 7.5h11M8 12h8M9.5 16.5h5M5.5 3.8h13a1 1 0 0 1 1 1v14.4a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V4.8a1 1 0 0 1 1-1Z" />
+        </svg>
+        <span>Tarifs</span>
+      </a>
+      <a class="mobile-app-nav__item mobile-app-nav__item--primary" href="/devis/" aria-label="Demander un devis">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M12 4.5v15M5.5 12h13" />
+        </svg>
+        <span>Devis</span>
+      </a>
+      <button class="mobile-app-nav__item nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu complet">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M5 7h14M5 12h14M5 17h14" />
+        </svg>
+        <span>Menu</span>
+      </button>
+    </nav>
+    <div class="nav-mobile" id="nav-mobile-panel" hidden>
+      <div class="nav-mobile__panel">
+        <div class="nav-mobile__header">
+          <p>Menu</p>
+          <button class="nav-mobile__close" type="button" aria-label="Fermer le menu">Fermer</button>
+        </div>
+        <div class="nav-mobile__group">
+          <a data-slot="nav.link1.label" data-slot-href="nav.link1.href"></a>
+          <a data-slot="nav.link2.label" data-slot-href="nav.link2.href"></a>
+          <a href="/quiz/">Quiz conversion</a>
+          <a href="/blog/">Blog</a>
+          <a href="/offres/">Secteurs</a>
+        </div>
+        <div class="nav-mobile__group nav-mobile__group--muted">
+          <a href="/site-evenementiel/">Site événementiel</a>
+          <a href="/site-consultant/">Site consultant</a>
+          <a href="/site-lancement-marque/">Lancement marque</a>
+          <a href="/site-restaurant/">Restaurant</a>
+          <a href="/site-artiste/">Artiste / portfolio</a>
+          <a href="/site-media-podcast/">Média / podcast</a>
+          <a href="/site-association/">Association</a>
+          <a href="/site-immobilier-location/">Immobilier / location</a>
         </div>
         <div class="nav-mobile__footer">
           <a class="btn magnetic" data-slot="nav.cta.label" data-slot-href="nav.cta.href"></a>
         </div>
       </div>
-      </div>
-    </header>
+    </div>
 
     <main id="main">
       <section class="hero section container" id="hero">
@@ -976,9 +1008,60 @@ const setupMobileNav = () => {
     link.addEventListener('click', closeMenu);
   });
 
+  panel.querySelectorAll('.nav-mobile__close').forEach((button) => {
+    button.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (panel.hidden || panel.contains(event.target) || burger.contains(event.target)) return;
+    closeMenu();
+  });
+
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
   });
+};
+
+const setupMobileAppNavState = () => {
+  const navItems = Array.from(document.querySelectorAll('.mobile-app-nav__item[href^="#"]'));
+  if (navItems.length === 0) return;
+
+  const sectionEntries = navItems
+    .map((item) => {
+      const hash = item.getAttribute('href');
+      return hash ? { item, target: document.querySelector(hash) } : null;
+    })
+    .filter((entry) => entry && entry.target);
+
+  if (sectionEntries.length === 0) return;
+
+  const setCurrent = (currentItem) => {
+    navItems.forEach((item) => {
+      if (item === currentItem) {
+        item.setAttribute('aria-current', 'page');
+      } else {
+        item.removeAttribute('aria-current');
+      }
+    });
+  };
+
+  const syncCurrent = () => {
+    const threshold = window.innerHeight * 0.42;
+    const current = sectionEntries.reduce((active, entry) => {
+      const rect = entry.target.getBoundingClientRect();
+      return rect.top <= threshold ? entry : active;
+    }, sectionEntries[0]);
+
+    setCurrent(current.item);
+  };
+
+  navItems.forEach((item) => {
+    item.addEventListener('click', () => setCurrent(item));
+  });
+
+  syncCurrent();
+  window.addEventListener('scroll', syncCurrent, { passive: true });
+  window.addEventListener('resize', syncCurrent, { passive: true });
 };
 
 const setupNavDropdown = () => {
@@ -1127,7 +1210,9 @@ const scrollToAnchorCenter = (hash, { updateHash = true } = {}) => {
 
   const rect = target.getBoundingClientRect();
   const absoluteTop = window.scrollY + rect.top;
-  const targetY = Math.max(0, absoluteTop - (window.innerHeight - rect.height) / 2);
+  const mobileOffset = 88;
+  const desktopOffset = (window.innerHeight - rect.height) / 2;
+  const targetY = Math.max(0, absoluteTop - (isMobileViewport() ? mobileOffset : desktopOffset));
   const behavior = prefersReducedMotion ? 'auto' : 'smooth';
 
   window.scrollTo({ top: targetY, behavior });
@@ -1546,6 +1631,7 @@ const init = async () => {
   applyMeta(slots);
   setupTheme();
   setupMobileNav();
+  setupMobileAppNavState();
   setupResponsiveNavVisibility();
   setupNavDropdown();
   setupFaq();

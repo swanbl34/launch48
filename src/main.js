@@ -8,7 +8,8 @@ ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 const app = document.querySelector('#app');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobileViewport = () => window.matchMedia('(max-width: 759px)').matches;
-const slotCacheKey = 'launch48:home-slots:v1';
+const contentVersion = '2026-06-06-aquabat';
+const slotCacheKey = `launch48:home-slots:${contentVersion}`;
 const fallbackSlots = {
   'meta.title': 'Launch48 | Créer un site internet rapidement, livré en 48h',
   'meta.description': 'Créez un site internet professionnel en 48h avec Launch48 : site vitrine, landing page et site internet clé en main pour lancer votre activité rapidement.',
@@ -119,6 +120,49 @@ const fallbackSlots = {
   'footer.social1.href': 'https://www.linkedin.com/company/launch48-fr/',
   'footer.social3.label': 'Instagram',
   'footer.social3.href': 'https://www.instagram.com/launch48.fr/'
+};
+
+const latestProjectSlots = {
+  'projects.item1.meta': 'Événementiel',
+  'projects.item1.title': "Gala de l'Excellence Sportive",
+  'projects.item1.text': 'Une vitrine événementielle pensée pour donner envie, clarifier les informations clés et pousser vers la billetterie.',
+  'projects.item1.cta': 'Voir le projet',
+  'projects.item1.href': 'http://galadelexcellence-guyane.fr/',
+  'projects.item1.image': '/previews/site-evenementiel-home.jpg',
+  'projects.item1.imageAlt': "Capture du site Gala de l'Excellence Sportive",
+  'projects.item2.meta': 'Média / podcast',
+  'projects.item2.title': 'Tripin',
+  'projects.item2.text': "Une homepage éditoriale qui structure les contenus, renforce l'identité du média et valorise les différents formats.",
+  'projects.item2.cta': 'Ouvrir le site',
+  'projects.item2.href': 'https://www.tripinculture.fr/',
+  'projects.item2.image': '/previews/site-media-podcast-home.jpg',
+  'projects.item2.imageAlt': 'Capture du site média Tripin',
+  'projects.item3.meta': 'Lancement de marque',
+  'projects.item3.title': 'Shortify',
+  'projects.item3.text': 'Une landing page de lancement plus tendue, pensée pour créer le désir et pousser vers le test ou la prise de contact.',
+  'projects.item3.cta': 'Voir le projet',
+  'projects.item3.href': 'https://shortify.fr/',
+  'projects.item3.image': '/previews/site-lancement-marque-home.png',
+  'projects.item3.imageAlt': 'Capture du site Shortify',
+  'projects.item4.meta': 'Tourisme / événement',
+  'projects.item4.title': 'Crazy Yoles Tour',
+  'projects.item4.text': 'Une page immersive pour vendre une expérience catamaran autour du Tour des Yoles en Martinique.',
+  'projects.item4.cta': 'Ouvrir le site',
+  'projects.item4.href': 'https://www.crazyyolestour.fr/',
+  'projects.item4.image': '/previews/crazy-yoles-tour-home.png',
+  'projects.item4.imageAlt': 'Capture du site Crazy Yoles Tour',
+  'projects.item5.meta': 'BTP / rénovation',
+  'projects.item5.title': 'AquaBat Concept',
+  'projects.item5.text': "Un site vitrine local qui clarifie les services de travaux, rassure dès l'arrivée et facilite la demande de devis.",
+  'projects.item5.cta': 'Ouvrir le site',
+  'projects.item5.href': 'https://www.aquabatconcept.fr/',
+  'projects.item5.image': '/previews/aquabat-concept-home.png',
+  'projects.item5.imageAlt': 'Capture du site AquaBat Concept',
+  'projects.item6.meta': 'Votre projet',
+  'projects.item6.title': 'Le prochain peut être le vôtre',
+  'projects.item6.text': 'Landing page, site vitrine ou page de lancement: on peut poser une base premium, claire et en ligne très vite.',
+  'projects.item6.cta': 'Discuter de mon projet',
+  'projects.item6.href': '/devis/'
 };
 
 const readCachedSlots = () => {
@@ -1618,20 +1662,20 @@ const setupAnimations = () => {
 
 const loadSlots = async () => {
   try {
-    const response = await fetch('/content.html', {
-      cache: import.meta.env.DEV ? 'no-store' : 'force-cache'
+    const response = await fetch(`/content.html?v=${contentVersion}`, {
+      cache: 'no-store'
     });
     if (!response.ok) throw new Error('content.html non disponible');
     const html = await response.text();
-    return { slots: parseSlotsFromHtml(html), hasError: false };
+    return { slots: { ...parseSlotsFromHtml(html), ...latestProjectSlots }, hasError: false };
   } catch {
-    return { slots: fallbackSlots, hasError: true };
+    return { slots: { ...fallbackSlots, ...latestProjectSlots }, hasError: true };
   }
 };
 
 const init = async () => {
   renderShell();
-  const initialSlots = readCachedSlots() || fallbackSlots;
+  const initialSlots = readCachedSlots() || { ...fallbackSlots, ...latestProjectSlots };
   injectSlots(initialSlots);
   cleanupOptionalContent();
   applyMeta(initialSlots);

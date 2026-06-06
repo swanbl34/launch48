@@ -10,6 +10,7 @@ export default defineConfig({
         call: resolve(__dirname, 'call/index.html'),
         quiz: resolve(__dirname, 'quiz/index.html'),
         blog: resolve(__dirname, 'blog/index.html'),
+        blogEvenementGuide: resolve(__dirname, 'blog/creer-site-web-evenement-guide/index.html'),
         blogLancerBlogStackRentable: resolve(__dirname, 'blog/lancer-blog-2026-stack-rentable/index.html'),
         blogRestaurantConversion: resolve(__dirname, 'blog/site-internet-restaurant-sections-conversion/index.html'),
         partenaires: resolve(__dirname, 'partenaires/index.html'),

@@ -668,12 +668,27 @@ const renderShell = () => {
             </div>
           </a>
 
-          <a class="project-card project-card--cta" data-slot-href="projects.item5.href">
-            <div class="project-card__cta-shell">
+          <a
+            class="project-card"
+            data-slot-href="projects.item5.href"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img class="project-card__image" data-slot-src="projects.item5.image" data-slot-alt="projects.item5.imageAlt" loading="lazy" decoding="async" />
+            <div class="project-card__overlay">
               <span class="project-card__meta" data-slot="projects.item5.meta"></span>
               <h3 data-slot="projects.item5.title"></h3>
               <p data-slot="projects.item5.text"></p>
               <span class="project-card__link" data-slot="projects.item5.cta"></span>
+            </div>
+          </a>
+
+          <a class="project-card project-card--cta" data-slot-href="projects.item6.href">
+            <div class="project-card__cta-shell">
+              <span class="project-card__meta" data-slot="projects.item6.meta"></span>
+              <h3 data-slot="projects.item6.title"></h3>
+              <p data-slot="projects.item6.text"></p>
+              <span class="project-card__link" data-slot="projects.item6.cta"></span>
             </div>
           </a>
         </div>

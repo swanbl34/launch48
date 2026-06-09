@@ -11,8 +11,8 @@ const isMobileViewport = () => window.matchMedia('(max-width: 759px)').matches;
 const contentVersion = '2026-06-06-aquabat';
 const slotCacheKey = `launch48:home-slots:${contentVersion}`;
 const fallbackSlots = {
-  'meta.title': 'Launch48 | Créer un site internet rapidement, livré en 48h',
-  'meta.description': 'Créez un site internet professionnel en 48h avec Launch48 : site vitrine, landing page et site internet clé en main pour lancer votre activité rapidement.',
+  'meta.title': 'Launch48 — Site internet professionnel livré en 48h | Garanti ou remboursé',
+  'meta.description': 'Un site pro, clair et en ligne en 48h. À partir de 590€ — domaine + hébergement inclus. Garanti livré en 48h ou remboursement intégral.',
   'brand.name': 'Launch48',
   'nav.link1.label': 'Sprint 48h',
   'nav.link1.href': '#process',
@@ -20,98 +20,105 @@ const fallbackSlots = {
   'nav.link2.href': '#pricing',
   'nav.cta.label': 'Lancer mon site en 48h →',
   'nav.cta.href': '/devis/',
-  'hero.eyebrow': 'Création de site internet express',
-  'hero.subtitle': 'Design moderne, mobile-first, optimisé conversion.<br>À partir de 590€ — domaine et hébergement inclus.*',
+  'hero.eyebrow': 'Lancé en 48h. Garanti.',
+  'hero.subtitle': 'Clair, crédible, prêt à convertir — sans attendre 3 mois.<br>À partir de 590€. Domaine + hébergement inclus. Garanti ou remboursé.',
   'hero.primaryCta.label': 'Lancer mon site en 48h →',
   'hero.primaryCta.href': '/devis/',
-  'hero.secondaryCta.label': 'Auditer mon projet en 15 min',
+  'hero.secondaryCta.label': 'Voir si mon projet est éligible',
   'hero.secondaryCta.href': '/call/',
-  'beforeAfter.eyebrow': 'Le déclic Launch48',
-  'beforeAfter.title': 'Ce qui change en 48h',
+  'trust.eyebrow': 'Nos engagements',
+  'trust.title': "On assume ce qu'on promet.",
+  'trust.text': "Si on ne livre pas en 48h — on rembourse. Pas d'excuse, pas de négociation.",
+  'trust.item1.label': '48h chrono — ou remboursement intégral',
+  'trust.item2.label': '7 jours de retouches illimitées après livraison',
+  'trust.item3.label': 'Domaine + hébergement offerts an 1',
+  'trust.item4.label': 'Code livré — vous êtes propriétaire, aucune dépendance',
+  'beforeAfter.eyebrow': 'Avant / Après',
+  'beforeAfter.title': 'En 48h, tout change.',
   'beforeAfter.beforeTitle': 'Avant Launch48',
   'beforeAfter.afterTitle': 'Après Launch48 (en 48h)',
-  'beforeAfter.before1': 'Pas de site',
-  'beforeAfter.after1': 'Site pro en ligne',
-  'beforeAfter.before2': 'Devis perdus',
-  'beforeAfter.after2': 'Formulaire qui convertit',
-  'beforeAfter.before3': 'Crédibilité floue',
-  'beforeAfter.after3': 'Première impression solide',
-  'proof.title': 'Créer un site internet rapidement, sans sacrifier la qualité',
-  'proof.subtitle': 'Launch48 combine vitesse, clarté et exécution propre pour lancer un site web vite avec un vrai objectif business.',
-  'proof.item1.title': 'Brief stratégique',
-  'proof.item1.text': 'Avant de créer votre site internet professionnel, nous cadrons les objectifs, la cible, le message et les priorités.',
+  'beforeAfter.before1': 'Pas de site — ou un site qui vous dessert',
+  'beforeAfter.after1': 'Un site pro en ligne — en 48h',
+  'beforeAfter.before2': 'Des prospects qui passent sans contacter',
+  'beforeAfter.after2': 'Des formulaires qui génèrent des demandes réelles',
+  'beforeAfter.before3': 'Une première impression qui ne convainc pas',
+  'beforeAfter.after3': "Une crédibilité qui ferme la décision avant même l'appel",
+  'proof.title': 'Vite ne veut pas dire bâclé.',
+  'proof.subtitle': 'En 48h, vous avez un site qui a un angle clair, un design crédible et une structure qui convertit.',
+  'proof.item1.title': 'Cadrage stratégique',
+  'proof.item1.text': 'On ne commence pas à designer avant de savoir ce que votre site doit faire exactement. Objectif, cible, message, angle — cadrés avant le premier pixel.',
   'proof.item1.meta': 'Cadrage',
   'proof.item1.kpi': '+ clarté',
   'proof.item1.point1': 'Objectifs business + cible prioritaire clarifiés',
   'proof.item1.point2': 'Angle de promesse et plan de section validés',
   'proof.item1.illustration': '/stock/proof-brief-stock.jpg',
   'proof.item1.illustrationAlt': 'Équipe en réunion autour d’une table pour cadrer un projet web',
-  'proof.item2.title': 'Design + motion',
-  'proof.item2.text': 'Le design sert la conversion avec une direction visuelle nette, une lecture mobile fluide et des interactions utiles.',
+  'proof.item2.title': 'Design qui convainc',
+  'proof.item2.text': 'Un design qui renforce la crédibilité, pas qui distrait. Mobile fluide, lecture claire, interactions au service du message.',
   'proof.item2.meta': 'Direction artistique',
   'proof.item2.kpi': 'impact visuel',
   'proof.item2.point1': 'Système typo + rythme visuel cohérents',
   'proof.item2.point2': 'Interactions utiles orientées conversion',
   'proof.item2.illustration': '/stock/proof-design-stock.jpg',
   'proof.item2.illustrationAlt': 'Croquis de wireframe et éléments de design sur carnet',
-  'proof.item3.title': 'Intégration propre',
-  'proof.item3.text': 'Le site internet est intégré proprement, avec SEO de base, responsive, accessibilité utile et temps de chargement soignés.',
+  'proof.item3.title': 'Code propre, site qui dure',
+  'proof.item3.text': 'Votre site charge vite, est indexable par Google et tient dans la durée. Pas un one-shot fragile.',
   'proof.item3.meta': 'Exécution frontend',
   'proof.item3.kpi': 'perf + SEO',
   'proof.item3.point1': 'Structure éditable + balises SEO prêtes',
   'proof.item3.point2': 'Animations fluides et chargement optimisé',
   'proof.item3.illustration': '/stock/proof-dev-stock.jpg',
   'proof.item3.illustrationAlt': 'Développeuse travaillant sur un ordinateur portable avec du code affiché',
-  'proof.item4.title': 'Livraison claire',
-  'proof.item4.text': 'Vous recevez un site internet livré en 48h quand le brief est prêt, avec mise en ligne, accès, code et passation clairs.',
+  'proof.item4.title': 'Vous gardez la main',
+  'proof.item4.text': 'À la livraison, tout est à vous : le code, les accès, la mise en ligne. Aucune dépendance. Aucune surprise.',
   'proof.item4.meta': 'Passation',
   'proof.item4.kpi': 'autonomie',
   'proof.item4.point1': 'Base propre et documentée',
   'proof.item4.point2': 'Mise en ligne validée + autonomie complète',
   'proof.item4.illustration': '/stock/proof-delivery-stock.jpg',
   'proof.item4.illustrationAlt': 'Poignée de main pendant la remise d’un projet web',
-  'reviews.title': 'Des retours clients qui valident la méthode Launch48',
-  'reviews.subtitle': 'Quelques avis sur la rapidité, la clarté et la qualité perçue après livraison d’un site internet professionnel.',
-  'reviews.item1.quote': '“Process ultra fluide. En 48h, j’avais un site internet freelance beaucoup plus clair, crédible et prêt à convertir.”',
+  'reviews.title': 'Ils avaient un projet. En 48h, ils avaient un site.',
+  'reviews.subtitle': 'Trois clients. Trois contextes. Un seul point commun : un site en ligne vite, qui fait le job.',
+  'reviews.item1.quote': '“En 48h j’avais un site clair, crédible et prêt à convertir. Le process est ultra fluide.”',
   'reviews.item1.name': 'Melina',
   'reviews.item1.role': 'Consultant indépendant',
-  'reviews.item2.quote': '“On devait lancer vite. La page était en ligne rapidement, propre sur mobile, et beaucoup plus rassurante pour nos prospects.”',
+  'reviews.item2.quote': '“On devait lancer vite — la page était en ligne en 48h, propre sur mobile et rassurante pour nos prospects.”',
   'reviews.item2.name': 'Kévan',
   'reviews.item2.role': 'Projet événementiel',
-  'reviews.item3.quote': '“Enfin un site portfolio professionnel qui met bien en valeur mon travail. Le rendu fait vraiment plus premium que mon ancienne version.”',
+  'reviews.item3.quote': '“Enfin un portfolio qui me représente vraiment. Le rendu fait clairement plus premium que mon ancienne version.”',
   'reviews.item3.name': 'Naïka',
   'reviews.item3.role': 'Artiste / créatif',
-  'offer.title': 'Ce que votre site internet met en ligne en 48h',
-  'offer.subtitle': 'Un site internet professionnel pensé pour convaincre vite, rester lisible et capter les bons leads.',
-  'offer.item1.title': 'Message clair',
-  'offer.item1.text': 'Une promesse lisible, un bon angle et une structure simple pour expliquer votre valeur.',
-  'offer.item2.title': 'Design premium',
-  'offer.item2.text': 'Une page moderne, mobile-first et crédible pour donner une vraie bonne première impression.',
-  'offer.item3.title': 'Conversion nette',
-  'offer.item3.text': 'Des CTA bien placés et un parcours plus direct pour éviter un site qui ne convertit pas.',
-  'offer.item4.title': 'Base SEO propre',
-  'offer.item4.text': 'Une structure prête à lancer, avec des bases solides pour créer un site internet rapidement.',
-  'process.title': 'Le sprint pour créer votre site internet en 48h',
-  'process.subtitle': 'Un process court, lisible et orienté résultat pour lancer un site web vite.',
+  'offer.title': 'En 48h, vous avez un site qui fait le travail.',
+  'offer.subtitle': "Message clair, design crédible, conversion nette, SEO propre. Tout ce qu'un site doit faire — fait bien, en 48h.",
+  'offer.item1.title': 'Promesse lisible',
+  'offer.item1.text': "Votre visiteur comprend en 5 secondes ce que vous faites et pourquoi c'est pour lui. Pas de jargon, pas de flou.",
+  'offer.item2.title': 'Design crédible',
+  'offer.item2.text': "Une première impression qui ferme le doute. Votre site doit sembler aussi sérieux que vous l'êtes.",
+  'offer.item3.title': 'Visiteur → contact',
+  'offer.item3.text': 'Chaque section pousse vers une action. Pas de pages qui informent sans convertir.',
+  'offer.item4.title': 'Visible sur Google',
+  'offer.item4.text': 'Structure indexable, balises prêtes, temps de chargement soigné. Google peut vous trouver dès le premier jour.',
+  'process.title': '48h, pas 3 mois.',
+  'process.subtitle': "Vous ne signez pas un devis et n'attendez plus. En 48h, vous avez un site en ligne.",
   'process.day0.label': 'J0',
-  'process.day0.title': 'Brief',
-  'process.day0.text': 'Kickoff, positionnement, mots-clés SEO et collecte des contenus.',
+  'process.day0.title': 'Cadrage',
+  'process.day0.text': "On clarifie votre objectif, votre message et les priorités. Le site a un angle avant d'avoir un design.",
   'process.day1.label': 'J1',
-  'process.day1.title': 'Prototype',
-  'process.day1.text': 'Design, maquette fonctionnelle et premier rendu interactif du site internet.',
+  'process.day1.title': 'Premier rendu',
+  'process.day1.text': 'Vous voyez votre site prendre forme. Interactif, commentable, ajustable en temps réel.',
   'process.day2.label': 'J2',
-  'process.day2.title': 'Livraison & mise en ligne',
-  'process.day2.text': 'Dernières retouches, mise en ligne et livraison de votre site internet professionnel.',
-  'projects.title': 'Quelques projets réalisés récemment',
-  'projects.subtitle': 'Des sites pensés pour des objectifs concrets: vendre, présenter, structurer une image ou rendre une offre beaucoup plus claire.',
+  'process.day2.title': 'En ligne',
+  'process.day2.text': 'Derniers ajustements, mise en ligne, remise des accès. Vous êtes live.',
+  'projects.title': "Ils nous ont fait confiance. Voilà ce qu'on a livré.",
+  'projects.subtitle': 'Chaque projet a un objectif précis et une exécution qui lui correspond. Pas de templates — des sites sur mesure.',
   'pricing.primaryCta.label': 'Lancer mon site en 48h →',
   'pricing.primaryCta.href': '/devis/',
-  'contact.eyebrow': 'Parlons de votre projet',
-  'contact.title': 'Un besoin urgent ? Lançons votre site internet rapidement.',
-  'contact.text': 'Expliquez votre objectif, votre timing et votre contexte. Vous recevez une proposition claire pour créer un site internet professionnel, rapide à lancer et pensé pour convertir.',
+  'contact.eyebrow': 'On démarre ?',
+  'contact.title': "Votre projet mérite un site. Dans 48h, il peut l'avoir.",
+  'contact.text': 'Partagez votre objectif et votre timing. En quelques heures : une proposition claire, un prix précis, une date de livraison. Votre site peut être en ligne avant la fin de la semaine.',
   'contact.primaryCta.label': 'Lancer mon site en 48h →',
   'contact.primaryCta.href': '/devis/',
-  'contact.secondaryCta.label': 'Auditer mon projet en 15 min',
+  'contact.secondaryCta.label': 'Voir si mon projet est éligible',
   'contact.secondaryCta.href': '/call/',
   'faq.title': 'FAQ',
   'footer.name': 'Launch48',
@@ -160,7 +167,7 @@ const latestProjectSlots = {
   'projects.item5.imageAlt': 'Capture du site AquaBat Concept',
   'projects.item6.meta': 'Votre projet',
   'projects.item6.title': 'Le prochain peut être le vôtre',
-  'projects.item6.text': 'Landing page, site vitrine ou page de lancement: on peut poser une base premium, claire et en ligne très vite.',
+  'projects.item6.text': 'Votre projet est le prochain. En 48h, votre site peut rejoindre cette liste.',
   'projects.item6.cta': 'Discuter de mon projet',
   'projects.item6.href': '/devis/'
 };
@@ -184,7 +191,7 @@ const writeCachedSlots = (slots) => {
 const verticalNeeds = [
   {
     title: 'Site événementiel',
-    description: 'Promouvoir un événement et orienter efficacement vers la billetterie.',
+    description: 'Vendez vos billets avant le jour J. Un site qui donne envie, clarifie les infos et envoie direct vers la caisse.',
     price: '1 290 €',
     href: '/site-evenementiel/',
     previewSrc: '/previews/event-demo-home.png',
@@ -192,7 +199,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site consultant / freelance / agence',
-    description: 'Clarifier votre offre et générer des prises de contact qualifiées.',
+    description: "Transformez vos visites en appels. Un site qui explique clairement ce que vous faites et pourquoi c'est vous qu'il faut appeler.",
     price: '990 €',
     href: '/site-consultant/',
     previewSrc: '/previews/consultant-demo-home.png',
@@ -200,7 +207,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site lancement de marque / produit',
-    description: 'Créer un storytelling fort et un design impactant pour un lancement.',
+    description: "Lancez avec impact. Un site de lancement qui crée le désir et pousse vers l'action — le jour où ça compte.",
     price: '1 290 €',
     href: '/site-lancement-marque/',
     previewSrc: '/previews/brand-launch-demo-home.png',
@@ -208,7 +215,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site restaurant / hospitality',
-    description: 'Mettre en valeur un lieu, sa carte et faciliter la réservation.',
+    description: "Remplissez vos tables. Un site qui montre l'ambiance, la carte et permet de réserver en quelques secondes.",
     price: '590 €',
     href: '/site-restaurant/',
     previewSrc: '/previews/restaurant-demo-home.png',
@@ -216,7 +223,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site artiste / créatif / portfolio',
-    description: 'Exposer un univers créatif et professionnaliser la présence en ligne.',
+    description: 'Montrez ce que vous valez. Un portfolio qui donne votre univers, pas juste vos images.',
     price: '590 €',
     href: '/site-artiste/',
     previewSrc: '/previews/artist-demo-home.png',
@@ -224,7 +231,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site média / podcast / contenu',
-    description: 'Centraliser les formats et structurer une image éditoriale solide.',
+    description: 'Construisez votre média. Un hub qui centralise vos formats et donne envie de revenir.',
     price: '1 290 €',
     href: '/site-media-podcast/',
     previewSrc: '/previews/site-media-podcast-home.jpg',
@@ -232,7 +239,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site association / institutionnel',
-    description: 'Présenter une mission, valoriser les actions et orienter vers l’engagement.',
+    description: "Donnez envie de rejoindre votre cause. Un site qui parle de votre impact et facilite l'adhésion ou le don.",
     price: '990 €',
     href: '/site-association/',
     previewSrc: '/previews/association-demo-home.png',
@@ -240,7 +247,7 @@ const verticalNeeds = [
   },
   {
     title: 'Site immobilier / location',
-    description: 'Valoriser un bien et générer des demandes qualifiées.',
+    description: 'Générez des demandes qualifiées. Un site qui met en valeur vos biens et filtre les contacts sérieux.',
     price: '990 €',
     href: '/site-immobilier-location/',
     previewSrc: '/previews/real-estate-demo-home.png',
@@ -389,9 +396,9 @@ const renderShell = () => {
       <section class="quiz-home-cta section container" aria-labelledby="quiz-home-title">
         <div class="quiz-home-cta__panel" data-reveal>
           <div class="quiz-home-cta__content">
-            <p class="kicker">Test gratuit</p>
-            <h2 id="quiz-home-title">Votre site convertit-il vraiment ?</h2>
-            <p>Répondez à 7 questions rapides pour repérer les blocages de clarté, de confiance et de conversion qui peuvent freiner vos demandes de devis.</p>
+            <p class="kicker">Diagnostic gratuit</p>
+            <h2 id="quiz-home-title">Votre site vous fait peut-être perdre des clients.</h2>
+            <p>7 questions. 60 secondes. Un score immédiat qui identifie exactement ce qui freine vos demandes de devis.</p>
           </div>
           <div class="quiz-home-cta__aside">
             <div class="quiz-home-cta__stats" aria-label="Détails du quiz">
@@ -399,15 +406,15 @@ const renderShell = () => {
               <span>7 questions</span>
               <span>Score immédiat</span>
             </div>
-            <a class="btn magnetic" href="/quiz/">Faire le quiz gratuit</a>
+            <a class="btn magnetic" href="/quiz/">Obtenir mon diagnostic gratuit →</a>
           </div>
         </div>
       </section>
 
       <section class="process section container" id="process">
         <div class="process-sticky">
-          <h2 data-slot="process.title">Le sprint pour créer votre site internet en 48h</h2>
-          <p class="section-intro" data-slot="process.subtitle">Un process court, lisible et orienté résultat pour lancer un site web vite.</p>
+          <h2 data-slot="process.title">48h, pas 3 mois.</h2>
+          <p class="section-intro" data-slot="process.subtitle">Vous ne signez pas un devis et n'attendez plus. En 48h, vous avez un site en ligne.</p>
           <div class="process__progress" aria-hidden="true">
             <span class="process__progress-fill"></span>
             <span class="process__progress-rocket">
@@ -433,18 +440,18 @@ const renderShell = () => {
           <div class="process-grid">
             <article class="process-step">
               <span class="process-step__label" data-slot="process.day0.label">J0</span>
-              <h3 data-slot="process.day0.title">Brief</h3>
-              <p data-slot="process.day0.text">Kickoff, positionnement, mots-clés SEO et collecte des contenus.</p>
+              <h3 data-slot="process.day0.title">Cadrage</h3>
+              <p data-slot="process.day0.text">On clarifie votre objectif, votre message et les priorités. Le site a un angle avant d'avoir un design.</p>
             </article>
             <article class="process-step">
               <span class="process-step__label" data-slot="process.day1.label">J1</span>
-              <h3 data-slot="process.day1.title">Prototype</h3>
-              <p data-slot="process.day1.text">Design, maquette fonctionnelle et premier rendu interactif du site internet.</p>
+              <h3 data-slot="process.day1.title">Premier rendu</h3>
+              <p data-slot="process.day1.text">Vous voyez votre site prendre forme. Interactif, commentable, ajustable en temps réel.</p>
             </article>
             <article class="process-step">
               <span class="process-step__label" data-slot="process.day2.label">J2</span>
-              <h3 data-slot="process.day2.title">Livraison & mise en ligne</h3>
-              <p data-slot="process.day2.text">Dernières retouches, mise en ligne et livraison de votre site internet professionnel.</p>
+              <h3 data-slot="process.day2.title">En ligne</h3>
+              <p data-slot="process.day2.text">Derniers ajustements, mise en ligne, remise des accès. Vous êtes live.</p>
             </article>
           </div>
         </div>
@@ -452,8 +459,8 @@ const renderShell = () => {
 
       <section class="vertical-needs section container" id="vertical-needs">
         <div class="vertical-needs__head">
-          <h2>Des sites pensés pour des besoins concrets</h2>
-          <p class="section-intro">Nous concevons des sites adaptés à des usages précis : événement, lancement de marque, activité de service, média, restauration, portfolio, association, immobilier, etc.</p>
+          <h2>Votre secteur. Votre objectif. Votre site.</h2>
+          <p class="section-intro">Chaque offre est calibrée pour un objectif spécifique. Pas un site générique — un site qui fait exactement ce dont vous avez besoin.</p>
         </div>
         <div class="vertical-needs__grid">
           ${verticalNeeds
@@ -472,7 +479,7 @@ const renderShell = () => {
             .join('')}
         </div>
         <div class="vertical-needs__footer">
-          <a class="btn magnetic" href="/offres/">Découvrir toutes les offres</a>
+          <a class="btn magnetic" href="/offres/">Voir toutes les offres →</a>
         </div>
       </section>
 
@@ -572,7 +579,7 @@ const renderShell = () => {
         </div>
       </section>
 
-      <section class="reviews section container" id="reviews" hidden>
+      <section class="reviews section container" id="reviews">
         <div class="reviews__head">
           <h2 data-slot="reviews.title"></h2>
           <p class="section-intro" data-slot="reviews.subtitle"></p>
@@ -740,14 +747,14 @@ const renderShell = () => {
 
       <section class="pricing section container" id="pricing">
         <div class="pricing-head">
-          <span class="kicker">Tarifs</span>
-          <h2>Des forfaits taillés<br>pour votre besoin</h2>
-          <p>Domaine + hébergement offerts la première année. Prix TTC.</p>
+          <span class="kicker">Investissement</span>
+          <h2>Un site pro. Un prix clair. Aucune surprise.</h2>
+          <p>Tout compris : domaine + hébergement inclus an 1. Prix TTC. Garanti livré en 48h.</p>
         </div>
         <div class="pricing-cards">
           <div class="pc">
             <div class="pc__name">One Page</div>
-            <div class="pc__sub">1 page scrollable</div>
+            <div class="pc__sub">Parfait pour lancer vite — freelance, événement, lancement</div>
             <div class="pc__price-label">à partir de</div>
             <div class="pc__price">590 €</div>
             <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
@@ -768,7 +775,7 @@ const renderShell = () => {
           <div class="pc pc--featured">
             <div class="pc__badge">Best-seller</div>
             <div class="pc__name">Site 3 pages</div>
-            <div class="pc__sub">Home + principale + conversion</div>
+            <div class="pc__sub">Pour une présence complète — restaurant, artisan, créateur</div>
             <div class="pc__price-label">à partir de</div>
             <div class="pc__price">990 €</div>
             <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
@@ -790,7 +797,7 @@ const renderShell = () => {
           </div>
           <div class="pc">
             <div class="pc__name">Site 5 pages +</div>
-            <div class="pc__sub">3 pages + pages secondaires</div>
+            <div class="pc__sub">Pour une architecture solide — cabinet, agence, immobilier</div>
             <div class="pc__price-label">à partir de</div>
             <div class="pc__price">1 290 €</div>
             <div class="pc__price-note">TTC — domaine + hébergement an 1 offerts</div>
@@ -812,7 +819,7 @@ const renderShell = () => {
           <div class="pc pc--custom">
             <div class="pc__body">
               <div class="pc__name">Sur mesure</div>
-              <div class="pc__sub">Besoin spécifique ? E-commerce, refonte, intégration CRM… On s'adapte à votre projet.</div>
+              <div class="pc__sub">Projet spécifique ? E-commerce, refonte, CRM, multilingue — on s'adapte à votre besoin.</div>
             </div>
             <a href="/devis/?forfait=sur-mesure" class="pc__cta">Nous contacter</a>
           </div>
@@ -822,6 +829,7 @@ const renderShell = () => {
       <section class="trust-strip container" aria-label="Garanties Launch48">
         <div class="trust-strip__intro">
           <span data-slot="trust.eyebrow"></span>
+          <h2 data-slot="trust.title"></h2>
           <p data-slot="trust.text"></p>
         </div>
         <div class="trust-strip__grid">
@@ -833,6 +841,9 @@ const renderShell = () => {
           </article>
           <article class="trust-metric">
             <span data-slot="trust.item3.label"></span>
+          </article>
+          <article class="trust-metric">
+            <span data-slot="trust.item4.label"></span>
           </article>
         </div>
       </section>

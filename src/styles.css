@@ -2481,6 +2481,10 @@ a:focus-visible {
     grid-column: span 5;
   }
 
+  .projects-mosaic__grid > .project-card.project-card--third:not(.project-card--feature):not(.project-card--cta) {
+    grid-column: span 4;
+  }
+
   .project-card--cta {
     grid-column: 1 / -1;
   }

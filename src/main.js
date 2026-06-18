@@ -8,7 +8,7 @@ ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 const app = document.querySelector('#app');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isMobileViewport = () => window.matchMedia('(max-width: 759px)').matches;
-const contentVersion = '2026-06-06-aquabat';
+const contentVersion = '2026-06-18-cabinet-alma';
 const slotCacheKey = `launch48:home-slots:${contentVersion}`;
 const fallbackSlots = {
   'meta.title': 'Launch48 — Site internet professionnel livré en 48h | Garanti ou remboursé',
@@ -165,11 +165,18 @@ const latestProjectSlots = {
   'projects.item5.href': 'https://www.aquabatconcept.fr/',
   'projects.item5.image': '/previews/aquabat-concept-home.png',
   'projects.item5.imageAlt': 'Capture du site AquaBat Concept',
-  'projects.item6.meta': 'Votre projet',
-  'projects.item6.title': 'Le prochain peut être le vôtre',
-  'projects.item6.text': 'Votre projet est le prochain. En 48h, votre site peut rejoindre cette liste.',
-  'projects.item6.cta': 'Discuter de mon projet',
-  'projects.item6.href': '/devis/'
+  'projects.item6.meta': 'Santé / cabinet',
+  'projects.item6.title': 'Cabinet Alma',
+  'projects.item6.text': "Un site médical rassurant qui présente les praticiens, structure les spécialités et facilite la prise de rendez-vous.",
+  'projects.item6.cta': 'Ouvrir le site',
+  'projects.item6.href': 'https://www.cabinet-alma.fr/',
+  'projects.item6.image': '/previews/cabinet-alma-home.jpg',
+  'projects.item6.imageAlt': 'Aperçu du site Cabinet Alma, cabinet d’ostéopathie à Ferney-Voltaire',
+  'projects.item7.meta': 'Votre projet',
+  'projects.item7.title': 'Le prochain peut être le vôtre',
+  'projects.item7.text': 'Votre projet est le prochain. En 48h, votre site peut rejoindre cette liste.',
+  'projects.item7.cta': 'Discuter de mon projet',
+  'projects.item7.href': '/devis/'
 };
 
 const readCachedSlots = () => {
@@ -705,7 +712,7 @@ const renderShell = () => {
           </a>
 
           <a
-            class="project-card"
+            class="project-card project-card--third"
             data-slot-href="projects.item4.href"
             target="_blank"
             rel="noreferrer"
@@ -720,7 +727,7 @@ const renderShell = () => {
           </a>
 
           <a
-            class="project-card"
+            class="project-card project-card--third"
             data-slot-href="projects.item5.href"
             target="_blank"
             rel="noreferrer"
@@ -734,12 +741,27 @@ const renderShell = () => {
             </div>
           </a>
 
-          <a class="project-card project-card--cta" data-slot-href="projects.item6.href">
-            <div class="project-card__cta-shell">
+          <a
+            class="project-card project-card--third"
+            data-slot-href="projects.item6.href"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img class="project-card__image" data-slot-src="projects.item6.image" data-slot-alt="projects.item6.imageAlt" loading="lazy" decoding="async" />
+            <div class="project-card__overlay">
               <span class="project-card__meta" data-slot="projects.item6.meta"></span>
               <h3 data-slot="projects.item6.title"></h3>
               <p data-slot="projects.item6.text"></p>
               <span class="project-card__link" data-slot="projects.item6.cta"></span>
+            </div>
+          </a>
+
+          <a class="project-card project-card--cta" data-slot-href="projects.item7.href">
+            <div class="project-card__cta-shell">
+              <span class="project-card__meta" data-slot="projects.item7.meta"></span>
+              <h3 data-slot="projects.item7.title"></h3>
+              <p data-slot="projects.item7.text"></p>
+              <span class="project-card__link" data-slot="projects.item7.cta"></span>
             </div>
           </a>
         </div>

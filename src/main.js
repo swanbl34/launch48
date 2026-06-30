@@ -299,6 +299,11 @@ const renderShell = () => {
               <span class="theme-toggle__thumb"></span>
             </span>
           </button>
+          <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
             <span class="theme-toggle__track" aria-hidden="true">
               <span class="theme-toggle__thumb"></span>
@@ -309,38 +314,6 @@ const renderShell = () => {
       </nav>
     </header>
 
-    <nav class="mobile-app-nav" aria-label="Navigation mobile rapide">
-      <a class="mobile-app-nav__item" href="#top" data-nav-section="top" aria-label="Accueil">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M4.5 11.2 12 5l7.5 6.2v7.3a1 1 0 0 1-1 1h-4.1v-5.4H9.6v5.4H5.5a1 1 0 0 1-1-1v-7.3Z" />
-        </svg>
-        <span>Accueil</span>
-      </a>
-      <a class="mobile-app-nav__item" href="#process" data-nav-section="process" aria-label="Sprint 48h">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M5 12.5h14M5 6.5h10M5 18.5h7" />
-        </svg>
-        <span>Sprint</span>
-      </a>
-      <a class="mobile-app-nav__item" href="#pricing" data-nav-section="pricing" aria-label="Tarifs">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M6.5 7.5h11M8 12h8M9.5 16.5h5M5.5 3.8h13a1 1 0 0 1 1 1v14.4a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V4.8a1 1 0 0 1 1-1Z" />
-        </svg>
-        <span>Tarifs</span>
-      </a>
-      <a class="mobile-app-nav__item mobile-app-nav__item--primary" href="/devis/" aria-label="Demander un devis">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M12 4.5v15M5.5 12h13" />
-        </svg>
-        <span>Devis</span>
-      </a>
-      <button class="mobile-app-nav__item nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu complet">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M5 7h14M5 12h14M5 17h14" />
-        </svg>
-        <span>Menu</span>
-      </button>
-    </nav>
     <div class="nav-mobile" id="nav-mobile-panel" hidden>
       <div class="nav-mobile__panel">
         <div class="nav-mobile__header">
@@ -369,6 +342,7 @@ const renderShell = () => {
         </div>
       </div>
     </div>
+    <a class="floating-devis-cta" href="/devis/" aria-label="Demander un devis">+</a>
 
     <main id="main">
       <section class="hero section container" id="hero">
@@ -1156,6 +1130,20 @@ const setupMobileAppNavState = () => {
   window.addEventListener('resize', syncCurrent, { passive: true });
 };
 
+const setupFloatingDevisCta = () => {
+  const cta = document.querySelector('.floating-devis-cta');
+  const hero = document.querySelector('#hero');
+  if (!cta || !hero) return;
+
+  const update = () => {
+    cta.classList.toggle('is-visible', hero.getBoundingClientRect().bottom < 0);
+  };
+
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+};
+
 const setupNavDropdown = () => {
   const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
   if (dropdowns.length === 0) return;
@@ -1724,6 +1712,7 @@ const init = async () => {
   setupTheme();
   setupMobileNav();
   setupMobileAppNavState();
+  setupFloatingDevisCta();
   setupResponsiveNavVisibility();
   setupNavDropdown();
   setupFaq();

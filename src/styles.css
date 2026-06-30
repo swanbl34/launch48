@@ -545,6 +545,10 @@ p {
   display: none;
 }
 
+.floating-devis-cta {
+  display: none;
+}
+
 .nav-mobile__header,
 .nav-mobile__close {
   display: none;
@@ -2607,6 +2611,39 @@ a:focus-visible {
 }
 
 @media (max-width: 759px) {
+  #main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #main > * {
+    order: 10;
+  }
+
+  #hero {
+    order: 1;
+  }
+
+  #process {
+    order: 2;
+  }
+
+  #pricing {
+    order: 3;
+  }
+
+  #main > .trust-strip {
+    display: none;
+  }
+
+  .reviews {
+    display: none;
+  }
+
+  #main > .quiz-home-cta {
+    order: 90;
+  }
+
   #offer {
     display: none;
   }
@@ -2937,11 +2974,11 @@ a:focus-visible {
 @media (max-width: 759px) {
   html {
     scroll-padding-top: 5.2rem;
-    scroll-padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+    scroll-padding-bottom: env(safe-area-inset-bottom);
   }
 
   body {
-    padding-bottom: calc(4.9rem + env(safe-area-inset-bottom));
+    padding-bottom: 0;
   }
 
   h1,
@@ -2983,23 +3020,39 @@ a:focus-visible {
   }
 
   .mobile-app-nav {
+    display: none;
+  }
+
+  .floating-devis-cta {
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 72;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    align-items: start;
-    gap: 0.22rem;
-    padding: 0.42rem max(0.55rem, env(safe-area-inset-right)) max(0.42rem, env(safe-area-inset-bottom)) max(0.55rem, env(safe-area-inset-left));
-    min-height: calc(4.2rem + env(safe-area-inset-bottom));
-    border-top: 1px solid color-mix(in srgb, var(--line), transparent 8%);
-    background: color-mix(in srgb, var(--surface-solid), transparent 0%);
-    box-shadow: 0 -16px 42px rgba(2, 8, 18, 0.34);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    transform: translateZ(0);
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    z-index: 70;
+    display: inline-flex;
+    width: 3.35rem;
+    height: 3.35rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--accent), black 12%);
+    border-radius: 17px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #040607;
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 0.9;
+    box-shadow: 0 16px 34px rgba(70, 228, 255, 0.24);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(0, 0.8rem, 0) scale(0.96);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  .floating-devis-cta.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 
   .mobile-app-nav__item,
@@ -3067,7 +3120,7 @@ a:focus-visible {
     position: fixed;
     left: max(0.65rem, env(safe-area-inset-left));
     right: max(0.65rem, env(safe-area-inset-right));
-    bottom: calc(4.85rem + env(safe-area-inset-bottom));
+    top: calc(4.65rem + env(safe-area-inset-top));
     z-index: 71;
     display: block;
     margin: 0;

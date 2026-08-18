@@ -6,9 +6,19 @@ const nextConfig: NextConfig = {
   // Passe à true si tu veux ces fiches d'aide.
   agentRules: false,
   experimental: {
-    // Les uploads du brief (logos, photos produits) passent par des Server
-    // Actions : la limite par défaut de 1 Mo est bien trop basse.
-    serverActions: { bodySizeLimit: '25mb' },
+    serverActions: {
+      // Les uploads du brief (logos, photos produits) passent par des Server
+      // Actions : la limite par défaut de 1 Mo est bien trop basse.
+      bodySizeLimit: '25mb',
+
+      // ⚠️ À décommenter UNIQUEMENT si tu sers cette app derrière un rewrite
+      // Vercel depuis launch48.fr (option B du README).
+      // Next compare l'Origin au Host pour se protéger du CSRF : derrière un
+      // proxy, l'Origin vaut launch48.fr alors que le Host est le domaine
+      // .vercel.app, et toutes les Server Actions sont rejetées.
+      // Inutile si tu utilises un sous-domaine (option A).
+      // allowedOrigins: ['launch48.fr', 'www.launch48.fr'],
+    },
   },
 };
 

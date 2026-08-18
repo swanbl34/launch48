@@ -95,7 +95,7 @@ export default async function AdminPage({
           <tbody>
             {rows.map(({ project, progress, missing, deferred, updatedAt }) => (
               <tr key={project.id}>
-                <td>
+                <td data-label="Client">
                   <a href={`/admin/projet/${project.id}`}>
                     <strong>{project.company}</strong>
                   </a>
@@ -103,13 +103,13 @@ export default async function AdminPage({
                     <div className="tiny muted">{project.contact_name}</div>
                   ) : null}
                 </td>
-                <td>
+                <td data-label="Pack">
                   <span className="pill tiny">{project.pack}</span>
                 </td>
-                <td>
+                <td data-label="Statut">
                   <span className="pill tiny">{STATUS_LABELS[project.status]}</span>
                 </td>
-                <td style={{ minWidth: '7rem' }}>
+                <td data-label="Avancement" style={{ minWidth: '7rem' }}>
                   <div className="row" style={{ gap: '0.5rem', flexWrap: 'nowrap' }}>
                     <span style={{ flex: 1 }}>
                       <Bar value={progress} thin />
@@ -117,7 +117,7 @@ export default async function AdminPage({
                     <span className="tiny muted">{progress}%</span>
                   </div>
                 </td>
-                <td>
+                <td data-label="Manquants">
                   <div className="row" style={{ gap: '0.25rem', flexWrap: 'nowrap' }}>
                     {missing > 0 ? (
                       <span className="pill pill--danger tiny">{missing}</span>
@@ -131,8 +131,10 @@ export default async function AdminPage({
                     ) : null}
                   </div>
                 </td>
-                <td className="tiny muted">{formatDateTime(updatedAt)}</td>
-                <td>
+                <td className="tiny muted" data-label="Dernier update">
+                  {formatDateTime(updatedAt)}
+                </td>
+                <td data-label="Lien client">
                   <CopyButton value={`${base}/espace/${project.token}`} label="Lien" />
                 </td>
               </tr>

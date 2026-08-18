@@ -65,6 +65,8 @@ a:hover { text-decoration: underline; }
   width: min(100% - 2rem, 62rem);
   margin-inline: auto;
   padding-block: 1.25rem 4rem;
+  /* Encoche en paysage. */
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
 }
 .shell--wide { width: min(100% - 2rem, 78rem); }
 
@@ -289,7 +291,10 @@ input[type='number'], input[type='date'], select, textarea {
   background: color-mix(in srgb, var(--bg), white 3%);
   color: var(--text);
   font-family: inherit;
-  font-size: 0.98rem;
+  /* 16px pile. En dessous, Safari iOS zoome sur le champ au focus et casse
+     la mise en page. Ne jamais descendre sous 1rem ici. */
+  font-size: 1rem;
+  min-height: 44px;
 }
 textarea { min-height: 7rem; resize: vertical; line-height: 1.5; }
 select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: right 1rem center, right 0.75rem center; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 2.2rem; }
@@ -389,7 +394,9 @@ input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--mute
   position: sticky;
   bottom: 0;
   display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
-  padding: 0.8rem 0;
+  /* env() réserve la barre d'accueil des iPhone récents : sans ça le bouton
+     principal passe dessous et devient difficile à viser. */
+  padding: 0.8rem 0 calc(0.8rem + env(safe-area-inset-bottom));
   background: linear-gradient(180deg, transparent, var(--bg) 35%);
 }
 .form-nav .spacer { flex: 1; }
@@ -760,4 +767,179 @@ tbody tr:hover { background: var(--surface); }
 @keyframes welcome-in {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE
+   Trois règles gouvernent ce bloc :
+     · toute cible tactile fait au moins 44px de haut ;
+     · la barre collante ne mange pas le haut de l'écran ;
+     · les zones de sécurité (encoche, barre d'accueil) sont respectées.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* ── Barre d'application compacte ───────────────────────────────────────
+     Elle occupait 21 % de la hauteur d'écran. On passe le titre sur la même
+     ligne que la fusée et on retire le mot « Launch48 », redondant avec le
+     logo sur un écran où chaque pixel vertical compte. */
+  .appbar { padding-top: 0.5rem; padding-bottom: 0.4rem; margin-bottom: 1rem; }
+
+  .appbar__top {
+    padding: 0.5rem 0.7rem;
+    gap: 0.5rem;
+    border-radius: 12px;
+    flex-wrap: nowrap;
+  }
+  .brand__name { display: none; }
+  .brand__mark { width: 24px; height: 24px; }
+
+  .appbar__title {
+    order: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+    font-size: 0.95rem;
+    padding-left: 0.55rem;
+    border-left: 1px solid var(--line);
+  }
+  .appbar__right { order: 0; gap: 0.25rem; flex-wrap: nowrap; }
+  .appbar__right .pill { padding: 0.24rem 0.5rem; font-size: 0.7rem; }
+
+  .tabs { margin-top: 0.35rem; width: 100%; }
+  .tab { flex: 1; justify-content: center; min-height: 44px; padding: 0.5rem 0.7rem; }
+
+  /* ── Cibles tactiles ────────────────────────────────────────────────────
+     44px est le minimum recommandé pour un doigt. On agrandit sans changer
+     l'apparence : c'est la surface cliquable qui grandit, pas le dessin. */
+  .btn { min-height: 44px; }
+  /* 44px partout, y compris sur les boutons dits « petits » : la taille
+     visuelle diffère, la surface tactile non. */
+  .btn--small { min-height: 44px; padding: 0.55rem 0.9rem; }
+  .icon-btn { min-width: 44px; min-height: 44px; }
+  .brand { min-height: 44px; align-items: center; }
+  .step-chip { min-height: 44px; padding: 0.5rem 0.8rem; }
+  .choice { min-height: 44px; }
+  .unknown-toggle { min-height: 44px; }
+  /* Case à cocher agrandie : le label sert de cible, mais la case doit
+     rester visible et atteignable pour qui vise précisément. */
+  .unknown-toggle input { width: 20px; height: 20px; }
+
+  /* Le champ fichier et son bouton restent à 16px, comme les autres
+     contrôles, et gagnent de la hauteur. */
+  .dropzone input[type='file'] { font-size: 1rem; }
+  .dropzone input[type='file']::file-selector-button { min-height: 40px; font-size: 0.92rem; }
+  .switch { min-height: 44px; }
+  .accordion > summary { min-height: 52px; }
+  .missing-item { min-height: 48px; }
+
+  /* Le bouton ○/✓ des tâches client faisait 25px : impossible à viser. */
+  .task .btn--ghost { min-width: 40px; min-height: 40px; padding: 0 !important; }
+  .task { padding: 0.7rem 0; gap: 0.7rem; }
+
+  /* ── Formulaire ─────────────────────────────────────────────────────────
+     Le bouton principal passe pleine largeur : c'est la zone la plus sûre
+     pour le pouce. « Précédent » et « Enregistrer » restent secondaires. */
+  /* ── Pastilles d'étapes : une seule rangée qui défile ───────────────────
+     Sur 375px elles s'empilaient sur trois lignes et repoussaient la
+     question de 250px vers le bas. */
+  .steps {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    scroll-snap-type: x proximity;
+  }
+  .steps::-webkit-scrollbar { display: none; }
+  .step-chip { flex: 0 0 auto; scroll-snap-align: start; }
+
+  /* ── Une question à la fois ─────────────────────────────────────────────
+     La hauteur retranche les deux barres collantes, sinon la question est
+     centrée sur une zone plus grande que la zone réellement visible et
+     laisse un grand vide. Le padding bas dégage le dernier champ de la
+     barre d'actions. */
+  /* align-content: start et non center. Centrée, une question courte
+     laissait un vide de 100px entre l'intro et son libellé ; alignée en
+     haut, l'espace restant passe sous la question, là où il se lit comme
+     une respiration avant la suivante. */
+  .fields > .field { min-height: calc(100svh - 22rem); align-content: start; }
+  /* Dégage le dernier champ de la barre d'actions (≈123px de haut). */
+  .fields { padding-bottom: 8rem; }
+
+  .form-nav {
+    gap: 0.4rem;
+    padding-top: 0.6rem;
+    /* Dégradé plus franc : le texte de la question passait visiblement
+       derrière le bouton principal. */
+    background: linear-gradient(180deg, transparent, var(--bg) 22%);
+  }
+  .form-nav .spacer { display: none; }
+  .form-nav > .btn:not(.btn--ghost) { flex: 1 1 100%; order: -1; }
+  .form-nav > .btn--ghost { flex: 1 1 auto; }
+
+  /* ── Écran d'accueil ────────────────────────────────────────────────────
+     Action pleine largeur, et on réserve la barre d'accueil iPhone. */
+  .welcome { padding-bottom: calc(3rem + env(safe-area-inset-bottom)); }
+  .welcome__actions { width: 100%; flex-direction: column; }
+  .welcome__actions > .btn { width: 100%; }
+  .btn--xl { width: 100%; padding: 1rem 1.2rem; }
+
+  /* ── Tableau admin en cartes ────────────────────────────────────────────
+     Un tableau de 7 colonnes est illisible sur 375px, et le scroll
+     horizontal fait perdre la colonne d'identification. Chaque ligne
+     devient une carte, chaque cellule affiche son intitulé via data-label. */
+  .table-wrap { border: none; overflow: visible; }
+  table { min-width: 0; display: block; }
+  thead { display: none; }
+  tbody, tr, td { display: block; width: 100%; }
+
+  tbody tr {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface-solid), transparent 20%);
+    padding: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+  tbody tr:hover { background: color-mix(in srgb, var(--surface-solid), transparent 20%); }
+
+  td {
+    border: none;
+    padding: 0.28rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  td::before {
+    content: attr(data-label);
+    flex: 0 0 7.5rem;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  /* La première cellule fait office de titre de carte. */
+  td:first-child { padding-bottom: 0.55rem; }
+  td:first-child::before { display: none; }
+  td:first-child strong { font-size: 1.05rem; }
+  td:empty { display: none; }
+
+  /* ── Admin : lignes de tâches ───────────────────────────────────────────
+     Quatre colonnes ne tiennent pas. L'édition passe sur deux rangées. */
+  .admin-task { grid-template-columns: 1fr auto auto auto; gap: 0.3rem; }
+  .admin-task > form:first-child { grid-column: 1 / -1; flex-wrap: wrap; }
+  .admin-task input[type='text'],
+  .admin-task select { font-size: 1rem; min-height: 40px; }
+  .admin-task input[type='text'] { flex: 1 1 100%; }
+
+  .sidebar__nav { overflow-x: auto; scrollbar-width: none; }
+  .sidebar__nav::-webkit-scrollbar { display: none; }
+}
+
+/* Très petits écrans : on sacrifie le titre plutôt que de le tronquer à trois
+   lettres, la pastille de statut suffit à situer le projet. */
+@media (max-width: 360px) {
+  .appbar__title { font-size: 0.88rem; }
+  .appbar__right .pill:not(:last-child) { display: none; }
+  td::before { flex-basis: 6rem; }
 }

@@ -24,7 +24,7 @@
       "runtimeExecutable": "bash",
       "runtimeArgs": [
         "-c",
-        "cd /Users/swanbadol/Codage/launch48/espace-client && npm run dev"
+        "export PATH=/Users/swanbadol/.nvm/versions/node/v22.22.2/bin:$PATH && npm run dev"
       ],
       "port": 3000
     }

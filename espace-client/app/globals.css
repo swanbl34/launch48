@@ -535,21 +535,10 @@ tbody tr:hover { background: var(--surface); }
   z-index: 30;
   margin-bottom: 1.4rem;
   padding-top: 0.75rem;
-  padding-bottom: 1.15rem;
-  /* Fondu vers le bas, et non aplat.
-     Un aplat opaque dessinait un rectangle bleu nuit à bord net sous les
-     onglets ; l'absence totale de fond laissait le contenu défiler
-     visiblement derrière. Le dégradé couvre franchement derrière les pilules
-     puis se dissout : le contenu s'efface au lieu d'être coupé, et il n'y a
-     plus aucune arête.
-     color-mix plutôt que `transparent` : sur certains moteurs, interpoler
-     vers `transparent` passe par du noir transparent et grise le dégradé. */
-  background: linear-gradient(
-    180deg,
-    var(--bg) 0,
-    var(--bg) 64%,
-    color-mix(in srgb, var(--bg), transparent 100%) 100%
-  );
+  padding-bottom: 0.6rem;
+  /* Aucun fond sur le conteneur. Seules les deux pilules ont le leur : elles
+     flottent au-dessus de la page, sans bloc derrière elles. */
+  background: none;
 }
 .appbar__top {
   display: flex;

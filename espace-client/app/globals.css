@@ -535,9 +535,10 @@ tbody tr:hover { background: var(--surface); }
   z-index: 30;
   margin-bottom: 1.4rem;
   padding-top: 0.75rem;
-  background: linear-gradient(180deg, var(--bg) 72%, transparent);
-  /* backdrop-filter plutôt qu'un fond opaque : le dégradé du body reste visible */
-  backdrop-filter: blur(10px);
+  padding-bottom: 0.6rem;
+  /* Fond plein : avec un dégradé qui finissait transparent, le contenu de la
+     page se voyait glisser derrière le bas de la barre au scroll. */
+  background: var(--bg);
 }
 .appbar__top {
   display: flex;
@@ -573,6 +574,10 @@ tbody tr:hover { background: var(--surface); }
   background: color-mix(in srgb, var(--surface-solid), transparent 12%);
   overflow-x: auto;
   scrollbar-width: none;
+  /* Sans ça la pilule s'étire sur toute la largeur et laisse un grand vide
+     à droite des onglets. */
+  width: fit-content;
+  max-width: 100%;
 }
 .tabs::-webkit-scrollbar { display: none; }
 

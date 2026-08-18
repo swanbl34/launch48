@@ -8,7 +8,7 @@ import { formatDate } from '@/lib/format';
 import { computeMissing } from '@/lib/missing';
 import { currentPhaseKey, globalProgress, phaseViews } from '@/lib/progress';
 import { phaseLabel } from '@/lib/task-templates';
-import { STATUS_LABELS, TASK_STATUS_LABELS, type Task } from '@/lib/types';
+import { STATUS_LABELS, TASK_STATUS_LABELS, isOnboarding, type Task } from '@/lib/types';
 import { toggleClientTask } from './actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -40,6 +40,7 @@ export default async function DashboardPage({
 
   const { blocking, deferred, other } = computeMissing(answers.data, assets, tasks);
   const totalMissing = blocking.length + other.length;
+  const onboarding = isOnboarding(project.status);
   const progress = globalProgress(tasks);
   const phases = phaseViews(tasks);
   const openPhase = currentPhaseKey(phases);
@@ -57,22 +58,32 @@ export default async function DashboardPage({
           </>
         }
         active={`/espace/${token}`}
-        tabs={[
-          { href: `/espace/${token}`, label: 'Suivi' },
-          {
-            href: `/espace/${token}/brief`,
-            label: 'Mon brief',
-            badge: blocking.length,
-            tone: 'danger',
-          },
-        ]}
+        tabs={
+          onboarding
+            ? undefined
+            : [
+                { href: `/espace/${token}`, label: 'Suivi' },
+                {
+                  href: `/espace/${token}/brief`,
+                  label: 'Mon brief',
+                  badge: blocking.length,
+                  tone: 'danger',
+                },
+              ]
+        }
       />
 
       <div className="stack" style={{ gap: '0.5rem' }}>
         <h1>{project.company}</h1>
         <p className="muted small">
-          Livraison estimée&nbsp;: <strong>{formatDate(project.delivery_date)}</strong>
-          {project.kickoff_date ? <> · Démarrage {formatDate(project.kickoff_date)}</> : null}
+          {onboarding ? (
+            <>Onboarding en cours</>
+          ) : (
+            <>
+              Livraison estimée&nbsp;: <strong>{formatDate(project.delivery_date)}</strong>
+              {project.kickoff_date ? <> · Démarrage {formatDate(project.kickoff_date)}</> : null}
+            </>
+          )}
         </p>
       </div>
 
@@ -82,17 +93,36 @@ export default async function DashboardPage({
         </div>
       ) : null}
 
-      {/* 2 ── Progression globale ────────────────────────────────────────── */}
-      <section className="stack" style={{ gap: '0.5rem' }}>
-        <div className="row row--between">
-          <span className="section-title">Avancement</span>
-          <strong className="small">{progress}%</strong>
-        </div>
-        <Bar value={progress} thin />
-        <p className="tiny muted">
-          {tasks.filter((t) => t.status === 'done').length} tâches terminées sur {tasks.length}
-        </p>
-      </section>
+      {/* 2 ── Avancement ─────────────────────────────────────────────────── */}
+      {onboarding ? (
+        <section className="card stack" style={{ gap: '0.7rem' }}>
+          <span className="section-title">Étape 1 — Ton brief</span>
+          <h2>On commence par rassembler tes éléments</h2>
+          <p className="small muted">
+            Remplis le questionnaire ci-dessous. Dès qu&apos;on a tout ce qu&apos;il faut, la
+            production démarre et ce tableau de bord s&apos;ouvre sur le suivi détaillé du
+            projet.
+          </p>
+          <div className="row">
+            <a className="btn" href={`/espace/${token}/brief`}>
+              {answers.updated_at && answers.last_step > 1
+                ? 'Reprendre mon brief →'
+                : 'Commencer mon brief →'}
+            </a>
+          </div>
+        </section>
+      ) : (
+        <section className="stack" style={{ gap: '0.5rem' }}>
+          <div className="row row--between">
+            <span className="section-title">Avancement</span>
+            <strong className="small">{progress}%</strong>
+          </div>
+          <Bar value={progress} thin />
+          <p className="tiny muted">
+            {tasks.filter((t) => t.status === 'done').length} tâches terminées sur {tasks.length}
+          </p>
+        </section>
+      )}
 
       {/* 3 ── Éléments manquants ─────────────────────────────────────────── */}
       <section
@@ -180,6 +210,9 @@ export default async function DashboardPage({
       ) : null}
 
       {/* 4 ── Timeline de production ─────────────────────────────────────── */}
+      {/* Masquées pendant l'onboarding : le client n'a pas à voir un plan de
+          production qui n'a pas commencé. */}
+      {onboarding ? null : (
       <section className="card stack" style={{ gap: '0.6rem' }}>
         <h2>Production</h2>
         <div className="timeline">
@@ -197,8 +230,10 @@ export default async function DashboardPage({
           ) : null}
         </div>
       </section>
+      )}
 
       {/* 5 ── Tâches par phase ───────────────────────────────────────────── */}
+      {onboarding ? null : (
       <section className="stack" style={{ gap: '0.5rem' }}>
         <span className="section-title">Le détail</span>
         {phases.map((p) => (
@@ -218,6 +253,7 @@ export default async function DashboardPage({
           </details>
         ))}
       </section>
+      )}
 
       {/* 6 ── Contact ────────────────────────────────────────────────────── */}
       <section className="card card--accent stack" style={{ gap: '0.7rem' }}>

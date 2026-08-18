@@ -160,6 +160,27 @@ export async function deleteProject(formData: FormData) {
   redirect('/admin');
 }
 
+/**
+ * Fait basculer un projet d'une phase à l'autre.
+ *
+ * Séparé de updateProject : c'est l'action qui ouvre (ou referme) le
+ * dashboard de production côté client, elle mérite son propre bouton plutôt
+ * que d'être noyée dans le formulaire de la fiche.
+ */
+export async function setProjectStatus(formData: FormData) {
+  await guard();
+  const id = String(formData.get('id') ?? '');
+  blockIfDemo(`/admin/projet/${id}?e=demo`);
+
+  const status = asStatus(String(formData.get('status') ?? ''));
+
+  await supabaseAdmin().from('projects').update({ status }).eq('id', id);
+
+  revalidatePath('/admin');
+  revalidatePath(`/admin/projet/${id}`, 'layout');
+  redirect(`/admin/projet/${id}?phase=${status}`);
+}
+
 /* ── Tâches ──────────────────────────────────────────────────────────────── */
 
 const asTaskStatus = (v: string): TaskStatus =>

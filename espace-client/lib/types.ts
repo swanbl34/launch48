@@ -65,3 +65,18 @@ export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
   blocked: 'Bloqué',
   done: 'Terminé',
 };
+
+/**
+ * Les deux temps de l'espace client.
+ *
+ * `onboarding` : le client ne voit que son questionnaire. Pas de timeline,
+ *   pas de tâches — rien qui ne le concerne pas encore. L'objectif de cette
+ *   phase est unique : rassembler les éléments manquants.
+ *
+ * Ensuite (`production`, `recette`, `livre`) : le dashboard complet s'ouvre,
+ *   avec l'avancement, les phases et les tâches.
+ *
+ * Le passage de l'un à l'autre est une décision manuelle, prise depuis
+ * l'admin quand tu estimes avoir tout reçu.
+ */
+export const isOnboarding = (status: ProjectStatus) => status === 'onboarding';

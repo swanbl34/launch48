@@ -22,7 +22,7 @@ import {
   missingInStep,
   missingRequiredFields,
 } from '@/lib/missing';
-import type { AnswerMap, AnswerValue, Asset } from '@/lib/types';
+import { isOnboarding, type AnswerMap, type AnswerValue, type Asset } from '@/lib/types';
 import { deleteAsset, saveBriefStep } from '../actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -63,15 +63,26 @@ export default async function BriefPage({
         brandHref={`/espace/${token}`}
         title={project.company}
         active={`/espace/${token}/brief`}
-        tabs={[
-          { href: `/espace/${token}`, label: 'Suivi' },
-          {
-            href: `/espace/${token}/brief`,
-            label: 'Mon brief',
-            badge: missingCount,
-            tone: 'danger',
-          },
-        ]}
+        action={
+          isOnboarding(project.status) ? (
+            <a className="btn btn--ghost btn--small" href={`/espace/${token}`}>
+              ← Accueil
+            </a>
+          ) : undefined
+        }
+        tabs={
+          isOnboarding(project.status)
+            ? undefined
+            : [
+                { href: `/espace/${token}`, label: 'Suivi' },
+                {
+                  href: `/espace/${token}/brief`,
+                  label: 'Mon brief',
+                  badge: missingCount,
+                  tone: 'danger',
+                },
+              ]
+        }
       />
 
       {answers.submitted_at ? (

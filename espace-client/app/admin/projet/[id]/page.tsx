@@ -6,12 +6,13 @@ import { Bar } from '@/app/_components/Bar';
 import { CopyButton } from '@/app/_components/CopyButton';
 import { Input, Select } from '@/app/admin/_components';
 import { isAdmin } from '@/lib/auth';
-import { getProjectById, getTasks } from '@/lib/data';
+import { getAssets, getFormAnswers, getProjectById, getTasks } from '@/lib/data';
 import { formatDate } from '@/lib/format';
 import { globalProgress } from '@/lib/progress';
+import { computeMissing } from '@/lib/missing';
 import { PACKS } from '@/lib/task-templates';
-import { STATUS_LABELS } from '@/lib/types';
-import { deleteProject, updateProject } from '../../actions';
+import { STATUS_LABELS, isOnboarding } from '@/lib/types';
+import { deleteProject, setProjectStatus, updateProject } from '../../actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,7 @@ export default async function FichePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string; created?: string; e?: string }>;
+  searchParams: Promise<{ saved?: string; created?: string; e?: string; phase?: string }>;
 }) {
   if (!(await isAdmin())) notFound();
 
@@ -32,7 +33,13 @@ export default async function FichePage({
   const project = await getProjectById(id);
   if (!project) notFound();
 
-  const tasks = await getTasks(project.id);
+  const [tasks, answers, assets] = await Promise.all([
+    getTasks(project.id),
+    getFormAnswers(project.id),
+    getAssets(project.id),
+  ]);
+  const { blocking, deferred } = computeMissing(answers.data, assets, tasks);
+  const onboarding = isOnboarding(project.status);
 
   const h = await headers();
   const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'localhost:3000';
@@ -54,7 +61,78 @@ export default async function FichePage({
         </div>
       ) : null}
 
+      {sp.phase ? (
+        <div className="banner">
+          Phase mise à jour : <strong>{STATUS_LABELS[project.status]}</strong>.
+        </div>
+      ) : null}
+
       <Bar value={globalProgress(tasks)} thin />
+
+      {/* ── Pilotage de la phase ─────────────────────────────────────────── */}
+      <section className={onboarding ? 'card stack' : 'card card--ok stack'} style={{ gap: '0.8rem' }}>
+        <div className="row row--between">
+          <span className="section-title">Phase</span>
+          <span className={onboarding ? 'pill pill--warn' : 'pill pill--ok'}>
+            {STATUS_LABELS[project.status]}
+          </span>
+        </div>
+
+        {onboarding ? (
+          <>
+            <h2>Le client ne voit que son questionnaire</h2>
+            <p className="small muted">
+              Timeline et tâches lui sont masquées tant que tu n&apos;as pas ouvert la
+              production. Passe à l&apos;étape suivante quand tu estimes avoir tout reçu.
+            </p>
+
+            <div className="row">
+              {blocking.length > 0 ? (
+                <span className="pill pill--danger">{blocking.length} éléments manquants</span>
+              ) : (
+                <span className="pill pill--ok">aucun élément manquant</span>
+              )}
+              {deferred.length > 0 ? (
+                <span className="pill pill--warn">{deferred.length} à préciser</span>
+              ) : null}
+              <a className="btn btn--ghost btn--small" href={`/admin/projet/${project.id}/brief`}>
+                Voir le brief
+              </a>
+            </div>
+
+            {blocking.length > 0 ? (
+              <p className="tiny muted">
+                Tu peux passer en production malgré tout : les éléments manquants resteront
+                affichés dans l&apos;espace du client.
+              </p>
+            ) : null}
+
+            <form action={setProjectStatus}>
+              <input type="hidden" name="id" value={project.id} />
+              <input type="hidden" name="status" value="production" />
+              <button className="btn" type="submit">
+                Ouvrir la production →
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <h2>Le dashboard complet est ouvert</h2>
+            <p className="small muted">
+              Le client voit l&apos;avancement, la timeline et ses tâches. Change le statut
+              depuis le formulaire ci-dessous, ou reviens à l&apos;onboarding pour tout lui
+              masquer à nouveau.
+            </p>
+            <form action={setProjectStatus}>
+              <input type="hidden" name="id" value={project.id} />
+              <input type="hidden" name="status" value="onboarding" />
+              <button className="btn btn--ghost btn--small" type="submit">
+                ← Revenir à l&apos;onboarding
+              </button>
+            </form>
+          </>
+        )}
+      </section>
 
       <section className="card card--accent stack" style={{ gap: '0.6rem' }}>
         <span className="section-title">Lien de l&apos;espace client</span>

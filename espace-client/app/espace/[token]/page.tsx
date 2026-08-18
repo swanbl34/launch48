@@ -1,0 +1,243 @@
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+
+import { Bar } from '@/app/_components/Bar';
+import { Brand } from '@/app/_components/Brand';
+import { getAssets, getFormAnswers, getProjectByToken, getTasks } from '@/lib/data';
+import { formatDate } from '@/lib/format';
+import { computeMissing } from '@/lib/missing';
+import { currentPhaseKey, globalProgress, phaseViews } from '@/lib/progress';
+import { phaseLabel } from '@/lib/task-templates';
+import { STATUS_LABELS, TASK_STATUS_LABELS, type Task } from '@/lib/types';
+import { toggleClientTask } from './actions';
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
+
+/** Toujours frais : le client doit voir l'avancement en temps réel. */
+export const dynamic = 'force-dynamic';
+
+const CALENDAR_URL = 'https://calendar.app.google/WzzdX11aNdR3DaMm8';
+const CONTACT_EMAIL = 'contact@launch48.fr';
+
+export default async function DashboardPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ token: string }>;
+  searchParams: Promise<{ brief?: string }>;
+}) {
+  const { token } = await params;
+  const { brief } = await searchParams;
+
+  const project = await getProjectByToken(token);
+  if (!project) notFound();
+
+  const [answers, assets, tasks] = await Promise.all([
+    getFormAnswers(project.id),
+    getAssets(project.id),
+    getTasks(project.id),
+  ]);
+
+  const progress = globalProgress(tasks);
+  const phases = phaseViews(tasks);
+  const openPhase = currentPhaseKey(phases);
+  const { blocking, other } = computeMissing(answers.data, assets, tasks);
+  const totalMissing = blocking.length + other.length;
+
+  return (
+    <main className="shell stack--lg">
+      {/* 1 ── Header ─────────────────────────────────────────────────────── */}
+      <header className="topbar">
+        <Brand />
+        <div className="row" style={{ gap: '0.4rem' }}>
+          <span className="pill pill--accent">{project.pack}</span>
+          <span className="pill">{STATUS_LABELS[project.status]}</span>
+        </div>
+      </header>
+
+      <div className="stack" style={{ gap: '0.5rem' }}>
+        <h1>{project.company}</h1>
+        <p className="muted small">
+          Livraison estimée&nbsp;: <strong>{formatDate(project.delivery_date)}</strong>
+          {project.kickoff_date ? <> · Démarrage {formatDate(project.kickoff_date)}</> : null}
+        </p>
+      </div>
+
+      {brief === 'valide' ? (
+        <div className="banner">
+          <span aria-hidden>✓</span> Brief validé, merci. On enchaîne sur le cadrage.
+        </div>
+      ) : null}
+
+      {/* 2 ── Progression globale ────────────────────────────────────────── */}
+      <section className="stack" style={{ gap: '0.5rem' }}>
+        <div className="row row--between">
+          <span className="section-title">Avancement</span>
+          <strong className="small">{progress}%</strong>
+        </div>
+        <Bar value={progress} thin />
+        <p className="tiny muted">
+          {tasks.filter((t) => t.status === 'done').length} tâches terminées sur {tasks.length}
+        </p>
+      </section>
+
+      {/* 3 ── Éléments manquants ─────────────────────────────────────────── */}
+      <section
+        className={totalMissing === 0 ? 'card card--ok stack' : 'card card--danger stack'}
+        style={{ gap: '0.75rem' }}
+      >
+        {totalMissing === 0 ? (
+          <>
+            <h2 style={{ color: 'var(--accent-3)' }}>Tout est complet</h2>
+            <p className="small muted">
+              On a tout ce qu&apos;il faut de ton côté. Production en cours.
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="row row--between">
+              <h2>Éléments manquants</h2>
+              <span className="pill pill--danger">{totalMissing}</span>
+            </div>
+            <p className="small muted">
+              C&apos;est ce qui nous manque pour avancer. Le reste est de notre côté.
+            </p>
+
+            <ul className="missing-list">
+              {blocking.map((item) => (
+                <li key={item.id}>
+                  <a
+                    className="missing-item missing-item--blocking"
+                    href={`/espace/${token}/brief?step=${item.step}&focus=${item.focus}`}
+                  >
+                    <span className="dot dot--blocked" aria-hidden />
+                    <span>{item.label}</span>
+                    <span className="missing-item__arrow" aria-hidden>
+                      →
+                    </span>
+                  </a>
+                </li>
+              ))}
+
+              {other.map((item) => (
+                <li key={item.id} className="missing-item">
+                  <span className="dot dot--blocked" aria-hidden />
+                  <span>{item.label}</span>
+                  <span className="pill tiny" style={{ marginLeft: 'auto' }}>
+                    {phaseLabel(item.phase ?? '')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <a className="btn btn--small" href={`/espace/${token}/brief`}>
+              Compléter mon brief
+            </a>
+          </>
+        )}
+      </section>
+
+      {/* 4 ── Timeline de production ─────────────────────────────────────── */}
+      <section className="card stack" style={{ gap: '0.6rem' }}>
+        <h2>Production</h2>
+        <div className="timeline">
+          {phases.map((p) => (
+            <div className="timeline__item" key={p.key} data-state={p.state}>
+              <span className={`dot dot--${p.state}`} aria-hidden />
+              <span className="timeline__label">{p.label}</span>
+              <span className="tiny muted">
+                {p.done}/{p.total}
+              </span>
+            </div>
+          ))}
+          {phases.length === 0 ? (
+            <p className="small muted">Les étapes apparaîtront au démarrage du projet.</p>
+          ) : null}
+        </div>
+      </section>
+
+      {/* 5 ── Tâches par phase ───────────────────────────────────────────── */}
+      <section className="stack" style={{ gap: '0.5rem' }}>
+        <span className="section-title">Le détail</span>
+        {phases.map((p) => (
+          <details className="accordion" key={p.key} open={p.key === openPhase}>
+            <summary>
+              <span className={`dot dot--${p.state}`} aria-hidden />
+              {p.label}
+              <span className="accordion__count">
+                {p.done}/{p.total}
+              </span>
+            </summary>
+            <div className="accordion__body">
+              {p.tasks.map((task) => (
+                <TaskRow key={task.id} task={task} token={token} />
+              ))}
+            </div>
+          </details>
+        ))}
+      </section>
+
+      {/* 6 ── Contact ────────────────────────────────────────────────────── */}
+      <section className="card card--accent stack" style={{ gap: '0.7rem' }}>
+        <h2>Une question ?</h2>
+        <p className="small muted">
+          Réponse dans la journée. Pour tout ce qui se règle mieux à l&apos;oral, prends 15 minutes.
+        </p>
+        <div className="row">
+          <a className="btn btn--small" href={CALENDAR_URL} target="_blank" rel="noreferrer">
+            Réserver un créneau
+          </a>
+          <a className="btn btn--ghost btn--small" href={`mailto:${CONTACT_EMAIL}`}>
+            {CONTACT_EMAIL}
+          </a>
+        </div>
+      </section>
+
+      <p className="tiny muted center">
+        Ce lien t&apos;est personnel. Ne le partage qu&apos;avec ton équipe.
+      </p>
+    </main>
+  );
+}
+
+/**
+ * Une ligne de tâche. Les tâches `owner = client` sont cochables : un petit
+ * formulaire POST par ligne, aucun JS nécessaire.
+ */
+function TaskRow({ task, token }: { task: Task; token: string }) {
+  const isClient = task.owner === 'client';
+
+  return (
+    <div className="task" data-status={task.status}>
+      {isClient ? (
+        <form action={toggleClientTask} style={{ display: 'contents' }}>
+          <input type="hidden" name="token" value={token} />
+          <input type="hidden" name="taskId" value={task.id} />
+          <button
+            type="submit"
+            className="btn btn--ghost btn--small"
+            style={{ padding: '0.2rem 0.55rem', minWidth: '2rem' }}
+            aria-label={
+              task.status === 'done'
+                ? `Décocher : ${task.label}`
+                : `Marquer comme fait : ${task.label}`
+            }
+          >
+            {task.status === 'done' ? '✓' : '○'}
+          </button>
+          <span className="task__label">{task.label}</span>
+          <span className="pill pill--client tiny">À toi</span>
+        </form>
+      ) : (
+        <>
+          <span className={`dot dot--${task.status}`} aria-hidden />
+          <span className="task__label">{task.label}</span>
+          <span className="pill tiny muted">Launch48</span>
+        </>
+      )}
+      {task.status === 'blocked' ? (
+        <span className="pill pill--danger tiny">{TASK_STATUS_LABELS.blocked}</span>
+      ) : null}
+    </div>
+  );
+}

@@ -535,10 +535,21 @@ tbody tr:hover { background: var(--surface); }
   z-index: 30;
   margin-bottom: 1.4rem;
   padding-top: 0.75rem;
-  padding-bottom: 0.6rem;
-  /* Fond plein : avec un dégradé qui finissait transparent, le contenu de la
-     page se voyait glisser derrière le bas de la barre au scroll. */
-  background: var(--bg);
+  padding-bottom: 1.15rem;
+  /* Fondu vers le bas, et non aplat.
+     Un aplat opaque dessinait un rectangle bleu nuit à bord net sous les
+     onglets ; l'absence totale de fond laissait le contenu défiler
+     visiblement derrière. Le dégradé couvre franchement derrière les pilules
+     puis se dissout : le contenu s'efface au lieu d'être coupé, et il n'y a
+     plus aucune arête.
+     color-mix plutôt que `transparent` : sur certains moteurs, interpoler
+     vers `transparent` passe par du noir transparent et grise le dégradé. */
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0,
+    var(--bg) 64%,
+    color-mix(in srgb, var(--bg), transparent 100%) 100%
+  );
 }
 .appbar__top {
   display: flex;
@@ -548,7 +559,8 @@ tbody tr:hover { background: var(--surface); }
   padding: 0.75rem 1rem;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-solid), transparent 4%);
+  background: color-mix(in srgb, var(--surface-solid), transparent 8%);
+  backdrop-filter: blur(14px);
 }
 .appbar__title {
   font-family: 'Sora', sans-serif;
@@ -572,6 +584,7 @@ tbody tr:hover { background: var(--surface); }
   border: 1px solid var(--line);
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface-solid), transparent 12%);
+  backdrop-filter: blur(14px);
   overflow-x: auto;
   scrollbar-width: none;
   /* Sans ça la pilule s'étire sur toute la largeur et laisse un grand vide

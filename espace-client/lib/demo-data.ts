@@ -77,6 +77,9 @@ export const DEMO_ANSWERS: FormAnswers = {
     google_business: '',
     maintenance: true,
     deadline: 'Marché de créateurs le 15 septembre',
+
+    // Champs que le client a marqués « je ne sais pas encore ».
+    __unknown: ['siret', 'fourchette_prix'],
   },
   last_step: 4,
   submitted_at: null,

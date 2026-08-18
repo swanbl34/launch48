@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { AppBar } from '@/app/_components/AppBar';
 import { Bar } from '@/app/_components/Bar';
-import { Brand } from '@/app/_components/Brand';
 import {
   REQUIRED_COUNT,
   STEPS,
@@ -14,7 +14,14 @@ import {
 import { displayValue } from '@/lib/brief-values';
 import { getAssets, getFormAnswers, getProjectByToken } from '@/lib/data';
 import { formatDate, formatSize } from '@/lib/format';
-import { countMissingRequired, isFilled, missingInStep, missingRequiredFields } from '@/lib/missing';
+import {
+  countMissingRequired,
+  deferredFields,
+  isDeferred,
+  isFilled,
+  missingInStep,
+  missingRequiredFields,
+} from '@/lib/missing';
 import type { AnswerMap, AnswerValue, Asset } from '@/lib/types';
 import { deleteAsset, saveBriefStep } from '../actions';
 
@@ -52,12 +59,20 @@ export default async function BriefPage({
 
   return (
     <main className="shell stack--lg">
-      <header className="topbar">
-        <Brand href={`/espace/${token}`} />
-        <a className="btn btn--ghost btn--small" href={`/espace/${token}`}>
-          ← Mon suivi
-        </a>
-      </header>
+      <AppBar
+        brandHref={`/espace/${token}`}
+        title={project.company}
+        active={`/espace/${token}/brief`}
+        tabs={[
+          { href: `/espace/${token}`, label: 'Suivi' },
+          {
+            href: `/espace/${token}/brief`,
+            label: 'Mon brief',
+            badge: missingCount,
+            tone: 'danger',
+          },
+        ]}
+      />
 
       {answers.submitted_at ? (
         <div className="banner">
@@ -135,6 +150,7 @@ export default async function BriefPage({
                 value={answers.data[field.key]}
                 assets={assets.filter((a) => a.field_key === field.key)}
                 focused={sp.focus === field.key}
+                deferred={isDeferred(field.key, answers.data)}
               />
             ))}
           </div>
@@ -185,18 +201,23 @@ function Field({
   value,
   assets,
   focused,
+  deferred,
 }: {
   field: BriefField;
   value: AnswerValue | undefined;
   assets: Asset[];
   focused: boolean;
+  deferred: boolean;
 }) {
   const filled = isFilled(field, value, assets);
+  const cls = ['field', focused && 'field--focused', deferred && 'field--deferred']
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className={focused ? 'field field--focused' : 'field'} id={`field-${field.key}`}>
+    <div className={cls} id={`field-${field.key}`}>
       <label className="field__label" htmlFor={field.key}>
-        {field.required && !filled ? (
+        {field.required && !filled && !deferred ? (
           <span className="field__req" aria-label="Champ bloquant" title="Champ bloquant" />
         ) : null}
         {field.label}
@@ -204,6 +225,14 @@ function Field({
       {field.help ? <p className="field__help">{field.help}</p> : null}
 
       <Control field={field} value={value} assets={assets} />
+
+      {/* Échappatoire : la question reste posée, mais elle ne bloque plus. */}
+      {field.allowUnknown ? (
+        <label className="unknown-toggle">
+          <input type="checkbox" name={`__unknown_${field.key}`} defaultChecked={deferred} />
+          <span>Je ne sais pas encore</span>
+        </label>
+      ) : null}
     </div>
   );
 }
@@ -356,6 +385,7 @@ function Recap({
   submitted: boolean;
 }) {
   const missing = missingRequiredFields(answers, assets);
+  const deferred = deferredFields(answers, assets);
 
   return (
     <div className="stack--lg">
@@ -364,7 +394,7 @@ function Recap({
         <p className="muted small">
           {missing.length === 0
             ? 'Tous les champs bloquants sont remplis. Tu peux valider.'
-            : 'Tu peux valider même incomplet : ces éléments remonteront dans ton suivi.'}
+            : "Tu peux valider même incomplet : ces éléments remonteront dans ton suivi. Et si tu n'as pas encore la réponse, coche « Je ne sais pas encore » sur la question."}
         </p>
       </div>
 
@@ -396,6 +426,35 @@ function Recap({
           <h2 style={{ color: 'var(--accent-3)' }}>Brief complet</h2>
         </section>
       )}
+
+      {deferred.length > 0 ? (
+        <section className="card stack" style={{ gap: '0.6rem' }}>
+          <div className="row row--between">
+            <h2>À préciser plus tard</h2>
+            <span className="pill pill--warn">{deferred.length}</span>
+          </div>
+          <p className="small muted">
+            Tu as indiqué ne pas encore avoir ces éléments. On avance sans, et on te les
+            redemandera au bon moment.
+          </p>
+          <ul className="missing-list">
+            {deferred.map((f) => (
+              <li key={f.key}>
+                <a
+                  className="missing-item missing-item--deferred"
+                  href={`/espace/${token}/brief?step=${f.step}&focus=${f.key}`}
+                >
+                  <span className="dot dot--todo" aria-hidden />
+                  <span>{f.label}</span>
+                  <span className="missing-item__arrow" aria-hidden>
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* Relecture rapide de toutes les réponses */}
       <section className="stack" style={{ gap: '0.5rem' }}>

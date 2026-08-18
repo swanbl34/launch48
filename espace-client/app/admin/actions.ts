@@ -167,7 +167,7 @@ const asTaskStatus = (v: string): TaskStatus =>
 
 export async function updateTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}?e=demo`);
+  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
 
   const id = String(formData.get('taskId') ?? '');
   const projectId = String(formData.get('projectId') ?? '');
@@ -186,18 +186,18 @@ export async function updateTask(formData: FormData) {
     .eq('id', id)
     .eq('project_id', projectId);
 
-  revalidatePath(`/admin/projet/${projectId}`);
-  redirect(`/admin/projet/${projectId}#tasks`);
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches`);
 }
 
 export async function addTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}?e=demo`);
+  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
 
   const projectId = String(formData.get('projectId') ?? '');
   const label = String(formData.get('label') ?? '').trim();
   const phase = String(formData.get('phase') ?? '').trim();
-  if (!label || !phase) redirect(`/admin/projet/${projectId}#tasks`);
+  if (!label || !phase) redirect(`/admin/projet/${projectId}/taches`);
 
   const db = supabaseAdmin();
 
@@ -219,13 +219,13 @@ export async function addTask(formData: FormData) {
     order_index: (last?.[0]?.order_index ?? 0) + 5,
   });
 
-  revalidatePath(`/admin/projet/${projectId}`);
-  redirect(`/admin/projet/${projectId}#tasks`);
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches`);
 }
 
 export async function deleteTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}?e=demo`);
+  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
 
   const projectId = String(formData.get('projectId') ?? '');
 
@@ -235,8 +235,8 @@ export async function deleteTask(formData: FormData) {
     .eq('id', String(formData.get('taskId') ?? ''))
     .eq('project_id', projectId);
 
-  revalidatePath(`/admin/projet/${projectId}`);
-  redirect(`/admin/projet/${projectId}#tasks`);
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches`);
 }
 
 /**
@@ -245,7 +245,7 @@ export async function deleteTask(formData: FormData) {
  */
 export async function moveTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}?e=demo`);
+  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
 
   const projectId = String(formData.get('projectId') ?? '');
   const taskId = String(formData.get('taskId') ?? '');
@@ -277,6 +277,6 @@ export async function moveTask(formData: FormData) {
     }
   }
 
-  revalidatePath(`/admin/projet/${projectId}`);
-  redirect(`/admin/projet/${projectId}#tasks`);
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches`);
 }

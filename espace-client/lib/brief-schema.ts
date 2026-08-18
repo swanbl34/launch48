@@ -50,9 +50,27 @@ export type BriefField = {
    * le blocage. Ce flag bascule ces champs dans ce second mode.
    */
   blockingWhenFalse?: boolean;
+  /**
+   * Affiche une case « Je ne sais pas encore » sous le champ.
+   * À réserver aux questions dont la réponse peut légitimement ne pas exister
+   * au moment du brief (pas encore de logo, société pas encore immatriculée,
+   * domaine pas encore acheté…).
+   *
+   * Cochée, elle sort le champ des bloquants et le range dans « À préciser
+   * plus tard » : le client n'est plus bloqué, et l'info n'est pas perdue
+   * pour autant côté admin.
+   */
+  allowUnknown?: boolean;
   /** Placeholder de l'input. */
   placeholder?: string;
 };
+
+/**
+ * Clé technique stockée dans form_answers.data : liste des champs que le
+ * client a explicitement marqués « je ne sais pas encore ».
+ * Préfixée par « __ » pour ne jamais entrer en collision avec une `key`.
+ */
+export const UNKNOWN_KEY = '__unknown';
 
 export type BriefStep = {
   step: number;
@@ -123,6 +141,7 @@ export const FIELDS: BriefField[] = [
     ],
     required: true,
     step: 1,
+    allowUnknown: true,
   },
   {
     key: 'siret',
@@ -132,6 +151,7 @@ export const FIELDS: BriefField[] = [
     required: true,
     step: 1,
     placeholder: '000 000 000 00000',
+    allowUnknown: true,
   },
   {
     key: 'rcs',
@@ -156,6 +176,7 @@ export const FIELDS: BriefField[] = [
     type: 'email',
     required: true,
     step: 1,
+    allowUnknown: true,
   },
   {
     key: 'telephone_public',
@@ -197,6 +218,7 @@ export const FIELDS: BriefField[] = [
     type: 'file',
     required: true,
     step: 2,
+    allowUnknown: true,
   },
   {
     key: 'logo_variantes',
@@ -238,6 +260,7 @@ export const FIELDS: BriefField[] = [
     type: 'url_list',
     required: true,
     step: 2,
+    allowUnknown: true,
   },
   {
     key: 'site_deteste',
@@ -287,6 +310,7 @@ export const FIELDS: BriefField[] = [
     type: 'textarea',
     required: true,
     step: 3,
+    allowUnknown: true,
   },
   {
     key: 'a_propos',
@@ -299,7 +323,9 @@ export const FIELDS: BriefField[] = [
   {
     key: 'photos_ambiance',
     label: "Photos d'ambiance, atelier, équipe",
-    help: 'Les fichiers les plus lourds que tu as. On compresse.',
+    help:
+      'Quelques fichiers suffisent ici. Pour un gros volume, utilise plutôt le ' +
+      'champ lien juste en dessous.',
     type: 'files',
     required: false,
     step: 3,
@@ -321,6 +347,16 @@ export const FIELDS: BriefField[] = [
     step: 3,
   },
   {
+    key: 'photos_lien',
+    label: 'Ou un lien vers tes photos',
+    help:
+      "Plus simple que l'upload pour les gros volumes : Google Drive, WeTransfer, " +
+      'Dropbox… Colle le lien de partage, on récupère tout.',
+    type: 'url_list',
+    required: false,
+    step: 3,
+  },
+  {
     key: 'newsletter',
     label: 'Bloc newsletter sur le site',
     type: 'bool',
@@ -336,6 +372,7 @@ export const FIELDS: BriefField[] = [
     required: true,
     step: 4,
     placeholder: '12',
+    allowUnknown: true,
   },
   {
     key: 'collections',
@@ -344,6 +381,7 @@ export const FIELDS: BriefField[] = [
     type: 'textarea',
     required: true,
     step: 4,
+    allowUnknown: true,
   },
   {
     key: 'variantes',
@@ -360,6 +398,7 @@ export const FIELDS: BriefField[] = [
     required: true,
     step: 4,
     placeholder: 'de 25 € à 180 €',
+    allowUnknown: true,
   },
   {
     key: 'suivi_stock',
@@ -383,6 +422,14 @@ export const FIELDS: BriefField[] = [
     type: 'select',
     options: ['client', 'à shooter', 'à discuter'],
     required: true,
+    step: 4,
+  },
+  {
+    key: 'photos_produits_lien',
+    label: 'Lien vers les photos produits',
+    help: "Si tu les as déjà : Drive, WeTransfer, Dropbox. Évite d'uploader 50 fichiers ici.",
+    type: 'url_list',
+    required: false,
     step: 4,
   },
   {
@@ -452,6 +499,7 @@ export const FIELDS: BriefField[] = [
     required: true,
     step: 6,
     placeholder: 'mamarque.fr',
+    allowUnknown: true,
   },
   {
     key: 'acces_registrar',
@@ -508,6 +556,7 @@ export const FIELDS: BriefField[] = [
     type: 'email',
     required: true,
     step: 6,
+    allowUnknown: true,
   },
   {
     key: 'google_business',

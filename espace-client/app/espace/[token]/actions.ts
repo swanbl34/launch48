@@ -11,7 +11,7 @@ import { randomUUID } from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { notFound, redirect } from 'next/navigation';
 
-import { TOTAL_STEPS, fieldsForStep, isFileField } from '@/lib/brief-schema';
+import { TOTAL_STEPS, UNKNOWN_KEY, fieldsForStep, isFileField } from '@/lib/brief-schema';
 import { readStepAnswers } from '@/lib/brief-values';
 import { getFormAnswers, getProjectByToken } from '@/lib/data';
 import { ASSETS_BUCKET, supabaseAdmin } from '@/lib/supabase';

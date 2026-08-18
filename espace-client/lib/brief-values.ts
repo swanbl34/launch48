@@ -5,7 +5,7 @@
  * selon le type déclaré de chaque champ, pour que form_answers.data reste
  * homogène (string / string[] / boolean) quoi qu'envoie le navigateur.
  */
-import { fieldsForStep, isFileField, type BriefField } from './brief-schema';
+import { UNKNOWN_KEY, fieldsForStep, isFileField, type BriefField } from './brief-schema';
 import type { AnswerMap, AnswerValue } from './types';
 
 /** Découpe une saisie multi-lignes en liste, en retirant les lignes vides. */
@@ -37,16 +37,34 @@ function readField(field: BriefField, fd: FormData): AnswerValue {
 /**
  * Extrait les réponses d'une étape. On ne touche qu'aux champs de cette
  * étape : les autres réponses sont préservées par le merge côté action.
+ *
+ * `previousUnknown` est la liste déjà en base : on ne recalcule que les
+ * champs de l'étape affichée, sans écraser les reports des autres étapes.
  */
-export function readStepAnswers(step: number, fd: FormData): AnswerMap {
+export function readStepAnswers(
+  step: number,
+  fd: FormData,
+  previousUnknown: string[] = [],
+): AnswerMap {
   const out: AnswerMap = {};
+  const stepFields = fieldsForStep(step);
 
-  for (const field of fieldsForStep(step)) {
+  for (const field of stepFields) {
     if (isFileField(field)) continue; // les fichiers vivent dans `assets`
     const value = readField(field, fd);
     if (value === null && field.type === 'bool') continue; // pas affiché → pas écrasé
     out[field.key] = value;
   }
+
+  // « Je ne sais pas encore » : on repart de l'existant, on retire les champs
+  // de cette étape, puis on rajoute ceux qui sont cochés maintenant.
+  const stepKeys = new Set(stepFields.filter((f) => f.allowUnknown).map((f) => f.key));
+  const kept = previousUnknown.filter((k) => !stepKeys.has(k));
+  const checked = stepFields
+    .filter((f) => f.allowUnknown && fd.get(`__unknown_${f.key}`) === 'on')
+    .map((f) => f.key);
+
+  out[UNKNOWN_KEY] = [...kept, ...checked];
 
   return out;
 }

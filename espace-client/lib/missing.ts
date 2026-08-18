@@ -5,8 +5,17 @@
  *   1. les champs `required` du brief qui sont vides   → bloquants
  *   2. les tâches en status = 'blocked'                → le reste
  */
-import { FIELDS, isFileField, type BriefField } from './brief-schema';
+import { FIELDS, UNKNOWN_KEY, isFileField, type BriefField } from './brief-schema';
 import type { AnswerMap, AnswerValue, Asset, Task } from './types';
+
+/** Les champs que le client a marqués « je ne sais pas encore ». */
+export function unknownKeys(answers: AnswerMap): string[] {
+  const v = answers[UNKNOWN_KEY];
+  return Array.isArray(v) ? v : [];
+}
+
+export const isDeferred = (key: string, answers: AnswerMap) =>
+  unknownKeys(answers).includes(key);
 
 export type MissingItem = {
   id: string;
@@ -50,9 +59,24 @@ export function isFilled(
   return typeof value === 'string' && value.trim() !== '';
 }
 
-/** Les champs bloquants encore vides. */
+/**
+ * Les champs bloquants encore vides ET non reportés.
+ * Un champ marqué « je ne sais pas encore » sort d'ici — il réapparaît dans
+ * deferredFields(), pour rester visible sans bloquer le client.
+ */
 export function missingRequiredFields(answers: AnswerMap, assets: Asset[]): BriefField[] {
-  return FIELDS.filter((f) => f.required && !isFilled(f, answers[f.key], assets));
+  const deferred = unknownKeys(answers);
+  return FIELDS.filter(
+    (f) => f.required && !isFilled(f, answers[f.key], assets) && !deferred.includes(f.key),
+  );
+}
+
+/** Les champs bloquants que le client a explicitement reportés. */
+export function deferredFields(answers: AnswerMap, assets: Asset[]): BriefField[] {
+  const deferred = unknownKeys(answers);
+  return FIELDS.filter(
+    (f) => f.required && !isFilled(f, answers[f.key], assets) && deferred.includes(f.key),
+  );
 }
 
 /** Compteur affiché dans le formulaire : « X champs bloquants restants ». */
@@ -62,8 +86,13 @@ export function countMissingRequired(answers: AnswerMap, assets: Asset[]): numbe
 
 /** Manquants d'une étape donnée — pilote la pastille rouge de la barre d'étapes. */
 export function missingInStep(step: number, answers: AnswerMap, assets: Asset[]): number {
+  const deferred = unknownKeys(answers);
   return FIELDS.filter(
-    (f) => f.step === step && f.required && !isFilled(f, answers[f.key], assets),
+    (f) =>
+      f.step === step &&
+      f.required &&
+      !isFilled(f, answers[f.key], assets) &&
+      !deferred.includes(f.key),
   ).length;
 }
 
@@ -72,9 +101,17 @@ export function computeMissing(
   answers: AnswerMap,
   assets: Asset[],
   tasks: Task[],
-): { blocking: MissingItem[]; other: MissingItem[] } {
+): { blocking: MissingItem[]; deferred: MissingItem[]; other: MissingItem[] } {
   const blocking: MissingItem[] = missingRequiredFields(answers, assets).map((f) => ({
     id: `field:${f.key}`,
+    label: f.label,
+    kind: 'field',
+    step: f.step,
+    focus: f.key,
+  }));
+
+  const deferred: MissingItem[] = deferredFields(answers, assets).map((f) => ({
+    id: `deferred:${f.key}`,
     label: f.label,
     kind: 'field',
     step: f.step,
@@ -90,5 +127,5 @@ export function computeMissing(
       phase: t.phase,
     }));
 
-  return { blocking, other };
+  return { blocking, deferred, other };
 }

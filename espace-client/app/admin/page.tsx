@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import type { Metadata } from 'next';
 
+import { AppBar } from '@/app/_components/AppBar';
 import { Bar } from '@/app/_components/Bar';
 import { Brand } from '@/app/_components/Brand';
 import { CopyButton } from '@/app/_components/CopyButton';
@@ -45,11 +46,12 @@ export default async function AdminPage({
         getAssets(p.id),
         getTasks(p.id),
       ]);
-      const { blocking, other } = computeMissing(answers.data, assets, tasks);
+      const { blocking, deferred, other } = computeMissing(answers.data, assets, tasks);
       return {
         project: p,
         progress: globalProgress(tasks),
         missing: blocking.length + other.length,
+        deferred: deferred.length,
         updatedAt: answers.updated_at,
       };
     }),
@@ -57,17 +59,17 @@ export default async function AdminPage({
 
   return (
     <main className="shell shell--wide stack--lg">
-      <header className="topbar">
-        <Brand href="/admin" />
-        <div className="row">
-          <span className="pill">{projects.length} projets</span>
+      <AppBar
+        brandHref="/admin"
+        meta={<span className="pill">{projects.length} projets</span>}
+        action={
           <form action={logout}>
             <button className="btn btn--ghost btn--small" type="submit">
               Déconnexion
             </button>
           </form>
-        </div>
-      </header>
+        }
+      />
 
       <h1>Projets</h1>
 
@@ -91,7 +93,7 @@ export default async function AdminPage({
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ project, progress, missing, updatedAt }) => (
+            {rows.map(({ project, progress, missing, deferred, updatedAt }) => (
               <tr key={project.id}>
                 <td>
                   <a href={`/admin/projet/${project.id}`}>
@@ -116,11 +118,18 @@ export default async function AdminPage({
                   </div>
                 </td>
                 <td>
-                  {missing > 0 ? (
-                    <span className="pill pill--danger tiny">{missing}</span>
-                  ) : (
-                    <span className="pill pill--ok tiny">0</span>
-                  )}
+                  <div className="row" style={{ gap: '0.25rem', flexWrap: 'nowrap' }}>
+                    {missing > 0 ? (
+                      <span className="pill pill--danger tiny">{missing}</span>
+                    ) : (
+                      <span className="pill pill--ok tiny">0</span>
+                    )}
+                    {deferred > 0 ? (
+                      <span className="pill pill--warn tiny" title="Marqués « je ne sais pas encore »">
+                        +{deferred}
+                      </span>
+                    ) : null}
+                  </div>
                 </td>
                 <td className="tiny muted">{formatDateTime(updatedAt)}</td>
                 <td>
@@ -141,7 +150,7 @@ export default async function AdminPage({
       </section>
 
       {/* ── Création ────────────────────────────────────────────────────── */}
-      <section className="card stack" style={{ gap: '0.9rem' }}>
+      <section className="card stack" style={{ gap: '0.9rem' }} id="nouveau">
         <h2>Nouveau projet</h2>
         <p className="small muted">
           Le token est généré automatiquement et les tâches du pack sont créées d&apos;office.

@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+import { AppBar } from '@/app/_components/AppBar';
 import { Bar } from '@/app/_components/Bar';
-import { Brand } from '@/app/_components/Brand';
 import { getAssets, getFormAnswers, getProjectByToken, getTasks } from '@/lib/data';
 import { formatDate } from '@/lib/format';
 import { computeMissing } from '@/lib/missing';
@@ -38,22 +38,35 @@ export default async function DashboardPage({
     getTasks(project.id),
   ]);
 
+  const { blocking, deferred, other } = computeMissing(answers.data, assets, tasks);
+  const totalMissing = blocking.length + other.length;
   const progress = globalProgress(tasks);
   const phases = phaseViews(tasks);
   const openPhase = currentPhaseKey(phases);
-  const { blocking, other } = computeMissing(answers.data, assets, tasks);
-  const totalMissing = blocking.length + other.length;
 
   return (
     <main className="shell stack--lg">
       {/* 1 ── Header ─────────────────────────────────────────────────────── */}
-      <header className="topbar">
-        <Brand />
-        <div className="row" style={{ gap: '0.4rem' }}>
-          <span className="pill pill--accent">{project.pack}</span>
-          <span className="pill">{STATUS_LABELS[project.status]}</span>
-        </div>
-      </header>
+      <AppBar
+        brandHref={`/espace/${token}`}
+        title={project.company}
+        meta={
+          <>
+            <span className="pill pill--accent">{project.pack}</span>
+            <span className="pill">{STATUS_LABELS[project.status]}</span>
+          </>
+        }
+        active={`/espace/${token}`}
+        tabs={[
+          { href: `/espace/${token}`, label: 'Suivi' },
+          {
+            href: `/espace/${token}/brief`,
+            label: 'Mon brief',
+            badge: blocking.length,
+            tone: 'danger',
+          },
+        ]}
+      />
 
       <div className="stack" style={{ gap: '0.5rem' }}>
         <h1>{project.company}</h1>
@@ -136,6 +149,35 @@ export default async function DashboardPage({
           </>
         )}
       </section>
+
+      {deferred.length > 0 ? (
+        <section className="card stack" style={{ gap: '0.6rem' }}>
+          <div className="row row--between">
+            <span className="section-title">À préciser plus tard</span>
+            <span className="pill pill--warn tiny">{deferred.length}</span>
+          </div>
+          <p className="small muted">
+            Tu nous as dit ne pas encore avoir ces éléments. Rien ne bloque, on te les
+            redemandera au bon moment.
+          </p>
+          <ul className="missing-list">
+            {deferred.map((item) => (
+              <li key={item.id}>
+                <a
+                  className="missing-item missing-item--deferred"
+                  href={`/espace/${token}/brief?step=${item.step}&focus=${item.focus}`}
+                >
+                  <span className="dot dot--todo" aria-hidden />
+                  <span>{item.label}</span>
+                  <span className="missing-item__arrow" aria-hidden>
+                    →
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* 4 ── Timeline de production ─────────────────────────────────────── */}
       <section className="card stack" style={{ gap: '0.6rem' }}>

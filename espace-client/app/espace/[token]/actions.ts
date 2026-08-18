@@ -149,6 +149,7 @@ export async function saveBriefStep(formData: FormData) {
     );
 
   revalidatePath(`/espace/${token}`);
+  revalidatePath(`/espace/${token}/suivi`);
   revalidatePath(`/espace/${token}/brief`);
 
   if (submitting) redirect(`/espace/${token}?brief=valide`);
@@ -190,7 +191,7 @@ export async function toggleClientTask(formData: FormData) {
   const taskId = String(formData.get('taskId') ?? '');
   const project = await requireProject(token);
 
-  if (DEMO) redirect(`/espace/${token}`);
+  if (DEMO) redirect(`/espace/${token}/suivi`);
 
   const db = supabaseAdmin();
 
@@ -215,6 +216,6 @@ export async function toggleClientTask(formData: FormData) {
       .eq('id', task.id);
   }
 
-  revalidatePath(`/espace/${token}`);
-  redirect(`/espace/${token}`);
+  revalidatePath(`/espace/${token}/suivi`);
+  redirect(`/espace/${token}/suivi`);
 }

@@ -1,25 +1,26 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { AppBar } from '@/app/_components/AppBar';
-import { Bar } from '@/app/_components/Bar';
 import { getAssets, getFormAnswers, getProjectByToken, getTasks } from '@/lib/data';
 import { formatDate } from '@/lib/format';
-import { computeMissing } from '@/lib/missing';
-import { currentPhaseKey, globalProgress, phaseViews } from '@/lib/progress';
-import { phaseLabel } from '@/lib/task-templates';
-import { STATUS_LABELS, TASK_STATUS_LABELS, isOnboarding, type Task } from '@/lib/types';
-import { toggleClientTask } from './actions';
+import { countMissingRequired } from '@/lib/missing';
+import { globalProgress } from '@/lib/progress';
+import { isOnboarding } from '@/lib/types';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
-
-/** Toujours frais : le client doit voir l'avancement en temps réel. */
 export const dynamic = 'force-dynamic';
 
 const CALENDAR_URL = 'https://calendar.app.google/WzzdX11aNdR3DaMm8';
 const CONTACT_EMAIL = 'contact@launch48.fr';
 
-export default async function DashboardPage({
+/**
+ * Écran d'accueil — la première chose que voit le client en ouvrant son lien.
+ *
+ * Un seul message, une seule action. Le contenu de l'action dépend de la
+ * phase : remplir son brief pendant l'onboarding, consulter le suivi une
+ * fois la production ouverte.
+ */
+export default async function WelcomePage({
   params,
   searchParams,
 }: {
@@ -38,284 +39,81 @@ export default async function DashboardPage({
     getTasks(project.id),
   ]);
 
-  const { blocking, deferred, other } = computeMissing(answers.data, assets, tasks);
-  const totalMissing = blocking.length + other.length;
   const onboarding = isOnboarding(project.status);
+  const missing = countMissingRequired(answers.data, assets);
+  const started = answers.last_step > 1 || !!answers.submitted_at;
   const progress = globalProgress(tasks);
-  const phases = phaseViews(tasks);
-  const openPhase = currentPhaseKey(phases);
 
   return (
-    <main className="shell stack--lg">
-      {/* 1 ── Header ─────────────────────────────────────────────────────── */}
-      <AppBar
-        brandHref={`/espace/${token}`}
-        title={project.company}
-        meta={
-          <>
-            <span className="pill pill--accent">{project.pack}</span>
-            <span className="pill">{STATUS_LABELS[project.status]}</span>
-          </>
-        }
-        active={`/espace/${token}`}
-        tabs={
-          onboarding
-            ? undefined
-            : [
-                { href: `/espace/${token}`, label: 'Suivi' },
-                {
-                  href: `/espace/${token}/brief`,
-                  label: 'Mon brief',
-                  badge: blocking.length,
-                  tone: 'danger',
-                },
-              ]
-        }
-      />
+    <main className="welcome">
+      <div className="welcome__inner">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="welcome__mark" src="/favicon-fusee.svg" alt="" width={64} height={64} />
 
-      <div className="stack" style={{ gap: '0.5rem' }}>
-        <h1>{project.company}</h1>
-        <p className="muted small">
-          {onboarding ? (
-            <>Onboarding en cours</>
-          ) : (
-            <>
-              Livraison estimée&nbsp;: <strong>{formatDate(project.delivery_date)}</strong>
-              {project.kickoff_date ? <> · Démarrage {formatDate(project.kickoff_date)}</> : null}
-            </>
-          )}
-        </p>
-      </div>
+        <p className="welcome__eyebrow">Espace client Launch48</p>
 
-      {brief === 'valide' ? (
-        <div className="banner">
-          <span aria-hidden>✓</span> Brief validé, merci. On enchaîne sur le cadrage.
-        </div>
-      ) : null}
+        <h1 className="welcome__title">{project.company}</h1>
 
-      {/* 2 ── Avancement ─────────────────────────────────────────────────── */}
-      {onboarding ? (
-        <section className="card stack" style={{ gap: '0.7rem' }}>
-          <span className="section-title">Étape 1 — Ton brief</span>
-          <h2>On commence par rassembler tes éléments</h2>
-          <p className="small muted">
-            Remplis le questionnaire ci-dessous. Dès qu&apos;on a tout ce qu&apos;il faut, la
-            production démarre et ce tableau de bord s&apos;ouvre sur le suivi détaillé du
-            projet.
-          </p>
-          <div className="row">
-            <a className="btn" href={`/espace/${token}/brief`}>
-              {answers.updated_at && answers.last_step > 1
-                ? 'Reprendre mon brief →'
-                : 'Commencer mon brief →'}
-            </a>
+        {brief === 'valide' ? (
+          <div className="banner" style={{ justifyContent: 'center' }}>
+            <span aria-hidden>✓</span> Brief validé, merci. On prend le relais.
           </div>
-        </section>
-      ) : (
-        <section className="stack" style={{ gap: '0.5rem' }}>
-          <div className="row row--between">
-            <span className="section-title">Avancement</span>
-            <strong className="small">{progress}%</strong>
-          </div>
-          <Bar value={progress} thin />
-          <p className="tiny muted">
-            {tasks.filter((t) => t.status === 'done').length} tâches terminées sur {tasks.length}
-          </p>
-        </section>
-      )}
+        ) : null}
 
-      {/* 3 ── Éléments manquants ─────────────────────────────────────────── */}
-      <section
-        className={totalMissing === 0 ? 'card card--ok stack' : 'card card--danger stack'}
-        style={{ gap: '0.75rem' }}
-      >
-        {totalMissing === 0 ? (
+        {onboarding ? (
           <>
-            <h2 style={{ color: 'var(--accent-3)' }}>Tout est complet</h2>
-            <p className="small muted">
-              On a tout ce qu&apos;il faut de ton côté. Production en cours.
+            <p className="welcome__lead">
+              Bienvenue. On va construire ton site — et tout commence par bien te connaître.
+              Six étapes, une vingtaine de minutes. Tout s&apos;enregistre au fur et à mesure,
+              tu peux t&apos;arrêter et reprendre quand tu veux.
             </p>
+
+            <a className="btn btn--xl" href={`/espace/${token}/brief`}>
+              {started ? "Reprendre l'onboarding →" : "Commencer l'onboarding →"}
+            </a>
+
+            {started && missing > 0 ? (
+              <p className="welcome__hint">
+                Il reste <strong>{missing}</strong> élément{missing > 1 ? 's' : ''} à nous
+                fournir.
+              </p>
+            ) : null}
+            {started && missing === 0 ? (
+              <p className="welcome__hint">Tout est complet de ton côté. Merci.</p>
+            ) : null}
           </>
         ) : (
           <>
-            <div className="row row--between">
-              <h2>Éléments manquants</h2>
-              <span className="pill pill--danger">{totalMissing}</span>
-            </div>
-            <p className="small muted">
-              C&apos;est ce qui nous manque pour avancer. Le reste est de notre côté.
+            <p className="welcome__lead">
+              Bon retour. Ton projet est en production
+              {project.delivery_date ? (
+                <>
+                  , livraison estimée le <strong>{formatDate(project.delivery_date)}</strong>
+                </>
+              ) : null}
+              . Tu peux suivre l&apos;avancement en temps réel.
             </p>
 
-            <ul className="missing-list">
-              {blocking.map((item) => (
-                <li key={item.id}>
-                  <a
-                    className="missing-item missing-item--blocking"
-                    href={`/espace/${token}/brief?step=${item.step}&focus=${item.focus}`}
-                  >
-                    <span className="dot dot--blocked" aria-hidden />
-                    <span>{item.label}</span>
-                    <span className="missing-item__arrow" aria-hidden>
-                      →
-                    </span>
-                  </a>
-                </li>
-              ))}
-
-              {other.map((item) => (
-                <li key={item.id} className="missing-item">
-                  <span className="dot dot--blocked" aria-hidden />
-                  <span>{item.label}</span>
-                  <span className="pill tiny" style={{ marginLeft: 'auto' }}>
-                    {phaseLabel(item.phase ?? '')}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <a className="btn btn--small" href={`/espace/${token}/brief`}>
-              Compléter mon brief
-            </a>
+            <div className="welcome__actions">
+              <a className="btn btn--xl" href={`/espace/${token}/suivi`}>
+                Voir mon projet · {progress}% →
+              </a>
+              <a className="btn btn--ghost" href={`/espace/${token}/brief`}>
+                Mon brief{missing > 0 ? ` · ${missing} manquants` : ''}
+              </a>
+            </div>
           </>
         )}
-      </section>
 
-      {deferred.length > 0 ? (
-        <section className="card stack" style={{ gap: '0.6rem' }}>
-          <div className="row row--between">
-            <span className="section-title">À préciser plus tard</span>
-            <span className="pill pill--warn tiny">{deferred.length}</span>
-          </div>
-          <p className="small muted">
-            Tu nous as dit ne pas encore avoir ces éléments. Rien ne bloque, on te les
-            redemandera au bon moment.
-          </p>
-          <ul className="missing-list">
-            {deferred.map((item) => (
-              <li key={item.id}>
-                <a
-                  className="missing-item missing-item--deferred"
-                  href={`/espace/${token}/brief?step=${item.step}&focus=${item.focus}`}
-                >
-                  <span className="dot dot--todo" aria-hidden />
-                  <span>{item.label}</span>
-                  <span className="missing-item__arrow" aria-hidden>
-                    →
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {/* 4 ── Timeline de production ─────────────────────────────────────── */}
-      {/* Masquées pendant l'onboarding : le client n'a pas à voir un plan de
-          production qui n'a pas commencé. */}
-      {onboarding ? null : (
-      <section className="card stack" style={{ gap: '0.6rem' }}>
-        <h2>Production</h2>
-        <div className="timeline">
-          {phases.map((p) => (
-            <div className="timeline__item" key={p.key} data-state={p.state}>
-              <span className={`dot dot--${p.state}`} aria-hidden />
-              <span className="timeline__label">{p.label}</span>
-              <span className="tiny muted">
-                {p.done}/{p.total}
-              </span>
-            </div>
-          ))}
-          {phases.length === 0 ? (
-            <p className="small muted">Les étapes apparaîtront au démarrage du projet.</p>
-          ) : null}
-        </div>
-      </section>
-      )}
-
-      {/* 5 ── Tâches par phase ───────────────────────────────────────────── */}
-      {onboarding ? null : (
-      <section className="stack" style={{ gap: '0.5rem' }}>
-        <span className="section-title">Le détail</span>
-        {phases.map((p) => (
-          <details className="accordion" key={p.key} open={p.key === openPhase}>
-            <summary>
-              <span className={`dot dot--${p.state}`} aria-hidden />
-              {p.label}
-              <span className="accordion__count">
-                {p.done}/{p.total}
-              </span>
-            </summary>
-            <div className="accordion__body">
-              {p.tasks.map((task) => (
-                <TaskRow key={task.id} task={task} token={token} />
-              ))}
-            </div>
-          </details>
-        ))}
-      </section>
-      )}
-
-      {/* 6 ── Contact ────────────────────────────────────────────────────── */}
-      <section className="card card--accent stack" style={{ gap: '0.7rem' }}>
-        <h2>Une question ?</h2>
-        <p className="small muted">
-          Réponse dans la journée. Pour tout ce qui se règle mieux à l&apos;oral, prends 15 minutes.
+        <p className="welcome__foot tiny muted">
+          Une question ?{' '}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          {' · '}
+          <a href={CALENDAR_URL} target="_blank" rel="noreferrer">
+            réserver 15 minutes
+          </a>
         </p>
-        <div className="row">
-          <a className="btn btn--small" href={CALENDAR_URL} target="_blank" rel="noreferrer">
-            Réserver un créneau
-          </a>
-          <a className="btn btn--ghost btn--small" href={`mailto:${CONTACT_EMAIL}`}>
-            {CONTACT_EMAIL}
-          </a>
-        </div>
-      </section>
-
-      <p className="tiny muted center">
-        Ce lien t&apos;est personnel. Ne le partage qu&apos;avec ton équipe.
-      </p>
+      </div>
     </main>
-  );
-}
-
-/**
- * Une ligne de tâche. Les tâches `owner = client` sont cochables : un petit
- * formulaire POST par ligne, aucun JS nécessaire.
- */
-function TaskRow({ task, token }: { task: Task; token: string }) {
-  const isClient = task.owner === 'client';
-
-  return (
-    <div className="task" data-status={task.status}>
-      {isClient ? (
-        <form action={toggleClientTask} style={{ display: 'contents' }}>
-          <input type="hidden" name="token" value={token} />
-          <input type="hidden" name="taskId" value={task.id} />
-          <button
-            type="submit"
-            className="btn btn--ghost btn--small"
-            style={{ padding: '0.2rem 0.55rem', minWidth: '2rem' }}
-            aria-label={
-              task.status === 'done'
-                ? `Décocher : ${task.label}`
-                : `Marquer comme fait : ${task.label}`
-            }
-          >
-            {task.status === 'done' ? '✓' : '○'}
-          </button>
-          <span className="task__label">{task.label}</span>
-          <span className="pill pill--client tiny">À toi</span>
-        </form>
-      ) : (
-        <>
-          <span className={`dot dot--${task.status}`} aria-hidden />
-          <span className="task__label">{task.label}</span>
-          <span className="pill tiny muted">Launch48</span>
-        </>
-      )}
-      {task.status === 'blocked' ? (
-        <span className="pill pill--danger tiny">{TASK_STATUS_LABELS.blocked}</span>
-      ) : null}
-    </div>
   );
 }

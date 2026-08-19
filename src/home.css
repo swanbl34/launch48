@@ -26,6 +26,11 @@
 }
 .bg-gradient[data-ready] { opacity: 1; }
 
+/* Le calque n'existe pas sous 900px : le module n'y est pas chargé. */
+@media (max-width: 899px) {
+  .bg-gradient { display: none; }
+}
+
 /* Voile de lisibilité, dégressif vers la droite où il n'y a pas de texte. */
 .bg-gradient::after {
   content: '';

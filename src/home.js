@@ -53,7 +53,14 @@ const setupBackgroundGradient = () => {
   const host = document.querySelector('#bg-gradient');
   if (!host || reduceMotion.matches) return;
 
+  // Desktop seulement : le module pèse 346 Ko et l'effet est peu visible sur
+  // un petit écran. Rien n'est téléchargé sur mobile.
+  const wide = window.matchMedia('(min-width: 900px)');
+
+  let started = false;
   const load = () => {
+    if (started) return;
+    started = true;
     import('./bg-gradient.js')
       .then((module) => module.mountBackgroundGradient(host))
       .catch(() => {
@@ -61,11 +68,23 @@ const setupBackgroundGradient = () => {
       });
   };
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(load, { timeout: 2500 });
-  } else {
-    window.setTimeout(load, 1200);
+  const schedule = () => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(load, { timeout: 2500 });
+    } else {
+      window.setTimeout(load, 1200);
+    }
+  };
+
+  if (wide.matches) {
+    schedule();
+    return;
   }
+
+  // Si l'écran s'élargit ensuite (rotation, fenêtre agrandie), on charge alors.
+  wide.addEventListener('change', (event) => {
+    if (event.matches) schedule();
+  });
 };
 
 /* ── Scène du hero : parallaxe de profondeur au pointeur ─────────────────

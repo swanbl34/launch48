@@ -10,125 +10,918 @@
 
       gtag('config', 'G-BE27RNS6K0');
     </script>
+    <script>
+      // Les reveals ne sont masqués que si JS répond. Si le module ne démarre
+      // pas (erreur, réseau), on retire la classe et tout redevient visible.
+      document.documentElement.classList.add('js');
+      setTimeout(function () {
+        if (!document.documentElement.dataset.homeReady) {
+          document.documentElement.classList.remove('js');
+        }
+      }, 2500);
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
-    <title>Launch48 | Sites vitrines en 48h</title>
-    <meta name="description" content="Site vitrine / one-page en 48h: design moderne, mobile, SEO et déploiement rapide." />
-    <meta property="og:title" content="Launch48 | Sites vitrines en 48h" />
-    <meta property="og:description" content="Une one-page premium, performante et mise en ligne en 48h avec un process clair et rapide." />
+    <title>Launch48 | Votre site pro en ligne en 48h, à partir de 590 €</title>
+    <meta name="description" content="Un site internet professionnel livré en 48h. Prix fixe tout compris à partir de 590 €, nom de domaine offert. Pour artisans, restaurants, santé et commerces locaux." />
+    <link rel="canonical" href="https://launch48.fr/" />
+    <meta property="og:title" content="Launch48 | Votre site pro en ligne en 48h" />
+    <meta property="og:description" content="Un site conçu pour vous apporter des clients, pas juste pour faire joli. Prix fixe, tout compris, zéro jargon technique. À partir de 590 €." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://launch48.fr" />
     <meta property="og:image" content="/opengraph.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:locale" content="fr_FR" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#091019" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/previews/home/site-photo-wide.webp" fetchpriority="high" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://launch48.fr/#business",
+            "name": "Launch48",
+            "url": "https://launch48.fr",
+            "email": "contact@launch48.fr",
+            "description": "Création de sites internet professionnels livrés en 48h, à prix fixe, pour artisans, restaurants, professionnels de santé et commerces locaux.",
+            "areaServed": "France",
+            "priceRange": "590 € - 1 290 €"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://launch48.fr/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "48h, vraiment ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Oui. Le compte à rebours démarre quand on a vos éléments (textes, photos, validation du brief). C'est notre méthode qui rend ça possible." }
+              },
+              {
+                "@type": "Question",
+                "name": "Et si le résultat ne me plaît pas ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Deux séries d'ajustements sont incluses. On ne s'arrête pas tant que le site ne vous ressemble pas." }
+              },
+              {
+                "@type": "Question",
+                "name": "Je n'ai ni textes ni photos.",
+                "acceptedAnswer": { "@type": "Answer", "text": "On rédige les textes avec vous pendant l'appel. Pour les photos, on vous guide ou on utilise des visuels pros adaptés à votre métier." }
+              },
+              {
+                "@type": "Question",
+                "name": "Qui gère la technique ensuite ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Nous. Domaine, hébergement, mises à jour : vous n'avez jamais à toucher au code." }
+              },
+              {
+                "@type": "Question",
+                "name": "Il y a des frais cachés ?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Non. Prix fixe, annoncé avant de commencer. Seul l'hébergement se renouvelle après la 1re année (tarif annoncé dès le départ)." }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body data-page="home">
     <a class="skip-link" href="#main">Aller au contenu</a>
-    <div id="app">
-      <header class="site-header" id="top">
-        <nav class="nav container" aria-label="Navigation principale">
-          <a class="brand" href="#top">
-            <img class="brand__logo" src="/logo-launch48.svg" alt="Launch48" />
-          </a>
-          <div class="nav__links">
-            <a href="#process">Sprint 48h</a>
-            <a href="#pricing">Tarifs</a>
-            <a href="/quiz/">Quiz</a>
-            <a href="/blog/">Blog</a>
-            <a href="/offres/">Secteurs</a>
-          </div>
-          <div class="nav__actions">
-            <button class="theme-toggle nav-theme-mobile" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
-              <span class="theme-toggle__track" aria-hidden="true">
-                <span class="theme-toggle__thumb"></span>
-              </span>
-            </button>
-            <button class="nav-burger" type="button" aria-expanded="false" aria-label="Ouvrir le menu">
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-            <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
-              <span class="theme-toggle__track" aria-hidden="true">
-                <span class="theme-toggle__thumb"></span>
-              </span>
-            </button>
-            <a class="btn btn--small nav-cta-desktop" href="/devis/">Lancer mon site en 48h →</a>
-          </div>
+
+    <!-- ══ Header ══════════════════════════════════════════════════════════ -->
+    <header class="header" id="top">
+      <div class="header__inner">
+        <a class="brand" href="/" aria-label="Launch48, accueil">
+          <img class="brand__logo" src="/logo-launch48.svg" alt="Launch48" width="430" height="88" />
+        </a>
+        <nav class="nav" aria-label="Navigation principale">
+          <span class="nav__pill" aria-hidden="true"></span>
+          <a href="#tarifs">Tarifs</a>
+          <a href="#realisations">Réalisations</a>
+          <a href="#faq">FAQ</a>
         </nav>
-      </header>
+        <div class="header__actions">
+          <a class="btn btn--primary btn--sm" href="/devis/">Lancer mon site</a>
+          <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Ouvrir le menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <div class="menu-mobile" id="menu-mobile" hidden>
+        <nav aria-label="Navigation mobile">
+          <a href="#tarifs"><span>Tarifs</span></a>
+          <a href="#realisations"><span>Réalisations</span></a>
+          <a href="#faq"><span>FAQ</span></a>
+          <a href="#audit"><span>Audit gratuit</span></a>
+        </nav>
+      </div>
+    </header>
 
-      <main id="main">
-        <section class="hero section container" id="hero">
-          <div class="hero-deco" aria-hidden="true">
-            <span class="hero-float hf-1">Landing page</span>
-            <span class="hero-float hf-2">One page</span>
-            <span class="hero-float hf-5">Portfolio</span>
-            <span class="hero-float hf-6">E-commerce</span>
-            <span class="hero-float hf-8">Audit express</span>
-            <span class="hero-float hf-9">SEO prêt</span>
-          </div>
-          <div class="hero__content">
-            <p class="hero__eyebrow">Création de site internet express</p>
-            <h1 class="hero__title" data-typewriter-segments="Un site pro, livré en 48h.">Un site pro, livré en 48h.</h1>
-            <p class="hero__subtitle">Design moderne, mobile-first, optimisé conversion.<br>À partir de 590€ — domaine et hébergement inclus.*</p>
-            <div class="hero__cta">
-              <a class="btn" href="/devis/" data-mobile-label="Lancer mon site en 48h">Lancer mon site en 48h →</a>
-              <a class="btn btn--ghost" href="/call/">Auditer mon projet en 15 min</a>
+    <main id="main">
+      <!-- ══ 1. Hero ══════════════════════════════════════════════════════ -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="glow glow--hero" aria-hidden="true" data-parallax="0.12"></div>
+        <div class="container hero__inner">
+          <div class="hero__content" data-stagger>
+            <h1 id="hero-title" data-reveal="left">Votre site pro,<br />en ligne en <span class="accent">48h.</span></h1>
+            <p class="lead" data-reveal="left">
+              Un site conçu pour vous apporter des clients, pas juste pour faire joli.
+              Prix fixe, tout compris, zéro jargon technique.
+            </p>
+            <div class="cta-row" data-reveal="left">
+              <a class="btn btn--primary btn--shine" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+              <a class="btn btn--ghost" href="#audit">Audit gratuit de mon site actuel</a>
             </div>
+            <ul class="reassurance" data-reveal="left">
+              <li>Nom de domaine offert</li>
+              <li>Prix affiché = prix payé</li>
+              <li>À partir de 590&nbsp;€</li>
+            </ul>
           </div>
-        </section>
 
-        <section class="quiz-home-cta section container" aria-labelledby="quiz-home-title">
-          <div class="quiz-home-cta__panel">
-            <div class="quiz-home-cta__content">
-              <p class="kicker">Test gratuit</p>
-              <h2 id="quiz-home-title">Votre site convertit-il vraiment ?</h2>
-              <p>Répondez à 7 questions rapides pour repérer les blocages de clarté, de confiance et de conversion qui peuvent freiner vos demandes de devis.</p>
-            </div>
-            <div class="quiz-home-cta__aside">
-              <div class="quiz-home-cta__stats" aria-label="Détails du quiz">
-                <span>60 sec</span>
-                <span>7 questions</span>
-                <span>Score immédiat</span>
+          <!-- Scène 3D : composition en CSS (perspective + transforms).
+               Pour changer les captures, remplacer les `src` ci-dessous. -->
+          <div class="hero__visual" data-reveal="right">
+            <div class="scene">
+              <div class="scene__stage">
+                <!-- Élément principal 1 : laptop ouvert (capot + charnière
+                     + clavier en perspective, le tout en CSS 3D). -->
+                <div class="laptop">
+                  <div class="laptop__lid">
+                    <div class="laptop__screen">
+                      <div class="site" aria-hidden="true">
+                        <header class="site__nav">
+                          <span class="site__logo">Atelier Rivage</span>
+                          <nav class="site__links"><span>Nos chantiers</span><span>Savoir-faire</span><span>Contact</span></nav>
+                          <span class="site__btn">Devis gratuit</span>
+                        </header>
+                        <div class="site__viewport">
+                          <div class="site__track">
+                          <div class="site__page">
+                            <div class="site__hero">
+                              <img src="/previews/home/site-photo-wide.webp" alt="" width="680" height="420" fetchpriority="high" decoding="async" />
+                              <div class="site__hero-text">
+                                <span class="site__eyebrow">Rénovation · Maçonnerie · Depuis 2012</span>
+                                <p class="site__title">Vos travaux, du devis à la livraison.</p>
+                                <p class="site__sub">Gros œuvre, carrelage, plomberie. Une équipe, un interlocuteur.</p>
+                                <span class="site__actions">
+                                  <span class="site__btn">Demander un devis</span>
+                                  <span class="site__btn site__btn--ghost">Voir nos chantiers</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="site__band">
+                              <p class="site__band-title">Nos savoir-faire</p>
+                              <div class="site__row">
+                                <span class="site__tile"></span>
+                                <span class="site__tile"></span>
+                                <span class="site__tile"></span>
+                              </div>
+                            </div>
+                            <div class="site__band site__band--alt">
+                              <p class="site__band-title">Ils nous ont fait confiance</p>
+                              <div class="site__quote">
+                                <span class="site__avatar"></span>
+                                <span class="site__lines"><i></i><i></i></span>
+                              </div>
+                            </div>
+                            <div class="site__band site__band--cta">
+                              <p class="site__band-title">Un projet ? Parlons-en.</p>
+                              <span class="site__btn">Demander un devis</span>
+                            </div>
+                          </div>
+                          <div class="site__page site__page--clone">
+                            <div class="site__hero">
+                              <img src="/previews/home/site-photo-wide.webp" alt="" width="680" height="420" fetchpriority="high" decoding="async" />
+                              <div class="site__hero-text">
+                                <span class="site__eyebrow">Rénovation · Maçonnerie · Depuis 2012</span>
+                                <p class="site__title">Vos travaux, du devis à la livraison.</p>
+                                <p class="site__sub">Gros œuvre, carrelage, plomberie. Une équipe, un interlocuteur.</p>
+                                <span class="site__actions">
+                                  <span class="site__btn">Demander un devis</span>
+                                  <span class="site__btn site__btn--ghost">Voir nos chantiers</span>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="site__band">
+                              <p class="site__band-title">Nos savoir-faire</p>
+                              <div class="site__row">
+                                <span class="site__tile"></span>
+                                <span class="site__tile"></span>
+                                <span class="site__tile"></span>
+                              </div>
+                            </div>
+                            <div class="site__band site__band--alt">
+                              <p class="site__band-title">Ils nous ont fait confiance</p>
+                              <div class="site__quote">
+                                <span class="site__avatar"></span>
+                                <span class="site__lines"><i></i><i></i></span>
+                              </div>
+                            </div>
+                            <div class="site__band site__band--cta">
+                              <p class="site__band-title">Un projet ? Parlons-en.</p>
+                              <span class="site__btn">Demander un devis</span>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="laptop__sheen" aria-hidden="true"></span>
+                    </div>
+                  </div>
+                  <div class="laptop__base" aria-hidden="true">
+                    <span class="laptop__keys"></span>
+                    <span class="laptop__pad"></span>
+                  </div>
+                  <span class="laptop__foot" aria-hidden="true"></span>
+                </div>
+
+                <!-- Élément principal 2 : l'iPhone. Le site à l'intérieur est
+                     du vrai HTML/CSS (unités de conteneur) : il reste net à
+                     n'importe quelle taille et se redimensionne avec l'appareil. -->
+                <div class="phone" aria-hidden="true">
+                  <span class="phone__btn phone__btn--mute"></span>
+                  <span class="phone__btn phone__btn--vol-up"></span>
+                  <span class="phone__btn phone__btn--vol-down"></span>
+                  <span class="phone__btn phone__btn--power"></span>
+                  <div class="phone__screen">
+                    <div class="mini">
+                      <div class="mini__status">
+                        <span>9:41</span>
+                        <span class="mini__status-icons"><i></i><i></i><i></i></span>
+                      </div>
+                      <header class="mini__header">
+                        <span class="mini__logo">Atelier Rivage</span>
+                        <span class="mini__actions">
+                          <span class="mini__call"></span>
+                          <span class="mini__burger"><i></i><i></i><i></i></span>
+                        </span>
+                      </header>
+                      <div class="mini__viewport">
+                        <div class="mini__track">
+                          <div class="mini__page">
+                            <div class="mini__hero">
+                              <img src="/previews/home/site-photo-tall.webp" alt="" width="360" height="470" loading="lazy" decoding="async" />
+                              <div class="mini__card">
+                                <span class="mini__tag">Devis sous 48h</span>
+                                <p class="mini__title">Vos travaux, du devis à la livraison.</p>
+                                <span class="mini__cta">Demander un devis</span>
+                              </div>
+                            </div>
+                            <div class="mini__block">
+                              <p class="mini__block-title">Nos savoir-faire</p>
+                              <span class="mini__item"><i></i><em></em></span>
+                              <span class="mini__item"><i></i><em></em></span>
+                              <span class="mini__item"><i></i><em></em></span>
+                            </div>
+                            <div class="mini__block mini__block--alt">
+                              <p class="mini__block-title">Avis clients</p>
+                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
+                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
+                            </div>
+                            <div class="mini__block">
+                              <p class="mini__block-title">Nos chantiers</p>
+                              <span class="mini__grid"><i></i><i></i><i></i><i></i></span>
+                            </div>
+                            <div class="mini__block mini__block--cta">
+                              <p class="mini__block-title">Un projet ? Parlons-en.</p>
+                              <span class="mini__cta">Demander un devis</span>
+                            </div>
+                          </div>
+                          <div class="mini__page mini__page--clone">
+                            <div class="mini__hero">
+                              <img src="/previews/home/site-photo-tall.webp" alt="" width="360" height="470" loading="lazy" decoding="async" />
+                              <div class="mini__card">
+                                <span class="mini__tag">Devis sous 48h</span>
+                                <p class="mini__title">Vos travaux, du devis à la livraison.</p>
+                                <span class="mini__cta">Demander un devis</span>
+                              </div>
+                            </div>
+                            <div class="mini__block">
+                              <p class="mini__block-title">Nos savoir-faire</p>
+                              <span class="mini__item"><i></i><em></em></span>
+                              <span class="mini__item"><i></i><em></em></span>
+                              <span class="mini__item"><i></i><em></em></span>
+                            </div>
+                            <div class="mini__block mini__block--alt">
+                              <p class="mini__block-title">Avis clients</p>
+                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
+                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
+                            </div>
+                            <div class="mini__block">
+                              <p class="mini__block-title">Nos chantiers</p>
+                              <span class="mini__grid"><i></i><i></i><i></i><i></i></span>
+                            </div>
+                            <div class="mini__block mini__block--cta">
+                              <p class="mini__block-title">Un projet ? Parlons-en.</p>
+                              <span class="mini__cta">Demander un devis</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mini__bar">
+                        <span class="mini__bar-btn">Devis</span>
+                        <span class="mini__bar-btn mini__bar-btn--ghost">Appeler</span>
+                      </div>
+                    </div>
+                    <span class="phone__island"></span>
+                  </div>
+                  <span class="phone__sheen"></span>
+                </div>
+
+                <svg class="scene__bolt" viewBox="0 0 64 96" aria-hidden="true" focusable="false">
+                  <path class="scene__bolt-halo" d="M38 4 12 54h16l-6 38 30-52H36l2-36Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" />
+                  <path class="scene__bolt-core" d="M38 4 12 54h16l-6 38 30-52H36l2-36Z" fill="none" stroke="#eaffff" stroke-width="1.6" stroke-linejoin="round" />
+                </svg>
+
+                <!-- Notification de lead. -->
+                <div class="scene__card scene__card--lead" aria-hidden="true">
+                  <span class="scene__live"></span>
+                  <span class="scene__card-line">📩 Nouvelle demande de devis</span>
+                  <span class="scene__card-note">Marie D. · il y a 2 min</span>
+                </div>
+
+                <!-- Mini-fiche Google du site de démonstration. -->
+                <div class="scene__card scene__card--review" aria-hidden="true">
+                  <span class="scene__card-line">Atelier Rivage</span>
+                  <span class="scene__card-note"><i class="scene__star">★</i> 4,9 (27 avis) · Maçonnerie</span>
+                </div>
+
+                <div class="scene__card scene__card--call" aria-hidden="true">
+                  <span class="scene__card-label">On échange 15 min</span>
+                  <span class="scene__card-note">et on démarre.</span>
+                </div>
               </div>
-              <a class="btn" href="/quiz/">Faire le quiz gratuit</a>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="process section container" id="process">
+      <!-- ══ 2. Bandeau de preuve ═════════════════════════════════════════ -->
+      <div class="marquee" role="region" aria-label="Ce qui est inclus">
+        <div class="marquee__track">
+          <ul class="marquee__group">
+            <li>⚡ Livré en 48h</li>
+            <li>💶 À partir de 590&nbsp;€ tout compris</li>
+            <li>📱 Optimisé mobile</li>
+            <li>🔎 Visible sur Google</li>
+            <li>🎁 Domaine offert</li>
+            <li>🤝 Prix affiché = prix payé</li>
+          </ul>
+          <ul class="marquee__group" aria-hidden="true">
+            <li>⚡ Livré en 48h</li>
+            <li>💶 À partir de 590&nbsp;€ tout compris</li>
+            <li>📱 Optimisé mobile</li>
+            <li>🔎 Visible sur Google</li>
+            <li>🎁 Domaine offert</li>
+            <li>🤝 Prix affiché = prix payé</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ══ 3. Le problème ═══════════════════════════════════════════════ -->
+      <section class="section section--tight problem" aria-labelledby="problem-title">
+        <div class="container narrow">
+          <h2 id="problem-title" data-reveal>
+            Un devis d'agence à 5 000&nbsp;€. Trois mois de délai. Ou un site fait maison qui ne ramène personne.
+          </h2>
+          <p class="lead" data-reveal>
+            Vous n'avez besoin ni de l'un, ni de l'autre. Vous avez besoin d'un site clair, professionnel,
+            qui donne envie de vous appeler. C'est exactement ce qu'on livre.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ 4. Comment ça marche ═════════════════════════════════════════ -->
+      <section class="section process" id="methode" aria-labelledby="methode-title">
+        <div class="container">
           <div class="process-sticky">
-            <h2>Le sprint pour créer votre site internet en 48h</h2>
-            <p class="section-intro">Un process court, lisible et orienté résultat pour lancer un site web vite.</p>
-            <div class="process__progress" aria-hidden="true">
-              <span class="process__progress-fill"></span>
-              <span class="process__progress-rocket"></span>
+            <header class="section__head">
+              <h2 id="methode-title" data-reveal>Simple. Rapide. Sans surprise.</h2>
+            </header>
+
+            <div class="process-progress" aria-hidden="true">
+              <span class="process-progress__fill"></span>
+              <span class="process-progress__rocket">
+                <svg viewBox="0 0 72 28" role="presentation" focusable="false" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="home-rocket-body" x1="0%" y1="50%" x2="100%" y2="50%">
+                      <stop offset="0%" stop-color="#dff8ff" />
+                      <stop offset="55%" stop-color="#7fdcff" />
+                      <stop offset="100%" stop-color="#4f87ff" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M2 14c2.5-2.8 5.8-4.4 9.8-4.8-2.6 1.6-4 3.2-4.3 4.8.3 1.6 1.7 3.2 4.3 4.8-4-.4-7.3-2-9.8-4.8Z" fill="rgba(255,255,255,0.92)" />
+                  <path d="M6 14c1.5-1.6 3.6-2.6 6.2-3-1.7 1-2.7 2-2.9 3 .2 1 1.2 2 2.9 3-2.6-.4-4.7-1.4-6.2-3Z" fill="rgba(223,248,255,0.9)" />
+                  <path d="M14 14c4-7 13-11 27-10l10 1 4 9-4 9-10 1C27 25 18 21 14 14Z" fill="url(#home-rocket-body)" />
+                  <path d="M43 6 54 4l-4 6Z" fill="#8fb7ff" />
+                  <path d="M43 22 54 24l-4-6Z" fill="#63ffe0" />
+                  <circle cx="34" cy="14" r="4.2" fill="#132338" />
+                  <circle cx="34" cy="14" r="2.2" fill="#dff8ff" />
+                  <path d="M55 8h10l4 6-4 6H55l3-6-3-6Z" fill="#dff8ff" />
+                </svg>
+              </span>
             </div>
-            <div class="process-grid">
-              <article class="process-step is-active">
-                <span class="process-step__label">J0</span>
-                <h3>Brief</h3>
-                <p>Kickoff, positionnement, mots-clés SEO et collecte des contenus.</p>
-              </article>
-              <article class="process-step is-active">
-                <span class="process-step__label">J1</span>
-                <h3>Prototype</h3>
-                <p>Design, maquette fonctionnelle et premier rendu interactif du site internet.</p>
-              </article>
-              <article class="process-step is-active">
-                <span class="process-step__label">J2</span>
-                <h3>Livraison & mise en ligne</h3>
-                <p>Dernières retouches, mise en ligne et livraison de votre site internet professionnel.</p>
-              </article>
+
+            <ol class="steps">
+              <li class="card step">
+                <span class="step__label">Étape 1</span>
+                <h3>On échange (15 min)</h3>
+                <p>Un appel pour comprendre votre activité et vos clients. Pas de réunion, pas de cahier des charges.</p>
+              </li>
+              <li class="card step">
+                <span class="step__label">Étape 2</span>
+                <h3>Vous validez</h3>
+                <p>On construit votre site. Vous relisez, on ajuste. Deux allers-retours inclus.</p>
+              </li>
+              <li class="card step">
+                <span class="step__label">Étape 3</span>
+                <h3>Votre site est en ligne</h3>
+                <p class="step__meta">48h après le lancement</p>
+                <p>Domaine, hébergement, mise en ligne : on s'occupe de tout.</p>
+              </li>
+            </ol>
+
+            <div class="section__cta">
+              <a class="btn btn--primary" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      <!-- ══ 5. Démos par secteur ═════════════════════════════════════════ -->
+      <section class="section" id="realisations" aria-labelledby="realisations-title">
+        <div class="container">
+          <header class="section__head">
+            <h2 id="realisations-title" data-reveal>Votre secteur. Votre objectif. Votre site.</h2>
+            <p class="lead" data-reveal>
+              Chaque offre est calibrée pour un objectif spécifique. Pas un site générique,
+              mais un site qui fait exactement ce dont vous avez besoin.
+            </p>
+          </header>
+          <p class="swipe-hint" aria-hidden="true">Faites défiler pour voir les 8 secteurs <span>→</span></p>
+          <div class="demos" data-stagger>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="/site-restaurant/">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-restaurant.webp" alt="Exemple de site pour un restaurant" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Restaurant &amp; food</span>
+                  <span class="demo__pitch">Remplir vos tables : carte lisible, ambiance qui donne faim, réservation en un clic.</span>
+                  <span class="demo__cta">Voir l'offre <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="https://www.aquabatconcept.fr/" target="_blank" rel="noopener">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-artisan.webp" alt="Exemple de site pour un artisan du bâtiment" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Artisan &amp; bâtiment</span>
+                  <span class="demo__pitch">Transformer les visiteurs en demandes de devis, chantiers et avis à l'appui.</span>
+                  <span class="demo__cta">Voir le site <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="https://www.cabinet-alma.fr/" target="_blank" rel="noopener">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-sante.webp" alt="Exemple de site pour un cabinet de santé" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Santé &amp; bien-être</span>
+                  <span class="demo__pitch">Rassurer avant le premier rendez-vous et remplir votre agenda sans appels inutiles.</span>
+                  <span class="demo__cta">Voir le site <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="https://www.crazyyolestour.fr/" target="_blank" rel="noopener">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-commerce.webp" alt="Exemple de site pour un commerce local" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Commerce &amp; activité locale</span>
+                  <span class="demo__pitch">Être trouvé près de chez vous et déclencher l'appel, la visite ou la réservation.</span>
+                  <span class="demo__cta">Voir le site <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="/site-consultant/">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-consultant.webp" alt="Exemple de site pour un consultant indépendant" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Consultant &amp; indépendant</span>
+                  <span class="demo__pitch">Crédibiliser votre expertise et transformer les visiteurs en rendez-vous qualifiés.</span>
+                  <span class="demo__cta">Voir l'offre <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="/site-evenementiel/">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-evenement.webp" alt="Exemple de site pour un événement" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Événement &amp; billetterie</span>
+                  <span class="demo__pitch">Donner envie en trois secondes et pousser vers la réservation ou la billetterie.</span>
+                  <span class="demo__cta">Voir l'offre <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="/site-immobilier-location/">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-immobilier.webp" alt="Exemple de site pour une agence immobilière" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Immobilier &amp; location</span>
+                  <span class="demo__pitch">Mettre en valeur vos biens et recevoir des demandes de visite déjà qualifiées.</span>
+                  <span class="demo__cta">Voir l'offre <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+            <article class="card demo" data-reveal>
+              <a class="demo__link" href="/site-association/">
+                <span class="demo__shot">
+                  <img src="/previews/home/demo-association.webp" alt="Exemple de site pour une association" width="760" height="428" loading="lazy" decoding="async" />
+                </span>
+                <span class="demo__body">
+                  <span class="demo__sector">Association &amp; collectif</span>
+                  <span class="demo__pitch">Faire connaître vos actions, recruter des adhérents et faciliter les dons.</span>
+                  <span class="demo__cta">Voir l'offre <span class="arrow" aria-hidden="true">→</span></span>
+                </span>
+              </a>
+            </article>
+          </div>
+          <div class="section__cta" data-reveal>
+            <a class="link-more" href="/offres/">Voir toutes les réalisations <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 6. Tarifs ════════════════════════════════════════════════════ -->
+      <section class="section pricing" id="tarifs" aria-labelledby="tarifs-title">
+        <div class="container">
+          <div class="pricing-head" data-reveal>
+            <span class="kicker">Investissement</span>
+            <h2 id="tarifs-title">Un site pro. Un prix clair. Aucune surprise.</h2>
+            <p class="lead">Tout compris : nom de domaine offert et hébergement 1<sup>re</sup> année inclus. Livré en 48h.</p>
+          </div>
+
+          <p class="swipe-hint" aria-hidden="true">Faites défiler pour comparer les formules <span>→</span></p>
+          <div class="pricing-cards" data-stagger>
+            <div class="pc" data-reveal="left">
+              <div class="pc__name">One Page</div>
+              <div class="pc__sub">Présenter votre activité en une page efficace.</div>
+              <div class="pc__price-label">à partir de</div>
+              <div class="pc__price">590&nbsp;€</div>
+              <div class="pc__price-note">Domaine offert + hébergement an 1 inclus</div>
+              <hr class="pc__divider" />
+              <div class="pc__features">
+                <div class="pc__feat">Une page, un objectif</div>
+                <div class="pc__feat">Structure pensée pour convertir</div>
+                <div class="pc__feat">Formulaire ou bouton d'appel</div>
+                <div class="pc__feat">En ligne en 48h</div>
+              </div>
+              <div class="pc__tags">
+                <span class="pc__tag">Artisan</span>
+                <span class="pc__tag">Indépendant</span>
+                <span class="pc__tag">Lancement</span>
+              </div>
+              <a class="pc__cta" href="/devis/?forfait=one-page">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="pc pc--featured" data-reveal="zoom">
+              <div class="pc__badge">⭐ Le plus choisi</div>
+              <div class="pc__name">Site 3 pages</div>
+              <div class="pc__sub">Présenter, convaincre, convertir.</div>
+              <div class="pc__price-label">à partir de</div>
+              <div class="pc__price">990&nbsp;€</div>
+              <div class="pc__price-note">Domaine offert + hébergement an 1 inclus</div>
+              <hr class="pc__divider" />
+              <div class="pc__features">
+                <div class="pc__feat">Tout le forfait One Page</div>
+                <div class="pc__feat">Accueil, prestations, contact</div>
+                <div class="pc__feat">Un objectif par page</div>
+                <div class="pc__feat">Prise de rendez-vous intégrée</div>
+              </div>
+              <div class="pc__tags">
+                <span class="pc__tag">Restaurant</span>
+                <span class="pc__tag">Artisan</span>
+                <span class="pc__tag">Commerce local</span>
+              </div>
+              <a class="pc__cta" href="/devis/?forfait=3-pages">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="pc" data-reveal="right">
+              <div class="pc__name">Site 5 pages+</div>
+              <div class="pc__sub">Pour les activités multi-services.</div>
+              <div class="pc__price-label">à partir de</div>
+              <div class="pc__price">1 290&nbsp;€</div>
+              <div class="pc__price-note">Domaine offert + hébergement an 1 inclus</div>
+              <hr class="pc__divider" />
+              <div class="pc__features">
+                <div class="pc__feat">Tout le forfait 3 pages</div>
+                <div class="pc__feat">Une page par service ou métier</div>
+                <div class="pc__feat">FAQ, équipe, avis clients</div>
+                <div class="pc__feat">Architecture SEO étendue</div>
+              </div>
+              <div class="pc__tags">
+                <span class="pc__tag">Cabinet</span>
+                <span class="pc__tag">Santé</span>
+                <span class="pc__tag">Immobilier</span>
+              </div>
+              <a class="pc__cta" href="/devis/?forfait=5-pages">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="pc pc--custom" data-reveal>
+              <div class="pc__body">
+                <div class="pc__name">Sur mesure</div>
+                <div class="pc__sub">Un besoin particulier ? Boutique en ligne, refonte, réservation, multilingue : on s'adapte.</div>
+              </div>
+              <a class="pc__cta" href="/devis/?forfait=sur-mesure">Nous contacter</a>
+            </div>
+          </div>
+
+          <div class="included card" data-reveal>
+            <h3>Inclus dans toutes les formules</h3>
+            <ul>
+              <li>Design moderne adapté à votre métier</li>
+              <li>Optimisé mobile</li>
+              <li>Référencement Google de base</li>
+              <li>Nom de domaine offert + hébergement 1<sup>re</sup> année inclus</li>
+              <li>Formulaire de contact / bouton d'appel / prise de RDV</li>
+            </ul>
+            <p class="note">TVA non applicable : le prix affiché est le prix que vous payez.</p>
+          </div>
+
+          <div class="section__cta" data-reveal>
+            <a class="btn btn--primary" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 7. Audit gratuit ═════════════════════════════════════════════ -->
+      <section class="section audit" id="audit" aria-labelledby="audit-title">
+        <div class="container narrow">
+          <h2 id="audit-title" data-reveal>Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
+          <p class="lead" data-reveal>
+            En 24h, on vous envoie un audit clair et gratuit : ce qui freine vos visiteurs,
+            ce qui vous fait perdre des clients, et ce qu'on ferait à votre place. Sans engagement, sans jargon.
+          </p>
+          <form class="audit__form card" action="https://formspree.io/f/xbdpgvgj" method="POST" data-reveal="zoom">
+            <input type="hidden" name="_subject" value="Demande d'audit gratuit (home Launch48)" />
+            <input type="hidden" name="origine" value="home-audit" />
+            <div class="field">
+              <label for="audit-url">Adresse de votre site</label>
+              <input id="audit-url" type="url" name="site_url" inputmode="url" placeholder="https://votre-site.fr" required />
+            </div>
+            <div class="field">
+              <label for="audit-email">Votre email</label>
+              <input id="audit-email" type="email" name="email" inputmode="email" placeholder="vous@exemple.fr" required />
+            </div>
+            <button class="btn btn--audit" type="submit">Demander mon audit gratuit <span class="arrow" aria-hidden="true">→</span></button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- ══ 8. Pourquoi Launch48 ═════════════════════════════════════════ -->
+      <section class="section" id="comparatif" aria-labelledby="comparatif-title">
+        <div class="container">
+          <header class="section__head">
+            <h2 id="comparatif-title" data-reveal>Ni agence, ni bricolage.</h2>
+          </header>
+          <div class="compare" data-reveal="right">
+            <table>
+              <caption class="sr-only">Comparaison entre une agence classique, le fait maison et Launch48</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span class="sr-only">Critère</span></th>
+                  <th scope="col">Agence classique</th>
+                  <th scope="col">Faire soi-même</th>
+                  <th scope="col" class="is-highlight">Launch48</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Délai</th>
+                  <td data-col="Agence classique">2-3 mois</td>
+                  <td data-col="Faire soi-même">des semaines… ou jamais</td>
+                  <td data-col="Launch48" class="is-highlight">48h</td>
+                </tr>
+                <tr>
+                  <th scope="row">Prix</th>
+                  <td data-col="Agence classique">3 000-8 000&nbsp;€</td>
+                  <td data-col="Faire soi-même">« gratuit » mais invisible</td>
+                  <td data-col="Launch48" class="is-highlight">dès 590&nbsp;€, fixe</td>
+                </tr>
+                <tr>
+                  <th scope="row">Votre temps</th>
+                  <td data-col="Agence classique">réunions</td>
+                  <td data-col="Faire soi-même">vos soirées et week-ends</td>
+                  <td data-col="Launch48" class="is-highlight">15 min d'appel</td>
+                </tr>
+                <tr>
+                  <th scope="row">Résultat</th>
+                  <td data-col="Agence classique">variable</td>
+                  <td data-col="Faire soi-même">amateur</td>
+                  <td data-col="Launch48" class="is-highlight">pro, pensé pour convertir</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 9. FAQ ═══════════════════════════════════════════════════════ -->
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <div class="container narrow">
+          <header class="section__head">
+            <h2 id="faq-title" data-reveal>Les questions qu'on nous pose le plus.</h2>
+          </header>
+          <div class="faq" data-stagger>
+            <div class="faq__item card" data-reveal>
+              <h3>
+                <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+                  48h, vraiment&nbsp;?
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__a" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
+                <p>Oui. Le compte à rebours démarre quand on a vos éléments (textes, photos, validation du brief). C'est notre méthode qui rend ça possible.</p>
+              </div>
+            </div>
+            <div class="faq__item card" data-reveal>
+              <h3>
+                <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+                  Et si le résultat ne me plaît pas&nbsp;?
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__a" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+                <p>Deux séries d'ajustements sont incluses. On ne s'arrête pas tant que le site ne vous ressemble pas.</p>
+              </div>
+            </div>
+            <div class="faq__item card" data-reveal>
+              <h3>
+                <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+                  Je n'ai ni textes ni photos.
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__a" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+                <p>On rédige les textes avec vous pendant l'appel. Pour les photos, on vous guide ou on utilise des visuels pros adaptés à votre métier.</p>
+              </div>
+            </div>
+            <div class="faq__item card" data-reveal>
+              <h3>
+                <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+                  Qui gère la technique ensuite&nbsp;?
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__a" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+                <p>Nous. Domaine, hébergement, mises à jour : vous n'avez jamais à toucher au code.</p>
+              </div>
+            </div>
+            <div class="faq__item card" data-reveal>
+              <h3>
+                <button type="button" class="faq__q" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
+                  Il y a des frais cachés&nbsp;?
+                  <span class="faq__icon" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq__a" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
+                <p>Non. Prix fixe, annoncé avant de commencer. Seul l'hébergement se renouvelle après la 1<sup>re</sup> année (tarif annoncé dès le départ).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 10. CTA final ════════════════════════════════════════════════ -->
+      <section class="section final" aria-labelledby="final-title">
+        <div class="glow glow--final" aria-hidden="true" data-parallax="0.08"></div>
+        <div class="container narrow center">
+          <h2 id="final-title" data-reveal>Dans 48h, votre site peut être en ligne.</h2>
+          <p class="lead" data-reveal>15 minutes d'appel suffisent pour démarrer. Gratuit et sans engagement.</p>
+          <div class="cta-row cta-row--center" data-reveal="zoom">
+            <a class="btn btn--primary btn--shine" href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
+              Réserver mon appel de 15 min <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn--ghost" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ══ Footer ══════════════════════════════════════════════════════════ -->
+    <footer class="footer">
+      <div class="container footer__top" data-stagger>
+        <div class="footer__brand" data-reveal="left">
+          <a class="brand" href="/" aria-label="Launch48, accueil">
+            <img class="brand__logo" src="/logo-launch48.svg" alt="Launch48" width="430" height="88" loading="lazy" />
+          </a>
+          <p class="footer__baseline">
+            Des sites internet professionnels livrés en 48h, à prix fixe,
+            pour les pros de terrain : artisans, restaurants, santé, commerces locaux.
+          </p>
+          <a class="footer__mail" href="mailto:contact@launch48.fr">contact@launch48.fr</a>
+          <ul class="footer__socials">
+            <li>
+              <a href="https://www.linkedin.com/company/launch48-fr/" target="_blank" rel="noopener" aria-label="Launch48 sur LinkedIn">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="currentColor">
+                  <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-.95 1.83-1.95 3.76-1.95C20.6 8.75 22 10.9 22 14.1V21h-4v-6.1c0-1.45-.03-3.3-2.02-3.3-2.02 0-2.33 1.57-2.33 3.2V21H9V9Z" />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/launch48.fr/" target="_blank" rel="noopener" aria-label="Launch48 sur Instagram">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <nav class="footer__col" aria-label="L'offre" data-reveal>
+          <p class="footer__title">L'offre</p>
+          <ul>
+            <li><a href="#tarifs">Tarifs</a></li>
+            <li><a href="#methode">Comment ça marche</a></li>
+            <li><a href="#audit">Audit gratuit</a></li>
+            <li><a href="#faq">Questions fréquentes</a></li>
+            <li><a href="/devis/">Demander un devis</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer__col" aria-label="Secteurs" data-reveal>
+          <p class="footer__title">Secteurs</p>
+          <ul>
+            <li><a href="/site-restaurant/">Restaurant</a></li>
+            <li><a href="/site-consultant/">Consultant</a></li>
+            <li><a href="/site-evenementiel/">Événementiel</a></li>
+            <li><a href="/site-immobilier-location/">Immobilier</a></li>
+            <li><a href="/offres/">Tous les secteurs</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer__col" aria-label="Ressources" data-reveal>
+          <p class="footer__title">Ressources</p>
+          <ul>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/quiz/">Quiz : votre site convertit-il ?</a></li>
+            <li><a href="/partenaires/">Devenir partenaire</a></li>
+            <li><a href="/call/">Réserver un appel</a></li>
+            <li><a href="mailto:contact@launch48.fr">Nous contacter</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer__cta" data-reveal="right">
+          <p class="footer__title">Votre site en 48h</p>
+          <p class="footer__cta-text">15 minutes d'appel suffisent pour démarrer.</p>
+          <a class="btn btn--primary btn--sm btn--block" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <div class="container footer__bottom">
+        <p class="footer__copy">© 2026 Launch48. Tous droits réservés.</p>
+        <nav class="footer__legal" aria-label="Informations légales">
+          <a href="/mentions-legales.html">Mentions légales</a>
+          <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+          <a href="/cgv.html">CGV</a>
+        </nav>
+        <p class="footer__note">
+          Domaine offert pour un nom disponible à l'enregistrement, non premium et non vendu par un tiers.
+          Hébergement inclus la 1<sup>re</sup> année, puis renouvelable au tarif annoncé dès le départ.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Barre d'action mobile : elle apparaît une fois le hero passé et
+         s'efface devant le formulaire d'audit et le footer. -->
+    <div class="thumb-bar" id="thumb-bar">
+      <a class="btn btn--primary" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="thumb-bar__second" href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
+        <span aria-hidden="true">📞</span>
+        <span class="sr-only">Réserver un appel de 15 minutes</span>
+      </a>
     </div>
-    <script type="module" src="/src/main.js"></script>
+
+    <script type="module" src="/src/home.js"></script>
   </body>
 </html>

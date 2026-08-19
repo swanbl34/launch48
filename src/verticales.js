@@ -1,5 +1,7 @@
 import './styles.css';
 import './verticales.css';
+import './shell.css';
+import { initShell, renderShellHeader, renderShellFooter } from './shell.js';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { CONTACT, OFFERS, SITE, VERTICAL_DETAILS } from './offers-data';
@@ -50,86 +52,9 @@ const verticalMenuLinks = `
   <a href="/site-immobilier-location/">Immobilier / location</a>
 `;
 
-const renderHeader = (active = 'home') => `
-  <header class="site-header" id="top">
-    <nav class="nav container" aria-label="Navigation principale">
-      <a class="brand" href="/">
-        <img class="brand__logo" src="/logo-launch48.svg" alt="${SITE.name}" />
-      </a>
-      <div class="nav__links">
-        <a href="/">Accueil</a>
-        <a href="/#contact">Contact</a>
-        <a href="/quiz/">Quiz</a>
-        <a href="/blog/">Blog</a>
-        <div class="nav-dropdown nav-dropdown--desktop">
-          <div class="nav-dropdown__trigger">
-            <a class="nav-dropdown__link" href="/offres/">Secteurs</a>
-            <button class="nav-dropdown__toggle" type="button" aria-expanded="false" aria-controls="nav-verticales-menu-desktop" aria-label="Ouvrir le menu Secteurs"></button>
-          </div>
-          <div class="nav-dropdown__menu" id="nav-verticales-menu-desktop">
-            ${verticalMenuLinks}
-          </div>
-        </div>
-      </div>
-      <div class="nav__actions">
-        <button class="theme-toggle nav-theme-mobile" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
-          <span class="theme-toggle__track" aria-hidden="true">
-            <span class="theme-toggle__thumb"></span>
-          </span>
-        </button>
-        <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile-panel" aria-label="Ouvrir le menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <button class="theme-toggle nav-theme-desktop" type="button" role="switch" aria-checked="false" aria-label="Basculer thème">
-          <span class="theme-toggle__track" aria-hidden="true">
-            <span class="theme-toggle__thumb"></span>
-          </span>
-        </button>
-        ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn btn--small magnetic nav-cta-desktop')}
-      </div>
-    </nav>
-    <div class="nav-mobile container" id="nav-mobile-panel" hidden>
-      <div class="nav-mobile__panel">
-        <div class="nav-mobile__group">
-          <a href="/">Accueil</a>
-          <a href="/#contact">Contact</a>
-          <a href="/quiz/">Quiz conversion</a>
-          <a href="/blog/">Blog</a>
-          <a href="/offres/">Secteurs</a>
-        </div>
-        <div class="nav-mobile__group nav-mobile__group--muted">
-          ${verticalMenuLinks}
-        </div>
-        <div class="nav-mobile__footer">
-          ${asLink(CONTACT.primaryLabel, CONTACT.primaryHref, 'btn magnetic')}
-        </div>
-      </div>
-    </div>
-  </header>
-`;
-
-const renderFooter = () => `
-  <footer class="site-footer section container">
-    <p class="site-footer__name">${SITE.name}</p>
-    <a href="mailto:contact@launch48.fr">contact@launch48.fr</a>
-    <div class="site-footer__socials">
-      <a href="https://www.linkedin.com/company/launch48-fr/">LinkedIn</a>
-      <a href="https://www.instagram.com/launch48.fr/">Instagram</a>
-      <a href="/quiz/">Quiz conversion</a>
-      <a href="/blog/">Blog</a>
-    </div>
-    <a class="btn btn--small site-footer__cta" href="/partenaires/">Devenir partenaire</a>
-    <div class="site-footer__legal">
-      ${SITE.legalLinks.map((link) => `<a href="${link.href}">${link.label}</a>`).join('')}
-    </div>
-    <a class="site-footer__powered" href="/" aria-label="Accueil Launch48">
-      <span>Propulsé par</span>
-      <img src="/logo-launch48.svg" alt="" aria-hidden="true" />
-    </a>
-  </footer>
-`;
+/* Header et footer viennent du socle : une seule définition pour tout le site. */
+const renderHeader = () => renderShellHeader();
+const renderFooter = () => renderShellFooter();
 
 const getPreviewHref = (offer) => offer.preview?.href || offer.preview?.src || '/illustrations/hero-site-1.svg';
 const getPreviewTitle = (offer) => offer.preview?.title || 'Aperçu de site';
@@ -847,135 +772,9 @@ const renderVerticalPage = (slug) => {
   `;
 };
 
-const setupTheme = () => {
-  const savedTheme = localStorage.getItem('launch48-theme');
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    document.documentElement.dataset.theme = savedTheme;
-  }
 
-  const updateLabel = () => {
-    const currentTheme = document.documentElement.dataset.theme || 'dark';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    const currentLabel = currentTheme === 'light' ? 'clair' : 'sombre';
-    const nextLabel = nextTheme === 'light' ? 'clair' : 'sombre';
-    document.querySelectorAll('.theme-toggle').forEach((themeButton) => {
-      themeButton.dataset.theme = currentTheme;
-      themeButton.dataset.nextTheme = nextTheme;
-      themeButton.setAttribute('aria-checked', String(currentTheme === 'light'));
-      themeButton.setAttribute('aria-label', `Activer le mode ${nextLabel}`);
-      themeButton.setAttribute('title', `Thème actuel : ${currentLabel}`);
-    });
-  };
 
-  updateLabel();
-  document.querySelectorAll('.theme-toggle').forEach((themeButton) => {
-    themeButton.addEventListener('click', () => {
-      const currentTheme = document.documentElement.dataset.theme || 'dark';
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = nextTheme;
-      localStorage.setItem('launch48-theme', nextTheme);
-      updateLabel();
-    });
-  });
-};
 
-const setupMobileNav = () => {
-  const burger = document.querySelector('.nav-burger');
-  const panel = document.querySelector('.nav-mobile');
-  if (!burger || !panel) return;
-
-  const closeMenu = () => {
-    burger.setAttribute('aria-expanded', 'false');
-    panel.hidden = true;
-  };
-
-  burger.addEventListener('click', () => {
-    const isOpen = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!isOpen));
-    panel.hidden = isOpen;
-  });
-
-  panel.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeMenu();
-  });
-};
-
-const setupNavDropdown = () => {
-  const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
-  if (dropdowns.length === 0) return;
-  const desktopQuery = window.matchMedia('(min-width: 760px)');
-
-  const closeAll = () => {
-    dropdowns.forEach((dropdown) => {
-      dropdown.classList.remove('is-open', 'is-hovered');
-      const toggle = dropdown.querySelector('.nav-dropdown__toggle');
-      if (toggle) {
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  };
-
-  dropdowns.forEach((dropdown) => {
-    const toggle = dropdown.querySelector('.nav-dropdown__toggle');
-    if (!toggle) return;
-
-    toggle.addEventListener('click', (event) => {
-      if (desktopQuery.matches) return;
-      event.preventDefault();
-      event.stopPropagation();
-      const willOpen = !dropdown.classList.contains('is-open');
-      closeAll();
-      dropdown.classList.toggle('is-open', willOpen);
-      toggle.setAttribute('aria-expanded', String(willOpen));
-    });
-
-    dropdown.addEventListener('mouseenter', () => {
-      if (!desktopQuery.matches) return;
-      closeAll();
-      dropdown.classList.add('is-hovered');
-      toggle.setAttribute('aria-expanded', 'true');
-    });
-
-    dropdown.addEventListener('mouseleave', () => {
-      if (!desktopQuery.matches) return;
-      dropdown.classList.remove('is-hovered');
-      toggle.setAttribute('aria-expanded', 'false');
-    });
-
-    dropdown.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeAll);
-    });
-  });
-
-  document.addEventListener('click', (event) => {
-    if (!dropdowns.some((dropdown) => dropdown.contains(event.target))) {
-      closeAll();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeAll();
-  });
-};
-
-const setupResponsiveNavVisibility = () => {
-  const desktopOnlyNodes = document.querySelectorAll('.nav-cta-desktop, .nav-theme-desktop');
-  if (desktopOnlyNodes.length === 0) return;
-
-  const mediaQuery = window.matchMedia('(min-width: 760px)');
-  const sync = () => {
-    desktopOnlyNodes.forEach((node) => {
-      node.hidden = !mediaQuery.matches;
-    });
-  };
-
-  sync();
-  mediaQuery.addEventListener('change', sync);
-};
 
 const setupRevealAnimations = () => {
   if (prefersReducedMotion) return;
@@ -1011,17 +810,6 @@ const setupBackgroundProgress = () => {
   window.addEventListener('resize', onScroll, { passive: true });
 };
 
-const setupHeaderScrollState = () => {
-  const header = document.querySelector('.site-header');
-  if (!header) return;
-
-  const onScroll = () => {
-    header.classList.toggle('is-scrolled', window.scrollY > 18);
-  };
-
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-};
 
 const init = () => {
   if (pageType === 'offers') {
@@ -1036,12 +824,9 @@ const init = () => {
     renderHome();
   }
 
-  setupTheme();
-  setupMobileNav();
-  setupResponsiveNavVisibility();
-  setupNavDropdown();
+  // Header, menu mobile, pastille de nav et apparitions viennent du socle.
+  initShell();
   setupBackgroundProgress();
-  setupHeaderScrollState();
   setupRevealAnimations();
 };
 

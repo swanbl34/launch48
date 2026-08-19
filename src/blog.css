@@ -422,8 +422,7 @@ body[data-page='blog-article'] {
   .article-cta-grid,
   .blog-grid {
     grid-template-columns: 1fr;
-  }
-}
+  }}
 
 @media (max-width: 760px) {
   .blog-nav {
@@ -462,5 +461,4 @@ body[data-page='blog-article'] {
 
   .blog-footer-cta {
     grid-template-columns: 1fr;
-  }
-}
+  }}

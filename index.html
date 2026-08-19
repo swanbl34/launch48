@@ -92,6 +92,10 @@
   <body data-page="home">
     <a class="skip-link" href="#main">Aller au contenu</a>
 
+    <!-- Fond animé : posé au niveau du document et non dans le hero, pour
+         qu'il passe aussi derrière la barre de navigation. -->
+    <div class="bg-gradient" id="bg-gradient" aria-hidden="true"></div>
+
     <!-- ══ Header ══════════════════════════════════════════════════════════ -->
     <header class="header" id="top">
       <div class="header__inner">
@@ -137,6 +141,7 @@
               <a class="btn btn--primary btn--shine" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
               <a class="btn btn--ghost" href="#audit">Audit gratuit de mon site actuel</a>
             </div>
+            <p class="hero__note" data-reveal="left">On échange 15 min et on démarre.</p>
             <ul class="reassurance" data-reveal="left">
               <li>Nom de domaine offert</li>
               <li>Prix affiché = prix payé</li>
@@ -155,11 +160,11 @@
                   <div class="laptop__lid">
                     <div class="laptop__screen">
                       <div class="site" aria-hidden="true">
-                        <header class="site__nav">
+                        <div class="site__nav">
                           <span class="site__logo">Atelier Rivage</span>
-                          <nav class="site__links"><span>Nos chantiers</span><span>Savoir-faire</span><span>Contact</span></nav>
+                          <span class="site__links"><span>Nos chantiers</span><span>Savoir-faire</span><span>Contact</span></span>
                           <span class="site__btn">Devis gratuit</span>
-                        </header>
+                        </div>
                         <div class="site__viewport">
                           <div class="site__track">
                           <div class="site__page">
@@ -171,27 +176,57 @@
                                 <p class="site__sub">Gros œuvre, carrelage, plomberie. Une équipe, un interlocuteur.</p>
                                 <span class="site__actions">
                                   <span class="site__btn">Demander un devis</span>
-                                  <span class="site__btn site__btn--ghost">Voir nos chantiers</span>
+                                  <span class="site__btn site__btn--ghost">06 96 00 64 80</span>
                                 </span>
                               </div>
                             </div>
+
+                            <div class="site__trust">
+                              <span><span class="site__stars">★★★★★</span> 4,9 (27 avis)</span>
+                              <span class="site__dot"></span>
+                              <span>+ de 180 chantiers livrés</span>
+                              <span class="site__dot"></span>
+                              <span>Devis sous 48h</span>
+                            </div>
+
                             <div class="site__band">
                               <p class="site__band-title">Nos savoir-faire</p>
                               <div class="site__row">
-                                <span class="site__tile"></span>
-                                <span class="site__tile"></span>
-                                <span class="site__tile"></span>
+                                <span class="site__tile">
+                                  <i style="--pos: 18% 35%"></i>
+                                  <b>Maçonnerie</b>
+                                  <em>Gros œuvre, dalles, murs porteurs</em>
+                                </span>
+                                <span class="site__tile">
+                                  <i style="--pos: 62% 55%"></i>
+                                  <b>Carrelage</b>
+                                  <em>Sols, murs, terrasses extérieures</em>
+                                </span>
+                                <span class="site__tile">
+                                  <i style="--pos: 88% 25%"></i>
+                                  <b>Plomberie</b>
+                                  <em>Sanitaires, récupération d'eau</em>
+                                </span>
                               </div>
                             </div>
+
                             <div class="site__band site__band--alt">
                               <p class="site__band-title">Ils nous ont fait confiance</p>
                               <div class="site__quote">
                                 <span class="site__avatar"></span>
-                                <span class="site__lines"><i></i><i></i></span>
+                                <span class="site__quote-body">
+                                  <span class="site__stars">★★★★★</span>
+                                  <b>« Chantier livré dans les temps, équipe carrée, devis respecté au centime. »</b>
+                                  <em>Sophie M. · Le Robert</em>
+                                </span>
                               </div>
                             </div>
+
                             <div class="site__band site__band--cta">
-                              <p class="site__band-title">Un projet ? Parlons-en.</p>
+                              <div>
+                                <p class="site__band-title">Un projet ? Parlons-en.</p>
+                                <p class="site__cta-text">Réponse sous 48h, déplacement gratuit.</p>
+                              </div>
                               <span class="site__btn">Demander un devis</span>
                             </div>
                           </div>
@@ -204,27 +239,57 @@
                                 <p class="site__sub">Gros œuvre, carrelage, plomberie. Une équipe, un interlocuteur.</p>
                                 <span class="site__actions">
                                   <span class="site__btn">Demander un devis</span>
-                                  <span class="site__btn site__btn--ghost">Voir nos chantiers</span>
+                                  <span class="site__btn site__btn--ghost">06 96 00 64 80</span>
                                 </span>
                               </div>
                             </div>
+
+                            <div class="site__trust">
+                              <span><span class="site__stars">★★★★★</span> 4,9 (27 avis)</span>
+                              <span class="site__dot"></span>
+                              <span>+ de 180 chantiers livrés</span>
+                              <span class="site__dot"></span>
+                              <span>Devis sous 48h</span>
+                            </div>
+
                             <div class="site__band">
                               <p class="site__band-title">Nos savoir-faire</p>
                               <div class="site__row">
-                                <span class="site__tile"></span>
-                                <span class="site__tile"></span>
-                                <span class="site__tile"></span>
+                                <span class="site__tile">
+                                  <i style="--pos: 18% 35%"></i>
+                                  <b>Maçonnerie</b>
+                                  <em>Gros œuvre, dalles, murs porteurs</em>
+                                </span>
+                                <span class="site__tile">
+                                  <i style="--pos: 62% 55%"></i>
+                                  <b>Carrelage</b>
+                                  <em>Sols, murs, terrasses extérieures</em>
+                                </span>
+                                <span class="site__tile">
+                                  <i style="--pos: 88% 25%"></i>
+                                  <b>Plomberie</b>
+                                  <em>Sanitaires, récupération d'eau</em>
+                                </span>
                               </div>
                             </div>
+
                             <div class="site__band site__band--alt">
                               <p class="site__band-title">Ils nous ont fait confiance</p>
                               <div class="site__quote">
                                 <span class="site__avatar"></span>
-                                <span class="site__lines"><i></i><i></i></span>
+                                <span class="site__quote-body">
+                                  <span class="site__stars">★★★★★</span>
+                                  <b>« Chantier livré dans les temps, équipe carrée, devis respecté au centime. »</b>
+                                  <em>Sophie M. · Le Robert</em>
+                                </span>
                               </div>
                             </div>
+
                             <div class="site__band site__band--cta">
-                              <p class="site__band-title">Un projet ? Parlons-en.</p>
+                              <div>
+                                <p class="site__band-title">Un projet ? Parlons-en.</p>
+                                <p class="site__cta-text">Réponse sous 48h, déplacement gratuit.</p>
+                              </div>
                               <span class="site__btn">Demander un devis</span>
                             </div>
                           </div>
@@ -249,19 +314,27 @@
                   <span class="phone__btn phone__btn--vol-up"></span>
                   <span class="phone__btn phone__btn--vol-down"></span>
                   <span class="phone__btn phone__btn--power"></span>
+                  <div class="phone__notif">
+                    <span class="phone__notif-icon">📞</span>
+                    <span class="phone__notif-text">
+                      <span class="scene__card-line">Appel entrant</span>
+                      <span class="scene__card-note">Julien M. · via le site · maintenant</span>
+                    </span>
+                    <span class="scene__live"></span>
+                  </div>
                   <div class="phone__screen">
                     <div class="mini">
                       <div class="mini__status">
                         <span>9:41</span>
                         <span class="mini__status-icons"><i></i><i></i><i></i></span>
                       </div>
-                      <header class="mini__header">
+                      <div class="mini__header">
                         <span class="mini__logo">Atelier Rivage</span>
                         <span class="mini__actions">
                           <span class="mini__call"></span>
                           <span class="mini__burger"><i></i><i></i><i></i></span>
                         </span>
-                      </header>
+                      </div>
                       <div class="mini__viewport">
                         <div class="mini__track">
                           <div class="mini__page">
@@ -271,23 +344,55 @@
                                 <span class="mini__tag">Devis sous 48h</span>
                                 <p class="mini__title">Vos travaux, du devis à la livraison.</p>
                                 <span class="mini__cta">Demander un devis</span>
+                                <span class="mini__cta mini__cta--ghost">06 96 00 64 80</span>
                               </div>
                             </div>
+
+                            <div class="mini__trust">
+                              <span class="mini__stars">★★★★★</span>
+                              <span>4,9 (27 avis)</span>
+                              <span class="mini__dot"></span>
+                              <span>Depuis 2012</span>
+                            </div>
+
                             <div class="mini__block">
-                              <p class="mini__block-title">Nos savoir-faire</p>
-                              <span class="mini__item"><i></i><em></em></span>
-                              <span class="mini__item"><i></i><em></em></span>
-                              <span class="mini__item"><i></i><em></em></span>
+                              <p class="mini__block-title">Nos prestations</p>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Maçonnerie<b>Gros œuvre, dalles, murs</b></em>
+                                <s></s>
+                              </span>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Carrelage<b>Sols, murs, terrasses</b></em>
+                                <s></s>
+                              </span>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Plomberie<b>Sanitaires, eau de pluie</b></em>
+                                <s></s>
+                              </span>
                             </div>
-                            <div class="mini__block mini__block--alt">
-                              <p class="mini__block-title">Avis clients</p>
-                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
-                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
-                            </div>
+
                             <div class="mini__block">
                               <p class="mini__block-title">Nos chantiers</p>
-                              <span class="mini__grid"><i></i><i></i><i></i><i></i></span>
+                              <span class="mini__gallery">
+                                <i style="--pos: 20% 30%"></i>
+                                <i style="--pos: 70% 40%"></i>
+                                <i style="--pos: 40% 70%"></i>
+                                <i style="--pos: 85% 20%"></i>
+                              </span>
                             </div>
+
+                            <div class="mini__block mini__block--alt">
+                              <p class="mini__block-title">Ils nous ont fait confiance</p>
+                              <span class="mini__review">
+                                <span class="mini__stars">★★★★★</span>
+                                <b>« Chantier livré dans les temps, équipe carrée. »</b>
+                                <span class="mini__author"><span class="mini__avatar"></span>Sophie M. · Le Robert</span>
+                              </span>
+                            </div>
+
                             <div class="mini__block mini__block--cta">
                               <p class="mini__block-title">Un projet ? Parlons-en.</p>
                               <span class="mini__cta">Demander un devis</span>
@@ -300,23 +405,55 @@
                                 <span class="mini__tag">Devis sous 48h</span>
                                 <p class="mini__title">Vos travaux, du devis à la livraison.</p>
                                 <span class="mini__cta">Demander un devis</span>
+                                <span class="mini__cta mini__cta--ghost">06 96 00 64 80</span>
                               </div>
                             </div>
+
+                            <div class="mini__trust">
+                              <span class="mini__stars">★★★★★</span>
+                              <span>4,9 (27 avis)</span>
+                              <span class="mini__dot"></span>
+                              <span>Depuis 2012</span>
+                            </div>
+
                             <div class="mini__block">
-                              <p class="mini__block-title">Nos savoir-faire</p>
-                              <span class="mini__item"><i></i><em></em></span>
-                              <span class="mini__item"><i></i><em></em></span>
-                              <span class="mini__item"><i></i><em></em></span>
+                              <p class="mini__block-title">Nos prestations</p>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Maçonnerie<b>Gros œuvre, dalles, murs</b></em>
+                                <s></s>
+                              </span>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Carrelage<b>Sols, murs, terrasses</b></em>
+                                <s></s>
+                              </span>
+                              <span class="mini__row">
+                                <i class="mini__icon"></i>
+                                <em>Plomberie<b>Sanitaires, eau de pluie</b></em>
+                                <s></s>
+                              </span>
                             </div>
-                            <div class="mini__block mini__block--alt">
-                              <p class="mini__block-title">Avis clients</p>
-                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
-                              <span class="mini__quote"><span class="mini__avatar"></span><span class="mini__lines"><i></i><i></i></span></span>
-                            </div>
+
                             <div class="mini__block">
                               <p class="mini__block-title">Nos chantiers</p>
-                              <span class="mini__grid"><i></i><i></i><i></i><i></i></span>
+                              <span class="mini__gallery">
+                                <i style="--pos: 20% 30%"></i>
+                                <i style="--pos: 70% 40%"></i>
+                                <i style="--pos: 40% 70%"></i>
+                                <i style="--pos: 85% 20%"></i>
+                              </span>
                             </div>
+
+                            <div class="mini__block mini__block--alt">
+                              <p class="mini__block-title">Ils nous ont fait confiance</p>
+                              <span class="mini__review">
+                                <span class="mini__stars">★★★★★</span>
+                                <b>« Chantier livré dans les temps, équipe carrée. »</b>
+                                <span class="mini__author"><span class="mini__avatar"></span>Sophie M. · Le Robert</span>
+                              </span>
+                            </div>
+
                             <div class="mini__block mini__block--cta">
                               <p class="mini__block-title">Un projet ? Parlons-en.</p>
                               <span class="mini__cta">Demander un devis</span>
@@ -334,10 +471,26 @@
                   <span class="phone__sheen"></span>
                 </div>
 
-                <svg class="scene__bolt" viewBox="0 0 64 96" aria-hidden="true" focusable="false">
-                  <path class="scene__bolt-halo" d="M38 4 12 54h16l-6 38 30-52H36l2-36Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" />
-                  <path class="scene__bolt-core" d="M38 4 12 54h16l-6 38 30-52H36l2-36Z" fill="none" stroke="#eaffff" stroke-width="1.6" stroke-linejoin="round" />
-                </svg>
+                <!-- Fusée de la marque (reprise du favicon), avec sa flamme
+                     et sa traînée animées. -->
+                <div class="orbit" aria-hidden="true">
+                  <div class="orbit__arm">
+                <div class="rocket">
+                  <span class="rocket__trail"></span>
+                  <svg viewBox="0 0 75.19 75.36" focusable="false">
+                    <defs>
+                      <linearGradient id="hero-rocket" x1="7%" y1="18%" x2="88%" y2="84%">
+                        <stop offset="0%" stop-color="#eafcff" />
+                        <stop offset="55%" stop-color="#46e4ff" />
+                        <stop offset="100%" stop-color="#5f8dff" />
+                      </linearGradient>
+                    </defs>
+                    <path class="rocket__body" fill="url(#hero-rocket)" d="M71.83,0l2.56.62c.82.73.34,2.85.8,2.74v3.6c-.1.15-.16.57-.21.97-1.24,10.72-6.57,22.23-12.77,30.95-3.65,5.13-7.99,9.43-13.05,13.08.7,8.09-1.57,14.19-8.21,18.7-3.37,2.31-7.68,3.73-11.53,4.45-.19.04-.54.23-.55.26h-.68c-.34-.25-1.22-.97-1.3-1.45l1.63-15.03-3.04-.26c-.72-.06-1.68-.41-2.19-.93l-5.79-5.78c-.53-.53-.84-1.47-.91-2.2l-.27-3.03-14.57,1.6c-.42.05-1.14-.23-1.36-.49s-.44-1.08-.37-1.48c1.37-8.26,5.65-16.84,14.11-19.5,3.02-.95,6.03-.96,9.2-.78C31.44,14.31,45.61,6.1,58.94,2.05c3.31-1.01,6.52-1.51,9.77-2.05h3.12ZM48.3,17.67c-4.62.77-7.39,5.11-6.58,9.43s4.94,7.18,9.26,6.44,7.33-4.89,6.58-9.29-4.7-7.33-9.25-6.57Z" />
+                    <path class="rocket__flame" fill="#63ffe0" d="M23.61,61.55c1.64.27-1.15,6.32-3.12,7.39-4.74,2.79-12.23,3.34-17.85,3.64.27-5.53.89-13.33,3.66-17.84,1.32-2.47,8.7-5.18,7.16-2.45-1.72,3.06-2.62,6.51-.13,9.22,1.52,1.66,3.74,2.22,6.06,1.72,3.28-.7,3.35-1.82,4.22-1.68Z" />
+                  </svg>
+                    </div>
+                  </div>
+                </div>
 
                 <!-- Notification de lead. -->
                 <div class="scene__card scene__card--lead" aria-hidden="true">
@@ -352,10 +505,6 @@
                   <span class="scene__card-note"><i class="scene__star">★</i> 4,9 (27 avis) · Maçonnerie</span>
                 </div>
 
-                <div class="scene__card scene__card--call" aria-hidden="true">
-                  <span class="scene__card-label">On échange 15 min</span>
-                  <span class="scene__card-note">et on démarre.</span>
-                </div>
               </div>
             </div>
           </div>
@@ -364,22 +513,50 @@
 
       <!-- ══ 2. Bandeau de preuve ═════════════════════════════════════════ -->
       <div class="marquee" role="region" aria-label="Ce qui est inclus">
+        <svg class="sprite" aria-hidden="true" focusable="false">
+          <symbol id="ico-clock" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M12 7.2V12l3.4 2" />
+          </symbol>
+          <symbol id="ico-tag" viewBox="0 0 24 24">
+            <path d="M4 4h7.2L20.5 13.3 13.3 20.5 4 11.2V4Z" />
+            <circle cx="8" cy="8" r="1.4" />
+          </symbol>
+          <symbol id="ico-phone" viewBox="0 0 24 24">
+            <rect x="7" y="2.5" width="10" height="19" rx="2.6" />
+            <path d="M10.8 18.6h2.4" />
+          </symbol>
+          <symbol id="ico-search" viewBox="0 0 24 24">
+            <circle cx="10.8" cy="10.8" r="6.3" />
+            <path d="M15.6 15.6 20.5 20.5" />
+          </symbol>
+          <symbol id="ico-globe" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M3.5 12h17" />
+            <path d="M12 3.5c2.4 2.9 2.4 14.1 0 17" />
+            <path d="M12 3.5c-2.4 2.9-2.4 14.1 0 17" />
+          </symbol>
+          <symbol id="ico-shield" viewBox="0 0 24 24">
+            <path d="M12 3.2 19 6v5.4c0 4.2-2.8 7.5-7 8.8-4.2-1.3-7-4.6-7-8.8V6l7-2.8Z" />
+            <path d="m8.9 12 2.1 2.1 4.1-4.3" />
+          </symbol>
+        </svg>
         <div class="marquee__track">
           <ul class="marquee__group">
-            <li>⚡ Livré en 48h</li>
-            <li>💶 À partir de 590&nbsp;€ tout compris</li>
-            <li>📱 Optimisé mobile</li>
-            <li>🔎 Visible sur Google</li>
-            <li>🎁 Domaine offert</li>
-            <li>🤝 Prix affiché = prix payé</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-clock" /></svg>Livré en 48h</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-tag" /></svg>À partir de 590&nbsp;€ tout compris</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-phone" /></svg>Optimisé mobile</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-search" /></svg>Visible sur Google</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-globe" /></svg>Domaine offert</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-shield" /></svg>Prix affiché = prix payé</li>
           </ul>
           <ul class="marquee__group" aria-hidden="true">
-            <li>⚡ Livré en 48h</li>
-            <li>💶 À partir de 590&nbsp;€ tout compris</li>
-            <li>📱 Optimisé mobile</li>
-            <li>🔎 Visible sur Google</li>
-            <li>🎁 Domaine offert</li>
-            <li>🤝 Prix affiché = prix payé</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-clock" /></svg>Livré en 48h</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-tag" /></svg>À partir de 590&nbsp;€ tout compris</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-phone" /></svg>Optimisé mobile</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-search" /></svg>Visible sur Google</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-globe" /></svg>Domaine offert</li>
+            <li><svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-shield" /></svg>Prix affiché = prix payé</li>
           </ul>
         </div>
       </div>
@@ -388,11 +565,10 @@
       <section class="section section--tight problem" aria-labelledby="problem-title">
         <div class="container narrow">
           <h2 id="problem-title" data-reveal>
-            Un devis d'agence à 5 000&nbsp;€. Trois mois de délai. Ou un site fait maison qui ne ramène personne.
+            Un site pro qui donne envie de vous appeler. En ligne en 48h, à partir de 590&nbsp;€ tout compris.
           </h2>
           <p class="lead" data-reveal>
-            Vous n'avez besoin ni de l'un, ni de l'autre. Vous avez besoin d'un site clair, professionnel,
-            qui donne envie de vous appeler. C'est exactement ce qu'on livre.
+            Pas de devis à 5 000&nbsp;€, pas trois mois d'attente, pas de template qui dort en page 4 de Google.
           </p>
         </div>
       </section>
@@ -673,26 +849,39 @@
 
       <!-- ══ 7. Audit gratuit ═════════════════════════════════════════════ -->
       <section class="section audit" id="audit" aria-labelledby="audit-title">
-        <div class="container narrow">
-          <h2 id="audit-title" data-reveal>Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
-          <p class="lead" data-reveal>
-            En 24h, on vous envoie un audit clair et gratuit : ce qui freine vos visiteurs,
-            ce qui vous fait perdre des clients, et ce qu'on ferait à votre place. Sans engagement, sans jargon.
-          </p>
-          <form class="audit__form card" action="https://formspree.io/f/xbdpgvgj" method="POST" data-reveal="zoom">
-            <input type="hidden" name="_subject" value="Demande d'audit gratuit (home Launch48)" />
-            <input type="hidden" name="origine" value="home-audit" />
-            <div class="field">
-              <label for="audit-url">Adresse de votre site</label>
-              <input id="audit-url" type="url" name="site_url" inputmode="url" placeholder="https://votre-site.fr" required />
+        <div class="container">
+          <div class="audit__panel" data-reveal>
+            <div class="audit__pitch">
+              <span class="audit__kicker">Audit gratuit</span>
+              <h2 id="audit-title">Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
+              <p class="lead">
+                En 24h, on vous envoie un audit clair et gratuit. Sans engagement, sans jargon.
+              </p>
+              <ul class="audit__list">
+                <li>Ce qui freine vos visiteurs</li>
+                <li>Ce qui vous fait perdre des clients</li>
+                <li>Ce qu'on ferait à votre place</li>
+              </ul>
             </div>
-            <div class="field">
-              <label for="audit-email">Votre email</label>
-              <input id="audit-email" type="email" name="email" inputmode="email" placeholder="vous@exemple.fr" required />
-            </div>
-            <button class="btn btn--audit" type="submit">Demander mon audit gratuit <span class="arrow" aria-hidden="true">→</span></button>
-            <p class="form-status" role="status" aria-live="polite"></p>
-          </form>
+
+            <form class="audit__form" action="https://formspree.io/f/xbdpgvgj" method="POST">
+              <input type="hidden" name="_subject" value="Demande d'audit gratuit (home Launch48)" />
+              <input type="hidden" name="origine" value="home-audit" />
+              <div class="field">
+                <label for="audit-url">Adresse de votre site</label>
+                <input id="audit-url" type="url" name="site_url" inputmode="url" placeholder="votre-site.fr" required />
+              </div>
+              <div class="field">
+                <label for="audit-email">Votre email</label>
+                <input id="audit-email" type="email" name="email" inputmode="email" placeholder="vous@exemple.fr" required />
+              </div>
+              <button class="btn btn--audit btn--block" type="submit">
+                Recevoir mon audit <span class="arrow" aria-hidden="true">→</span>
+              </button>
+              <p class="audit__note">Réponse sous 24h. Aucune relance commerciale.</p>
+              <p class="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
         </div>
       </section>
 

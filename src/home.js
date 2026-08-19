@@ -1,205 +1,12 @@
+import './shell.css';
 import './home.css';
+import { initShell, reduceMotion } from './shell.js';
 
 /* Launch48 — interactions de la home.
    Règle: chaque effet guide l'œil vers le contenu ou le CTA. Rien de bloquant,
    rien de coûteux sur mobile, tout se désactive si l'utilisateur le demande. */
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const isDesktop = () => window.matchMedia('(min-width: 900px)').matches;
 const isSmallScreen = () => window.matchMedia('(max-width: 767px)').matches;
-
-/* ── Header : fond + blur une fois qu'on a quitté le haut de page ────────── */
-const setupHeader = () => {
-  const header = document.querySelector('.header');
-  if (!header) return;
-
-  let ticking = false;
-  const update = () => {
-    header.classList.toggle('is-scrolled', window.scrollY > 8);
-    ticking = false;
-  };
-
-  update();
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(update);
-    },
-    { passive: true }
-  );
-};
-
-/* ── Menu central : indicateur coulissant + section en cours ─────────────── */
-const setupNavPill = () => {
-  const nav = document.querySelector('.nav');
-  const pill = nav?.querySelector('.nav__pill');
-  const links = Array.from(nav?.querySelectorAll('a') || []);
-  if (!nav || !pill || !links.length) return;
-
-  let current = null;
-
-  const moveTo = (link) => {
-    if (!link || !isDesktop()) {
-      nav.style.setProperty('--pill-o', '0');
-      return;
-    }
-    nav.style.setProperty('--pill-x', `${link.offsetLeft}px`);
-    nav.style.setProperty('--pill-w', `${link.offsetWidth}px`);
-    nav.style.setProperty('--pill-o', '1');
-  };
-
-  const reset = () => moveTo(current);
-
-  links.forEach((link) => {
-    link.addEventListener('pointerenter', () => moveTo(link));
-    link.addEventListener('focus', () => moveTo(link));
-  });
-  nav.addEventListener('pointerleave', reset);
-  nav.addEventListener('focusout', reset);
-  window.addEventListener('resize', reset);
-
-  // Section en cours : on suit celle qui occupe le haut de l'écran.
-  const sections = links
-    .map((link) => {
-      const id = link.getAttribute('href');
-      const target = id?.startsWith('#') ? document.querySelector(id) : null;
-      return target ? { link, target } : null;
-    })
-    .filter(Boolean);
-
-  if (!sections.length || !('IntersectionObserver' in window)) return;
-
-  // Les liens ne suivent pas l'ordre de la page (Réalisations vient avant
-  // Tarifs dans le document) : on trie pour que « la première trouvée » soit
-  // bien la section la plus haute.
-  sections.sort((a, b) =>
-    a.target.compareDocumentPosition(b.target) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
-  );
-
-  const setCurrent = (link) => {
-    if (current === link) return;
-    if (!link) {
-      current = null;
-      links.forEach((other) => {
-        other.classList.remove('is-current');
-        other.removeAttribute('aria-current');
-      });
-      reset();
-      return;
-    }
-    current = link;
-    links.forEach((other) => {
-      const active = other === link;
-      other.classList.toggle('is-current', active);
-      if (active) other.setAttribute('aria-current', 'true');
-      else other.removeAttribute('aria-current');
-    });
-    reset();
-  };
-
-  // On garde la liste des sections dans la bande de lecture et on retient la
-  // plus haute : sinon, deux sections visibles au chargement se disputent
-  // l'état « en cours ».
-  const inBand = new Set();
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) inBand.add(entry.target);
-        else inBand.delete(entry.target);
-      });
-      const active = sections.find(({ target }) => inBand.has(target));
-      setCurrent(active ? active.link : null);
-    },
-    { rootMargin: '-25% 0px -65% 0px' }
-  );
-
-  sections.forEach(({ target }) => observer.observe(target));
-};
-
-/* ── Menu mobile ─────────────────────────────────────────────────────────── */
-const setupMobileMenu = () => {
-  const burger = document.querySelector('.burger');
-  const menu = document.querySelector('#menu-mobile');
-  if (!burger || !menu) return;
-
-  const close = () => {
-    burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Ouvrir le menu');
-    menu.hidden = true;
-  };
-
-  burger.addEventListener('click', () => {
-    const open = burger.getAttribute('aria-expanded') === 'true';
-    if (open) {
-      close();
-      return;
-    }
-    burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', 'Fermer le menu');
-    menu.hidden = false;
-  });
-
-  menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !menu.hidden) {
-      close();
-      burger.focus();
-    }
-  });
-
-  // Un appui à côté referme le menu : sur mobile, viser la croix n'est pas
-  // toujours le réflexe.
-  document.addEventListener('pointerdown', (event) => {
-    if (menu.hidden) return;
-    if (menu.contains(event.target) || burger.contains(event.target)) return;
-    close();
-  });
-
-  window.addEventListener('resize', () => {
-    if (isDesktop() && !menu.hidden) close();
-  });
-};
-
-/* ── Reveal au scroll (une seule fois, avec stagger sur les groupes) ─────── */
-const setupReveal = () => {
-  const items = Array.from(document.querySelectorAll('[data-reveal]'));
-  if (!items.length) return;
-
-  const showAll = () => items.forEach((item) => item.classList.add('is-visible'));
-
-  if (reduceMotion.matches || !('IntersectionObserver' in window)) {
-    showAll();
-    return;
-  }
-
-  // Décalage en cascade pour les enfants d'un même groupe.
-  document.querySelectorAll('[data-stagger]').forEach((group) => {
-    group.querySelectorAll(':scope > [data-reveal]').forEach((child, index) => {
-      child.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 100}ms`);
-    });
-  });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      });
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
-  );
-
-  items.forEach((item) => observer.observe(item));
-
-  // Le contenu déjà visible au chargement ne doit pas attendre un scroll.
-  reduceMotion.addEventListener?.('change', (event) => {
-    if (event.matches) showAll();
-  });
-};
 
 /* ── Parallaxe lente des halos cyan (desktop uniquement) ─────────────────── */
 const setupGlowParallax = () => {
@@ -235,6 +42,98 @@ const setupGlowParallax = () => {
     },
     { passive: true }
   );
+};
+
+/* ── Dégradé animé du hero ───────────────────────────────────────────────
+   ShaderGradient n'existe qu'en React : on le charge en import() dynamique
+   après le premier rendu, pour que React, three et R3F ne retardent ni le
+   LCP ni l'interactivité. Rien n'est téléchargé si l'utilisateur limite les
+   animations.                                                             */
+const setupBackgroundGradient = () => {
+  const host = document.querySelector('#bg-gradient');
+  if (!host || reduceMotion.matches) return;
+
+  const load = () => {
+    import('./bg-gradient.js')
+      .then((module) => module.mountBackgroundGradient(host))
+      .catch(() => {
+        // Le hero reste parfaitement lisible sans le dégradé.
+      });
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(load, { timeout: 2500 });
+  } else {
+    window.setTimeout(load, 1200);
+  }
+};
+
+/* ── Scène du hero : parallaxe de profondeur au pointeur ─────────────────
+   On ne fait pivoter que la scène : comme chaque élément a son propre
+   translateZ, la perspective déplace les plans proches (fusée, cartes,
+   téléphone) plus que les plans lointains (laptop). Le relief est donc
+   physique, pas simulé — et l'amplitude reste faible pour ne pas gêner
+   la lecture.                                                            */
+const setupScenePointer = () => {
+  const hero = document.querySelector('.hero');
+  const stage = document.querySelector('.scene__stage');
+  const scene = document.querySelector('.scene');
+  if (!hero || !stage || !scene) return;
+
+  // Souris uniquement : au doigt, ce mouvement n'a pas de sens.
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (reduceMotion.matches || !finePointer.matches) return;
+
+  const AMP_X = 3; // basculement haut/bas
+  const AMP_Y = 4.8; // rotation gauche/droite
+  const EASE = 0.075; // approche progressive, aucun à-coup
+
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let frame = null;
+
+  const render = () => {
+    currentX += (targetX - currentX) * EASE;
+    currentY += (targetY - currentY) * EASE;
+
+    stage.style.setProperty('--stage-mx', `${currentX.toFixed(3)}deg`);
+    stage.style.setProperty('--stage-my', `${currentY.toFixed(3)}deg`);
+    scene.style.setProperty('--pointer-x', (currentY / AMP_Y).toFixed(3));
+
+    // On rend la main dès que le mouvement est imperceptible.
+    if (Math.abs(targetX - currentX) > 0.008 || Math.abs(targetY - currentY) > 0.008) {
+      frame = window.requestAnimationFrame(render);
+    } else {
+      frame = null;
+    }
+  };
+
+  const start = () => {
+    if (!frame) frame = window.requestAnimationFrame(render);
+  };
+
+  hero.addEventListener(
+    'pointermove',
+    (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const rect = hero.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+      targetY = x * AMP_Y;
+      targetX = -y * AMP_X;
+      start();
+    },
+    { passive: true }
+  );
+
+  // Retour à la pose de repos quand la souris quitte le hero.
+  hero.addEventListener('pointerleave', () => {
+    targetX = 0;
+    targetY = 0;
+    start();
+  });
 };
 
 /* ── Process : barre de progression + fusée + cartes qui s'activent ──────── */
@@ -370,11 +269,10 @@ const setupAuditForm = () => {
   });
 };
 
-setupHeader();
-setupNavPill();
-setupMobileMenu();
-setupReveal();
+initShell();
 setupGlowParallax();
+setupScenePointer();
+setupBackgroundGradient();
 setupProcessProgress();
 setupFaq();
 setupThumbBar();

@@ -1,0 +1,633 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Launch48 — socle commun à toutes les pages.
+   Tokens, réinitialisation, typographie, boutons, cartes, barre de navigation
+   en îlot, footer et système d'apparition au scroll.
+   La home ajoute par-dessus son propre home.css ; les autres pages font de
+   même avec leur feuille de section.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #091019;
+  --bg-soft: #0d1622;
+  --text: #f3efe7;
+  --muted: #97a8bd;
+  --cyan: #46e4ff;
+  --blue: #5f8dff;
+  --green: #63ffe0;
+  --surface: rgba(243, 239, 231, 0.04);
+  --surface-2: rgba(243, 239, 231, 0.025);
+  --border: rgba(243, 239, 231, 0.12);
+  --border-strong: rgba(243, 239, 231, 0.24);
+  --font-heading: 'Sora', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --header-h: 68px;
+  /* Rythme vertical : un seul jeu de valeurs pour toute la page. */
+  --space-section: clamp(3rem, 6.5vw, 5rem);
+  --space-block: clamp(1.5rem, 3.2vw, 2.25rem);
+  /* Hauteur du bandeau de réassurance, déduite de la hauteur du hero. */
+  --band-h: 3.4rem;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Expo-out : départ franc, atterrissage très progressif. */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; padding: 0; }
+
+html {
+  /* clip et non hidden : hidden casserait position:sticky sur le header. */
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 12px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain très léger pour la texture. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* Derrière le contenu, pas par-dessus : le grain texture le fond et les
+     surfaces translucides, mais laisse les textes et les CTA parfaitement
+     nets. Il reste fixe au scroll, comme un grain de pellicule. */
+  z-index: -1;
+  pointer-events: none;
+  /* Grain de pellicule : désaturé pour éviter les pixels colorés du bruit
+     brut, et `stitchTiles` pour que la tuile de 220px ne laisse pas de
+     coutures visibles en se répétant. Calé sur l'intensité du grain du
+     dégradé du hero, pour qu'il n'y ait pas de rupture au passage du bandeau. */
+  opacity: 0.085;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2.1rem, 8.2vw, 4rem); }
+h2 { font-size: clamp(1.6rem, 5.4vw, 2.6rem); }
+h3 { font-size: 1.12rem; letter-spacing: -0.02em; line-height: 1.25; }
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+button, input { font: inherit; color: inherit; }
+
+::selection { background: var(--cyan); color: #04121a; }
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.accent { color: var(--cyan); }
+.center { text-align: center; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 1000;
+  padding: 0.7rem 1rem;
+  background: var(--cyan);
+  color: #04121a;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: 1rem; }
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.container {
+  width: min(100% - 2rem, 1160px);
+  margin-inline: auto;
+}
+.container.narrow { width: min(100% - 2rem, 760px); }
+
+.section { padding-block: var(--space-section); position: relative; }
+.section--tight { padding-block: calc(var(--space-section) * 0.72); }
+
+.section__head { margin-bottom: var(--space-block); max-width: 44ch; }
+.section__head .lead { margin-top: 0.9rem; }
+
+.section__cta { margin-top: var(--space-block); }
+
+.lead {
+  color: var(--muted);
+  font-size: clamp(1rem, 2.6vw, 1.12rem);
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+.center .lead { margin-inline: auto; }
+
+h2 + .lead { margin-top: 1.1rem; }
+
+.note {
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+/* ── Boutons ─────────────────────────────────────────────────────────────── */
+.btn {
+  --btn-bg: var(--cyan);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 50px;
+  padding: 0.85rem 1.45rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease),
+    background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.btn--primary,
+/* Compatibilité : sur les pages construites avant le socle, beaucoup de CTA
+   sont écrits `class="btn"` sans variante. Un bouton nu prend donc l'aspect
+   principal au lieu de rester sans fond. */
+.btn:not(.btn--ghost):not(.btn--audit) {
+  background: var(--cyan);
+  color: #04121a;
+  box-shadow: 0 10px 30px rgba(70, 228, 255, 0.16);
+}
+
+.btn--audit {
+  --btn-bg: var(--green);
+  background: var(--green);
+  color: #04211c;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.btn--sm { min-height: 42px; padding: 0.5rem 1.05rem; font-size: 0.9rem; }
+.btn--block { width: 100%; }
+
+.btn .arrow { transition: transform 0.2s var(--ease); }
+
+@media (hover: hover) {
+  .btn--primary:hover,
+  .btn--audit:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px color-mix(in srgb, var(--btn-bg), transparent 62%);
+  }
+  .btn--ghost:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: scale(1.02);
+  }
+  .btn:hover .arrow { transform: translateX(3px); }
+}
+
+.btn:active { transform: scale(0.99); }
+
+/* Balayage lumineux discret sur le CTA principal. */
+.btn--shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-18deg);
+  animation: shine 6s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%, 78% { left: -60%; }
+  92%, 100% { left: 125%; }
+}
+
+.link-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  color: var(--cyan);
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+.link-more:hover { border-color: var(--cyan); }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.35rem;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────
+   Nav en îlot : la barre est détachée du bord haut, et se resserre en
+   capsule vitrée dès qu'on quitte le haut de page.                        */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding-top: 0.6rem;
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+}
+
+.header__inner {
+  --nav-w: min(100% - 1.5rem, 1160px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: var(--nav-w);
+  min-height: 56px;
+  margin-inline: auto;
+  padding: 0.4rem 0.45rem 0.4rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: width 0.45s var(--ease-soft), background-color 0.35s var(--ease),
+    border-color 0.35s var(--ease), box-shadow 0.35s var(--ease),
+    backdrop-filter 0.35s var(--ease);
+}
+
+.header.is-scrolled .header__inner {
+  --nav-w: min(100% - 1.5rem, 940px);
+  background: color-mix(in srgb, var(--bg-soft), transparent 24%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-color: var(--border);
+  /* Liseré clair en haut : donne l'épaisseur de verre. */
+  box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.07),
+    0 16px 40px rgba(2, 8, 18, 0.55);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  /* Cible tactile confortable même si le logo fait 24px de haut. */
+  min-height: 44px;
+}
+
+.brand__logo {
+  width: auto;
+  height: 1.5rem;
+  /* Le SVG est noir : on le repeint en #f3efe7. */
+  filter: brightness(0) saturate(100%) invert(95%) sepia(12%) saturate(264%)
+    hue-rotate(334deg) brightness(101%) contrast(92%);
+}
+
+.nav { display: none; }
+
+.header__actions { display: flex; align-items: center; gap: 0.5rem; }
+
+.burger {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.burger span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s var(--ease-soft), opacity 0.2s var(--ease);
+}
+.burger[aria-expanded='true'] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.burger[aria-expanded='true'] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+/* Panneau mobile : même langage que l'îlot, posé juste dessous. */
+.menu-mobile {
+  width: min(100% - 1.5rem, 1160px);
+  margin: 0.5rem auto 0;
+  padding: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--bg-soft), transparent 8%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.07),
+    0 20px 44px rgba(2, 8, 18, 0.6);
+}
+.menu-mobile[hidden] { display: none; }
+.menu-mobile nav { display: grid; }
+.menu-mobile a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  border-radius: 16px;
+  font-weight: 500;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.menu-mobile a:hover,
+.menu-mobile a:active { background: rgba(243, 239, 231, 0.05); }
+.menu-mobile a:last-child { color: var(--cyan); }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.footer__top {
+  display: grid;
+  gap: 2.25rem;
+  padding-block: var(--space-section) calc(var(--space-section) * 0.6);
+}
+
+.footer__brand { display: grid; gap: 1rem; justify-items: start; }
+
+.footer__baseline {
+  max-width: 38ch;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.footer__mail {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--cyan);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+.footer__mail:hover { border-color: var(--cyan); }
+
+.footer__socials { display: flex; gap: 0.6rem; list-style: none; }
+.footer__socials a {
+  display: grid;
+  place-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
+}
+.footer__socials a:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan), transparent 92%);
+}
+
+.footer__title {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+}
+
+.footer__col ul { list-style: none; display: grid; }
+.footer__col a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  transition: color 0.2s var(--ease);
+}
+.footer__col a:hover { color: var(--cyan); }
+
+.footer__cta { display: grid; gap: 0.5rem; justify-items: start; align-content: start; }
+.footer__cta-text { color: var(--muted); font-size: 0.9rem; max-width: 26ch; }
+.footer__cta .btn { margin-top: 0.35rem; }
+
+.footer__bottom {
+  display: grid;
+  gap: 0.85rem;
+  padding-block: 1.35rem;
+  padding-bottom: max(1.35rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+}
+
+.footer__copy { color: var(--muted); font-size: 0.85rem; }
+
+.footer__legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.footer__legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: color 0.2s var(--ease);
+}
+.footer__legal a:hover { color: var(--cyan); }
+
+.footer__note {
+  max-width: 78ch;
+  color: rgba(151, 168, 189, 0.7);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+/* ── Reveal au scroll ────────────────────────────────────────────────────── */
+/* Gated par .js (posé en inline dans le <head>) : sans JS, tout reste visible.
+   La direction se choisit par la valeur de l'attribut : data-reveal="left",
+   "right", "down", "zoom", ou vide pour la montée par défaut. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--rx, 0), var(--ry, 28px), 0);
+  scale: var(--rs, 1);
+  /* L'opacité finit avant le mouvement : l'élément est lisible pendant qu'il
+     termine sa course, ça évite l'effet « qui glisse encore » à la lecture. */
+  transition: opacity 0.55s var(--ease-soft), transform 0.9s var(--ease-soft),
+    scale 0.9s var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+.js [data-reveal='left'] { --rx: -42px; --ry: 0; }
+.js [data-reveal='right'] { --rx: 42px; --ry: 0; }
+.js [data-reveal='down'] { --ry: -30px; }
+.js [data-reveal='zoom'] { --ry: 14px; --rs: 0.965; }
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  scale: 1;
+  will-change: auto;
+}
+
+/* Hauteur de scroll dédiée au bloc process (le sticky se joue dedans). */
+@media (min-width: 640px) {
+  .process > .container { min-height: 125vh; }
+  .process-sticky {
+    position: sticky;
+    top: max(calc(var(--header-h) + 1.25rem), calc(50vh - 260px));
+    align-content: start;
+  }
+}
+
+/* Colonnes du footer dès les grands téléphones : moins de scroll. */
+@media (min-width: 480px) {
+  .footer__top { grid-template-columns: repeat(2, 1fr); }
+  .footer__brand { grid-column: 1 / -1; }
+  .footer__cta .btn { width: auto; }
+}
+
+/* ── Très petits écrans ──────────────────────────────────────────────────── */
+@media (max-width: 420px) {
+  .header__inner { padding-left: 0.85rem; }
+  .header__inner .btn--sm { padding-inline: 0.85rem; font-size: 0.85rem; }
+  .brand__logo { height: 1.3rem; }
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .lead { font-size: 0.98rem; line-height: 1.55; }
+  .section__head { margin-bottom: 1.1rem; }
+  .btn--shine::after { display: none; }
+  /* Grain conservé sur mobile, légèrement atténué. */
+  body::after { opacity: 0.065; }
+
+  /* Zone tactile pleine largeur pour les liens du footer : le texte est
+     court, la cible ne doit pas l'être. */
+  .footer__col a,
+  .footer__legal a { width: 100%; }
+
+  .footer__top {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    padding-block: 2rem 1.5rem;
+  }
+  .footer__brand { grid-column: 1 / -1; gap: 0.7rem; }
+  .footer__cta { grid-column: 1 / -1; }
+  .footer__baseline { font-size: 0.86rem; }
+  .footer__col ul { gap: 0; }
+  .footer__col a { min-height: 40px; font-size: 0.88rem; }
+  .footer__title { font-size: 0.82rem; }
+  .footer__cta-text { font-size: 0.86rem; }
+  .footer__note { font-size: 0.72rem; }
+}
+
+/* ── Desktop ─────────────────────────────────────────────────────────────── */
+@media (min-width: 900px) {
+  /* Menu central : capsule discrète + indicateur qui glisse sous le lien
+     survolé, et revient sur la section en cours quand on relâche. */
+  .nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.2rem;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  .nav__pill {
+    position: absolute;
+    top: 0.2rem;
+    left: 0;
+    height: calc(100% - 0.4rem);
+    width: var(--pill-w, 0);
+    border-radius: 999px;
+    background: rgba(243, 239, 231, 0.09);
+    box-shadow: inset 0 0 0 1px rgba(243, 239, 231, 0.09);
+    opacity: var(--pill-o, 0);
+    transform: translateX(var(--pill-x, 0));
+    transition: transform 0.45s var(--ease-soft), width 0.45s var(--ease-soft),
+      opacity 0.25s var(--ease);
+    pointer-events: none;
+  }
+
+  .nav a {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding-inline: 0.95rem;
+    border-radius: 999px;
+    color: var(--muted);
+    white-space: nowrap;
+    transition: color 0.25s var(--ease);
+  }
+  .nav a:hover { color: var(--text); }
+
+  /* Section en cours de lecture. */
+  .nav a.is-current { color: var(--text); }
+  .nav a.is-current::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 3px;
+    height: 3px;
+    margin-left: -1.5px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  .burger, .menu-mobile { display: none !important; }
+
+  .brand__logo { height: 1.7rem; }
+
+  .footer__top {
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+  }
+  .footer__brand { grid-column: auto; }
+
+  .footer__bottom {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.6rem 2rem;
+  }
+  .footer__legal { justify-content: flex-end; }
+  .footer__note { grid-column: 1 / -1; }
+}

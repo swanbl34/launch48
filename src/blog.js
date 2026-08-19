@@ -1,36 +1,7 @@
 import './blog.css';
+import './shell.css';
+import { initShell, mountShell } from './shell.js';
 
-const setupTheme = () => {
-  const saved = localStorage.getItem('launch48-theme');
-  if (saved === 'light' || saved === 'dark') {
-    document.documentElement.dataset.theme = saved;
-  }
-
-  const updateLabel = () => {
-    const current = document.documentElement.dataset.theme || 'dark';
-    const nextTheme = current === 'dark' ? 'light' : 'dark';
-    const currentLabel = current === 'light' ? 'clair' : 'sombre';
-    const nextLabel = nextTheme === 'light' ? 'clair' : 'sombre';
-    document.querySelectorAll('.theme-toggle').forEach((toggle) => {
-      toggle.dataset.theme = current;
-      toggle.dataset.nextTheme = nextTheme;
-      toggle.setAttribute('aria-checked', String(current === 'light'));
-      toggle.setAttribute('aria-label', `Activer le mode ${nextLabel}`);
-      toggle.setAttribute('title', `Theme actuel : ${currentLabel}`);
-    });
-  };
-
-  updateLabel();
-  document.querySelectorAll('.theme-toggle').forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem('launch48-theme', next);
-      updateLabel();
-    });
-  });
-};
 
 const setupMobileNav = () => {
   const burger = document.querySelector('.nav-burger');
@@ -139,9 +110,11 @@ const setupHeaderScrollState = () => {
   update();
   window.addEventListener('scroll', update, { passive: true });
 };
-
-setupTheme();
 setupMobileNav();
 setupNavDropdown();
 setupResponsiveNavVisibility();
 setupHeaderScrollState();
+
+/* Header et footer de l'ancienne maquette remplacés par ceux du socle. */
+mountShell();
+initShell();

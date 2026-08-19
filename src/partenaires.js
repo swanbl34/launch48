@@ -1,41 +1,10 @@
 import './partenaires.css';
+import './shell.css';
+import { initShell, mountShell } from './shell.js';
 
 const PASSWORD = 'Launch48.2026';
 const STORAGE_KEY = 'launch48-partner-access';
 
-const setupTheme = () => {
-  const savedTheme = localStorage.getItem('launch48-theme');
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    document.documentElement.dataset.theme = savedTheme;
-  }
-
-  const updateToggle = () => {
-    const currentTheme = document.documentElement.dataset.theme || 'dark';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    const currentLabel = currentTheme === 'light' ? 'clair' : 'sombre';
-    const nextLabel = nextTheme === 'light' ? 'clair' : 'sombre';
-
-    document.querySelectorAll('.theme-toggle').forEach((toggle) => {
-      toggle.dataset.theme = currentTheme;
-      toggle.dataset.nextTheme = nextTheme;
-      toggle.setAttribute('aria-checked', String(currentTheme === 'light'));
-      toggle.setAttribute('aria-label', `Activer le mode ${nextLabel}`);
-      toggle.setAttribute('title', `Thème actuel : ${currentLabel}`);
-    });
-  };
-
-  updateToggle();
-
-  document.querySelectorAll('.theme-toggle').forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.dataset.theme || 'dark';
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = nextTheme;
-      localStorage.setItem('launch48-theme', nextTheme);
-      updateToggle();
-    });
-  });
-};
 
 const setupPartnerGate = () => {
   const form = document.getElementById('partner-lock-form');
@@ -106,7 +75,9 @@ const setupPartnerForm = () => {
     window.location.href = `mailto:contact@launch48.fr?subject=${subject}&body=${body}`;
   });
 };
-
-setupTheme();
 setupPartnerGate();
 setupPartnerForm();
+
+/* Header et footer de l'ancienne maquette remplacés par ceux du socle. */
+mountShell();
+initShell();

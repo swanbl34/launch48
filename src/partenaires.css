@@ -801,8 +801,7 @@ body.partners-page.partners-page--locked {
 
   .partners-hero__photo-card {
     min-height: 23rem;
-  }
-}
+  }}
 
 @media (max-width: 819px) {
   .partners-main {
@@ -901,5 +900,4 @@ body.partners-page.partners-page--locked {
 
   .partners-hero__mini-grid {
     grid-template-columns: 1fr;
-  }
-}
+  }}

@@ -4,360 +4,42 @@
    Titres Sora 800 · corps Space Grotesk.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-:root {
-  --bg: #091019;
-  --bg-soft: #0d1622;
-  --text: #f3efe7;
-  --muted: #97a8bd;
-  --cyan: #46e4ff;
-  --blue: #5f8dff;
-  --green: #63ffe0;
-  --surface: rgba(243, 239, 231, 0.04);
-  --surface-2: rgba(243, 239, 231, 0.025);
-  --border: rgba(243, 239, 231, 0.12);
-  --border-strong: rgba(243, 239, 231, 0.24);
-  --font-heading: 'Sora', system-ui, sans-serif;
-  --font-body: 'Space Grotesk', system-ui, sans-serif;
-  --radius: 18px;
-  --radius-sm: 12px;
-  --header-h: 68px;
-  /* Rythme vertical : un seul jeu de valeurs pour toute la page. */
-  --space-section: clamp(3rem, 6.5vw, 5rem);
-  --space-block: clamp(1.5rem, 3.2vw, 2.25rem);
-  /* Hauteur du bandeau de réassurance, déduite de la hauteur du hero. */
-  --band-h: 3.4rem;
-  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  /* Expo-out : départ franc, atterrissage très progressif. */
-  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+/* ── Fond animé (ShaderGradient) ─────────────────────────────────────────
+   Calque posé au niveau du document, pas dans le hero : il couvre donc aussi
+   la hauteur du header, sinon la barre de navigation laissait voir le fond nu
+   et dessinait un rectangle plus sombre en haut de page.
+   z-index négatif : il passe au-dessus du fond de page et sous tout le
+   contenu, header compris — lequel est transparent en haut de page.       */
+.bg-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Header + hero, soit tout l'écran moins le bandeau de réassurance. */
+  height: calc(100vh - var(--band-h));
+  height: calc(100svh - var(--band-h));
+  z-index: -1;
+  overflow: hidden;
+  /* Tant que le module n'est pas monté, rien ne doit apparaître. */
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-soft);
 }
+.bg-gradient[data-ready] { opacity: 1; }
 
-*,
-*::before,
-*::after { box-sizing: border-box; }
-
-* { margin: 0; padding: 0; }
-
-html {
-  /* clip et non hidden : hidden casserait position:sticky sur le header. */
-  overflow-x: clip;
-  scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 12px);
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  overflow-x: clip;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Grain très léger pour la texture. */
-body::after {
+/* Voile de lisibilité, dégressif vers la droite où il n'y a pas de texte. */
+.bg-gradient::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 999;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background: linear-gradient(
+    100deg,
+    rgba(9, 16, 25, 0.78) 0%,
+    rgba(9, 16, 25, 0.44) 45%,
+    rgba(9, 16, 25, 0.08) 100%
+  );
 }
-
-h1, h2, h3 {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
-}
-
-h1 { font-size: clamp(2.1rem, 8.2vw, 4rem); }
-h2 { font-size: clamp(1.6rem, 5.4vw, 2.6rem); }
-h3 { font-size: 1.12rem; letter-spacing: -0.02em; line-height: 1.25; }
-
-a { color: inherit; text-decoration: none; }
-
-img { max-width: 100%; display: block; }
-
-button, input { font: inherit; color: inherit; }
-
-::selection { background: var(--cyan); color: #04121a; }
-
-:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-.accent { color: var(--cyan); }
-.center { text-align: center; }
-
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.skip-link {
-  position: absolute;
-  left: 1rem;
-  top: -100px;
-  z-index: 1000;
-  padding: 0.7rem 1rem;
-  background: var(--cyan);
-  color: #04121a;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: top 0.2s var(--ease);
-}
-.skip-link:focus { top: 1rem; }
-
-/* ── Layout ──────────────────────────────────────────────────────────────── */
-.container {
-  width: min(100% - 2rem, 1160px);
-  margin-inline: auto;
-}
-.container.narrow { width: min(100% - 2rem, 760px); }
-
-.section { padding-block: var(--space-section); position: relative; }
-.section--tight { padding-block: calc(var(--space-section) * 0.72); }
-
-.section__head { margin-bottom: var(--space-block); max-width: 44ch; }
-.section__head .lead { margin-top: 0.9rem; }
-
-.section__cta { margin-top: var(--space-block); }
-
-.lead {
-  color: var(--muted);
-  font-size: clamp(1rem, 2.6vw, 1.12rem);
-  line-height: 1.65;
-  max-width: 62ch;
-}
-
-.center .lead { margin-inline: auto; }
-
-h2 + .lead { margin-top: 1.1rem; }
-
-.note {
-  color: var(--muted);
-  font-size: 0.87rem;
-}
-
-/* ── Boutons ─────────────────────────────────────────────────────────────── */
-.btn {
-  --btn-bg: var(--cyan);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 50px;
-  padding: 0.85rem 1.45rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font-family: var(--font-heading);
-  font-size: 0.98rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-align: center;
-  white-space: nowrap;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease),
-    background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
-}
-
-.btn--primary {
-  background: var(--cyan);
-  color: #04121a;
-  box-shadow: 0 10px 30px rgba(70, 228, 255, 0.16);
-}
-
-.btn--audit {
-  --btn-bg: var(--green);
-  background: var(--green);
-  color: #04211c;
-  box-shadow: 0 10px 30px rgba(99, 255, 224, 0.16);
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-
-.btn--sm { min-height: 42px; padding: 0.5rem 1.05rem; font-size: 0.9rem; }
-.btn--block { width: 100%; }
-
-.btn .arrow { transition: transform 0.2s var(--ease); }
-
-@media (hover: hover) {
-  .btn--primary:hover,
-  .btn--audit:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 40px color-mix(in srgb, var(--btn-bg), transparent 62%);
-  }
-  .btn--ghost:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    transform: scale(1.02);
-  }
-  .btn:hover .arrow { transform: translateX(3px); }
-}
-
-.btn:active { transform: scale(0.99); }
-
-/* Balayage lumineux discret sur le CTA principal. */
-.btn--shine::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 45%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-  transform: skewX(-18deg);
-  animation: shine 6s ease-in-out infinite;
-}
-
-@keyframes shine {
-  0%, 78% { left: -60%; }
-  92%, 100% { left: 125%; }
-}
-
-.link-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 44px;
-  color: var(--cyan);
-  font-weight: 600;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s var(--ease);
-}
-.link-more:hover { border-color: var(--cyan); }
-
-/* ── Cards ───────────────────────────────────────────────────────────────── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.35rem;
-}
-
-/* ── Header ──────────────────────────────────────────────────────────────
-   Nav en îlot : la barre est détachée du bord haut, et se resserre en
-   capsule vitrée dès qu'on quitte le haut de page.                        */
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding-top: 0.6rem;
-  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
-}
-
-.header__inner {
-  --nav-w: min(100% - 1.5rem, 1160px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: var(--nav-w);
-  min-height: 56px;
-  margin-inline: auto;
-  padding: 0.4rem 0.45rem 0.4rem 1.1rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  transition: width 0.45s var(--ease-soft), background-color 0.35s var(--ease),
-    border-color 0.35s var(--ease), box-shadow 0.35s var(--ease),
-    backdrop-filter 0.35s var(--ease);
-}
-
-.header.is-scrolled .header__inner {
-  --nav-w: min(100% - 1.5rem, 940px);
-  background: color-mix(in srgb, var(--bg-soft), transparent 24%);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border-color: var(--border);
-  /* Liseré clair en haut : donne l'épaisseur de verre. */
-  box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.07),
-    0 16px 40px rgba(2, 8, 18, 0.55);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  /* Cible tactile confortable même si le logo fait 24px de haut. */
-  min-height: 44px;
-}
-
-.brand__logo {
-  width: auto;
-  height: 1.5rem;
-  /* Le SVG est noir : on le repeint en #f3efe7. */
-  filter: brightness(0) saturate(100%) invert(95%) sepia(12%) saturate(264%)
-    hue-rotate(334deg) brightness(101%) contrast(92%);
-}
-
-.nav { display: none; }
-
-.header__actions { display: flex; align-items: center; gap: 0.5rem; }
-
-.burger {
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-content: center;
-  gap: 5px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  cursor: pointer;
-}
-.burger span {
-  display: block;
-  width: 16px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 2px;
-  transition: transform 0.25s var(--ease-soft), opacity 0.2s var(--ease);
-}
-.burger[aria-expanded='true'] span:first-child { transform: translateY(3.5px) rotate(45deg); }
-.burger[aria-expanded='true'] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
-
-/* Panneau mobile : même langage que l'îlot, posé juste dessous. */
-.menu-mobile {
-  width: min(100% - 1.5rem, 1160px);
-  margin: 0.5rem auto 0;
-  padding: 0.4rem;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: color-mix(in srgb, var(--bg-soft), transparent 8%);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.07),
-    0 20px 44px rgba(2, 8, 18, 0.6);
-}
-.menu-mobile[hidden] { display: none; }
-.menu-mobile nav { display: grid; }
-.menu-mobile a {
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 0 0.9rem;
-  border-radius: 16px;
-  font-weight: 500;
-  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
-}
-.menu-mobile a:hover,
-.menu-mobile a:active { background: rgba(243, 239, 231, 0.05); }
-.menu-mobile a:last-child { color: var(--cyan); }
 
 /* ── Glow ────────────────────────────────────────────────────────────────── */
 .glow {
@@ -416,6 +98,14 @@ h2 + .lead { margin-top: 1.1rem; }
   .cta-row .btn { flex: 0 0 auto; }
 }
 
+/* Note sous les CTA : même gris que le chapô, taille réduite, marge fine.
+   Elle doit se lire dans le prolongement des boutons. */
+.hero__note {
+  margin-top: 0.85rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .reassurance {
   list-style: none;
   display: flex;
@@ -446,10 +136,15 @@ h2 + .lead { margin-top: 1.1rem; }
 }
 
 .scene__stage {
+  --stage-rx: 3deg;
+  --stage-ry: -10deg;
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  transform: rotateX(3deg) rotateY(-10deg);
+  /* Le pointeur n'écrit que --stage-mx / --stage-my : la pose de repos reste
+     définie ici, une seule source de vérité. */
+  transform: rotateX(calc(var(--stage-rx) + var(--stage-mx, 0deg)))
+    rotateY(calc(var(--stage-ry) + var(--stage-my, 0deg)));
 }
 
 /* ── Élément principal 1 : le laptop ─────────────────────────────────────
@@ -495,7 +190,8 @@ h2 + .lead { margin-top: 1.1rem; }
    Même marque, deux mises en page : desktop dans le laptop, mobile first
    dans le téléphone. Tout est en em, l'échelle vient d'une seule règle cqw. */
 .site {
-  font-size: 1.85cqw;
+  /* Échelle du site interne : calibrée pour rester lisible dans la dalle. */
+  font-size: 2.4cqw;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -510,23 +206,23 @@ h2 + .lead { margin-top: 1.1rem; }
   align-items: center;
   justify-content: space-between;
   gap: 1em;
-  padding: 0.9em 1.4em;
+  padding: 0.75em 1.2em;
   border-bottom: 1px solid rgba(29, 33, 31, 0.1);
 }
 .site__logo {
   font-family: var(--font-heading);
-  font-size: 1.15em;
+  font-size: 1.05em;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
-.site__links { display: flex; gap: 1.2em; font-size: 0.8em; color: rgba(29, 33, 31, 0.62); }
+.site__links { display: flex; gap: 1.1em; font-size: 0.72em; color: rgba(29, 33, 31, 0.62); }
 
 .site__btn {
-  padding: 0.5em 1em;
+  padding: 0.6em 1.1em;
   border-radius: 999px;
   background: #b7522f;
   color: #fff;
-  font-size: 0.78em;
+  font-size: 0.72em;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -542,80 +238,118 @@ h2 + .lead { margin-top: 1.1rem; }
 .site__track { animation: screen-scroll 38s linear infinite; }
 .site__page { display: block; }
 
-.site__band { padding: 1.1em 1.4em; display: grid; gap: 0.7em; }
-.site__band--alt { background: rgba(29, 33, 31, 0.05); }
-.site__band--cta {
-  justify-items: start;
-  gap: 0.6em;
-  background: #1d211f;
-  color: #fbf8f3;
-}
-.site__band-title {
-  font-family: var(--font-heading);
-  font-size: 0.95em;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-.site__quote { display: flex; align-items: center; gap: 0.7em; }
-.site__avatar {
-  width: 2.2em;
-  height: 2.2em;
-  border-radius: 50%;
-  background: rgba(183, 82, 47, 0.3);
-}
-.site__lines { display: grid; gap: 0.35em; flex: 1; }
-.site__lines i {
-  height: 0.4em;
-  border-radius: 999px;
-  background: rgba(29, 33, 31, 0.16);
-}
-.site__lines i:last-child { width: 62%; }
-
 .site__hero { position: relative; }
 .site__hero > img { display: block; width: 100%; height: auto; }
 .site__hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg, rgba(12, 18, 16, 0.86) 0%, rgba(12, 18, 16, 0.55) 42%, transparent 68%);
+  background: linear-gradient(100deg, rgba(12, 18, 16, 0.88) 0%, rgba(12, 18, 16, 0.55) 44%, transparent 70%);
 }
 
 .site__hero-text {
   position: absolute;
   z-index: 1;
   top: 50%;
-  left: 2.2em;
+  left: 1.8em;
   translate: 0 -50%;
   display: grid;
-  gap: 0.5em;
-  width: 52%;
+  gap: 0.45em;
+  width: 54%;
   color: #fdfbf7;
 }
 .site__eyebrow {
-  font-size: 0.68em;
+  font-size: 0.62em;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #e8a985;
 }
 .site__title {
   font-family: var(--font-heading);
-  font-size: 1.9em;
+  font-size: 1.7em;
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
-.site__sub { font-size: 0.82em; opacity: 0.82; }
-.site__actions { display: flex; gap: 0.5em; margin-top: 0.3em; }
+.site__sub { font-size: 0.76em; opacity: 0.82; }
+.site__actions { display: flex; gap: 0.5em; margin-top: 0.25em; }
 
-.site__row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.8em;
+/* Bandeau de preuve, juste sous le héros. */
+.site__trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 0.6em 1.2em;
+  border-bottom: 1px solid rgba(29, 33, 31, 0.1);
+  color: rgba(29, 33, 31, 0.7);
+  font-size: 0.66em;
+  font-weight: 500;
 }
+.site__stars { color: #e0a12f; letter-spacing: 0.04em; }
+.site__dot {
+  width: 0.25em;
+  height: 0.25em;
+  border-radius: 50%;
+  background: rgba(29, 33, 31, 0.3);
+}
+
+.site__band { padding: 1em 1.2em; display: grid; gap: 0.7em; }
+.site__band--alt { background: rgba(29, 33, 31, 0.05); }
+.site__band--cta {
+  grid-auto-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  background: #1d211f;
+  color: #fbf8f3;
+}
+.site__band-title {
+  font-family: var(--font-heading);
+  font-size: 0.92em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.site__cta-text { font-size: 0.7em; opacity: 0.7; margin-top: 0.15em; }
+
+/* Savoir-faire : de vraies cartes, photo + intitulé + précision. */
+.site__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7em; }
 .site__tile {
-  height: 3.4em;
+  display: grid;
+  gap: 0.3em;
+  padding: 0.6em;
+  border: 1px solid rgba(29, 33, 31, 0.09);
   border-radius: 0.5em;
-  background: rgba(29, 33, 31, 0.07);
+  background: #fff;
+}
+.site__tile i {
+  height: 2.6em;
+  border-radius: 0.35em;
+  background-image: url('/previews/home/site-photo-wide.webp');
+  background-size: 240%;
+  background-position: var(--pos, center);
+}
+.site__tile b { font-size: 0.76em; font-weight: 700; }
+.site__tile em {
+  font-style: normal;
+  font-size: 0.64em;
+  color: rgba(29, 33, 31, 0.55);
+  line-height: 1.3;
+}
+
+.site__quote { display: flex; align-items: center; gap: 0.8em; }
+.site__avatar {
+  width: 2.4em;
+  height: 2.4em;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(183, 82, 47, 0.3);
+}
+.site__quote-body { display: grid; gap: 0.2em; }
+.site__quote-body b { font-size: 0.78em; font-weight: 600; line-height: 1.35; }
+.site__quote-body em {
+  font-style: normal;
+  font-size: 0.66em;
+  color: rgba(29, 33, 31, 0.55);
 }
 
 /* Reflet oblique très léger sur la dalle. */
@@ -623,6 +357,8 @@ h2 + .lead { margin-top: 1.1rem; }
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* Le reflet glisse avec le pointeur : c'est ce qui fait « matière ». */
+  translate: calc(var(--pointer-x, 0) * 9%);
   background: linear-gradient(112deg, rgba(243, 239, 231, 0.1) 0%, transparent 34%);
 }
 
@@ -723,6 +459,87 @@ h2 + .lead { margin-top: 1.1rem; }
   container-type: inline-size;
 }
 
+/* Dynamic Island. */
+.phone__island {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  translate: -50%;
+  z-index: 2;
+  width: 26%;
+  height: 2.4%;
+  border-radius: 999px;
+  background: #05090f;
+}
+
+/* Boutons latéraux : bouton action + volumes à gauche, veille à droite. */
+.phone__btn {
+  position: absolute;
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #9aa5b3, #333c48);
+}
+.phone__btn--mute { left: -2px; top: 14.5%; height: 3.5%; }
+.phone__btn--vol-up { left: -2px; top: 21%; height: 7%; }
+.phone__btn--vol-down { left: -2px; top: 30%; height: 7%; }
+.phone__btn--power { right: -2px; top: 23%; height: 11%; }
+
+/* Reflet de verre en diagonale, qui glisse avec le pointeur. */
+.phone__sheen {
+  position: absolute;
+  inset: 2px;
+  pointer-events: none;
+  border-radius: 13% / 6%;
+  translate: calc(var(--pointer-x, 0) * 7%);
+  background: linear-gradient(
+    118deg,
+    rgba(243, 239, 231, 0.16) 0%,
+    rgba(243, 239, 231, 0.05) 16%,
+    transparent 36%
+  );
+}
+
+/* Notification poussée, accrochée au bord haut du téléphone. Elle est un
+   enfant de .phone : elle hérite donc de son inclinaison et de la parallaxe,
+   et reste solidaire de l'appareil. */
+.phone__notif {
+  position: absolute;
+  z-index: 3;
+  top: -7%;
+  /* Ancrée par la droite : centrée, elle dépassait du conteneur. La largeur
+     suit le contenu pour que la seconde ligne ne soit jamais tronquée. */
+  right: -6%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: max-content;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: color-mix(in srgb, #0d1622, transparent 12%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.09),
+    0 18px 40px rgba(2, 8, 18, 0.6);
+  line-height: 1.25;
+}
+
+.phone__notif-icon {
+  display: grid;
+  place-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--green), transparent 88%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--green), transparent 72%);
+  font-size: 0.85rem;
+}
+
+.phone__notif-text { display: grid; gap: 0.1rem; }
+.phone__notif-text .scene__card-line,
+.phone__notif-text .scene__card-note { white-space: nowrap; }
+
 /* ── Mini-site : le même site, en mobile first ───────────────────────────── */
 .mini {
   overflow: hidden;
@@ -730,8 +547,8 @@ h2 + .lead { margin-top: 1.1rem; }
   /* Tout le mini-site est en em : cette seule ligne le met à l'échelle du
      téléphone. Un élément ne peut pas interroger son propre conteneur, d'où
      l'unité posée ici et non sur .phone__screen. */
-  font-size: 6px;
-  font-size: 4.4cqw;
+  font-size: 7px;
+  font-size: 5.7cqw;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -745,8 +562,8 @@ h2 + .lead { margin-top: 1.1rem; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5em 1.1em 0.15em;
-  font-size: 0.75em;
+  padding: 0.45em 1em 0.1em;
+  font-size: 0.7em;
   font-weight: 600;
 }
 .mini__status-icons { display: flex; gap: 0.25em; align-items: center; }
@@ -768,7 +585,7 @@ h2 + .lead { margin-top: 1.1rem; }
 .mini__logo {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 0.95em;
+  font-size: 1.02em;
   letter-spacing: -0.02em;
 }
 .mini__actions { display: flex; align-items: center; gap: 0.5em; }
@@ -826,7 +643,7 @@ h2 + .lead { margin-top: 1.1rem; }
 }
 .mini__lines i:last-child { width: 60%; }
 
-.mini__hero { position: relative; height: 38em; overflow: hidden; }
+.mini__hero { position: relative; height: 30em; overflow: hidden; }
 .mini__hero > img {
   position: absolute;
   inset: 0;
@@ -838,7 +655,7 @@ h2 + .lead { margin-top: 1.1rem; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 30%, rgba(12, 18, 16, 0.88) 100%);
+  background: linear-gradient(180deg, transparent 22%, rgba(12, 18, 16, 0.92) 78%);
 }
 
 .mini__card {
@@ -846,57 +663,147 @@ h2 + .lead { margin-top: 1.1rem; }
   z-index: 1;
   left: 0.7em;
   right: 0.7em;
-  bottom: 0.8em;
+  bottom: 0.7em;
   display: grid;
   gap: 0.4em;
   color: #fdfbf7;
 }
 .mini__tag {
   justify-self: start;
-  padding: 0.18em 0.55em;
+  padding: 0.24em 0.65em;
   border-radius: 999px;
   background: #b7522f;
-  font-size: 0.62em;
+  font-size: 0.68em;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 .mini__title {
   font-family: var(--font-heading);
-  font-size: 1.15em;
+  font-size: 1.32em;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.02em;
 }
 .mini__cta {
   display: block;
-  padding: 0.6em;
+  padding: 0.85em;
   border-radius: 999px;
   background: #b7522f;
-  font-size: 0.72em;
+  color: #fff;
+  font-size: 0.8em;
   font-weight: 700;
   text-align: center;
 }
+.mini__cta--ghost {
+  background: transparent;
+  border: 1px solid rgba(253, 251, 247, 0.5);
+}
 
-.mini__item {
+/* Bandeau de confiance juste sous le héros : c'est le réflexe mobile,
+   la preuve avant le catalogue. */
+.mini__trust {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-  padding: 0.4em;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0.55em 0.8em;
+  border-bottom: 1px solid rgba(29, 33, 31, 0.1);
+  color: rgba(29, 33, 31, 0.7);
+  font-size: 0.7em;
+  font-weight: 500;
+}
+.mini__stars { color: #e0a12f; letter-spacing: 0.04em; }
+.mini__dot {
+  width: 0.25em;
+  height: 0.25em;
+  border-radius: 50%;
+  background: rgba(29, 33, 31, 0.35);
+}
+
+.mini__block { display: grid; gap: 0.5em; padding: 0.85em 0.8em; }
+.mini__block--alt { background: rgba(29, 33, 31, 0.05); }
+.mini__block--cta {
+  gap: 0.6em;
+  padding-block: 1.1em;
+  background: #1d211f;
+  color: #fbf8f3;
+}
+.mini__block-title {
+  font-family: var(--font-heading);
+  font-size: 0.92em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Prestations : des lignes tappables avec chevron, comme dans une app. */
+.mini__row {
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  padding: 0.7em;
+  border: 1px solid rgba(29, 33, 31, 0.09);
+  border-radius: 0.5em;
+  background: #fff;
+}
+.mini__icon {
+  width: 2.2em;
+  height: 2.2em;
+  flex: 0 0 auto;
   border-radius: 0.4em;
-  background: rgba(29, 33, 31, 0.06);
+  background: rgba(183, 82, 47, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(183, 82, 47, 0.25);
 }
-.mini__item i {
-  width: 1.6em;
-  height: 1.6em;
-  border-radius: 0.3em;
-  background: rgba(183, 82, 47, 0.35);
-}
-.mini__item em {
+.mini__row em {
+  display: grid;
+  gap: 0.15em;
   flex: 1;
-  height: 0.45em;
-  border-radius: 999px;
-  background: rgba(29, 33, 31, 0.18);
+  font-style: normal;
+  font-size: 0.82em;
+  font-weight: 700;
+}
+.mini__row em b {
+  font-size: 0.85em;
+  font-weight: 400;
+  color: rgba(29, 33, 31, 0.55);
+}
+/* Chevron. */
+.mini__row s {
+  width: 0.4em;
+  height: 0.4em;
+  flex: 0 0 auto;
+  border-top: 1.5px solid rgba(29, 33, 31, 0.35);
+  border-right: 1.5px solid rgba(29, 33, 31, 0.35);
+  rotate: 45deg;
+}
+
+.mini__gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4em; }
+.mini__gallery i {
+  height: 4em;
+  border-radius: 0.4em;
+  background-image: url('/previews/home/site-photo-wide.webp');
+  background-size: 260%;
+  background-position: var(--pos, center);
+}
+
+.mini__review { display: grid; gap: 0.35em; }
+.mini__review b {
+  font-size: 0.82em;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.mini__author {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: rgba(29, 33, 31, 0.55);
+  font-size: 0.7em;
+}
+.mini__avatar {
+  width: 1.3em;
+  height: 1.3em;
+  border-radius: 50%;
+  background: rgba(183, 82, 47, 0.3);
 }
 
 .mini__bar {
@@ -907,11 +814,11 @@ h2 + .lead { margin-top: 1.1rem; }
   border-top: 1px solid rgba(29, 33, 31, 0.1);
 }
 .mini__bar-btn {
-  padding: 0.5em;
+  padding: 0.75em;
   border-radius: 999px;
   background: #b7522f;
   color: #fff;
-  font-size: 0.7em;
+  font-size: 0.78em;
   font-weight: 700;
   text-align: center;
 }
@@ -922,20 +829,76 @@ h2 + .lead { margin-top: 1.1rem; }
 }
 
 /* ── Éléments secondaires ────────────────────────────────────────────────── */
-.scene__bolt {
+/* ── Orbite de la fusée ──────────────────────────────────────────────────
+   Un bras horizontal traverse la scène et pivote sur lui-même : la fusée,
+   fixée à son extrémité, décrit donc un cercle dont le rayon vaut la moitié
+   du bras. Le plan est basculé, ce qui transforme le cercle en ellipse et
+   fait passer la fusée derrière les appareils au fond, devant au premier
+   plan — le tri de profondeur est fait par preserve-3d, pas simulé.       */
+.orbit {
   position: absolute;
-  right: 23%;
-  bottom: 4%;
-  width: 10%;
-  height: auto;
-  color: var(--cyan);
-  transform: translateZ(calc(240px * var(--z)));
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--cyan), transparent 25%))
-    drop-shadow(0 0 26px color-mix(in srgb, var(--cyan), transparent 55%))
-    drop-shadow(0 0 60px color-mix(in srgb, var(--cyan), transparent 75%));
+  inset: 0;
+  transform-style: preserve-3d;
+  /* Inclinaison du plan orbital. */
+  transform: rotateX(52deg) rotateZ(-9deg);
+  pointer-events: none;
 }
-.scene__bolt-halo { opacity: 0.85; }
-.scene__bolt-core { opacity: 0.95; }
+
+.orbit__arm {
+  position: absolute;
+  top: 46%;
+  left: 3%;
+  width: 94%;
+  height: 0;
+  transform-style: preserve-3d;
+  animation: orbit-spin 22s linear infinite;
+}
+
+.rocket {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 13%;
+  /* Sans contre-rotation, la fusée tournerait avec le bras et se retrouverait
+     de profil deux fois par tour. On annule donc les rotations parentes dans
+     l'ordre inverse (bras, puis plan), et on ajoute ensuite un cap qui suit
+     la trajectoire. Voir @keyframes orbit-face. */
+  transform: translate(50%, -50%) rotateY(0deg) rotateZ(9deg) rotateX(-52deg)
+    rotateZ(135deg);
+  animation: orbit-face 22s linear infinite;
+}
+
+.rocket svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--cyan), transparent 35%))
+    drop-shadow(0 0 30px color-mix(in srgb, var(--cyan), transparent 62%));
+}
+
+/* Flamme : battement rapide, léger étirement vers l'arrière du propulseur. */
+.rocket__flame {
+  transform-origin: 22% 78%;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--green), transparent 40%));
+}
+
+/* Traînée : un fuseau flou dans l'axe de la fusée, qui respire avec la flamme. */
+.rocket__trail {
+  position: absolute;
+  left: -18%;
+  bottom: -14%;
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  background: linear-gradient(
+    225deg,
+    color-mix(in srgb, var(--green), transparent 45%),
+    color-mix(in srgb, var(--cyan), transparent 70%) 45%,
+    transparent 75%
+  );
+  filter: blur(9px);
+}
 
 .scene__card {
   position: absolute;
@@ -985,22 +948,17 @@ h2 + .lead { margin-top: 1.1rem; }
   transform: translateZ(calc(210px * var(--z)));
 }
 .scene__card--review {
-  top: 44%;
+  top: 54%;
   left: 6%;
   transform: translateZ(calc(210px * var(--z)));
-}
-.scene__card--call {
-  bottom: 2%;
-  left: 26%;
-  transform: translateZ(calc(230px * var(--z)));
 }
 
 /* Flottement lent : jamais plus de quelques pixels. */
 @media (min-width: 768px) {
   .scene__card--lead { animation: float 7s ease-in-out infinite; }
   .scene__card--review { animation: float 8.5s ease-in-out 0.6s infinite; }
-  .scene__card--call { animation: float 9.5s ease-in-out 1.2s infinite; }
-  .scene__bolt { animation: bolt 5s ease-in-out infinite; }
+  .rocket__flame { animation: rocket-thrust 0.85s ease-in-out infinite; }
+  .rocket__trail { animation: rocket-trail 0.85s ease-in-out infinite; }
 }
 
 /* Défilement des deux écrans : la piste contient la page en double. */
@@ -1014,9 +972,36 @@ h2 + .lead { margin-top: 1.1rem; }
   50% { translate: 0 -7px; }
 }
 
-@keyframes bolt {
-  0%, 100% { opacity: 0.92; }
-  50% { opacity: 1; }
+/* Un tour complet du bras : la fusée boucle son orbite. */
+@keyframes orbit-spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+/* Même durée, même courbe que le bras : la fusée reste face à la caméra
+   pendant qu'il tourne. Le dernier rotateZ est son cap : il suit la
+   trajectoire, donc +360° dans le sens de la marche (horaire). Le décalage
+   de 135° vient du dessin, dont le nez pointe naturellement en haut à droite
+   (soit -45°) alors qu'au départ de l'orbite la fusée descend (+90°). */
+@keyframes orbit-face {
+  from {
+    transform: translate(50%, -50%) rotateY(0deg) rotateZ(9deg) rotateX(-52deg)
+      rotateZ(135deg);
+  }
+  to {
+    transform: translate(50%, -50%) rotateY(-360deg) rotateZ(9deg) rotateX(-52deg)
+      rotateZ(495deg);
+  }
+}
+
+@keyframes rocket-thrust {
+  0%, 100% { scale: 1 1; opacity: 0.9; }
+  50% { scale: 1.14 1.22; opacity: 1; }
+}
+
+@keyframes rocket-trail {
+  0%, 100% { opacity: 0.45; scale: 0.94; }
+  50% { opacity: 0.8; scale: 1.06; }
 }
 
 /* ── 2. Marquee ──────────────────────────────────────────────────────────── */
@@ -1049,13 +1034,37 @@ h2 + .lead { margin-top: 1.1rem; }
   color: var(--text);
 }
 
+.marquee__group li { display: flex; align-items: center; gap: 0.55rem; }
+
+/* Le sprite reste dans le flux mais invisible : `display: none` empêcherait
+   certains navigateurs de résoudre les <use>. */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Pictogrammes du bandeau : tracés, pas d'aplat, teintés à l'accent. */
+.ico {
+  width: 1.15em;
+  height: 1.15em;
+  flex: 0 0 auto;
+  color: var(--cyan);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
 /* ── 3. Problème ─────────────────────────────────────────────────────────── */
-.problem h2 { max-width: 22ch; }
+.problem h2 { max-width: 28ch; }
 .problem .lead { margin-top: 1.2rem; }
 
 /* ── 4. Étapes ───────────────────────────────────────────────────────────── */
@@ -1391,44 +1400,106 @@ h2 + .lead { margin-top: 1.1rem; }
 }
 .included .note { margin-top: 1.1rem; }
 
-/* ── 7. Audit ────────────────────────────────────────────────────────────── */
-.audit {
-  background: var(--surface-2);
-  border-block: 1px solid var(--border);
+/* ── 7. Audit ────────────────────────────────────────────────────────────
+   Un panneau unique plutôt qu'une bande + un formulaire flottant : le vert
+   ne sert plus qu'aux accents, le bouton reprend le poids des autres CTA. */
+.audit { background: var(--surface-2); border-block: 1px solid var(--border); }
+
+.audit__panel {
+  position: relative;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+/* Voile vert diffus dans l'angle : la couleur signale la section sans
+   passer par un aplat criard. */
+.audit__panel::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--green), transparent 88%), transparent 68%);
+  pointer-events: none;
+}
+
+.audit__pitch { position: relative; display: grid; align-content: start; gap: 0.9rem; }
+
+.audit__kicker {
+  justify-self: start;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--green), transparent 65%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--green), transparent 90%);
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.audit__pitch h2 { margin-top: 0.2rem; }
+.audit__pitch .lead { margin-top: 0; }
+
+.audit__list { list-style: none; display: grid; gap: 0.55rem; margin-top: 0.35rem; }
+.audit__list li {
+  position: relative;
+  padding-left: 1.6rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.audit__list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
 }
 
 .audit__form {
+  position: relative;
   display: grid;
-  gap: 0.9rem;
-  margin-top: 1.75rem;
-  padding: 1.4rem 1.25rem;
-  background: var(--surface);
+  gap: 0.85rem;
+  align-content: start;
+  padding: clamp(1.15rem, 3vw, 1.5rem);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg), transparent 25%);
 }
 
 .field { display: grid; gap: 0.4rem; }
-.field label { font-size: 0.9rem; font-weight: 500; }
+.field label { font-size: 0.85rem; font-weight: 500; color: var(--muted); }
 
 .field input {
   width: 100%;
-  min-height: 50px;
-  padding: 0.75rem 0.95rem;
+  min-height: 48px;
+  padding: 0.7rem 0.9rem;
   /* 16px minimum : évite le zoom automatique iOS au focus. */
   font-size: 16px;
-  background: rgba(9, 16, 25, 0.6);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
+  background: rgba(9, 16, 25, 0.55);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.field input::placeholder { color: rgba(151, 168, 189, 0.7); }
+.field input::placeholder { color: rgba(151, 168, 189, 0.6); }
 .field input:focus {
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(99, 255, 224, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--green), transparent 86%);
 }
 
 .audit__form .btn { margin-top: 0.35rem; }
 
-.form-status { font-size: 0.9rem; color: var(--green); }
+.audit__note { color: var(--muted); font-size: 0.8rem; text-align: center; }
+
+.form-status { font-size: 0.88rem; color: var(--green); text-align: center; }
 .form-status:empty { display: none; }
 .form-status.is-error { color: #ff9db1; }
 
@@ -1532,152 +1603,6 @@ h2 + .lead { margin-top: 1.1rem; }
 .final { position: relative; isolation: isolate; }
 .final .cta-row { margin-top: 2rem; }
 
-/* ── Footer ──────────────────────────────────────────────────────────────── */
-.footer {
-  border-top: 1px solid var(--border);
-  background: var(--surface-2);
-}
-
-.footer__top {
-  display: grid;
-  gap: 2.25rem;
-  padding-block: var(--space-section) calc(var(--space-section) * 0.6);
-}
-
-.footer__brand { display: grid; gap: 1rem; justify-items: start; }
-
-.footer__baseline {
-  max-width: 38ch;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.footer__mail {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--cyan);
-  font-weight: 500;
-  font-size: 0.95rem;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s var(--ease);
-}
-.footer__mail:hover { border-color: var(--cyan); }
-
-.footer__socials { display: flex; gap: 0.6rem; list-style: none; }
-.footer__socials a {
-  display: grid;
-  place-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--muted);
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
-    background-color 0.2s var(--ease);
-}
-.footer__socials a:hover {
-  color: var(--cyan);
-  border-color: var(--cyan);
-  background: color-mix(in srgb, var(--cyan), transparent 92%);
-}
-
-.footer__title {
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.35rem;
-}
-
-.footer__col ul { list-style: none; display: grid; }
-.footer__col a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  color: var(--muted);
-  font-size: 0.92rem;
-  transition: color 0.2s var(--ease);
-}
-.footer__col a:hover { color: var(--cyan); }
-
-.footer__cta { display: grid; gap: 0.5rem; justify-items: start; align-content: start; }
-.footer__cta-text { color: var(--muted); font-size: 0.9rem; max-width: 26ch; }
-.footer__cta .btn { margin-top: 0.35rem; }
-
-.footer__bottom {
-  display: grid;
-  gap: 0.85rem;
-  padding-block: 1.35rem;
-  padding-bottom: max(1.35rem, env(safe-area-inset-bottom));
-  border-top: 1px solid var(--border);
-}
-
-.footer__copy { color: var(--muted); font-size: 0.85rem; }
-
-.footer__legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-.footer__legal a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  color: var(--muted);
-  font-size: 0.85rem;
-  transition: color 0.2s var(--ease);
-}
-.footer__legal a:hover { color: var(--cyan); }
-
-.footer__note {
-  max-width: 78ch;
-  color: rgba(151, 168, 189, 0.7);
-  font-size: 0.76rem;
-  line-height: 1.5;
-}
-
-/* ── Reveal au scroll ────────────────────────────────────────────────────── */
-/* Gated par .js (posé en inline dans le <head>) : sans JS, tout reste visible.
-   La direction se choisit par la valeur de l'attribut : data-reveal="left",
-   "right", "down", "zoom", ou vide pour la montée par défaut. */
-.js [data-reveal] {
-  opacity: 0;
-  transform: translate3d(var(--rx, 0), var(--ry, 28px), 0);
-  scale: var(--rs, 1);
-  /* L'opacité finit avant le mouvement : l'élément est lisible pendant qu'il
-     termine sa course, ça évite l'effet « qui glisse encore » à la lecture. */
-  transition: opacity 0.55s var(--ease-soft), transform 0.9s var(--ease-soft),
-    scale 0.9s var(--ease-soft);
-  transition-delay: var(--reveal-delay, 0ms);
-  will-change: transform, opacity;
-}
-
-.js [data-reveal='left'] { --rx: -42px; --ry: 0; }
-.js [data-reveal='right'] { --rx: 42px; --ry: 0; }
-.js [data-reveal='down'] { --ry: -30px; }
-.js [data-reveal='zoom'] { --ry: 14px; --rs: 0.965; }
-
-.js [data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-  scale: 1;
-  will-change: auto;
-}
-
-/* Hauteur de scroll dédiée au bloc process (le sticky se joue dedans). */
-@media (min-width: 640px) {
-  .process > .container { min-height: 125vh; }
-  .process-sticky {
-    position: sticky;
-    top: max(calc(var(--header-h) + 1.25rem), calc(50vh - 260px));
-    align-content: start;
-  }
-}
-
-/* Colonnes du footer dès les grands téléphones : moins de scroll. */
-@media (min-width: 480px) {
-  .footer__top { grid-template-columns: repeat(2, 1fr); }
-  .footer__brand { grid-column: 1 / -1; }
-  .footer__cta .btn { width: auto; }
-}
-
 /* ── Tablette ────────────────────────────────────────────────────────────── */
 @media (min-width: 640px) {
   .steps { grid-template-columns: repeat(3, 1fr); }
@@ -1697,67 +1622,6 @@ h2 + .lead { margin-top: 1.1rem; }
 
 /* ── Desktop ─────────────────────────────────────────────────────────────── */
 @media (min-width: 900px) {
-  /* Menu central : capsule discrète + indicateur qui glisse sous le lien
-     survolé, et revient sur la section en cours quand on relâche. */
-  .nav {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.15rem;
-    padding: 0.2rem;
-    border-radius: 999px;
-    font-size: 0.92rem;
-    font-weight: 500;
-  }
-
-  .nav__pill {
-    position: absolute;
-    top: 0.2rem;
-    left: 0;
-    height: calc(100% - 0.4rem);
-    width: var(--pill-w, 0);
-    border-radius: 999px;
-    background: rgba(243, 239, 231, 0.09);
-    box-shadow: inset 0 0 0 1px rgba(243, 239, 231, 0.09);
-    opacity: var(--pill-o, 0);
-    transform: translateX(var(--pill-x, 0));
-    transition: transform 0.45s var(--ease-soft), width 0.45s var(--ease-soft),
-      opacity 0.25s var(--ease);
-    pointer-events: none;
-  }
-
-  .nav a {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    height: 36px;
-    padding-inline: 0.95rem;
-    border-radius: 999px;
-    color: var(--muted);
-    white-space: nowrap;
-    transition: color 0.25s var(--ease);
-  }
-  .nav a:hover { color: var(--text); }
-
-  /* Section en cours de lecture. */
-  .nav a.is-current { color: var(--text); }
-  .nav a.is-current::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 2px;
-    width: 3px;
-    height: 3px;
-    margin-left: -1.5px;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
-  }
-
-  .burger, .menu-mobile { display: none !important; }
-
-  .brand__logo { height: 1.7rem; }
 
   .hero__inner {
     grid-template-columns: 1.05fr 1fr;
@@ -1839,28 +1703,15 @@ h2 + .lead { margin-top: 1.1rem; }
   .compare tbody tr:last-child td { border-bottom: 0; }
   .compare tbody tr:last-child td.is-highlight { border-bottom: 1px solid var(--cyan); }
 
-  .footer__top {
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
-    gap: 2.5rem;
-  }
-  .footer__brand { grid-column: auto; }
 
-  .footer__bottom {
-    grid-template-columns: auto 1fr;
+  .audit__panel {
+    grid-template-columns: 1.05fr 0.95fr;
     align-items: center;
-    gap: 0.6rem 2rem;
+    padding: clamp(2rem, 4vw, 3rem);
   }
-  .footer__legal { justify-content: flex-end; }
-  .footer__note { grid-column: 1 / -1; }
 
   .faq__q { font-size: 1.08rem; padding: 1.15rem 1.5rem; }
   .faq__a { padding: 0 1.5rem 1.35rem; }
-}
-
-@media (max-width: 420px) {
-  .header__inner { padding-left: 0.85rem; }
-  .header__inner .btn--sm { padding-inline: 0.85rem; font-size: 0.85rem; }
-  .brand__logo { height: 1.3rem; }
 }
 
 /* ── Économie d'effets sur petit écran ───────────────────────────────────── */
@@ -1889,7 +1740,8 @@ h2 + .lead { margin-top: 1.1rem; }
 
   .laptop,
   .scene__card,
-  .scene__bolt { display: none; }
+  .phone__notif,
+  .orbit { display: none; }
 
   .phone {
     top: 0;
@@ -1903,6 +1755,21 @@ h2 + .lead { margin-top: 1.1rem; }
     box-shadow: 0 30px 60px rgba(2, 8, 18, 0.6),
       0 0 60px color-mix(in srgb, var(--cyan), transparent 85%);
   }
+
+  /* Île retirée : à cette échelle elle retombait sur l'entête du site
+     affiché dans l'écran et formait une tache noire par-dessus le logo. */
+  .phone__island { display: none; }
+
+  /* Le téléphone doit venir mourir contre le bandeau : on supprime le padding
+     bas du hero et on laisse le visuel occuper toute la hauteur restante,
+     c'est son bord inférieur qui fait la coupe. */
+  .hero { padding-bottom: 0; align-content: stretch; }
+  .hero__inner { grid-template-rows: auto 1fr; }
+  /* Plancher : sur les écrans courts, le visuel se réduisait à 82px et le
+     téléphone n'était plus qu'un liseré. Le bandeau passe alors légèrement
+     sous la ligne de flottaison, ce qui reste préférable. */
+  .hero__visual { min-height: 140px; }
+  .scene { height: 100%; min-height: 0; }
 
   /* ── Bloc texte du hero : moins d'objets, plus de hiérarchie ─────────── */
   .hero h1 { font-size: 2rem; line-height: 1.06; }
@@ -1929,15 +1796,15 @@ h2 + .lead { margin-top: 1.1rem; }
   }
 
   /* Réassurance : une colonne alignée, plus de retour à la ligne bancal. */
+  .hero__note { margin-top: 0.8rem; font-size: 0.82rem; }
+
   .reassurance {
     flex-direction: column;
     gap: 0.45rem;
-    margin-top: 1.35rem;
+    margin-top: 1.1rem;
     font-size: 0.88rem;
   }
 
-  .btn--shine::after { display: none; }
-  body::after { display: none; }
 }
 
 
@@ -1993,8 +1860,6 @@ h2 + .lead { margin-top: 1.1rem; }
   }
 
   /* ── Densité : sur mobile, chaque respiration coûte un demi-écran ─────── */
-  .lead { font-size: 0.98rem; line-height: 1.55; }
-  .section__head { margin-bottom: 1.1rem; }
 
   /* Étapes : cartes resserrées, la barre de progression suffit à rythmer. */
   .step { padding: 1rem 1.1rem; }
@@ -2027,27 +1892,14 @@ h2 + .lead { margin-top: 1.1rem; }
   .faq__q { min-height: 52px; padding: 0.85rem 1.1rem; font-size: 0.95rem; }
   .faq__a { padding: 0 1.1rem 1rem; }
   .faq__a p { font-size: 0.92rem; }
-  .audit__form { margin-top: 1.4rem; padding: 1.2rem 1.1rem; }
+  .audit__panel { padding: 1.25rem 1.1rem; gap: 1.1rem; }
+  .audit__pitch { gap: 0.7rem; }
+  .audit__list { gap: 0.4rem; margin-top: 0.1rem; }
+  .audit__list li { font-size: 0.9rem; }
+  .audit__form { padding: 1.1rem 1rem; gap: 0.7rem; }
 
-  /* Zone tactile pleine largeur pour les liens du footer : le texte est
-     court, la cible ne doit pas l'être. */
-  .footer__col a,
-  .footer__legal a { width: 100%; }
-
-  /* Footer : moins de hauteur, mêmes cibles tactiles. */
-  .footer__top { padding-block: 2rem 1.5rem; }
-  .footer__brand { gap: 0.7rem; }
-  .footer__baseline { font-size: 0.86rem; }
-  .footer__col ul { gap: 0; }
-  .footer__title { font-size: 0.82rem; }
-  .footer__cta-text { font-size: 0.86rem; }
-  .footer__note { font-size: 0.72rem; }
 
   /* Footer : deux colonnes dès les petits écrans, ça divise sa hauteur. */
-  .footer__top { grid-template-columns: repeat(2, 1fr); gap: 1.5rem 1rem; }
-  .footer__brand { grid-column: 1 / -1; }
-  .footer__cta { grid-column: 1 / -1; }
-  .footer__col a { min-height: 40px; font-size: 0.88rem; }
 }
 
 /* ── Barre d'action en zone de pouce ─────────────────────────────────────── */
@@ -2120,7 +1972,11 @@ h2 + .lead { margin-top: 1.1rem; }
   .js [data-reveal] { opacity: 1; transform: none; scale: 1; }
   .marquee__track { animation: none; transform: none; }
   .scene__card,
-  .scene__bolt { animation: none !important; }
+  .orbit__arm,
+  .rocket,
+  .rocket__flame,
+  .rocket__trail { animation: none !important; }
+  .scene__stage { --stage-mx: 0deg !important; --stage-my: 0deg !important; }
   .site__track,
   .mini__track { animation: none !important; }
   .btn--shine::after { display: none; }

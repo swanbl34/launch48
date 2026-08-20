@@ -1827,7 +1827,18 @@
   /* Un seul bouton plein. Le second devient un lien : deux gros blocs
      empilés alourdissaient l'entrée de page. */
   .hero .cta-row { display: grid; gap: 0.9rem; margin-top: 1.5rem; }
-  .hero .cta-row .btn--primary { width: 100%; }
+  /* Largeur intrinsèque et calé à gauche : en grid, un item s'étire par défaut,
+     et le bouton barrait tout l'écran sous le titre. Il s'aligne maintenant sur
+     le bord du texte, comme le lien d'audit juste en dessous.
+     46px de haut : au-dessus du plancher tactile, et un cran plus présent que
+     la barre flottante à 44px — c'est le CTA principal de la page. */
+  .hero .cta-row .btn--primary {
+    width: auto;
+    justify-self: start;
+    min-height: 46px;
+    padding: 0.7rem 1.3rem;
+    font-size: 0.95rem;
+  }
   .hero .cta-row .btn--ghost {
     justify-self: start;
     min-height: 44px;
@@ -1961,13 +1972,19 @@
   .thumb-bar {
     position: fixed;
     z-index: 90;
-    left: 0.75rem;
-    right: 0.75rem;
+    /* Largeur intrinsèque et centrée, plutôt qu'un bandeau d'un bord à l'autre :
+       la barre se lit comme une action flottante posée sur la page, pas comme
+       un pied de page qui la coupe en deux. `translate` (et non `transform`)
+       porte le centrage, pour laisser `transform` à l'animation d'entrée. */
+    left: 50%;
+    translate: -50% 0;
+    width: max-content;
+    max-width: calc(100% - 1.5rem);
     bottom: max(0.75rem, env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem;
+    gap: 0.4rem;
+    padding: 0.3rem;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: color-mix(in srgb, var(--bg-soft), transparent 12%);
@@ -1990,17 +2007,24 @@
     transition-delay: 0s;
   }
 
-  .thumb-bar .btn { flex: 1; min-height: 46px; }
+  /* 44px : plancher de cible tactile, on descend la hauteur sans passer sous
+     le seuil posé lors de la passe mobile. */
+  .thumb-bar .btn {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 0.6rem 1.15rem;
+    font-size: 0.93rem;
+  }
 
   .thumb-bar__second {
     display: grid;
     place-content: center;
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
     flex: 0 0 auto;
     border: 1px solid var(--border-strong);
     border-radius: 50%;
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 }
 

@@ -74,7 +74,7 @@ const renderPreviewSpotlight = (offer) => `
       return `
     <div class="section-head" data-reveal>
       <p class="kicker">${content.kicker}</p>
-      <h2>${content.title}</h2>
+      <h2 data-reveal-words>${content.title}</h2>
       <p>${content.text}</p>
     </div>
     <div class="vertical-preview-spotlight" data-reveal>
@@ -190,7 +190,7 @@ const renderReusableCtaBlock = () => `
     <div class="container cta-inline__card">
       <div>
         <p class="kicker">CTA contact</p>
-        <h2>Un besoin précis ? On vous aide à lancer votre site internet rapidement.</h2>
+        <h2 data-reveal-words>Un besoin précis ? On vous aide à lancer votre site internet rapidement.</h2>
         <p>Objectif, contexte, budget et timing : vous obtenez une recommandation claire pour créer un site internet professionnel sans agence lourde.</p>
       </div>
       <div class="cta-inline__actions">
@@ -205,7 +205,7 @@ const renderContactCard = ({ kicker, title, text, actions }) => `
   <div class="contact-card" data-reveal>
     <div class="contact-card__content">
       <p class="kicker">${kicker}</p>
-      <h2>${title}</h2>
+      <h2 data-reveal-words>${title}</h2>
       <p>${text}</p>
     </div>
     <div class="contact-card__actions hero-actions">
@@ -225,7 +225,7 @@ const renderHome = () => {
     <main id="main">
       <section class="hero section container" data-reveal>
         <p class="kicker">Sites premium orientés conversion</p>
-        <h1>Des sites conçus pour votre besoin métier, pas un modèle générique.</h1>
+        <h1 data-reveal-words>Des sites conçus pour votre besoin métier, pas un modèle générique.</h1>
         <p class="lead">Nous structurons des pages claires, crédibles et performantes pour accélérer vos résultats: plus de demandes, plus de réservations, plus d'inscriptions.</p>
         <div class="hero-actions">
           ${asLink('Découvrir toutes les offres', '/offres/', 'btn')}
@@ -240,7 +240,7 @@ const renderHome = () => {
 
       <section class="section container" id="verticales">
         <div class="section-head" data-reveal>
-          <h2>Des sites pensés pour des besoins concrets</h2>
+          <h2 data-reveal-words>Des sites pensés pour des besoins concrets</h2>
           <p>Nous concevons des sites adaptés à des usages précis : événement, lancement de marque, activité de service, média, restauration, portfolio, association, immobilier, etc.</p>
         </div>
         <div class="offers-grid">
@@ -253,7 +253,7 @@ const renderHome = () => {
 
       <section class="section container" id="process">
         <div class="section-head" data-reveal>
-          <h2>Un process simple, rapide et lisible</h2>
+          <h2 data-reveal-words>Un process simple, rapide et lisible</h2>
           <p>Chaque projet suit une structure claire pour sécuriser le résultat commercial et raccourcir le délai de mise en ligne.</p>
         </div>
         <div class="step-grid">
@@ -304,7 +304,7 @@ const renderOffersPage = () => {
     <main id="main">
       <section class="hero section container" data-reveal>
         <p class="kicker">Sites internet par verticale</p>
-        <h1>Choisissez le bon format pour créer votre site internet rapidement</h1>
+        <h1 data-reveal-words>Choisissez le bon format pour créer votre site internet rapidement</h1>
         <p class="lead">Launch48 propose des sites internet professionnels pensés par besoin métier : site internet freelance, site internet événement, site internet restaurant rapide, site internet association rapide ou site vitrine immobilier.</p>
         <p class="lead">Les previews ci-dessous sont des exemples de sites créés par Launch48 pour illustrer chaque expertise. Il ne s'agit pas de sites clients existants.</p>
         <div class="hero-actions">
@@ -321,7 +321,7 @@ const renderOffersPage = () => {
       <section class="section container offers-showcase">
         <aside class="offers-showcase__intro" data-reveal>
           <p class="kicker">Choisir votre format</p>
-          <h2>Chaque site internet répond à une intention d'achat concrète</h2>
+          <h2 data-reveal-words>Chaque site internet répond à une intention d'achat concrète</h2>
           <p>Au lieu de vendre un site internet générique, Launch48 construit des pages adaptées à des usages réels : vendre des billets, générer des rendez-vous, présenter une expertise, valoriser un bien ou lancer une marque.</p>
           <div class="offers-showcase__legend">
             <p><strong>Clarté</strong> message lisible dès les premières secondes</p>
@@ -357,7 +357,7 @@ const renderOptionsBlock = (offer) => `
   <section class="section container">
     <div class="section-head" data-reveal>
       <p class="kicker">Options</p>
-      <h2>Options pour aller plus loin avec votre ${offer.seo?.keyword || 'site internet'}</h2>
+      <h2 data-reveal-words>Options pour aller plus loin avec votre ${offer.seo?.keyword || 'site internet'}</h2>
       <p>On garde un socle simple et performant, puis on ajoute seulement ce qui sert vraiment votre objectif business et votre référencement.</p>
     </div>
     <div class="options-grid options-grid--cards">
@@ -379,7 +379,7 @@ const renderOptionsBlock = (offer) => `
 const renderOtherNeeds = (offer) => `
   <section class="section container">
     <div class="section-head" data-reveal>
-      <h2>Autres besoins</h2>
+      <h2 data-reveal-words>Autres besoins</h2>
       <p>Comparez rapidement d'autres verticales pour choisir la formule la plus pertinente.</p>
     </div>
     <div class="offers-grid offers-grid--mini">
@@ -413,7 +413,7 @@ const renderVerticalPage = (slug) => {
         <div class="vertical-hero__grid">
           <div class="vertical-hero__content" data-reveal>
             <p class="kicker">${offer.hero.eyebrow}</p>
-            <h1>${offer.hero.title}</h1>
+            <h1 data-reveal-words>${offer.hero.title}</h1>
             <p class="lead">${offer.hero.subtitle}</p>
             <div class="hero-actions">
               ${asLink(offer.hero.primaryCta, CONTACT.primaryHref, 'btn')}
@@ -461,7 +461,7 @@ const renderVerticalPage = (slug) => {
       <section class="section container vertical-signals">
         <div class="section-head" data-reveal>
           <p class="kicker">Pourquoi cette page fonctionne</p>
-          <h2>Pourquoi un ${offer.seo?.keyword || 'site internet'} bien structuré convertit mieux</h2>
+          <h2 data-reveal-words>Pourquoi un ${offer.seo?.keyword || 'site internet'} bien structuré convertit mieux</h2>
           <p>Un bon référencement ne suffit pas. Il faut aussi une page claire, crédible et orientée vers l'action pour transformer les visites en demandes.</p>
         </div>
         <div class="vertical-signals__grid">
@@ -482,7 +482,7 @@ const renderVerticalPage = (slug) => {
       <section class="section container">
         <div class="section-head" data-reveal>
           <p class="kicker">Ce que la page doit changer</p>
-          <h2>Ce qu'un ${offer.seo?.keyword || 'site internet'} doit corriger pour mieux convertir</h2>
+          <h2 data-reveal-words>Ce qu'un ${offer.seo?.keyword || 'site internet'} doit corriger pour mieux convertir</h2>
           <p>Sur ces projets, le vrai sujet n'est pas seulement d'avoir un site. C'est de faire comprendre vite, rassurer au bon moment, puis orienter clairement vers l'action utile.</p>
         </div>
         <div class="vertical-shift">
@@ -506,7 +506,7 @@ const renderVerticalPage = (slug) => {
       <section class="section container">
         <div class="section-head" data-reveal>
           <p class="kicker">Architecture recommandée</p>
-          <h2>La structure recommandée pour un ${offer.seo?.keyword || 'site internet'}</h2>
+          <h2 data-reveal-words>La structure recommandée pour un ${offer.seo?.keyword || 'site internet'}</h2>
           <p>Chaque page verticale suit un ordre précis : capter l'attention, clarifier le message, créer la confiance, puis convertir sans friction.</p>
         </div>
         <div class="vertical-blueprint">
@@ -530,7 +530,7 @@ const renderVerticalPage = (slug) => {
         <div class="vertical-included" data-reveal>
           <div class="vertical-included__intro">
             <p class="kicker">Inclus dans la formule</p>
-            <h2>Ce que nous mettons dans votre ${offer.seo?.keyword || 'site internet'}</h2>
+            <h2 data-reveal-words>Ce que nous mettons dans votre ${offer.seo?.keyword || 'site internet'}</h2>
             <p>Launch48 pose une base volontairement claire : une page forte, un design assumé, un contenu hiérarchisé et des CTA visibles là où ils doivent l'être.</p>
           </div>
           <div class="vertical-included__list">

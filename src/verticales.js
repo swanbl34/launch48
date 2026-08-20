@@ -14,12 +14,6 @@ const offerSlug = document.body.dataset.offerSlug || '';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const FALLBACK_OFFER = OFFERS[0];
-const QUOTE_PROJECT_OPTIONS = [
-  { value: 'one-page', label: 'Site vitrine / one-page' },
-  ...OFFERS.map((offer) => ({ value: offer.slug, label: offer.name })),
-  { value: 'partner', label: 'Partenaire' },
-  { value: 'other', label: 'Autre besoin' }
-];
 
 const setMeta = ({ title, description }) => {
   document.title = title;
@@ -354,214 +348,6 @@ const renderOffersPage = () => {
   `;
 };
 
-const renderQuotePage = () => {
-  setMeta({
-    title: 'Devis site internet en 48h | Launch48',
-    description: 'Demandez un devis pour créer un site internet professionnel rapidement : site vitrine, landing page et site internet clé en main.'
-  });
-
-  app.innerHTML = `
-    ${renderHeader('quote')}
-    <main id="main">
-      <section class="section container section--call-embed">
-        <div class="quote-layout">
-          <article class="quote-panel" data-reveal>
-            <p class="kicker">Préparer votre site internet</p>
-            <h2>Les infos utiles pour créer votre site internet rapidement</h2>
-            <ul class="quote-panel__list">
-              <li>Le type de site internet ou de landing page que vous souhaitez lancer</li>
-              <li>Le nom du projet ou de l'entreprise si vous l'avez déjà</li>
-              <li>Votre objectif principal : vendre, réserver, présenter, générer des leads</li>
-              <li>Votre timing et les éventuelles contraintes de lancement</li>
-            </ul>
-          </article>
-
-          <article class="quote-form-card" data-reveal>
-            <form action="https://formspree.io/f/xbdpgvgj" method="POST" class="launch48-form">
-              <h3>Créer votre site internet en 48h</h3>
-              <p>Décrivez votre besoin pour obtenir un site internet clé en main ou une alternative simple à une agence web.</p>
-              <div class="quote-response-note" role="note">
-                <strong>Réponse dans la journée.</strong>
-                <span>On lit chaque demande rapidement et on vous répond avec une première estimation ou la bonne prochaine étape.</span>
-              </div>
-
-              <label>
-                <span>Nom</span>
-                <input type="text" name="name" placeholder="Votre nom" required />
-              </label>
-
-              <label>
-                <span>Email</span>
-                <input type="email" name="email" placeholder="votre@email.com" required />
-              </label>
-
-              <label>
-                <span>Forfait souhaité</span>
-                <select name="forfait" id="forfait-select">
-                  <option value="">Pas encore décidé</option>
-                  <option value="one-page">One Page — à partir de 590 €</option>
-                  <option value="3-pages">Site 3 pages — à partir de 990 €</option>
-                  <option value="5-pages">Site 5 pages + — à partir de 1 290 €</option>
-                  <option value="sur-mesure">Sur mesure</option>
-                </select>
-              </label>
-
-              <label>
-                <span>Type de site</span>
-                <select name="project_type" required>
-                  <option value="">Sélectionnez</option>
-                  ${QUOTE_PROJECT_OPTIONS.map((option) => `<option value="${option.value}">${option.label}</option>`).join('')}
-                </select>
-              </label>
-
-              <label>
-                <span>Nom du projet / entreprise</span>
-                <input type="text" name="project_name" placeholder="Nom du projet" />
-              </label>
-
-              <label>
-                <span>Avez-vous déjà un nom de domaine ?</span>
-                <select name="domain">
-                  <option value="no">Non</option>
-                  <option value="yes">Oui</option>
-                  <option value="not_sure">Je ne sais pas</option>
-                </select>
-              </label>
-
-              <label>
-                <span>Décrivez rapidement votre projet</span>
-                <textarea name="message" rows="5" placeholder="Objectif du site, contenu, deadline..."></textarea>
-              </label>
-
-              <button type="submit">🚀 Demander mon site</button>
-            </form>
-          </article>
-        </div>
-      </section>
-    </main>
-    ${renderFooter()}
-  `;
-
-  const forfaitParam = new URLSearchParams(window.location.search).get('forfait');
-  if (forfaitParam) {
-    const select = document.getElementById('forfait-select');
-    if (select) select.value = forfaitParam;
-  }
-};
-
-const renderCallPage = () => {
-  setMeta({
-    title: 'Audit gratuit de 15 min — Launch48',
-    description: 'Réservez un audit stratégique gratuit de 15 minutes avec Launch48. Repartez avec un plan d\'action clair pour votre site web.'
-  });
-
-  const bookingUrl = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true';
-
-  app.innerHTML = `
-    ${renderHeader('call')}
-    <main id="main" class="audit-page">
-      <section class="audit-hero section container">
-        <div class="audit-hero__content" data-reveal>
-          <p class="kicker">AUDIT STRATÉGIQUE · 15 MIN · GRATUIT</p>
-          <h1>Clarifions votre projet en 15 minutes.</h1>
-          <p class="lead">Un appel court, structuré, et utile. Vous repartez avec une vision claire du site qu'il vous faut — que vous choisissiez Launch48 ou non.</p>
-          <div class="audit-hero__actions">
-            <a class="btn magnetic" href="#calendly" data-analytics-id="audit-cta-hero">Réserver mon audit gratuit →</a>
-            <p>15 min · En visio · Sans engagement</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="audit-section section container">
-        <div class="section-head" data-reveal>
-          <p class="kicker">CE QU'ON FAIT ENSEMBLE</p>
-          <h2>Un audit structuré pour transformer une idée floue en plan d'action.</h2>
-        </div>
-        <div class="audit-steps" data-reveal>
-          <article class="audit-step">
-            <span class="audit-step__number">1</span>
-            <div>
-              <h3>Identifier l'objectif business prioritaire</h3>
-              <p>Vendre, capter des leads, réserver : on clarifie ce que votre site doit vraiment produire.</p>
-            </div>
-          </article>
-          <article class="audit-step">
-            <span class="audit-step__number">2</span>
-            <div>
-              <h3>Choisir le bon format</h3>
-              <p>Site vitrine, landing page, ou structure multi-pages : on choisit le format le plus utile.</p>
-            </div>
-          </article>
-          <article class="audit-step">
-            <span class="audit-step__number">3</span>
-            <div>
-              <h3>Évaluer ce qui est prêt</h3>
-              <p>Textes, visuels, marque : on repère ce qui existe déjà et ce qui reste à produire.</p>
-            </div>
-          </article>
-          <article class="audit-step">
-            <span class="audit-step__number">4</span>
-            <div>
-              <h3>Repartir avec un plan d'action clair</h3>
-              <p>Devis Launch48 ou recommandation honnête : vous repartez avec une prochaine étape concrète.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="audit-section section container">
-        <article class="audit-outcome" data-reveal>
-          <p class="kicker">À LA FIN DES 15 MINUTES</p>
-          <h2>Vous repartez avec :</h2>
-          <ul class="audit-checklist">
-            <li>La promesse claire de votre site en 1 phrase</li>
-            <li>La structure recommandée (nombre de pages, sections)</li>
-            <li>Le timing réaliste pour votre lancement</li>
-            <li>Un devis personnalisé si Launch48 est la bonne solution</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="audit-section audit-section--compact section container">
-        <article class="audit-explain" data-reveal>
-          <p class="kicker">POURQUOI C'EST GRATUIT ?</p>
-          <p>Parce qu'un appel de 15 min permet de savoir en 5 minutes si on peut vous aider — ou pas. C'est efficace pour vous, c'est efficace pour nous. Pas de pitch commercial, pas de pression : juste un échange utile.</p>
-        </article>
-      </section>
-
-      <section class="audit-section section container" id="calendly">
-        <div class="section-head" data-reveal>
-          <p class="kicker">RÉSERVEZ VOTRE CRÉNEAU</p>
-          <h2>Choisissez l'horaire qui vous arrange.</h2>
-          <p>Disponibilités sous 48h · Confirmation immédiate · Annulation possible à tout moment</p>
-        </div>
-        <article class="audit-calendly" data-reveal>
-          <iframe
-            src="${bookingUrl}"
-            title="Réserver un audit stratégique gratuit Launch48 via Google Calendar"
-            data-analytics-id="audit-calendly-embed"
-            loading="lazy"
-          ></iframe>
-        </article>
-        <div class="audit-reassurance" data-reveal>
-          <p><strong>Pas de pitch commercial</strong> — on cherche d'abord à comprendre</p>
-          <p><strong>Reco honnête</strong> — on vous le dit si Launch48 n'est pas adapté</p>
-          <p><strong>Annulation libre</strong> — un imprévu ? Reprogrammez en 1 clic</p>
-        </div>
-      </section>
-
-      <section class="audit-final section container">
-        <div class="audit-final__content" data-reveal>
-          <p>Vous hésitez encore ?</p>
-          <h2>L'audit ne vous engage à rien. 15 minutes pour y voir clair.</h2>
-          <a class="btn btn--ghost" href="#calendly" data-analytics-id="audit-cta-final">Voir les créneaux disponibles</a>
-        </div>
-      </section>
-    </main>
-    ${renderFooter()}
-  `;
-};
-
 const pickOtherNeeds = (slug) => {
   const others = OFFERS.filter((offer) => offer.slug !== slug);
   return others.slice(0, 4);
@@ -774,8 +560,6 @@ const renderVerticalPage = (slug) => {
 
 
 
-
-
 const setupRevealAnimations = () => {
   if (prefersReducedMotion) return;
 
@@ -810,14 +594,9 @@ const setupBackgroundProgress = () => {
   window.addEventListener('resize', onScroll, { passive: true });
 };
 
-
 const init = () => {
   if (pageType === 'offers') {
     renderOffersPage();
-  } else if (pageType === 'quote') {
-    renderQuotePage();
-  } else if (pageType === 'call') {
-    renderCallPage();
   } else if (pageType === 'vertical') {
     renderVerticalPage(offerSlug);
   } else {

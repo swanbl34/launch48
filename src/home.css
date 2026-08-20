@@ -1160,6 +1160,11 @@
 }
 
 /* ── 5. Démos ────────────────────────────────────────────────────────────── */
+/* Mosaïque plutôt que grille uniforme : les deux premiers secteurs passent en
+   grand format. Huit cartes de poids identique donnaient un catalogue, où
+   aucune réalisation ne ressortait ; la hiérarchie vient ici de la taille, pas
+   d'un traitement graphique à part. Le découpage 2 / 3 / 3 pave exactement la
+   grille de 6 colonnes, sans cellule vide à combler. */
 .demos { display: grid; gap: 1rem; }
 
 .demo { padding: 0; overflow: hidden; display: flex; transition: transform 0.22s var(--ease), border-color 0.22s var(--ease), box-shadow 0.22s var(--ease); }
@@ -1170,13 +1175,17 @@
   height: 100%;
 }
 
+/* 16/10 : c'est exactement le cadrage des fichiers sector-*.webp, qui montrent
+   un plein écran du site. Toute autre proportion recadrerait l'image et ferait
+   télécharger des pixels jamais affichés. */
 .demo__shot {
   display: block;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background: var(--bg-soft);
 }
+.demo--hero .demo__shot { aspect-ratio: 16 / 9; }
 .demo__shot img {
   width: 100%;
   height: 100%;
@@ -1192,12 +1201,35 @@
   padding: 1.15rem 1.25rem 1.3rem;
 }
 
+.demo__head { display: flex; align-items: center; gap: 0.55rem; }
+
 .demo__sector {
   display: block;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1.08rem;
   letter-spacing: -0.02em;
+}
+.demo--hero .demo__sector { font-size: clamp(1.18rem, 1.6vw, 1.42rem); letter-spacing: -0.03em; }
+
+/* La distinction démo / site client existe déjà dans le discours du site, elle
+   devient explicite sur chaque carte : une preuve vaut mieux qu'un exemple. */
+.demo__badge {
+  flex: none;
+  margin-left: auto;
+  padding: 0.14rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.demo__badge--client {
+  border-color: color-mix(in srgb, var(--green), transparent 55%);
+  color: var(--green);
 }
 
 .demo__pitch {
@@ -1206,6 +1238,7 @@
   color: var(--muted);
   font-size: 0.95rem;
 }
+.demo--hero .demo__pitch { font-size: 1rem; max-width: 46ch; }
 
 .demo__cta {
   display: inline-flex;
@@ -1612,6 +1645,7 @@
 @media (min-width: 640px) {
   .steps { grid-template-columns: repeat(3, 1fr); }
   .demos { grid-template-columns: repeat(2, 1fr); }
+  .demo--hero { grid-column: 1 / -1; }
   .pricing-cards { grid-template-columns: repeat(3, 1fr); }
   .pc--custom {
     grid-column: 1 / -1;
@@ -1623,6 +1657,17 @@
   .pc--custom .pc__cta { width: auto; white-space: nowrap; flex-shrink: 0; padding-inline: 1.6rem; }
   .included ul { grid-template-columns: repeat(2, 1fr); }
 
+}
+
+/* ── Réalisations : la mosaïque a son propre palier ──────────────────────
+   Elle ne démarre pas à 900px comme le reste du desktop : à cette largeur, les
+   trois colonnes de cartes secondaires ramènent les aperçus à ~275px et on ne
+   lit plus les sites. Entre 640 et 1000px on reste donc sur deux colonnes, avec
+   les cartes mises en avant sur toute la largeur. */
+@media (min-width: 1000px) {
+  .demos { grid-template-columns: repeat(6, 1fr); gap: 1.1rem; }
+  .demo { grid-column: span 2; }
+  .demo--hero { grid-column: span 3; }
 }
 
 /* ── Desktop ─────────────────────────────────────────────────────────────── */
@@ -1650,7 +1695,6 @@
   .process-progress__rocket { width: 3.2rem; height: 1.7rem; }
 
 
-  .demos { grid-template-columns: repeat(4, 1fr); }
 
 
   .included ul { grid-template-columns: repeat(3, 1fr); }
@@ -1853,6 +1897,9 @@
 
   .demo,
   .pc { scroll-snap-align: start; }
+  /* En carrousel, toutes les cartes ont la largeur d'une diapo : on annule
+     l'agrandissement des cartes mises en avant, sinon elles débordent. */
+  .demo--hero { grid-column: auto; }
   .pc--custom { grid-column: auto; }
 
   /* Dans un carrousel, l'apparition au scroll n'a pas de sens : les cartes

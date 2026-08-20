@@ -541,6 +541,37 @@ h2 + .lead { margin-top: 1.1rem; }
   will-change: auto;
 }
 
+/* ── Arrivée mot à mot ───────────────────────────────────────────────────
+   Chaque mot monte depuis derrière son propre masque. L'état initial ne cible
+   que .word__inner, créé par shell.js : si le script ne tourne pas, rien n'est
+   masqué et le texte reste lisible.                                        */
+[data-reveal-words] .word {
+  display: inline-block;
+  overflow: hidden;
+  /* overflow: hidden coupe les jambages — le « p » de « pro », le « g » de
+     « Google ». On agrandit la boîte vers le bas et on reprend la place en
+     marge négative, pour ne pas décaler la ligne suivante. */
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+  vertical-align: bottom;
+}
+
+[data-reveal-words] .word__inner {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 0.78s var(--ease-soft);
+  /* Le rang vient du script, le rythme du CSS : chaque contexte peut régler
+     sa cadence et son point de départ. */
+  transition-delay: calc(var(--reveal-base, 0ms) + var(--i, 0) * var(--reveal-step, 38ms));
+}
+
+[data-reveal-words].is-words-visible .word__inner { transform: none; }
+
+/* Le h1 est visible au chargement : sa cascade démarre donc immédiatement. Un
+   court retard évite qu'elle se joue dans la même image que le premier rendu,
+   et la cadence est un peu plus posée que sur un titre de section. */
+h1[data-reveal-words] { --reveal-base: 120ms; --reveal-step: 46ms; }
+
 /* Hauteur de scroll dédiée au bloc process (le sticky se joue dedans). */
 @media (min-width: 640px) {
   .process > .container { min-height: 125vh; }
@@ -670,4 +701,10 @@ h2 + .lead { margin-top: 1.1rem; }
   }
   .footer__legal { justify-content: flex-end; }
   .footer__note { grid-column: 1 / -1; }
+}
+
+/* Si la préférence d'animation change après le montage, les mots déjà découpés
+   doivent rester lisibles plutôt que figés hors de leur masque. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal-words] .word__inner { transform: none; transition: none; }
 }

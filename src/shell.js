@@ -198,6 +198,107 @@ const setupReveal = () => {
   });
 };
 
+/* ── Arrivée mot à mot des grands titres ─────────────────────────────────
+   Chaque mot monte derrière son propre masque, en cascade. Réservé aux titres
+   qui portent une phrase — h1 d'ouverture, titres de section — et pas aux
+   intitulés de cartes ou au corps des articles, où l'effet deviendrait lassant.
+
+   Le découpage est fait ici et non dans le HTML : le markup reste lisible, et
+   surtout l'état initial du CSS ne cible que les éléments créés par ce script.
+   Si celui-ci n'aboutit pas, rien n'est masqué et le texte reste lisible. Le
+   textContent est préservé, donc le nom accessible du titre ne change pas.  */
+const setupWordReveal = () => {
+  const targets = Array.from(document.querySelectorAll('[data-reveal-words]'));
+  if (!targets.length) return;
+
+  // Animations limitées, ou pas d'observateur : on ne découpe rien.
+  if (reduceMotion.matches || !('IntersectionObserver' in window)) return;
+
+  const mask = (inner) => {
+    const box = document.createElement('span');
+    box.className = 'word';
+    box.appendChild(inner);
+    return box;
+  };
+
+  const splitTextNode = (node) => {
+    /* Découpage sur l'espace simple uniquement. `\s` en JS couvre aussi
+       l'espace insécable : s'en servir séparerait « 590 » de « € » et
+       autoriserait une coupure de ligne au milieu du montant. */
+    const collapsed = node.textContent.replace(/[ \t\r\n]+/g, ' ');
+    /* Les espaces de début et de fin doivent survivre : c'est l'un d'eux qui
+       sépare « en » du <span class="accent">48h.</span> dans le h1. Les
+       supprimer collait le mot à l'élément voisin. En début ou en fin de ligne
+       ils sont de toute façon fusionnés par le navigateur. */
+    const leading = collapsed.startsWith(' ');
+    const trailing = collapsed.length > 1 && collapsed.endsWith(' ');
+    const text = collapsed.replace(/^ +| +$/g, '');
+    const fragment = document.createDocumentFragment();
+    if (!text) return fragment;
+    if (leading) fragment.appendChild(document.createTextNode(' '));
+
+    text.split(' ').forEach((part, index, parts) => {
+      const inner = document.createElement('span');
+      inner.className = 'word__inner';
+      inner.textContent = part;
+      fragment.appendChild(mask(inner));
+      // L'espace reste un vrai nœud texte, hors du masque : sinon les mots se
+      // colleraient et la ligne ne pourrait plus se couper.
+      if (index < parts.length - 1) fragment.appendChild(document.createTextNode(' '));
+    });
+
+    if (trailing) fragment.appendChild(document.createTextNode(' '));
+    return fragment;
+  };
+
+  targets.forEach((target) => {
+    Array.from(target.childNodes).forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (!node.textContent.trim()) return;
+        node.replaceWith(splitTextNode(node));
+        return;
+      }
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+      // Un <br> doit rester tel quel : enfermé dans un inline-block, il ne
+      // provoquerait plus de retour à la ligne.
+      if (node.tagName === 'BR') return;
+
+      /* Un élément inline — l'accent coloré du h1, un <strong> — est animé
+         d'un seul bloc plutôt que disloqué : ses attributs et son contenu
+         restent intacts. Sans ça il apparaîtrait d'un coup, immobile, pendant
+         que les mots voisins montent. */
+      const inner = document.createElement('span');
+      inner.className = 'word__inner';
+      const box = mask(inner);
+      node.replaceWith(box);
+      inner.appendChild(node);
+    });
+
+    // Le script ne pose que le rang ; le rythme est décidé en CSS, et diffère
+    // selon le contexte du titre.
+    target.querySelectorAll('.word').forEach((word, index) => {
+      word.style.setProperty('--i', String(index));
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-words-visible');
+        observer.unobserve(entry.target);
+      });
+    },
+    // Seuil haut : la phrase doit être franchement à l'écran pour se lancer,
+    // sinon elle se joue en bas de cadre et personne ne la voit. Un titre déjà
+    // visible au chargement, comme le h1, part immédiatement.
+    { threshold: 0.35 }
+  );
+
+  targets.forEach((target) => observer.observe(target));
+};
+
 /* ── Parallaxe lente des halos cyan (desktop uniquement) ─────────────────── */
 
 
@@ -207,8 +308,8 @@ const setupReveal = () => {
    l'ancien header/footer déjà présent dans le HTML (mountShell).          */
 
 const NAV_LINKS = [
-  { label: 'Tarifs', href: '/#tarifs' },
   { label: 'Réalisations', href: '/offres/' },
+  { label: 'Tarifs', href: '/#tarifs' },
   { label: 'Blog', href: '/blog/' },
 ];
 
@@ -340,6 +441,7 @@ export const initShell = () => {
   setupNavPill();
   setupMobileMenu();
   setupReveal();
+  setupWordReveal();
 };
 
 export { reduceMotion, isDesktop };

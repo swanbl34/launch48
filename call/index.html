@@ -13,20 +13,183 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
-    <title>Launch48</title>
-    <meta name="description" content="Launch48 - Réservation d'appel découverte." />
-    <meta property="og:title" content="Launch48" />
-    <meta property="og:description" content="Réservez un appel découverte Launch48." />
+    <title>Réserver un appel découverte | Launch48</title>
+    <meta
+      name="description"
+      content="Réservez un appel découverte gratuit avec Launch48. On clarifie votre projet de site internet et vous repartez avec un plan d'action clair, sans engagement."
+    />
+    <link rel="canonical" href="https://launch48.fr/call/" />
+    <meta property="og:title" content="Réserver un appel découverte | Launch48" />
+    <meta
+      property="og:description"
+      content="Un échange court et structuré pour clarifier votre projet de site internet. Sans engagement."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://launch48.fr" />
+    <meta property="og:url" content="https://launch48.fr/call/" />
     <meta property="og:image" content="/opengraph.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#091019" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Le widget de réservation est servi par Google : on ouvre la connexion
+         tôt, c'est l'élément le plus lourd et le plus utile de la page. -->
+    <link rel="preconnect" href="https://calendar.google.com" />
   </head>
-  <body data-page="call">
-    <div id="app"></div>
-    <script type="module" src="/src/verticales.js"></script>
+  <body>
+    <!-- Remplacés au montage par le header et le footer du socle (mountShell). -->
+    <div class="site-header"></div>
+
+    <main id="main">
+      <!-- ══ 1. Hero ══════════════════════════════════════════════════════ -->
+      <section class="section section--tight booking-hero">
+        <div class="container">
+          <p class="eyebrow" data-reveal="left">Appel découverte · en visio · gratuit</p>
+          <h1 data-reveal="left">Parlons de votre projet.<br />Vous repartez avec un plan.</h1>
+          <p class="lead" data-reveal="left">
+            Un échange court et structuré. On clarifie ce que votre site doit produire,
+            le format qui s'y prête et le timing réaliste — que vous travailliez
+            avec Launch48 ensuite ou non.
+          </p>
+          <ul class="booking-hero__points" data-reveal="left">
+            <li>Aucun engagement, aucun pitch commercial</li>
+            <li>Une recommandation honnête, même si ce n'est pas nous</li>
+            <li>Un devis chiffré si le projet est déjà clair</li>
+          </ul>
+          <div class="booking-hero__actions" data-reveal="left">
+            <a class="btn btn--primary btn--shine" href="#calendly">
+              Voir les créneaux <span class="arrow" aria-hidden="true">↓</span>
+            </a>
+            <a class="link-more" href="/devis/">Je préfère écrire mon besoin <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 2. Réservation ═══════════════════════════════════════════════
+           Le module arrive tout de suite après le hero : c'est la raison
+           d'être de la page, il n'a pas à se mériter par un scroll.
+           L'ancre reste #calendly : quiz et blog y pointent déjà. Le décalage
+           sous le header collant vient du scroll-padding-top de shell.css. -->
+      <section class="section section--tight booking-section" id="calendly">
+        <div class="container">
+          <article class="booking" data-reveal>
+            <header class="booking__bar">
+              <div class="booking__intro">
+                <h2>Choisissez votre créneau</h2>
+                <p>Confirmation immédiate, lien Google&nbsp;Meet envoyé automatiquement.</p>
+              </div>
+              <ul class="booking__meta">
+                <li><span>Durée</span><b>30 min</b></li>
+                <li><span>Format</span><b>Visio</b></li>
+                <li><span>Annulation</span><b>Libre</b></li>
+              </ul>
+            </header>
+
+            <!-- Le widget Google est en thème clair et non stylable (autre
+                 origine). Plutôt que de le subir, on l'assume : il devient un
+                 panneau clair franc, encadré, dans la carte. -->
+            <div class="booking__frame">
+              <p class="booking__loading" data-booking-loading>Chargement des créneaux…</p>
+              <iframe
+                data-booking-iframe
+                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
+                title="Réserver un appel découverte Launch48 via Google Calendar"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </article>
+
+          <!-- Filet de sécurité : certains bloqueurs et navigateurs en mode
+               strict empêchent l'iframe. Le lien direct reste toujours là. -->
+          <p class="booking__fallback">
+            Calendrier trop à l'étroit, ou bloqué par votre navigateur ?
+            <a href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
+              Ouvrir la réservation en plein écran
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ══ 3. Déroulé de l'appel ════════════════════════════════════════ -->
+      <section class="section">
+        <div class="container">
+          <header class="section__head">
+            <p class="eyebrow" data-reveal>Le déroulé</p>
+            <h2 data-reveal>Ce qu'on fait pendant l'appel.</h2>
+          </header>
+          <ol class="booking-steps" data-stagger>
+            <li class="card booking-step" data-reveal>
+              <span class="booking-step__n">1</span>
+              <h3>Votre objectif prioritaire</h3>
+              <p>Vendre, capter des demandes, remplir un agenda : on définit ce que le site doit produire, concrètement.</p>
+            </li>
+            <li class="card booking-step" data-reveal>
+              <span class="booking-step__n">2</span>
+              <h3>Le bon format</h3>
+              <p>Une page, un site vitrine, une structure multi-pages : on choisit le format le plus utile, pas le plus gros.</p>
+            </li>
+            <li class="card booking-step" data-reveal>
+              <span class="booking-step__n">3</span>
+              <h3>Ce qui est déjà prêt</h3>
+              <p>Textes, photos, logo, nom de domaine : on fait le point sur ce qui existe et sur ce qu'il reste à produire.</p>
+            </li>
+            <li class="card booking-step" data-reveal>
+              <span class="booking-step__n">4</span>
+              <h3>La prochaine étape</h3>
+              <p>Un devis, un délai, ou une recommandation vers autre chose. Dans tous les cas, une décision possible.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ══ 4. Ce que vous en retirez ════════════════════════════════════ -->
+      <section class="section section--tight">
+        <div class="container">
+          <div class="booking-outcome">
+            <article class="card booking-outcome__card" data-reveal="left">
+              <p class="eyebrow">À la fin de l'appel</p>
+              <h2>Vous repartez avec</h2>
+              <ul class="booking-checklist">
+                <li>La promesse de votre site en une phrase</li>
+                <li>La structure recommandée : pages et sections</li>
+                <li>Un timing réaliste pour la mise en ligne</li>
+                <li>Un budget chiffré, sans zone d'ombre</li>
+              </ul>
+            </article>
+            <article class="card booking-outcome__aside" data-reveal="right">
+              <p class="eyebrow">Pourquoi c'est gratuit</p>
+              <p>
+                Parce qu'une demi-heure suffit à savoir si on peut vous être utile — ou pas.
+                C'est du temps gagné des deux côtés. Si votre besoin ne correspond pas à
+                ce qu'on fait, on vous le dit et on vous oriente.
+              </p>
+              <p class="booking-outcome__sign">Swan, Launch48</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 5. Dernier rappel ════════════════════════════════════════════ -->
+      <section class="section booking-final">
+        <div class="container">
+          <div class="booking-final__inner" data-reveal="zoom">
+            <h2>Une demi-heure pour y voir clair.</h2>
+            <p>Sans engagement, et sans avoir à préparer quoi que ce soit.</p>
+            <a class="btn btn--primary btn--shine" href="#calendly">
+              Réserver mon appel <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="site-footer"></div>
+
+    <script type="module" src="/src/call.js"></script>
   </body>
 </html>

@@ -541,6 +541,108 @@ h2 + .lead { margin-top: 1.1rem; }
   will-change: auto;
 }
 
+/* ── Curseur personnalisé ────────────────────────────────────────────────
+   Point cyan collé au pointeur, anneau qui le rattrape. La classe .has-cursor
+   est posée par shell.js une fois les éléments en place : sans script, le
+   curseur natif reste, on ne se retrouve jamais sans pointeur.            */
+.has-cursor,
+.has-cursor * { cursor: none; }
+
+/* La barre d'insertion dit où l'on va taper. Un point ne le dit pas : les
+   champs de saisie gardent donc le curseur du système. */
+.has-cursor :is(input, textarea, select, [contenteditable='true']) { cursor: auto; }
+
+/* Au-dessus d'une iframe, le parent ne reçoit plus d'événements de pointeur :
+   notre curseur se figerait au bord. On rend la main au curseur natif. */
+.has-cursor.cursor-native,
+.has-cursor.cursor-native * { cursor: auto; }
+
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  /* transform est réservé au suivi du pointeur, écrit par shell.js. Le
+     centrage passe par une marge négative, et les changements de taille par
+     width / height / margin.
+
+     Surtout : jamais la propriété `scale` ici. Les propriétés individuelles
+     (translate, rotate, scale) s'appliquent AVANT `transform` : un scale de
+     0.35 multipliait donc les coordonnées de translation par 0,35 et projetait
+     le curseur vers le coin haut-gauche de la page. */
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--cyan);
+  /* Liseré sombre autour du point. Sans lui, un point cyan sur un bouton cyan
+     — ou sur les aperçus de sites, qui sont clairs — disparaît purement et
+     simplement. Le halo cyan suit derrière, pour le relief sur fond foncé. */
+  box-shadow: 0 0 0 1.5px rgba(4, 10, 18, 0.55),
+    0 0 10px color-mix(in srgb, var(--cyan), transparent 40%);
+  transition: width 0.2s var(--ease), height 0.2s var(--ease), margin 0.2s var(--ease),
+    opacity 0.18s var(--ease);
+}
+
+.cursor__ring {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  /* Trait plus franc et halo cyan : à 1px et 45 % d'opacité, l'anneau se
+     perdait sur le fond sombre du site. */
+  border: 1.5px solid color-mix(in srgb, var(--cyan), transparent 20%);
+  box-shadow: 0 0 0 1px rgba(4, 10, 18, 0.3),
+    0 0 14px color-mix(in srgb, var(--cyan), transparent 62%);
+  transition: width 0.28s var(--ease-soft), height 0.28s var(--ease-soft),
+    margin 0.28s var(--ease-soft), background-color 0.28s var(--ease),
+    border-color 0.28s var(--ease), opacity 0.18s var(--ease);
+}
+
+/* Survol d'un élément cliquable : l'anneau s'ouvre et se teinte, le point
+   rétrécit sans bouger — c'est l'anneau qui devient la cible. */
+.cursor-hover .cursor__ring {
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
+  border-color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan), transparent 86%);
+}
+.cursor-hover .cursor__dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+}
+
+/* Clic : l'anneau se resserre, le geste a un retour. */
+.cursor-down .cursor__ring {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+}
+
+/* Avant le premier mouvement de souris : on ne sait pas où est le pointeur,
+   donc on ne montre rien. */
+.cursor--idle { opacity: 0 !important; }
+
+/* Hors fenêtre, zone à curseur natif, ou sélection de texte en cours. */
+.cursor-away .cursor__dot,
+.cursor-away .cursor__ring,
+.cursor-native .cursor__dot,
+.cursor-native .cursor__ring { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* L'anneau reste, sans traîne ni élan : shell.js met le suivi à 1, et on
+     réduit les transitions à l'apparition. */
+  .cursor__dot,
+  .cursor__ring { transition: opacity 0.18s linear; }
+}
+
 /* ── Arrivée mot à mot ───────────────────────────────────────────────────
    Chaque mot monte depuis derrière son propre masque. L'état initial ne cible
    que .word__inner, créé par shell.js : si le script ne tourne pas, rien n'est

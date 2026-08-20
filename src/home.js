@@ -87,79 +87,6 @@ const setupBackgroundGradient = () => {
   });
 };
 
-/* ── Arrivée mot à mot du bloc promesse ──────────────────────────────────
-   Le bloc est une phrase manifeste : on la fait monter mot après mot derrière
-   un masque, plutôt que de faire apparaître deux pavés d'un coup. L'effet se
-   lit comme de la typographie qui se pose, et il attire l'œil pile là où le
-   discours bascule.
-
-   Le découpage est fait en JS et non dans le HTML : le markup reste lisible,
-   et surtout le texte n'est jamais caché sans que le script ait tourné —
-   l'état initial ne porte que sur les éléments que le script vient de créer.
-   Le nom accessible du titre ne change pas : on ne fait qu'emballer des mots,
-   le textContent reste identique.                                          */
-const setupWordReveal = () => {
-  const targets = Array.from(document.querySelectorAll('[data-reveal-words]'));
-  if (!targets.length) return;
-
-  // Animations limitées, ou pas d'observateur : on ne découpe rien, donc le
-  // texte reste affiché tel quel. Aucun état à rattraper.
-  if (reduceMotion.matches || !('IntersectionObserver' in window)) return;
-
-  const splitTextNode = (node) => {
-    /* On découpe sur l'espace simple uniquement. `\s` en JS couvre aussi
-       l'espace insécable : s'en servir séparerait « 590 » de « € » et
-       autoriserait une coupure de ligne au milieu du montant. */
-    const text = node.textContent.replace(/[ \t\r\n]+/g, ' ').replace(/^ | $/g, '');
-    const fragment = document.createDocumentFragment();
-
-    text.split(' ').forEach((part, index, parts) => {
-      const mask = document.createElement('span');
-      mask.className = 'word';
-      const inner = document.createElement('span');
-      inner.className = 'word__inner';
-      inner.textContent = part;
-      mask.appendChild(inner);
-      fragment.appendChild(mask);
-      // L'espace reste un vrai nœud texte, hors du masque : sinon les mots se
-      // colleraient et la césure de ligne ne pourrait plus se faire.
-      if (index < parts.length - 1) fragment.appendChild(document.createTextNode(' '));
-    });
-
-    return fragment;
-  };
-
-  targets.forEach((target) => {
-    // Seuls les nœuds texte sont découpés : un élément inline éventuel (lien,
-    // <strong>) est laissé entier plutôt que disloqué.
-    Array.from(target.childNodes).forEach((node) => {
-      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) return;
-      node.replaceWith(splitTextNode(node));
-    });
-
-    // Le JS ne pose que le rang ; c'est le CSS qui décide du rythme, différent
-    // pour le titre et pour le chapô.
-    target.querySelectorAll('.word').forEach((word, index) => {
-      word.style.setProperty('--i', String(index));
-    });
-  });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-words-visible');
-        observer.unobserve(entry.target);
-      });
-    },
-    // Seuil haut : la phrase doit être franchement à l'écran pour se lancer,
-    // sinon elle se joue en bas de cadre et personne ne la voit.
-    { threshold: 0.35 }
-  );
-
-  targets.forEach((target) => observer.observe(target));
-};
-
 /* ── Scène du hero : parallaxe de profondeur au pointeur ─────────────────
    On ne fait pivoter que la scène : comme chaque élément a son propre
    translateZ, la perspective déplace les plans proches (fusée, cartes,
@@ -274,6 +201,73 @@ const setupProcessProgress = () => {
   window.addEventListener('resize', request, { passive: true });
 };
 
+/* ── CTA final : ouverture en plein écran au scroll ──────────────────────
+   On ne pose qu'une variable, --expand, de 0 à 1 : tout le rendu est décidé en
+   CSS. Le JS ne touche ni à une taille ni à une position, donc rien ne peut
+   partir de travers si la feuille de style change.
+
+   Le découpage de la course : on ouvre sur le premier tiers, on tient plein
+   écran sur le tiers du milieu, on referme sur le dernier. Sans ce palier
+   central, le panneau se refermerait à l'instant même où il finit de s'ouvrir
+   et on n'aurait jamais le temps de lire.                                   */
+const setupFinalExpand = () => {
+  const section = document.querySelector('.final');
+  const track = document.querySelector('.final__track');
+  if (!section || !track) return;
+
+  // Mêmes conditions que la règle CSS : sous 900px la course de scroll ne se
+  // justifie pas, et on respecte la limitation d'animations.
+  const wide = window.matchMedia('(min-width: 900px)');
+  const clamp = (value) => Math.min(1, Math.max(0, value));
+  // Adoucit les deux extrémités : en linéaire, le départ et l'arrivée
+  // s'aperçoivent comme des ruptures.
+  const ease = (t) => t * t * (3 - 2 * t);
+
+  const OPEN_UNTIL = 0.34;
+  const HOLD_UNTIL = 0.66;
+
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+
+    if (reduceMotion.matches || !wide.matches) {
+      section.style.removeProperty('--expand');
+      return;
+    }
+
+    const rect = track.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || 1;
+    // Course utile : la hauteur du rail moins l'écran, c'est-à-dire la distance
+    // pendant laquelle le bloc collé reste à l'écran.
+    const distance = rect.height - viewportHeight;
+    if (distance <= 0) {
+      section.style.setProperty('--expand', '0');
+      return;
+    }
+
+    const progress = clamp(-rect.top / distance);
+    let expand;
+    if (progress < OPEN_UNTIL) expand = progress / OPEN_UNTIL;
+    else if (progress < HOLD_UNTIL) expand = 1;
+    else expand = 1 - (progress - HOLD_UNTIL) / (1 - HOLD_UNTIL);
+
+    section.style.setProperty('--expand', ease(clamp(expand)).toFixed(4));
+  };
+
+  const request = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener('scroll', request, { passive: true });
+  window.addEventListener('resize', request, { passive: true });
+  wide.addEventListener('change', request);
+  reduceMotion.addEventListener?.('change', request);
+};
+
 /* ── FAQ : accordéon accessible ──────────────────────────────────────────── */
 const setupFaq = () => {
   const questions = Array.from(document.querySelectorAll('.faq__q'));
@@ -363,10 +357,10 @@ const setupAuditForm = () => {
 
 initShell();
 setupGlowParallax();
-setupWordReveal();
 setupScenePointer();
 setupBackgroundGradient();
 setupProcessProgress();
+setupFinalExpand();
 setupFaq();
 setupThumbBar();
 setupAuditForm();

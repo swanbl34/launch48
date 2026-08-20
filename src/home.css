@@ -20,11 +20,32 @@
   height: calc(100svh - var(--band-h));
   z-index: -1;
   overflow: hidden;
-  /* Tant que le module n'est pas monté, rien ne doit apparaître. */
+  /* Dégradé statique présent dès le premier rendu. Le calque était auparavant
+     à opacity 0 en attendant le module : le hero restait donc vide, puis le
+     shader surgissait. Ici le fond est là immédiatement, dans la palette du
+     shader, et le canvas vient se fondre par-dessus — il n'y a plus d'apparition
+     depuis le néant. Bénéfice au passage : les visiteurs qui limitent les
+     animations, pour qui le shader n'est jamais chargé, ont enfin un vrai fond. */
+  background:
+    radial-gradient(
+      115% 115% at 76% 16%,
+      color-mix(in srgb, var(--blue), transparent 76%),
+      transparent 62%
+    ),
+    radial-gradient(
+      85% 85% at 98% 66%,
+      color-mix(in srgb, var(--cyan), transparent 88%),
+      transparent 56%
+    );
+}
+
+/* Seul le canvas se dévoile, et seulement quand le dégradé est réellement
+   dessiné (voir ReadyGate dans bg-gradient.js). */
+.bg-gradient canvas {
   opacity: 0;
   transition: opacity 1.2s var(--ease-soft);
 }
-.bg-gradient[data-ready] { opacity: 1; }
+.bg-gradient[data-ready] canvas { opacity: 1; }
 
 /* Le calque n'existe pas sous 900px : le module n'y est pas chargé. */
 @media (max-width: 899px) {
@@ -62,15 +83,6 @@
   width: min(720px, 105vw);
   aspect-ratio: 1;
   background: radial-gradient(circle, rgba(70, 228, 255, 0.15), rgba(95, 141, 255, 0.1) 45%, transparent 68%);
-}
-
-.glow--final {
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  width: min(820px, 120vw);
-  aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(70, 228, 255, 0.15), rgba(99, 255, 224, 0.06) 42%, transparent 66%);
 }
 
 /* ── 1. Hero ─────────────────────────────────────────────────────────────── */
@@ -1072,32 +1084,6 @@
 .problem h2 { max-width: 28ch; }
 .problem .lead { margin-top: 1.2rem; }
 
-/* ── Arrivée mot à mot ───────────────────────────────────────────────────
-   Chaque mot monte depuis derrière son propre masque. L'état initial ne cible
-   que .word__inner, un élément créé par home.js : si le script ne tourne pas,
-   rien n'est masqué et le texte reste lisible.                            */
-[data-reveal-words] .word {
-  display: inline-block;
-  overflow: hidden;
-  /* overflow: hidden coupe les jambages — le « p » de « pro », le « g » de
-     « Google ». On agrandit la boîte vers le bas et on reprend la place en
-     marge négative, pour ne pas décaler la ligne suivante. */
-  padding-bottom: 0.18em;
-  margin-bottom: -0.18em;
-  vertical-align: bottom;
-}
-
-[data-reveal-words] .word__inner {
-  display: inline-block;
-  transform: translateY(115%);
-  transition: transform 0.78s var(--ease-soft);
-  /* Le rang vient du JS, le rythme du CSS : titre et chapô n'ont pas la même
-     cadence, et le chapô démarre alors que le titre finit de se poser. */
-  transition-delay: calc(var(--reveal-base, 0ms) + var(--i, 0) * var(--reveal-step, 40ms));
-}
-
-[data-reveal-words].is-words-visible .word__inner { transform: none; }
-
 .problem h2 { --reveal-step: 42ms; }
 .problem .lead { --reveal-step: 20ms; --reveal-base: 360ms; }
 
@@ -1109,9 +1095,18 @@
 .process .section__head { margin-bottom: 1.25rem; }
 
 .process-progress {
+  /* Taille de la fusée, déclarée ici pour servir deux fois : le gabarit du
+     vaisseau, et la place à lui réserver autour de la barre. */
+  --rocket-size: 2.9rem;
   position: relative;
   height: 8px;
-  margin-top: 0.5rem;
+  /* La fusée dépasse largement de la barre, en haut comme en bas. On réserve
+     donc de la place des deux côtés, sinon elle chevauche le titre au-dessus et
+     les cartes en dessous.
+     Le facteur 0.707, c'est √2 / 2 : tournée à 45°, la fusée occupe la diagonale
+     de son carré, soit 1,41 fois sa hauteur déclarée. Réserver la demi-hauteur
+     ne suffisait pas — il restait 7px de jour sous elle. */
+  margin-block: calc(var(--rocket-size) * 0.707);
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
@@ -1133,10 +1128,15 @@
   left: 2%;
   z-index: 1;
   display: inline-flex;
-  width: 2.7rem;
-  height: 1.45rem;
-  transform: translate(-50%, -50%) scaleX(-1);
-  filter: drop-shadow(0 2px 8px rgba(2, 8, 18, 0.5));
+  /* Carré : la fusée du logo est dessinée en diagonale dans un carré. */
+  width: var(--rocket-size);
+  height: var(--rocket-size);
+  /* rotate(45deg) aligne la fusée sur le sens de marche : le logo pointe vers
+     le haut à droite, la barre se remplit vers la droite. L'ancien scaleX(-1)
+     retournait un dessin maison qui pointait donc à contresens du déplacement. */
+  transform: translate(-50%, -50%) rotate(45deg);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--cyan), transparent 45%))
+    drop-shadow(0 2px 8px rgba(2, 8, 18, 0.55));
   will-change: left;
 }
 .process-progress__rocket svg { width: 100%; height: 100%; overflow: visible; }
@@ -1748,9 +1748,202 @@
 .faq__a { padding: 0 1.25rem 1.15rem; }
 .faq__a p { color: var(--muted); font-size: 0.97rem; }
 
-/* ── 10. CTA final ───────────────────────────────────────────────────────── */
+/* ── 10. CTA final ───────────────────────────────────────────────────────
+   Dernier bloc du site, donc dernière chance de convaincre : il doit avoir une
+   présence que du texte centré sur fond nu n'a pas. Trois éléments portent
+   l'effet, tous en CSS et sans image : une aurore lente, le chiffre 48h en
+   filigrane, et un liseré en dégradé.                                      */
 .final { position: relative; isolation: isolate; }
-.final .cta-row { margin-top: 2rem; }
+
+/* Par défaut — mobile, ou animations limitées — rien de spécial : le panneau
+   reste dans le flux, à sa taille normale. L'effet d'ouverture est ajouté
+   ensuite, sous condition. */
+.final__stage { display: grid; align-content: center; }
+.final__content { position: relative; z-index: 2; }
+
+.final__panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* Contenu centré verticalement : indispensable une fois le panneau ouvert en
+     plein écran, où il restait sinon collé en haut, avec un grand vide dessous
+     et le surtitre qui passait sous la barre de navigation. */
+  display: grid;
+  align-content: center;
+  border-radius: clamp(20px, 3vw, 32px);
+  padding: clamp(2.5rem, 6vw, 4.75rem) clamp(1.35rem, 5vw, 3.5rem);
+  background:
+    radial-gradient(
+      130% 100% at 50% 0%,
+      color-mix(in srgb, var(--blue), transparent 88%),
+      transparent 62%
+    ),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-soft), transparent 15%), var(--bg-soft));
+}
+
+/* Liseré en dégradé. Une bordure ne peut pas recevoir de dégradé directement :
+   on peint le dégradé sur toute la boîte, puis le masque n'en conserve que
+   l'épaisseur du contour — la zone de contenu est exclue. */
+.final__panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    var(--cyan),
+    color-mix(in srgb, var(--blue), transparent 35%) 34%,
+    transparent 58%,
+    color-mix(in srgb, var(--green), transparent 45%)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* Aurore : un dégradé conique flouté qui tourne très lentement. C'est ce
+   mouvement à peine perceptible qui accroche l'œil en fin de page. */
+.final__aura {
+  position: absolute;
+  inset: -30%;
+  z-index: -2;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    color-mix(in srgb, var(--cyan), transparent 80%) 12%,
+    transparent 32%,
+    color-mix(in srgb, var(--green), transparent 86%) 52%,
+    transparent 72%,
+    color-mix(in srgb, var(--blue), transparent 82%) 88%,
+    transparent 100%
+  );
+  filter: blur(48px);
+}
+
+/* Le chiffre de la promesse, en contour seulement : il pose l'échelle du bloc
+   sans jamais concurrencer le titre en lisibilité. Débordement volontaire, la
+   carte le recadre. */
+.final__mark {
+  position: absolute;
+  /* Remonté et non centré : le titre, opaque et gras, masque alors l'essentiel
+     du contour, au lieu de le laisser traverser le chapô en gris clair où il
+     gênait la lecture. */
+  top: 43%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(10rem, 30vw, 24rem);
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--cyan), transparent 88%);
+  text-stroke: 1px color-mix(in srgb, var(--cyan), transparent 88%);
+}
+
+.final__inner { max-width: 48ch; margin-inline: auto; text-align: center; }
+
+.final__kicker {
+  display: inline-flex;
+  margin-bottom: 0.9rem;
+  color: var(--cyan);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* Le titre du dernier bloc dépasse volontairement les autres h2 de la page. */
+.final h2 { font-size: clamp(2rem, 6.2vw, 3.5rem); }
+.final .lead { margin-top: 1.1rem; margin-inline: auto; max-width: 42ch; }
+.final .cta-row { margin-top: clamp(1.75rem, 4vw, 2.25rem); }
+
+.final__proof {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+  margin-top: clamp(1.5rem, 4vw, 2rem);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.final__proof li { display: inline-flex; align-items: baseline; gap: 0.45rem; }
+.final__proof li::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+/* La rotation est réservée au desktop : un dégradé conique flouté de cette
+   taille est composité à chaque image, ça n'a pas sa place sur un téléphone.
+   Statique, l'aurore reste un beau fond. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .final__aura {
+    will-change: transform;
+    animation: final-drift 26s linear infinite;
+  }
+}
+
+@keyframes final-drift {
+  to { rotate: 360deg; }
+}
+
+/* ── Ouverture en plein écran au scroll ──────────────────────────────────
+   La course de scroll est portée par .final__track, haut de trois écrans :
+   c'est lui qui donne la distance nécessaire pour ouvrir, tenir, puis refermer.
+   .final__stage reste collé en haut pendant toute la traversée, et le panneau,
+   positionné en absolu dedans, voit ses quatre retraits fondre vers zéro.
+
+   On anime les retraits et non une échelle : un scale déformerait le texte,
+   épaissirait le liseré d'un pixel et arrondirait les angles de travers. Et
+   comme le contenu garde sa propre largeur, il ne se remet jamais en page —
+   seule la boîte du panneau change.
+
+   Réservé au desktop : sur téléphone le panneau occupe déjà presque toute la
+   largeur, l'ouverture ne se verrait pas et coûterait trois écrans de scroll. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .final { padding-block: 0; }
+
+  .final__track { position: relative; height: 300svh; }
+
+  .final__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+
+  .final__panel {
+    position: absolute;
+    /* Deux variables distinctes : dans `left` et `right`, le 100% se résout sur
+       la largeur du bloc conteneur ; dans `top` et `bottom`, sur sa hauteur. */
+    --fx: calc((100% - min(1160px, 100% - 3rem)) / 2);
+    --fy: calc((100% - min(640px, 100% - 3rem)) / 2);
+    --collapse: calc(1 - var(--expand, 0));
+    left: calc(var(--fx) * var(--collapse));
+    right: calc(var(--fx) * var(--collapse));
+    top: calc(var(--fy) * var(--collapse));
+    bottom: calc(var(--fy) * var(--collapse));
+    /* Les angles s'équerrent en s'ouvrant : c'est ce détail qui fait lire
+       « plein écran » plutôt que « grande carte ». */
+    border-radius: calc(clamp(20px, 3vw, 32px) * var(--collapse));
+  }
+
+  /* Le contenu grandit un peu, en une seule transformation : sans reprise de
+     mise en page, et le texte ne saute pas d'une ligne à l'autre. */
+  .final__content {
+    transform: scale(calc(1 + 0.1 * var(--expand, 0)));
+    transform-origin: center;
+  }
+
+  /* Le chiffre suit l'ouverture, sinon il rapetisse à vue d'œil dans un cadre
+     qui grandit. */
+  .final__mark { font-size: calc(clamp(10rem, 30vw, 24rem) * (1 + 0.3 * var(--expand, 0))); }
+}
 
 /* ── Tablette ────────────────────────────────────────────────────────────── */
 @media (min-width: 640px) {
@@ -1803,7 +1996,7 @@
     align-content: start;
   }
 
-  .process-progress__rocket { width: 3.2rem; height: 1.7rem; }
+  .process-progress { --rocket-size: 3.5rem; }
 
 
 
@@ -2159,9 +2352,6 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
-  /* Filet : si la préférence change après le montage, les mots déjà découpés
-     doivent rester lisibles plutôt que figés hors de leur masque. */
-  [data-reveal-words] .word__inner { transform: none; }
 
   *,
   *::before,

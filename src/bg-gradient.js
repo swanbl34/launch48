@@ -1,9 +1,9 @@
 /* Îlot React isolé : il n'existe que pour ShaderGradient, qui n'a pas de
    version vanilla. Ce module est chargé en import() dynamique par home.js,
    donc React, three et R3F ne pèsent pas sur le rendu initial de la page. */
-import { createElement, useEffect } from 'react';
+import { createElement, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react';
 
 const CANVAS_STYLE = {
@@ -107,6 +107,39 @@ const FrameloopThrottle = ({ host }) => {
   return null;
 };
 
+/* Le calque ne se dévoile que lorsque le dégradé est réellement dessiné.
+   Avant, data-ready était posé juste après root.render() : React n'avait pas
+   encore monté le canvas, et le fondu de 1,2 s démarrait donc sur un cadre
+   vide. Le shader apparaissait en cours de fondu — d'où l'arrivée brutale au
+   premier chargement et à chaque rafraîchissement.
+
+   On attend deux choses : quelques images effectivement rendues, et la carte
+   d'environnement. Cette dernière est appliquée à la scène quand son HDR
+   arrive, ce qui change l'éclairage d'un coup : se dévoiler avant, c'était
+   subir ce saut à l'écran.                                                 */
+const MIN_FRAMES = 3;
+// Plafond de sécurité : si l'HDR n'arrive jamais (réseau coupé, ressource
+// bloquée), le fond doit tout de même finir par s'afficher.
+const MAX_FRAMES = 120;
+
+const ReadyGate = ({ host }) => {
+  const frames = useRef(0);
+  const settled = useRef(false);
+
+  useFrame((state) => {
+    if (settled.current) return;
+    frames.current += 1;
+
+    const environmentReady = Boolean(state.scene.environment);
+    if ((environmentReady && frames.current >= MIN_FRAMES) || frames.current >= MAX_FRAMES) {
+      settled.current = true;
+      host.dataset.ready = '1';
+    }
+  });
+
+  return null;
+};
+
 export const mountBackgroundGradient = (host) => {
   const root = createRoot(host);
   root.render(
@@ -130,9 +163,11 @@ export const mountBackgroundGradient = (host) => {
       /* Deux enfants : ShaderGradientCanvas les repasse tels quels au <Canvas>
          de R3F, donc React les reçoit comme un tableau — d'où les clés. */
       createElement(ShaderGradient, { key: 'gradient', ...GRADIENT }),
-      createElement(FrameloopThrottle, { key: 'throttle', host })
+      createElement(FrameloopThrottle, { key: 'throttle', host }),
+      createElement(ReadyGate, { key: 'ready', host })
     )
   );
-  host.dataset.ready = '1';
+  // Pas de data-ready ici : c'est ReadyGate qui le pose, une fois le dégradé
+  // effectivement dessiné.
   return root;
 };

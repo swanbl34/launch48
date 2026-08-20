@@ -104,8 +104,8 @@
         </a>
         <nav class="nav" aria-label="Navigation principale">
           <span class="nav__pill" aria-hidden="true"></span>
-          <a href="#tarifs">Tarifs</a>
           <a href="#realisations">Réalisations</a>
+          <a href="#tarifs">Tarifs</a>
           <a href="#faq">FAQ</a>
         </nav>
         <div class="header__actions">
@@ -118,8 +118,8 @@
       </div>
       <div class="menu-mobile" id="menu-mobile" hidden>
         <nav aria-label="Navigation mobile">
-          <a href="#tarifs"><span>Tarifs</span></a>
           <a href="#realisations"><span>Réalisations</span></a>
+          <a href="#tarifs"><span>Tarifs</span></a>
           <a href="#faq"><span>FAQ</span></a>
           <a href="#audit"><span>Audit gratuit</span></a>
         </nav>
@@ -132,7 +132,7 @@
         <div class="glow glow--hero" aria-hidden="true" data-parallax="0.12"></div>
         <div class="container hero__inner">
           <div class="hero__content" data-stagger>
-            <h1 id="hero-title" data-reveal="left">Votre site pro,<br />en ligne en <span class="accent">48h.</span></h1>
+            <h1 id="hero-title" data-reveal-words>Votre site pro,<br />en ligne en <span class="accent">48h.</span></h1>
             <p class="lead" data-reveal="left">
               Un site conçu pour vous apporter des clients, pas juste pour faire joli.
               Prix fixe, tout compris, zéro jargon technique.
@@ -578,28 +578,26 @@
         <div class="container">
           <div class="process-sticky">
             <header class="section__head">
-              <h2 id="methode-title" data-reveal>Simple. Rapide. Sans surprise.</h2>
+              <h2 id="methode-title" data-reveal-words>Simple. Rapide. Sans surprise.</h2>
             </header>
 
             <div class="process-progress" aria-hidden="true">
               <span class="process-progress__fill"></span>
+              <!-- Mêmes tracés que la fusée du logo (public/favicon-fusee.svg),
+                   pas un dessin maison : c'est la même silhouette et les mêmes
+                   couleurs. Les classes rocket__body / rocket__flame sont celles
+                   de la fusée du hero, ce qui apporte le battement de flamme et
+                   son garde-fou reduced-motion sans rien réécrire. -->
               <span class="process-progress__rocket">
-                <svg viewBox="0 0 72 28" role="presentation" focusable="false" aria-hidden="true">
+                <svg viewBox="0 0 75.19 75.36" role="presentation" focusable="false" aria-hidden="true">
                   <defs>
-                    <linearGradient id="home-rocket-body" x1="0%" y1="50%" x2="100%" y2="50%">
-                      <stop offset="0%" stop-color="#dff8ff" />
-                      <stop offset="55%" stop-color="#7fdcff" />
-                      <stop offset="100%" stop-color="#4f87ff" />
+                    <linearGradient id="process-rocket" x1="7%" y1="18%" x2="88%" y2="84%">
+                      <stop offset="0%" stop-color="#46e4ff" />
+                      <stop offset="100%" stop-color="#5f8dff" />
                     </linearGradient>
                   </defs>
-                  <path d="M2 14c2.5-2.8 5.8-4.4 9.8-4.8-2.6 1.6-4 3.2-4.3 4.8.3 1.6 1.7 3.2 4.3 4.8-4-.4-7.3-2-9.8-4.8Z" fill="rgba(255,255,255,0.92)" />
-                  <path d="M6 14c1.5-1.6 3.6-2.6 6.2-3-1.7 1-2.7 2-2.9 3 .2 1 1.2 2 2.9 3-2.6-.4-4.7-1.4-6.2-3Z" fill="rgba(223,248,255,0.9)" />
-                  <path d="M14 14c4-7 13-11 27-10l10 1 4 9-4 9-10 1C27 25 18 21 14 14Z" fill="url(#home-rocket-body)" />
-                  <path d="M43 6 54 4l-4 6Z" fill="#8fb7ff" />
-                  <path d="M43 22 54 24l-4-6Z" fill="#63ffe0" />
-                  <circle cx="34" cy="14" r="4.2" fill="#132338" />
-                  <circle cx="34" cy="14" r="2.2" fill="#dff8ff" />
-                  <path d="M55 8h10l4 6-4 6H55l3-6-3-6Z" fill="#dff8ff" />
+                  <path class="rocket__body" fill="url(#process-rocket)" d="M71.83,0l2.56.62c.82.73.34,2.85.8,2.74v3.6c-.1.15-.16.57-.21.97-1.24,10.72-6.57,22.23-12.77,30.95-3.65,5.13-7.99,9.43-13.05,13.08.7,8.09-1.57,14.19-8.21,18.7-3.37,2.31-7.68,3.73-11.53,4.45-.19.04-.54.23-.55.26h-.68c-.34-.25-1.22-.97-1.3-1.45l1.63-15.03-3.04-.26c-.72-.06-1.68-.41-2.19-.93l-5.79-5.78c-.53-.53-.84-1.47-.91-2.2l-.27-3.03-14.57,1.6c-.42.05-1.14-.23-1.36-.49s-.44-1.08-.37-1.48c1.37-8.26,5.65-16.84,14.11-19.5,3.02-.95,6.03-.96,9.2-.78C31.44,14.31,45.61,6.1,58.94,2.05c3.31-1.01,6.52-1.51,9.77-2.05h3.12ZM48.3,17.67c-4.62.77-7.39,5.11-6.58,9.43s4.94,7.18,9.26,6.44,7.33-4.89,6.58-9.29-4.7-7.33-9.25-6.57Z" />
+                  <path class="rocket__flame" fill="#63ffe0" d="M23.61,61.55c1.64.27-1.15,6.32-3.12,7.39-4.74,2.79-12.23,3.34-17.85,3.64.27-5.53.89-13.33,3.66-17.84,1.32-2.47,8.7-5.18,7.16-2.45-1.72,3.06-2.62,6.51-.13,9.22,1.52,1.66,3.74,2.22,6.06,1.72,3.28-.7,3.35-1.82,4.22-1.68Z" />
                 </svg>
               </span>
             </div>
@@ -634,7 +632,7 @@
       <section class="section" id="realisations" aria-labelledby="realisations-title">
         <div class="container">
           <header class="section__head">
-            <h2 id="realisations-title" data-reveal>Votre secteur. Votre objectif. Votre site.</h2>
+            <h2 id="realisations-title" data-reveal-words>Votre secteur. Votre objectif. Votre site.</h2>
             <p class="lead" data-reveal>
               Chaque offre est calibrée pour un objectif spécifique. Pas un site générique,
               mais un site qui fait exactement ce dont vous avez besoin.
@@ -774,7 +772,7 @@
         <div class="container">
           <div class="pricing-head" data-reveal>
             <span class="kicker">Investissement</span>
-            <h2 id="tarifs-title">Un site pro. Un prix clair. Aucune surprise.</h2>
+            <h2 id="tarifs-title" data-reveal-words>Un site pro. Un prix clair. Aucune surprise.</h2>
             <p class="lead">Tout compris : nom de domaine offert et hébergement 1<sup>re</sup> année inclus. Livré en 48h.</p>
           </div>
 
@@ -878,7 +876,7 @@
             <div class="audit__top">
               <div class="audit__pitch">
                 <span class="audit__kicker">Audit gratuit</span>
-                <h2 id="audit-title">Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
+                <h2 id="audit-title" data-reveal-words>Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
                 <p class="lead">
                   En 24h, on vous envoie un audit clair et gratuit. Sans engagement, sans jargon.
                 </p>
@@ -955,7 +953,7 @@
       <section class="section" id="comparatif" aria-labelledby="comparatif-title">
         <div class="container">
           <header class="section__head">
-            <h2 id="comparatif-title" data-reveal>Ni agence, ni bricolage.</h2>
+            <h2 id="comparatif-title" data-reveal-words>Ni agence, ni bricolage.</h2>
           </header>
           <div class="compare" data-reveal="right">
             <table>
@@ -1003,7 +1001,7 @@
       <section class="section" id="faq" aria-labelledby="faq-title">
         <div class="container narrow">
           <header class="section__head">
-            <h2 id="faq-title" data-reveal>Les questions qu'on nous pose le plus.</h2>
+            <h2 id="faq-title" data-reveal-words>Les questions qu'on nous pose le plus.</h2>
           </header>
           <div class="faq" data-stagger>
             <div class="faq__item card" data-reveal>
@@ -1066,16 +1064,51 @@
       </section>
 
       <!-- ══ 10. CTA final ════════════════════════════════════════════════ -->
+      <!-- Le bloc s'ouvre en plein écran au scroll puis se referme. La course
+           est portée par .final__track (haut de plusieurs écrans), le panneau
+           reste collé au centre via .final__stage, et son cadre s'étend d'après
+           la variable --expand posée par home.js.
+           Le halo .glow--final a disparu : le panneau a désormais sa propre
+           aurore, et un halo extérieur devient invisible dès l'ouverture. -->
       <section class="section final" aria-labelledby="final-title">
-        <div class="glow glow--final" aria-hidden="true" data-parallax="0.08"></div>
-        <div class="container narrow center">
-          <h2 id="final-title" data-reveal>Dans 48h, votre site peut être en ligne.</h2>
-          <p class="lead" data-reveal>15 minutes d'appel suffisent pour démarrer. Gratuit et sans engagement.</p>
-          <div class="cta-row cta-row--center" data-reveal="zoom">
-            <a class="btn btn--primary btn--shine" href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
-              Réserver mon appel de 15 min <span class="arrow" aria-hidden="true">→</span>
-            </a>
-            <a class="btn btn--ghost" href="/devis/">Lancer mon site <span class="arrow" aria-hidden="true">→</span></a>
+        <div class="final__track">
+          <div class="final__stage">
+            <div class="final__panel" data-reveal>
+              <!-- Décor : l'aurore lente et le chiffre géant. Le « 48h » est la
+                   promesse du site, autant en faire le motif du dernier bloc.
+                   aria-hidden, c'est de la typographie décorative — le titre
+                   juste en dessous porte déjà l'information. -->
+              <span class="final__aura" aria-hidden="true"></span>
+              <span class="final__mark" aria-hidden="true">48h</span>
+
+              <div class="final__content">
+                <div class="final__inner">
+                  <p class="final__kicker">Dernière étape</p>
+                  <h2 id="final-title" data-reveal-words>Dans 48h, votre site peut être en ligne.</h2>
+                  <p class="lead" data-reveal>
+                    Un appel court suffit pour démarrer. Gratuit et sans engagement.
+                  </p>
+                  <div class="cta-row cta-row--center" data-reveal>
+                    <a class="btn btn--primary btn--shine" href="/devis/">
+                      Lancer mon site <span class="arrow" aria-hidden="true">→</span>
+                    </a>
+                    <a class="btn btn--ghost" href="/call/">
+                      Réserver un appel <span class="arrow" aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Hors du bloc de texte, dont la largeur est calée sur la
+                     lisibilité : les trois preuves tiennent ainsi sur une ligne.
+                     Ce sont les objections de dernière seconde, traitées sous le
+                     bouton plutôt que laissées en suspens. -->
+                <ul class="final__proof" data-reveal>
+                  <li>Prix fixe, annoncé avant</li>
+                  <li>Nom de domaine offert</li>
+                  <li>Sans engagement</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>

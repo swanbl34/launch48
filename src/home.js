@@ -87,6 +87,79 @@ const setupBackgroundGradient = () => {
   });
 };
 
+/* ── Arrivée mot à mot du bloc promesse ──────────────────────────────────
+   Le bloc est une phrase manifeste : on la fait monter mot après mot derrière
+   un masque, plutôt que de faire apparaître deux pavés d'un coup. L'effet se
+   lit comme de la typographie qui se pose, et il attire l'œil pile là où le
+   discours bascule.
+
+   Le découpage est fait en JS et non dans le HTML : le markup reste lisible,
+   et surtout le texte n'est jamais caché sans que le script ait tourné —
+   l'état initial ne porte que sur les éléments que le script vient de créer.
+   Le nom accessible du titre ne change pas : on ne fait qu'emballer des mots,
+   le textContent reste identique.                                          */
+const setupWordReveal = () => {
+  const targets = Array.from(document.querySelectorAll('[data-reveal-words]'));
+  if (!targets.length) return;
+
+  // Animations limitées, ou pas d'observateur : on ne découpe rien, donc le
+  // texte reste affiché tel quel. Aucun état à rattraper.
+  if (reduceMotion.matches || !('IntersectionObserver' in window)) return;
+
+  const splitTextNode = (node) => {
+    /* On découpe sur l'espace simple uniquement. `\s` en JS couvre aussi
+       l'espace insécable : s'en servir séparerait « 590 » de « € » et
+       autoriserait une coupure de ligne au milieu du montant. */
+    const text = node.textContent.replace(/[ \t\r\n]+/g, ' ').replace(/^ | $/g, '');
+    const fragment = document.createDocumentFragment();
+
+    text.split(' ').forEach((part, index, parts) => {
+      const mask = document.createElement('span');
+      mask.className = 'word';
+      const inner = document.createElement('span');
+      inner.className = 'word__inner';
+      inner.textContent = part;
+      mask.appendChild(inner);
+      fragment.appendChild(mask);
+      // L'espace reste un vrai nœud texte, hors du masque : sinon les mots se
+      // colleraient et la césure de ligne ne pourrait plus se faire.
+      if (index < parts.length - 1) fragment.appendChild(document.createTextNode(' '));
+    });
+
+    return fragment;
+  };
+
+  targets.forEach((target) => {
+    // Seuls les nœuds texte sont découpés : un élément inline éventuel (lien,
+    // <strong>) est laissé entier plutôt que disloqué.
+    Array.from(target.childNodes).forEach((node) => {
+      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) return;
+      node.replaceWith(splitTextNode(node));
+    });
+
+    // Le JS ne pose que le rang ; c'est le CSS qui décide du rythme, différent
+    // pour le titre et pour le chapô.
+    target.querySelectorAll('.word').forEach((word, index) => {
+      word.style.setProperty('--i', String(index));
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-words-visible');
+        observer.unobserve(entry.target);
+      });
+    },
+    // Seuil haut : la phrase doit être franchement à l'écran pour se lancer,
+    // sinon elle se joue en bas de cadre et personne ne la voit.
+    { threshold: 0.35 }
+  );
+
+  targets.forEach((target) => observer.observe(target));
+};
+
 /* ── Scène du hero : parallaxe de profondeur au pointeur ─────────────────
    On ne fait pivoter que la scène : comme chaque élément a son propre
    translateZ, la perspective déplace les plans proches (fusée, cartes,
@@ -290,6 +363,7 @@ const setupAuditForm = () => {
 
 initShell();
 setupGlowParallax();
+setupWordReveal();
 setupScenePointer();
 setupBackgroundGradient();
 setupProcessProgress();

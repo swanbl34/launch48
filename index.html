@@ -564,10 +564,10 @@
       <!-- ══ 3. Le problème ═══════════════════════════════════════════════ -->
       <section class="section section--tight problem" aria-labelledby="problem-title">
         <div class="container narrow">
-          <h2 id="problem-title" data-reveal>
+          <h2 id="problem-title" data-reveal-words>
             Un site pro qui donne envie de vous appeler. En ligne en 48h, à partir de 590&nbsp;€ tout compris.
           </h2>
-          <p class="lead" data-reveal>
+          <p class="lead" data-reveal-words>
             Pas de devis à 5 000&nbsp;€, pas trois mois d'attente, pas de template qui dort en page 4 de Google.
           </p>
         </div>
@@ -875,37 +875,79 @@
       <section class="section audit" id="audit" aria-labelledby="audit-title">
         <div class="container">
           <div class="audit__panel" data-reveal>
-            <div class="audit__pitch">
-              <span class="audit__kicker">Audit gratuit</span>
-              <h2 id="audit-title">Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
-              <p class="lead">
-                En 24h, on vous envoie un audit clair et gratuit. Sans engagement, sans jargon.
-              </p>
-              <ul class="audit__list">
-                <li>Ce qui freine vos visiteurs</li>
-                <li>Ce qui vous fait perdre des clients</li>
-                <li>Ce qu'on ferait à votre place</li>
-              </ul>
+            <div class="audit__top">
+              <div class="audit__pitch">
+                <span class="audit__kicker">Audit gratuit</span>
+                <h2 id="audit-title">Vous avez déjà un site&nbsp;? Voyons ce qu'il vaut.</h2>
+                <p class="lead">
+                  En 24h, on vous envoie un audit clair et gratuit. Sans engagement, sans jargon.
+                </p>
+                <ul class="audit__list">
+                  <li>Les points qui font partir vos visiteurs</li>
+                  <li>Les 3 corrections à faire en premier, dans l'ordre</li>
+                  <li>Notre avis franc : à retoucher, ou à refaire</li>
+                </ul>
+              </div>
+
+              <!-- Aperçu du livrable. Le bloc ne montrait que deux champs
+                   vides : il mettait en avant l'effort à fournir plutôt que ce
+                   qu'on reçoit. On montre donc la forme du rapport.
+                   aria-hidden : contenu purement illustratif, et il ne faut
+                   surtout pas qu'un lecteur d'écran énonce ces repères comme
+                   s'il s'agissait de vraies mesures. Le texte de la liste
+                   ci-dessus dit déjà ce que contient l'audit. -->
+              <figure class="audit__sample" aria-hidden="true">
+                <div class="audit__sample-card">
+                  <header class="audit__sample-head">
+                    <span class="audit__sample-tag">Exemple de rapport</span>
+                    <span class="audit__sample-url">votre-site.fr</span>
+                  </header>
+                  <ul class="audit__scores">
+                    <li>
+                      <span>Clarté de l'offre</span>
+                      <span class="audit__meter"><i style="--v: 68%"></i></span>
+                    </li>
+                    <li>
+                      <span>Vitesse sur mobile</span>
+                      <span class="audit__meter"><i style="--v: 41%"></i></span>
+                    </li>
+                    <li>
+                      <span>Appel à l'action</span>
+                      <span class="audit__meter"><i style="--v: 30%"></i></span>
+                    </li>
+                    <li>
+                      <span>Visibilité Google</span>
+                      <span class="audit__meter"><i style="--v: 55%"></i></span>
+                    </li>
+                  </ul>
+                  <p class="audit__sample-foot">3 priorités classées par impact</p>
+                </div>
+                <figcaption>Aperçu du format. Votre rapport porte sur votre site.</figcaption>
+              </figure>
             </div>
 
+            <!-- L'action en une bande unique plutôt qu'un formulaire empilé :
+                 deux champs et un bouton sur la même ligne se lisent comme une
+                 seule étape rapide. -->
             <form class="audit__form" action="https://formspree.io/f/xbdpgvgj" method="POST">
               <input type="hidden" name="_subject" value="Demande d'audit gratuit (home Launch48)" />
               <input type="hidden" name="origine" value="home-audit" />
-              <div class="field">
-                <label for="audit-url">Adresse de votre site</label>
-                <input id="audit-url" type="url" name="site_url" inputmode="url" placeholder="votre-site.fr" required />
+              <div class="audit__fields">
+                <div class="field">
+                  <label for="audit-url">Adresse de votre site</label>
+                  <input id="audit-url" type="url" name="site_url" inputmode="url" placeholder="votre-site.fr" required />
+                </div>
+                <div class="field">
+                  <label for="audit-email">Votre email</label>
+                  <input id="audit-email" type="email" name="email" inputmode="email" placeholder="vous@exemple.fr" required />
+                </div>
+                <button class="btn btn--audit" type="submit">
+                  Recevoir mon audit <span class="arrow" aria-hidden="true">→</span>
+                </button>
               </div>
-              <div class="field">
-                <label for="audit-email">Votre email</label>
-                <input id="audit-email" type="email" name="email" inputmode="email" placeholder="vous@exemple.fr" required />
-              </div>
-              <button class="btn btn--audit btn--block" type="submit">
-                Recevoir mon audit <span class="arrow" aria-hidden="true">→</span>
-              </button>
               <p class="audit__note">Réponse sous 24h. Aucune relance commerciale.</p>
               <p class="form-status" role="status" aria-live="polite"></p>
             </form>
-          </div>
         </div>
       </section>
 

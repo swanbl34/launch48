@@ -50,11 +50,51 @@ html {
 body {
   overflow-x: clip;
   background: var(--bg);
+  /* Repère pour body::before, qui doit prendre la hauteur du document entier :
+     sans cela le calque se calerait sur le bloc conteneur initial, donc sur une
+     seule hauteur d'écran. */
+  position: relative;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Accents de fond ─────────────────────────────────────────────────────
+   Le fond reste l'aplat bleu nuit. On l'éclaire simplement par les bords avec
+   quatre halos très diffus : une nappe bleue en haut de page, un cyan à gauche
+   dans le premier tiers, un bleu à droite plus bas, et un halo de bas de page
+   qui prolonge le glow du CTA final derrière le footer.
+
+   Volontairement minimal : pas de trame, pas de motif répété, pas de voile
+   d'assombrissement. Les halos sont ancrés hors cadre (x négatif ou > 100 %),
+   on ne voit donc que leur moitié interne — une lumière qui entre par le côté,
+   pas une tache posée au milieu de la page.
+
+   Les positions et les tailles sont en pourcentages du document : la
+   composition se répartit d'elle-même, qu'il s'agisse de la home ou d'une page
+   de mentions légales.                                                      */
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Sous tout le contenu, et sous le grain (-1) qui vient le texturer. */
+  z-index: -2;
+  pointer-events: none;
+  /* styles.css — encore chargé par les pages verticales — déclare son propre
+     body::before à opacity: 0.11. Nos couches le remplacent, mais l'opacité
+     resterait héritée et le calque serait rendu à 11 %. */
+  opacity: 1;
+  background-repeat: no-repeat;
+  background-image:
+    /* Nappe haute, pour que le premier écran ne soit pas nu sur les pages
+       intérieures. Assez faible pour rester invisible sur la home, où le hero
+       est déjà couvert par le dégradé animé. */
+    radial-gradient(90% 620px at 50% 0%, rgba(95, 141, 255, 0.07), transparent 72%),
+    radial-gradient(52% 17% at -8% 26%, rgba(70, 228, 255, 0.17), transparent 70%),
+    radial-gradient(48% 15% at 108% 66%, rgba(95, 141, 255, 0.18), transparent 70%),
+    radial-gradient(70% 340px at 50% 100%, rgba(70, 228, 255, 0.13), transparent 72%);
 }
 
 /* Grain très léger pour la texture. */

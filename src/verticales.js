@@ -2,11 +2,7 @@ import './styles.css';
 import './verticales.css';
 import './shell.css';
 import { initShell, renderShellHeader, renderShellFooter } from './shell.js';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
 import { CONTACT, OFFERS, SITE, VERTICAL_DETAILS } from './offers-data';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const app = document.querySelector('#app');
 const pageType = document.body.dataset.page || 'home';
@@ -560,27 +556,6 @@ const renderVerticalPage = (slug) => {
 
 
 
-const setupRevealAnimations = () => {
-  if (prefersReducedMotion) return;
-
-  gsap.utils.toArray('[data-reveal]').forEach((element) => {
-    gsap.fromTo(
-      element,
-      { autoAlpha: 0, y: 34 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.75,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top 84%'
-        }
-      }
-    );
-  });
-};
-
 const setupBackgroundProgress = () => {
   const root = document.documentElement;
   const onScroll = () => {
@@ -595,6 +570,12 @@ const setupBackgroundProgress = () => {
 };
 
 const init = () => {
+  /* Active la règle `.js [data-reveal]` du socle, qui masque les blocs avant
+     leur apparition. Posée juste avant le rendu : le contenu de ces pages est
+     injecté par ce script, il n'y a donc aucun risque de voir un bloc
+     s'afficher puis disparaître. */
+  document.documentElement.classList.add('js');
+
   if (pageType === 'offers') {
     renderOffersPage();
   } else if (pageType === 'vertical') {
@@ -604,9 +585,11 @@ const init = () => {
   }
 
   // Header, menu mobile, pastille de nav et apparitions viennent du socle.
+  // L'apparition au scroll passe par l'IntersectionObserver de shell.js :
+  // GSAP + ScrollTrigger ne servaient qu'à ça, pour 130 kB, et faisaient même
+  // doublon avec le socle sur les mêmes éléments.
   initShell();
   setupBackgroundProgress();
-  setupRevealAnimations();
 };
 
 init();

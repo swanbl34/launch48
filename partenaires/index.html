@@ -21,32 +21,48 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
   </head>
   <body class="legal-page partners-page partners-page--locked">
-    <div class="partner-lock" id="partner-lock" aria-modal="true" role="dialog" aria-labelledby="partner-lock-title">
-      <div class="partner-lock__backdrop"></div>
-      <div class="partner-lock__card">
-        <img class="partner-lock__logo" src="/logo-launch48.svg" alt="Launch48" />
-        <p class="partner-lock__eyebrow">Accès privé</p>
-        <h1 id="partner-lock-title">Landing page partenaire Launch48</h1>
-        <p class="partner-lock__text">
-          Cette page présente le programme partenaire Launch48 et ses conditions d'accès.
-          Entrez le mot de passe pour afficher la page complète.
+    <!-- Porte d'entrée pleine page. Ce n'est plus un mot de passe : on
+         demande l'email, ce qui donne accès et laisse une trace du contact.
+         Un résumé du programme figure ici, pour qu'on sache ce qu'on demande
+         avant de laisser son adresse. -->
+    <section class="partner-gate" id="partner-gate" aria-labelledby="partner-gate-title">
+      <div class="partner-gate__inner">
+        <img class="partner-gate__logo" src="/logo-launch48.svg" alt="Launch48" width="430" height="88" />
+        <p class="partner-gate__eyebrow">Accès privé · Programme partenaire</p>
+        <h1 id="partner-gate-title">Recommandez Launch48, touchez une commission.</h1>
+        <p class="partner-gate__lead">
+          Vous recommandez, on livre le site en 48h, vous êtes rémunéré de 10 à 20&nbsp;%
+          sur chaque vente. Aucun projet à gérer de votre côté.
         </p>
-        <form class="partner-lock__form" id="partner-lock-form">
-          <label class="partner-lock__label" for="partner-password">Mot de passe</label>
-          <input
-            class="partner-lock__input"
-            id="partner-password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Mot de passe"
-            required
-          />
-          <button class="btn" type="submit">Accéder à la page</button>
-          <p class="partner-lock__error" id="partner-lock-error" role="status" aria-live="polite"></p>
+
+        <ul class="partner-gate__points">
+          <li>Le détail des commissions, par formule et par palier</li>
+          <li>Le déroulé complet, de la recommandation au paiement</li>
+          <li>Les messages et le kit prêts à envoyer à vos contacts</li>
+        </ul>
+
+        <form class="partner-gate__form" id="partner-gate-form" novalidate>
+          <label class="partner-gate__label" for="partner-email">Votre email pour accéder à la page</label>
+          <div class="partner-gate__row">
+            <input
+              class="partner-gate__input"
+              id="partner-email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="vous@exemple.fr"
+              required
+            />
+            <button class="btn btn--primary" type="submit">
+              Accéder à la page <span class="arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+          <p class="partner-gate__note">Une seule adresse, aucune relance commerciale.</p>
+          <p class="partner-gate__status" id="partner-gate-status" role="status" aria-live="polite"></p>
         </form>
       </div>
-    </div>
+    </section>
 
     <header class="site-header legal-header partners-header">
       <nav class="nav container legal-nav partners-nav" aria-label="Navigation principale">

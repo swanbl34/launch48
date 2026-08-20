@@ -1,0 +1,375 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Launch48 — page devis.
+   S'appuie sur shell.css : tokens, conteneur, boutons, footer.
+
+   Les tarifs sont affichés ailleurs sur le site : la page ne demande donc pas
+   un devis, elle enclenche un rendez-vous. Parcours en deux étapes, sur une
+   seule colonne centrée — le projet, puis le créneau. Les choix se font en
+   pastilles (visibles sans rien ouvrir) et les champs secondaires sont
+   repliés : sept champs d'un coup, dont trois menus déroulants natifs,
+   affichaient surtout le travail à fournir.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.quote-top { padding-top: clamp(1.5rem, 4vw, 2.75rem); }
+
+/* Une seule colonne, assez large pour que le widget de créneaux garde sa
+   disposition en semaine à l'étape 2. */
+.quote-flow { width: min(100% - 2rem, 880px); margin-inline: auto; }
+
+.quote-head { text-align: center; margin-bottom: clamp(1.75rem, 4vw, 2.5rem); }
+.quote-head h1 { font-size: clamp(2rem, 6vw, 3.1rem); }
+.quote-head .lead { margin-top: 1rem; margin-inline: auto; max-width: 52ch; }
+
+/* ── Fil des deux étapes ─────────────────────────────────────────────────── */
+.stepper {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+}
+.stepper__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.25s var(--ease);
+}
+/* Le trait entre les deux étapes : il se teinte quand la première est
+   franchie, ce qui matérialise l'avancement sans compteur. */
+.stepper__item + .stepper__item::before {
+  content: '';
+  width: clamp(1.5rem, 6vw, 3rem);
+  height: 1px;
+  margin-right: 0.2rem;
+  background: var(--border-strong);
+  transition: background-color 0.25s var(--ease);
+}
+.stepper__n {
+  display: grid;
+  place-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.82rem;
+  transition: border-color 0.25s var(--ease), background-color 0.25s var(--ease),
+    color 0.25s var(--ease);
+}
+.stepper__item.is-current { color: var(--text); }
+.stepper__item.is-current .stepper__n { border-color: var(--cyan); color: var(--cyan); }
+.stepper__item.is-done .stepper__n {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green), transparent 85%);
+  color: var(--green);
+}
+.stepper__item.is-current + .stepper__item::before,
+.stepper__item.is-done + .stepper__item::before { background: var(--cyan); }
+
+/* ── Bandeau de disponibilité ───────────────────────────────────────────── */
+.quote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+  padding: 0.34rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--green), transparent 60%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--green), transparent 92%);
+  color: var(--green);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.quote-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  /* Pulsation lente, purement décorative. Le libellé du bandeau reste factuel
+     — durée, format, engagement — et ne prétend rien sur les disponibilités
+     du moment, qui ne sont pas mesurées ici. */
+  animation: quote-pulse 2.4s var(--ease) infinite;
+}
+@keyframes quote-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--green), transparent 40%); }
+  50% { opacity: 0.65; box-shadow: 0 0 0 5px color-mix(in srgb, var(--green), transparent 100%); }
+}
+
+/* ── Formulaire ─────────────────────────────────────────────────────────── */
+.quote-form {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  box-shadow: 0 26px 70px rgba(2, 8, 18, 0.45);
+}
+
+/* [hidden] vient d'une règle de la feuille par défaut du navigateur, avec une
+   spécificité de type : le `display: grid` posé plus bas sur ces deux blocs le
+   supplante et l'élément resterait affiché. On le rétablit explicitement,
+   sinon la confirmation est visible en permanence et le formulaire ne
+   disparaît pas après l'envoi. */
+.quote-form[hidden] { display: none; }
+
+.quote-form {
+  display: grid;
+  gap: clamp(1.35rem, 3vw, 1.75rem);
+  padding: clamp(1.35rem, 3.5vw, 2rem);
+}
+
+.quote-form__head h2 { font-size: clamp(1.25rem, 2.6vw, 1.6rem); letter-spacing: -0.03em; }
+.quote-form__head p { margin-top: 0.35rem; color: var(--muted); font-size: 0.92rem; }
+
+.quote-field { display: grid; gap: 0.6rem; border: 0; }
+.quote-field legend,
+.quote-label > span {
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.94rem;
+  letter-spacing: -0.01em;
+}
+/* legend ne participe pas à la grille du fieldset : sans ça, l'écart avec les
+   pastilles vient du margin et non du gap, et il diverge des autres champs. */
+.quote-field legend { float: left; width: 100%; margin-bottom: 0.6rem; }
+
+.quote-label { display: grid; gap: 0.45rem; }
+.quote-label small { color: var(--muted); font-size: 0.82rem; }
+
+.quote-form input[type='text'],
+.quote-form input[type='email'],
+.quote-form textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg), transparent 25%);
+  color: var(--text);
+  font-family: var(--font-body);
+  /* 16px minimum : en dessous, iOS zoome à la mise au point. */
+  font-size: 1rem;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.quote-form textarea { resize: vertical; min-height: 6.5rem; line-height: 1.55; }
+.quote-form input::placeholder,
+.quote-form textarea::placeholder { color: color-mix(in srgb, var(--muted), transparent 30%); }
+
+.quote-form input:focus-visible,
+.quote-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cyan), transparent 84%);
+}
+/* Le style d'erreur n'apparaît qu'après une tentative d'envoi : un champ vide
+   marqué en rouge avant même d'avoir été touché est agressif pour rien. */
+.quote-form.was-submitted :is(input, textarea):invalid { border-color: #ff9db1; }
+
+.quote-field--pair { display: grid; gap: 0.9rem; }
+
+/* ── Pastilles de choix ─────────────────────────────────────────────────── */
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.chip { position: relative; }
+/* Le bouton radio reste dans le flux et focusable, simplement invisible :
+   le clavier et les lecteurs d'écran continuent de voir un vrai groupe de
+   boutons radio. */
+.chip input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 42px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: border-color 0.18s var(--ease), background-color 0.18s var(--ease),
+    color 0.18s var(--ease);
+}
+.chip span b { color: var(--text); font-weight: 700; font-size: 0.86rem; }
+
+.chip input:checked + span {
+  border-color: var(--cyan);
+  background: color-mix(in srgb, var(--cyan), transparent 88%);
+  color: var(--text);
+}
+.chip input:checked + span b { color: var(--cyan); }
+.chip input:focus-visible + span {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+@media (hover: hover) {
+  .chip input:not(:checked):hover + span { border-color: var(--text); color: var(--text); }
+}
+
+/* ── Précisions facultatives ────────────────────────────────────────────── */
+.quote-more {
+  border-top: 1px solid var(--border);
+  padding-top: clamp(1.1rem, 3vw, 1.35rem);
+}
+.quote-more > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.94rem;
+  list-style: none;
+}
+.quote-more > summary::-webkit-details-marker { display: none; }
+.quote-more > summary::after {
+  content: '+';
+  display: grid;
+  place-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: var(--cyan);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.quote-more[open] > summary::after { content: '−'; }
+.quote-more > summary em {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 400;
+}
+.quote-more > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.quote-more > :not(summary) { margin-top: 1.1rem; }
+.quote-more .quote-field + .quote-field,
+.quote-more .quote-label + .quote-field { margin-top: 1.1rem; }
+
+/* ── Pied du formulaire ─────────────────────────────────────────────────── */
+.quote-form__foot { display: grid; gap: 0.7rem; }
+.quote-form__note { color: var(--muted); font-size: 0.82rem; text-align: center; }
+.quote-form .form-status { font-size: 0.9rem; color: var(--green); text-align: center; }
+.quote-form .form-status:empty { display: none; }
+.quote-form .form-status.is-error { color: #ff9db1; }
+
+/* ── Tablette ───────────────────────────────────────────────────────────── */
+@media (min-width: 620px) {
+  .quote-field--pair { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Étape 2 : les créneaux ─────────────────────────────────────────────── */
+.quote-slot {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 26px 70px rgba(2, 8, 18, 0.45);
+}
+.quote-slot[hidden] { display: none; }
+.quote-slot__head h2:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+
+.quote-slot__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 1.15rem clamp(1.1rem, 3vw, 1.6rem);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(
+    112deg,
+    color-mix(in srgb, var(--cyan), transparent 90%),
+    transparent 58%
+  );
+}
+.quote-slot__head h2 { font-size: clamp(1.2rem, 2.4vw, 1.5rem); letter-spacing: -0.03em; }
+.quote-slot__head p { margin-top: 0.35rem; color: var(--muted); font-size: 0.92rem; max-width: 46ch; }
+
+.quote-slot__meta { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.quote-slot__meta li { display: grid; gap: 0.12rem; }
+.quote-slot__meta span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.quote-slot__meta b {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
+/* Le widget Google est en thème clair et non stylable (autre origine). On
+   l'assume comme un panneau clair encadré plutôt que d'essayer de le fondre
+   dans le fond sombre. */
+.quote-slot__frame {
+  position: relative;
+  background: #fff;
+  height: clamp(560px, 76vh, 720px);
+}
+.quote-slot__frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.quote-slot__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: #4a5a6e;
+  font-size: 0.95rem;
+}
+.quote-slot__loading.is-stalled { color: #1f2937; }
+.quote-slot__loading a { color: #0b6cbf; text-decoration: underline; text-underline-offset: 3px; }
+
+.quote-slot__foot {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.05rem clamp(1.1rem, 3vw, 1.6rem) 1.2rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.quote-slot__foot a {
+  color: var(--cyan);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--cyan), transparent 55%);
+}
+.quote-slot__optional { color: color-mix(in srgb, var(--muted), transparent 20%); }
+
+/* ── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 619px) {
+  .quote-form { padding: 1.15rem 1rem; gap: 1.2rem; }
+  .chip span { min-height: 44px; }
+  .quote-slot__head { align-items: flex-start; }
+  .quote-slot__meta { gap: 0.5rem 1.1rem; }
+  /* Le widget passe en colonne unique sous ~600px et lui faut plus de hauteur.
+     Un défilement interne reste nécessaire, mais le calendrier et les premiers
+     créneaux doivent tenir sans avoir à le faire glisser. */
+  .quote-slot__frame { height: clamp(700px, 170vw, 1000px); }
+}

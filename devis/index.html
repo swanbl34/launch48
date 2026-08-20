@@ -13,20 +13,229 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
-    <title>Launch48</title>
-    <meta name="description" content="Launch48 - Demande de devis." />
-    <meta property="og:title" content="Launch48" />
-    <meta property="og:description" content="Décrivez votre projet et recevez rapidement un devis." />
+    <title>Lancer votre site en 48h | Launch48</title>
+    <meta
+      name="description"
+      content="Deux étapes pour lancer votre site : décrivez votre projet, puis choisissez votre créneau d'appel. Prix fixe affiché, mise en ligne en 48h."
+    />
+    <link rel="canonical" href="https://launch48.fr/devis/" />
+    <meta property="og:title" content="Lancer votre site en 48h | Launch48" />
+    <meta
+      property="og:description"
+      content="Décrivez votre projet, choisissez votre créneau. Deux étapes, deux minutes."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://launch48.fr" />
+    <meta property="og:url" content="https://launch48.fr/devis/" />
     <meta property="og:image" content="/opengraph.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#091019" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Le widget de créneaux n'est chargé qu'à l'étape 2, mais autant ouvrir
+         la connexion vers Google dès maintenant. -->
+    <link rel="preconnect" href="https://calendar.google.com" />
   </head>
-  <body data-page="quote">
-    <div id="app"></div>
-    <script type="module" src="/src/verticales.js"></script>
+  <body>
+    <!-- Remplacés au montage par le header et le footer du socle (mountShell). -->
+    <div class="site-header"></div>
+
+    <main id="main" class="quote">
+      <section class="section quote-top">
+        <div class="quote-flow">
+          <header class="quote-head">
+            <p class="quote-badge" data-reveal>
+              <span class="quote-badge__dot" aria-hidden="true"></span>
+              Appel de 30 min · en visio · sans engagement
+            </p>
+            <h1 data-reveal>Lançons votre site.</h1>
+            <p class="lead" data-reveal>
+              Deux étapes : vous décrivez votre projet, puis vous choisissez votre créneau.
+              Les tarifs sont déjà affichés, l'appel sert à cadrer, pas à négocier.
+            </p>
+          </header>
+
+          <!-- Deux étapes annoncées d'emblée : savoir qu'il n'y en a que deux
+               compte autant que leur contenu. -->
+          <ol class="stepper" data-stepper>
+            <li class="stepper__item is-current" data-step-marker="1" aria-current="step">
+              <span class="stepper__n">1</span>
+              <span class="stepper__label">Votre projet</span>
+            </li>
+            <li class="stepper__item" data-step-marker="2">
+              <span class="stepper__n">2</span>
+              <span class="stepper__label">Votre créneau</span>
+            </li>
+          </ol>
+
+          <!-- ══ Étape 1 ══════════════════════════════════════════════════ -->
+          <form
+            class="quote-form"
+            action="https://formspree.io/f/xbdpgvgj"
+            method="POST"
+            novalidate
+            data-step="1"
+          >
+            <input type="hidden" name="_subject" value="Nouveau projet (page /devis/)" />
+            <input type="hidden" name="origine" value="page-devis" />
+
+            <header class="quote-form__head">
+              <h2>Votre projet</h2>
+              <p>L'essentiel suffit. Les précisions sont facultatives.</p>
+            </header>
+
+            <!-- Pastilles et non menu déroulant : les options sont visibles
+                 sans rien ouvrir. Le paramètre ?forfait= des cartes Tarifs
+                 coche la bonne au chargement. -->
+            <fieldset class="quote-field">
+              <legend>Quel format vous irait&nbsp;?</legend>
+              <div class="chips">
+                <label class="chip">
+                  <input type="radio" name="forfait" value="one-page" />
+                  <span>One Page <b>590&nbsp;€</b></span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="forfait" value="3-pages" />
+                  <span>3 pages <b>990&nbsp;€</b></span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="forfait" value="5-pages" />
+                  <span>5 pages+ <b>1 290&nbsp;€</b></span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="forfait" value="sur-mesure" />
+                  <span>Sur mesure</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="forfait" value="" checked />
+                  <span>Je ne sais pas encore</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="quote-field quote-field--pair">
+              <label class="quote-label" for="quote-name">
+                <span>Votre nom</span>
+                <input id="quote-name" type="text" name="name" autocomplete="name" placeholder="Camille Dupont" required />
+              </label>
+              <label class="quote-label" for="quote-email">
+                <span>Votre email</span>
+                <input id="quote-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="camille@exemple.fr" required />
+              </label>
+            </div>
+
+            <label class="quote-label quote-field" for="quote-message">
+              <span>Ce que vous voulez</span>
+              <textarea
+                id="quote-message"
+                name="message"
+                rows="4"
+                placeholder="Ex. : je suis ostéopathe à Nantes, je veux un site qui remplisse mon agenda. J'ai mes photos, pas de textes."
+                required
+              ></textarea>
+              <small>Ce que vous vendez, à qui, et ce que le site doit provoquer. C'est suffisant.</small>
+            </label>
+
+            <details class="quote-more">
+              <summary>
+                <span>Ajouter des précisions</span>
+                <em>facultatif</em>
+              </summary>
+
+              <fieldset class="quote-field">
+                <legend>Votre secteur</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="project_type" value="one-page" /><span>Site vitrine</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-restaurant" /><span>Restaurant / food</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-consultant" /><span>Consultant / B2B</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-evenementiel" /><span>Événement</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-immobilier-location" /><span>Immobilier</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-association" /><span>Association</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-artiste" /><span>Artiste / portfolio</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-media-podcast" /><span>Média / podcast</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="site-lancement-marque" /><span>Lancement de marque</span></label>
+                  <label class="chip"><input type="radio" name="project_type" value="other" /><span>Autre</span></label>
+                </div>
+              </fieldset>
+
+              <label class="quote-label quote-field" for="quote-project">
+                <span>Nom du projet ou de l'entreprise</span>
+                <input id="quote-project" type="text" name="project_name" placeholder="Cabinet Vela" />
+              </label>
+
+              <fieldset class="quote-field">
+                <legend>Vous avez déjà un nom de domaine&nbsp;?</legend>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="domain" value="no" checked /><span>Non</span></label>
+                  <label class="chip"><input type="radio" name="domain" value="yes" /><span>Oui</span></label>
+                  <label class="chip"><input type="radio" name="domain" value="not_sure" /><span>Je ne sais pas</span></label>
+                </div>
+              </fieldset>
+            </details>
+
+            <footer class="quote-form__foot">
+              <button class="btn btn--primary btn--shine btn--block" type="submit">
+                Prendre rendez-vous <span class="arrow" aria-hidden="true">→</span>
+              </button>
+              <p class="quote-form__note">
+                Vos réponses partent maintenant. Vous choisissez votre créneau juste après.
+              </p>
+              <p class="form-status" role="status" aria-live="polite"></p>
+            </footer>
+          </form>
+
+          <!-- ══ Étape 2 ══════════════════════════════════════════════════
+               L'iframe n'a pas de src au départ : le widget Google n'est
+               chargé qu'en arrivant ici, pas pour tous les visiteurs de la
+               page. -->
+          <section class="quote-slot" data-step="2" hidden aria-labelledby="slot-title">
+            <header class="quote-slot__head">
+              <div>
+                <h2 id="slot-title">Choisissez votre créneau</h2>
+                <p data-slot-intro>Vos réponses sont bien arrivées. Reste à fixer l'appel.</p>
+              </div>
+              <ul class="quote-slot__meta">
+                <li><span>Durée</span><b>30 min</b></li>
+                <li><span>Format</span><b>Visio</b></li>
+                <li><span>Annulation</span><b>Libre</b></li>
+              </ul>
+            </header>
+
+            <div class="quote-slot__frame">
+              <p class="quote-slot__loading" data-slot-loading>Chargement des créneaux…</p>
+              <iframe
+                data-slot-iframe
+                data-src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
+                title="Choisir un créneau d'appel avec Launch48 via Google Calendar"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            <footer class="quote-slot__foot">
+              <p>
+                Calendrier bloqué par votre navigateur&nbsp;?
+                <a href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
+                  Ouvrir en plein écran
+                </a>
+              </p>
+              <!-- Le rendez-vous est optionnel : les réponses sont déjà
+                   envoyées, personne ne doit se sentir coincé ici. -->
+              <p class="quote-slot__optional">
+                Vous préférez qu'on vous écrive&nbsp;? C'est déjà noté, on revient vers vous sous 24h.
+              </p>
+            </footer>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="site-footer"></div>
+
+    <script type="module" src="/src/devis.js"></script>
   </body>
 </html>

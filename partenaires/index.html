@@ -1,23 +1,18 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BE27RNS6K0');
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>Programme partenaire | Launch48</title>
     <meta
       name="description"
       content="Page partenaire privée Launch48 pour recommander l'offre, comprendre la rétro et demander un lien partenaire."
     />
+    <link rel="canonical" href="https://launch48.fr/partenaires/" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
   </head>
   <body class="legal-page partners-page partners-page--locked">
@@ -28,7 +23,7 @@
     <section class="partner-gate" id="partner-gate" aria-labelledby="partner-gate-title">
       <div class="partner-gate__inner">
         <img class="partner-gate__logo" src="/logo-launch48.svg" alt="Launch48" width="430" height="88" />
-        <p class="partner-gate__eyebrow">Accès privé · Programme partenaire</p>
+        <p class="partner-gate__eyebrow">Sur inscription · Programme partenaire</p>
         <h1 id="partner-gate-title">Recommandez Launch48, touchez une commission.</h1>
         <p class="partner-gate__lead">
           Vous recommandez, on livre le site en 48h, vous êtes rémunéré de 10 à 20&nbsp;%
@@ -58,7 +53,21 @@
               Accéder à la page <span class="arrow" aria-hidden="true">→</span>
             </button>
           </div>
+          <!-- Piège à robots. Lu par partenaires.js, qui abandonne l'envoi
+               si le champ est rempli : ce formulaire part en fetch, Formspree
+               ne peut pas filtrer lui-même. -->
+          <div class="form-gotcha" aria-hidden="true">
+            <label for="partner-gotcha">Ne rien saisir</label>
+            <input id="partner-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
           <p class="partner-gate__note">Une seule adresse, aucune relance commerciale.</p>
+          <p class="form-legal">
+            Votre email nous sert à savoir qui consulte le programme et à vous
+            envoyer votre lien partenaire si vous le demandez. Il est transmis à
+            notre prestataire de formulaires (Formspree, États-Unis) et conservé
+            3 ans. Vous pouvez demander sa suppression à tout moment.
+            <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+          </p>
           <p class="partner-gate__status" id="partner-gate-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -72,7 +81,7 @@
           </a>
           <div class="partners-nav__meta">
             <span class="partners-nav__eyebrow">Programme partenaire</span>
-            <span class="partners-nav__status">Accès privé</span>
+            <span class="partners-nav__status">Sur inscription</span>
           </div>
         </div>
         <div class="legal-nav__actions partners-nav__actions">

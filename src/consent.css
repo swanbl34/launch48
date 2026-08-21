@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Bannière de consentement
+
+   Ancrée en bas, largeur limitée, sans voile sur la page : on ne prend pas la
+   page en otage pour poser une question. Les deux boutons sont strictement de
+   même taille et de même hiérarchie visuelle — c'est une exigence CNIL, pas un
+   choix esthétique : rendre « Accepter » plus attirant que « Refuser » est un
+   dark pattern sanctionnable.
+
+   Les variables (--bg, --text, --accent…) viennent de styles.css, chargé par
+   toutes les pages ; les valeurs de repli après la virgule couvrent le cas où
+   la bannière s'affiche avant l'application du thème.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.consent {
+  position: fixed;
+  z-index: 900;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* seul le panneau est cliquable, pas la bande */
+  animation: consent-in 0.3s ease both;
+}
+
+.consent__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 46rem;
+  padding: 1.05rem 1.25rem;
+  border: 1px solid var(--line, rgba(113, 146, 184, 0.2));
+  border-radius: 1.1rem;
+  background: var(--surface-solid, #0f1723);
+  box-shadow: var(--shadow, 0 24px 90px rgba(2, 8, 18, 0.42));
+  pointer-events: auto;
+}
+
+.consent__text {
+  flex: 1 1 20rem;
+}
+
+.consent__title {
+  margin: 0 0 0.3rem;
+  color: var(--text, #f3efe7);
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.consent__body {
+  margin: 0;
+  color: var(--muted, #8ea2ba);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.consent__body a {
+  color: var(--accent, #46e4ff);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.consent__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.55rem;
+}
+
+/* Même padding, même graisse, même bordure : les deux choix se valent. */
+.consent__btn {
+  min-width: 7.5rem;
+  padding: 0.62rem 1.05rem;
+  border: 1px solid var(--line, rgba(113, 146, 184, 0.2));
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text, #f3efe7);
+  font-family: 'Sora', system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.consent__btn:hover {
+  border-color: var(--accent, #46e4ff);
+  background: var(--surface, rgba(237, 245, 255, 0.05));
+}
+
+.consent__btn:focus-visible {
+  outline: 2px solid var(--accent, #46e4ff);
+  outline-offset: 2px;
+}
+
+@keyframes consent-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.7rem);
+  }
+}
+
+@media (max-width: 34rem) {
+  .consent {
+    right: 0.7rem;
+    bottom: 0.7rem;
+    left: 0.7rem;
+  }
+
+  .consent__actions {
+    width: 100%;
+  }
+
+  /* Sur une seule ligne les deux boutons se partagent la largeur à égalité :
+     là encore, aucun des deux ne doit tomber plus loin sous le pouce. */
+  .consent__btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consent {
+    animation: none;
+  }
+
+  .consent__btn {
+    transition: none;
+  }
+}

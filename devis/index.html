@@ -1,17 +1,11 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BE27RNS6K0');
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>Lancer votre site en 48h | Launch48</title>
     <meta
@@ -31,12 +25,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
     <meta name="theme-color" content="#091019" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
     <!-- Le widget de créneaux n'est chargé qu'à l'étape 2, mais autant ouvrir
          la connexion vers Google dès maintenant. -->
     <link rel="preconnect" href="https://calendar.google.com" />
@@ -83,6 +71,12 @@
           >
             <input type="hidden" name="_subject" value="Nouveau projet (page /devis/)" />
             <input type="hidden" name="origine" value="page-devis" />
+            <!-- Piège à robots : un humain ne voit pas ce champ, un robot le
+                 remplit, et Formspree jette la soumission. -->
+            <div class="form-gotcha" aria-hidden="true">
+              <label for="quote-gotcha">Ne rien saisir</label>
+              <input id="quote-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </div>
 
             <header class="quote-form__head">
               <h2>Votre projet</h2>
@@ -184,6 +178,13 @@
               </button>
               <p class="quote-form__note">
                 Vos réponses partent maintenant. Vous choisissez votre créneau juste après.
+              </p>
+              <p class="form-legal">
+                Vos réponses servent uniquement à préparer votre devis et à vous
+                recontacter. Elles sont transmises à notre prestataire de formulaires
+                (Formspree, États-Unis) et conservées 3 ans après notre dernier échange.
+                Vous pouvez y accéder, les corriger ou les faire supprimer à tout moment.
+                <a href="/politique-confidentialite.html">Politique de confidentialité</a>
               </p>
               <p class="form-status" role="status" aria-live="polite"></p>
             </footer>

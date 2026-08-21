@@ -15,10 +15,12 @@ import { TOTAL_STEPS, UNKNOWN_KEY, fieldsForStep, isFileField } from '@/lib/brie
 import { readStepAnswers } from '@/lib/brief-values';
 import { getFormAnswers, getProjectByToken } from '@/lib/data';
 import { ASSETS_BUCKET, supabaseAdmin } from '@/lib/supabase';
+import {
+  checkFile,
+  checkProjectQuota,
+  type RejectionReason,
+} from '@/lib/upload-guard';
 import type { Project } from '@/lib/types';
-
-/** Taille max par fichier. Doit rester ≤ bodySizeLimit de next.config.ts. */
-const MAX_FILE_BYTES = 20 * 1024 * 1024; // 20 Mo
 
 /**
  * En mode démo (DEMO_MODE=1) il n'y a pas de base : les actions se contentent
@@ -44,16 +46,57 @@ function safeName(name: string): string {
   );
 }
 
-/** Upload les fichiers d'une étape et enregistre les lignes `assets`. */
-async function handleUploads(project: Project, step: number, fd: FormData) {
+/** Nombre et volume déjà stockés pour ce projet, tous champs confondus. */
+async function projectUsage(projectId: string): Promise<{ count: number; bytes: number }> {
+  const { data } = await supabaseAdmin()
+    .from('assets')
+    .select('size')
+    .eq('project_id', projectId);
+
+  return {
+    count: data?.length ?? 0,
+    bytes: (data ?? []).reduce((sum, row) => sum + (row.size ?? 0), 0),
+  };
+}
+
+/**
+ * Upload les fichiers d'une étape et enregistre les lignes `assets`.
+ *
+ * Chaque fichier passe par `checkFile` (format, taille) puis par le plafond du
+ * projet. Un fichier refusé ne fait pas échouer l'étape : les réponses texte
+ * sont enregistrées quand même, et les motifs de rejet sont renvoyés à
+ * l'appelant pour être affichés. Perdre une étape entière de saisie parce
+ * qu'un fichier était au mauvais format serait la pire des réponses.
+ */
+async function handleUploads(
+  project: Project,
+  step: number,
+  fd: FormData,
+): Promise<RejectionReason[]> {
   const db = supabaseAdmin();
+  const rejections: RejectionReason[] = [];
+
+  // Compteurs tenus à jour au fil des écritures : sans ça, un envoi de 50
+  // fichiers en une fois passerait le plafond, chaque fichier voyant l'état
+  // d'avant la requête.
+  let usage = await projectUsage(project.id);
 
   for (const field of fieldsForStep(step)) {
     if (!isFileField(field)) continue;
 
-    const incoming = fd
-      .getAll(field.key)
-      .filter((v): v is File => v instanceof File && v.size > 0 && v.size <= MAX_FILE_BYTES);
+    const submitted = fd.getAll(field.key).filter((v): v is File => v instanceof File);
+    if (submitted.length === 0) continue;
+
+    // Un champ vide arrive comme un File de 0 octet : ce n'est pas un rejet,
+    // c'est simplement l'absence de fichier.
+    const incoming: File[] = [];
+    for (const file of submitted) {
+      if (file.size === 0) continue;
+
+      const verdict = checkFile(file);
+      if (verdict.ok) incoming.push(file);
+      else rejections.push(verdict.reason);
+    }
 
     if (incoming.length === 0) continue;
 
@@ -61,24 +104,40 @@ async function handleUploads(project: Project, step: number, fd: FormData) {
     if (field.type === 'file') {
       const { data: old } = await db
         .from('assets')
-        .select('id, storage_path')
+        .select('id, storage_path, size')
         .eq('project_id', project.id)
         .eq('field_key', field.key);
 
       if (old?.length) {
         await db.storage.from(ASSETS_BUCKET).remove(old.map((a) => a.storage_path));
         await db.from('assets').delete().in('id', old.map((a) => a.id));
+
+        // Le remplacement libère de la place : sans cette reprise, remplacer un
+        // logo dix fois consommerait dix fois le quota.
+        usage = {
+          count: usage.count - old.length,
+          bytes: usage.bytes - old.reduce((sum, a) => sum + (a.size ?? 0), 0),
+        };
       }
     }
 
     const files = field.type === 'file' ? incoming.slice(0, 1) : incoming;
 
     for (const file of files) {
+      const quota = checkProjectQuota(usage, file.size);
+      if (!quota.ok) {
+        rejections.push(quota.reason);
+        continue;
+      }
+
       const path = `${project.id}/${field.key}/${randomUUID()}-${safeName(file.name)}`;
 
       const { error } = await db.storage
         .from(ASSETS_BUCKET)
-        .upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+        .upload(path, file, {
+          contentType: file.type || 'application/octet-stream',
+          upsert: false,
+        });
 
       if (error) continue; // un fichier qui échoue ne doit pas perdre l'étape
 
@@ -89,8 +148,12 @@ async function handleUploads(project: Project, step: number, fd: FormData) {
         storage_path: path,
         size: file.size,
       });
+
+      usage = { count: usage.count + 1, bytes: usage.bytes + file.size };
     }
   }
+
+  return rejections;
 }
 
 /**
@@ -114,7 +177,14 @@ export async function saveBriefStep(formData: FormData) {
   const existing = await getFormAnswers(project.id);
   const merged = isRecap ? existing.data : { ...existing.data, ...readStepAnswers(step, formData) };
 
-  if (!isRecap) await handleUploads(project, step, formData);
+  const rejections = isRecap ? [] : await handleUploads(project, step, formData);
+
+  /* Motifs de rejet dédoublonnés, à joindre à l'URL de retour. On ne remonte
+     que le motif, pas le nom du fichier : c'est ce qui dit quoi faire, et ça
+     tient dans une URL. */
+  const rejectionParam = rejections.length
+    ? `&rejets=${encodeURIComponent([...new Set(rejections)].join(','))}`
+    : '';
 
   // Étape suivante à rouvrir au prochain accès.
   const MAX = TOTAL_STEPS + 1; // récap inclus
@@ -151,6 +221,13 @@ export async function saveBriefStep(formData: FormData) {
   revalidatePath(`/espace/${token}`);
   revalidatePath(`/espace/${token}/suivi`);
   revalidatePath(`/espace/${token}/brief`);
+
+  /* Un rejet de fichier ramène toujours sur l'étape, même si l'intention était
+     de valider : sinon le client quitterait le brief sans savoir qu'un de ses
+     fichiers n'est pas passé. */
+  if (rejectionParam) {
+    redirect(`/espace/${token}/brief?step=${step}&saved=1${rejectionParam}`);
+  }
 
   if (submitting) redirect(`/espace/${token}?brief=valide`);
   if (intent === 'save') redirect(`/espace/${token}/brief?step=${target}&saved=1`);

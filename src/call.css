@@ -148,6 +148,52 @@
 .booking__loading.is-stalled { color: #1f2937; }
 .booking__loading a { color: #0b6cbf; text-decoration: underline; text-underline-offset: 3px; }
 
+/* ── Écran d'accord avant le chargement du widget Google ─────────────────────
+   Même panneau clair que l'iframe qu'il remplace, pour que l'apparition du
+   calendrier ne fasse pas sauter la mise en page. */
+.booking__consent {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-content: center;
+  gap: 0.55rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+.booking__consent-title {
+  margin: 0;
+  color: #1f2937;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.booking__consent-text {
+  margin: 0 auto;
+  max-width: 34ch;
+  color: #4a5a6e;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.booking__consent-btn {
+  justify-self: center;
+  margin-top: 0.35rem;
+  padding: 0.7rem 1.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0b6cbf;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+.booking__consent-btn:hover { background: #085595; }
+.booking__consent-btn:focus-visible { outline: 2px solid #0b6cbf; outline-offset: 3px; }
+.booking__consent-alt { margin: 0.15rem 0 0; color: #6b7a8d; font-size: 0.82rem; }
+.booking__consent-alt a { color: #0b6cbf; text-decoration: underline; text-underline-offset: 3px; }
+
 .booking__fallback {
   margin-top: 0.9rem;
   color: var(--muted);

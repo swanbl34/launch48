@@ -7,10 +7,11 @@
  * l'accès si le cookie signé est absent ou expiré. Aucune API route publique.
  */
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { ADMIN_COOKIE, checkPassword, createSessionValue, isAdmin, newToken } from '@/lib/auth';
+import { checkRateLimit, clearFailures, clientKey, recordFailure } from '@/lib/rate-limit';
 import { seedTasksForPack, type Pack } from '@/lib/task-templates';
 import { ASSETS_BUCKET, supabaseAdmin } from '@/lib/supabase';
 import type { ProjectStatus, TaskStatus } from '@/lib/types';
@@ -30,11 +31,24 @@ function blockIfDemo(back: string) {
 /* ── Session ─────────────────────────────────────────────────────────────── */
 
 export async function login(formData: FormData) {
+  /* L'admin n'a qu'un mot de passe partagé : sans limitation de débit, cette
+     action est un oracle qu'on peut interroger en boucle. On refuse AVANT de
+     vérifier le mot de passe, pour ne pas non plus donner d'indice de temps. */
+  const key = clientKey(await headers());
+  const verdict = checkRateLimit(key);
+
+  if (!verdict.allowed) {
+    redirect(`/admin?e=throttled&s=${verdict.retryAfterSeconds}`);
+  }
+
   const password = String(formData.get('password') ?? '');
 
   if (!checkPassword(password)) {
+    recordFailure(key);
     redirect('/admin?e=1');
   }
+
+  clearFailures(key);
 
   const store = await cookies();
   store.set(ADMIN_COOKIE, createSessionValue(), {
@@ -158,6 +172,44 @@ export async function deleteProject(formData: FormData) {
 
   revalidatePath('/admin');
   redirect('/admin');
+}
+
+/**
+ * Régénère le token d'un projet, ce qui invalide immédiatement l'ancien lien.
+ *
+ * Le token de l'URL /espace/[token] est le seul secret qui garde l'espace
+ * client : il n'expire pas, et un lien transmis par email peut être transféré,
+ * archivé ou fuiter dans un historique. Sans moyen de le changer, l'accès
+ * serait définitif. Cette action est le bouton « révoquer » qui manquait.
+ *
+ * Les données du projet ne bougent pas — seule la porte change de serrure. Il
+ * faut donc renvoyer le nouveau lien au client.
+ */
+export async function rotateToken(formData: FormData) {
+  await guard();
+  const id = String(formData.get('id') ?? '');
+  blockIfDemo(`/admin/projet/${id}?e=demo`);
+
+  // Garde-fou : l'ancien lien cesse de fonctionner sur-le-champ, ça ne doit pas
+  // partir sur un clic malheureux. On redemande le nom de l'entreprise, comme
+  // pour la suppression, et on le vérifie côté serveur.
+  const db = supabaseAdmin();
+  const { data: target } = await db
+    .from('projects')
+    .select('company')
+    .eq('id', id)
+    .maybeSingle();
+
+  const confirm = String(formData.get('confirm') ?? '').trim();
+  if (!target || confirm !== target.company) {
+    redirect(`/admin/projet/${id}?e=rotate-confirm`);
+  }
+
+  await db.from('projects').update({ token: newToken() }).eq('id', id);
+
+  revalidatePath('/admin');
+  revalidatePath(`/admin/projet/${id}`, 'layout');
+  redirect(`/admin/projet/${id}?rotated=1`);
 }
 
 /**

@@ -23,6 +23,7 @@ import {
   missingRequiredFields,
 } from '@/lib/missing';
 import { isOnboarding, type AnswerMap, type AnswerValue, type Asset } from '@/lib/types';
+import { ACCEPT_ATTRIBUTE, parseRejections, rejectionMessage } from '@/lib/upload-guard';
 import { deleteAsset, saveBriefStep } from '../actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -36,7 +37,7 @@ export default async function BriefPage({
   searchParams,
 }: {
   params: Promise<{ token: string }>;
-  searchParams: Promise<{ step?: string; focus?: string; saved?: string }>;
+  searchParams: Promise<{ step?: string; focus?: string; saved?: string; rejets?: string }>;
 }) {
   const { token } = await params;
   const sp = await searchParams;
@@ -53,6 +54,7 @@ export default async function BriefPage({
   const requested = sp.step ? Number(sp.step) : answers.last_step;
   const step = Math.min(Math.max(Number.isFinite(requested) ? requested : 1, 1), RECAP_STEP);
 
+  const rejections = parseRejections(sp.rejets);
   const missingCount = countMissingRequired(answers.data, assets);
   const answeredRequired = countAnsweredRequired(missingCount);
   const meta = STEPS.find((s) => s.step === step);
@@ -95,6 +97,20 @@ export default async function BriefPage({
       {sp.saved ? (
         <div className="banner">
           <span aria-hidden>✓</span> Enregistré.
+        </div>
+      ) : null}
+
+      {/* Fichiers refusés. Tes réponses texte ont bien été enregistrées : on le
+          dit explicitement, sinon le réflexe est de croire que tout est perdu
+          et de ressaisir l'étape. */}
+      {rejections.length ? (
+        <div className="banner banner--error stack" style={{ gap: '0.4rem' }}>
+          <strong>Tes réponses sont enregistrées, mais certains fichiers n&apos;ont pas pu l&apos;être :</strong>
+          <ul style={{ margin: 0, paddingLeft: '1.1rem' }}>
+            {rejections.map((reason) => (
+              <li key={reason}>{rejectionMessage(reason)}</li>
+            ))}
+          </ul>
         </div>
       ) : null}
 
@@ -344,7 +360,10 @@ function Control({
             id={field.key}
             name={field.key}
             multiple={field.type === 'files'}
-            accept={field.key === 'logo' ? '.svg,.ai,.eps,.pdf,.png' : undefined}
+            /* Même liste que la validation serveur (lib/upload-guard.ts) : le
+               navigateur filtre pour le confort, le serveur décide. Le SVG en
+               est volontairement absent. */
+            accept={ACCEPT_ATTRIBUTE}
           />
           <p className="tiny muted">
             {field.type === 'files' ? 'Plusieurs fichiers possibles. ' : ''}20 Mo par fichier

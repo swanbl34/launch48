@@ -567,15 +567,26 @@ h2 + .lead { margin-top: 1.1rem; }
 .footer__copy { color: var(--muted); font-size: 0.85rem; }
 
 .footer__legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-.footer__legal a {
+/* Le bouton « Cookies » doit être indiscernable des liens voisins : c'est un
+   bouton parce qu'il ouvre un panneau et ne mène nulle part, pas parce qu'il
+   doit se remarquer. D'où la remise à zéro des styles natifs. */
+.footer__legal a,
+.footer__legal-btn {
   display: inline-flex;
   align-items: center;
   min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--muted);
+  font-family: inherit;
   font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
   transition: color 0.2s var(--ease);
 }
-.footer__legal a:hover { color: var(--cyan); }
+.footer__legal a:hover,
+.footer__legal-btn:hover { color: var(--cyan); }
 
 .footer__note {
   max-width: 78ch;
@@ -786,7 +797,8 @@ h1[data-reveal-words] { --reveal-base: 120ms; --reveal-step: 46ms; }
   /* Zone tactile pleine largeur pour les liens du footer : le texte est
      court, la cible ne doit pas l'être. */
   .footer__col a,
-  .footer__legal a { width: 100%; }
+  .footer__legal a,
+  .footer__legal-btn { width: 100%; }
 
   .footer__top {
     grid-template-columns: repeat(2, 1fr);
@@ -886,4 +898,38 @@ h1[data-reveal-words] { --reveal-base: 120ms; --reveal-step: 46ms; }
    doivent rester lisibles plutôt que figés hors de leur masque. */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal-words] .word__inner { transform: none; transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mention d'information des formulaires
+
+   Le RGPD (art. 13) demande d'informer au moment où la donnée est collectée,
+   pas seulement dans une page qu'il faut aller chercher. D'où ce bloc sous
+   chaque formulaire du site. Il est discret, pas caché : à lire sans effort si
+   on le cherche, sans peser sur le formulaire si on ne le cherche pas.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.form-legal {
+  margin: 0.65rem 0 0;
+  color: rgba(151, 168, 189, 0.85);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.form-legal a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.form-legal a:hover { color: var(--cyan); }
+
+/* Piège à robots. `display: none` suffirait pour l'œil, mais un lecteur
+   d'écran l'annoncerait quand même s'il était seulement transparent : on le
+   sort de l'arbre d'accessibilité pour de bon. Les robots à formulaire, eux,
+   remplissent tous les champs — et Formspree jette la soumission si `_gotcha`
+   est rempli. */
+.form-gotcha {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

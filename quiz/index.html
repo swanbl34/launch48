@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ton site est-il prêt à convertir ? — Le test en 60 sec | Launch48</title>
 <meta name="description" content="Découvre en 60 secondes si ton site est conçu pour convertir tes visiteurs en clients. Analyse personnalisée + recos par mail." />
+    <link rel="canonical" href="https://launch48.fr/quiz/" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
 <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
 <meta property="og:title" content="Ton site est-il prêt à convertir ? | Launch48" />
 <meta property="og:description" content="Fais le test en 60 secondes et découvre les priorités pour améliorer la conversion de ton site." />
@@ -15,17 +19,6 @@
 <meta name="twitter:image" content="/opengraph.jpg" />
 <meta name="theme-color" content="#091019" />
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-BE27RNS6K0');
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
   :root {
@@ -371,6 +364,34 @@
     .question-text { font-size: 18px; }
     .score-display { font-size: 52px; }
   }
+
+  /* ── Pied de page légal ────────────────────────────────────────────────── */
+  .quiz-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 3rem auto 0;
+    padding: 1.5rem 1.25rem 2.5rem;
+    border-top: 1px solid rgba(113, 146, 184, 0.2);
+  }
+  .quiz-legal__copy { margin: 0; color: #8ea2ba; font-size: 0.82rem; }
+  .quiz-legal__nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1.15rem; }
+  .quiz-legal__nav a,
+  .quiz-legal__nav button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #8ea2ba;
+    font-family: inherit;
+    font-size: 0.82rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .quiz-legal__nav a:hover,
+  .quiz-legal__nav button:hover { color: var(--cyan, #46e4ff); }
 </style>
 </head>
 <body>
@@ -766,5 +787,23 @@
   renderQuestion();
 </script>
 
+
+<!-- Pied de page légal minimal. Cette page est autonome, elle n'a pas le socle
+     de shell.js : sans ce bloc, elle serait la seule sans lien vers les
+     mentions légales ni moyen de revenir sur son choix de cookies. -->
+<footer class="quiz-legal">
+  <p class="quiz-legal__copy">© 2026 Launch48</p>
+  <nav class="quiz-legal__nav" aria-label="Informations légales">
+    <a href="/">Accueil</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
+    <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+    <a href="/cgv.html">CGV</a>
+    <button type="button" data-consent-open>Cookies</button>
+  </nav>
+</footer>
+
+<!-- Cette page est autonome (styles et script en ligne) : le module de
+     consentement est le seul qu'elle charge. -->
+<script type="module" src="/src/consent-entry.js"></script>
 </body>
 </html>

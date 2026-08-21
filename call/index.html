@@ -1,17 +1,11 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BE27RNS6K0');
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>Réserver un appel découverte | Launch48</title>
     <meta
@@ -31,12 +25,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
     <meta name="theme-color" content="#091019" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
     <!-- Le widget de réservation est servi par Google : on ouvre la connexion
          tôt, c'est l'élément le plus lourd et le plus utile de la page. -->
     <link rel="preconnect" href="https://calendar.google.com" />
@@ -93,11 +81,31 @@
             <!-- Le widget Google est en thème clair et non stylable (autre
                  origine). Plutôt que de le subir, on l'assume : il devient un
                  panneau clair franc, encadré, dans la carte. -->
+            <!-- Le calendrier ne se charge qu'au clic. Chargé d'emblée, il
+                 déposerait des cookies Google avant tout consentement : un
+                 widget tiers n'est pas exempté parce qu'il est utile. Le clic
+                 vaut accord, et il est explicite. -->
             <div class="booking__frame">
-              <p class="booking__loading" data-booking-loading>Chargement des créneaux…</p>
+              <div class="booking__consent" data-booking-consent>
+                <p class="booking__consent-title">Créneaux fournis par Google Calendar</p>
+                <p class="booking__consent-text">
+                  Afficher l'agenda charge un contenu Google, qui dépose ses propres
+                  cookies et reçoit votre adresse IP. Rien n'est chargé avant votre clic.
+                </p>
+                <button class="booking__consent-btn" type="button" data-booking-load>
+                  Afficher les créneaux
+                </button>
+                <p class="booking__consent-alt">
+                  ou
+                  <a href="https://calendar.app.google/WzzdX11aNdR3DaMm8" target="_blank" rel="noopener">
+                    ouvrir directement sur Google
+                  </a>
+                </p>
+              </div>
+              <p class="booking__loading" data-booking-loading hidden>Chargement des créneaux…</p>
               <iframe
                 data-booking-iframe
-                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
+                data-src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ1Jz5-ug680S_o1HDqRhby_Ki01yMTXXV77xMeTjymw6BTE_ptNn6lymrhS9tO4LdVAtlYO6z25?gv=true"
                 title="Réserver un appel découverte Launch48 via Google Calendar"
                 referrerpolicy="no-referrer-when-downgrade"
               ></iframe>

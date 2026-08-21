@@ -28,11 +28,11 @@ async function baseUrl(): Promise<string> {
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ e?: string }>;
+  searchParams: Promise<{ e?: string; s?: string }>;
 }) {
-  const { e } = await searchParams;
+  const { e, s } = await searchParams;
 
-  if (!(await isAdmin())) return <LoginScreen error={e} />;
+  if (!(await isAdmin())) return <LoginScreen error={e} retryAfter={s} />;
 
   const projects = await listProjects();
   const base = await baseUrl();
@@ -232,7 +232,11 @@ export default async function AdminPage({
   );
 }
 
-function LoginScreen({ error }: { error?: string }) {
+function LoginScreen({ error, retryAfter }: { error?: string; retryAfter?: string }) {
+  /* Combien de temps reste-t-il avant de pouvoir réessayer. Affiché en minutes
+     pleines : à la seconde près, ça donne l'impression qu'on peut retenter
+     tout de suite. */
+  const minutes = Math.max(1, Math.ceil(Number(retryAfter ?? 0) / 60));
   return (
     <main className="shell" style={{ maxWidth: '26rem' }}>
       <div className="stack--lg" style={{ paddingTop: '14vh' }}>
@@ -240,6 +244,12 @@ function LoginScreen({ error }: { error?: string }) {
         <h1>Admin</h1>
 
         {error === '1' ? <div className="banner banner--error">Mot de passe incorrect.</div> : null}
+        {error === 'throttled' ? (
+          <div className="banner banner--error">
+            Trop de tentatives. Nouvel essai possible dans {minutes} minute
+            {minutes > 1 ? 's' : ''}.
+          </div>
+        ) : null}
         {error === '2' ? (
           <div className="banner banner--error">Le nom d&apos;entreprise est obligatoire.</div>
         ) : null}

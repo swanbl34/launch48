@@ -1,0 +1,7 @@
+# Signalement d'une faille de sécurité sur launch48.fr
+# Format : RFC 9116
+
+Contact: mailto:contact@launch48.fr
+Expires: 2027-08-21T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://launch48.fr/.well-known/security.txt

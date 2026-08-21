@@ -101,14 +101,30 @@ export async function getTasks(projectId: string): Promise<Task[]> {
   return (data ?? []) as Task[];
 }
 
-/** URL signée temporaire pour afficher/télécharger un asset. */
+/**
+ * URL signée temporaire pour télécharger un asset.
+ *
+ * `download: true` force un `Content-Disposition: attachment` sur la réponse
+ * Supabase. C'est ce qui rend inoffensif un fichier interprétable par le
+ * navigateur : un SVG ou un HTML déposé par un client peut contenir du
+ * JavaScript, et affiché en ligne il s'exécuterait sur le domaine
+ * `*.supabase.co` — avec un lien partageable, qui plus est. En pièce jointe,
+ * il est téléchargé, jamais rendu.
+ *
+ * C'est cette garantie qui nous permet d'accepter le SVG à l'upload, alors
+ * que c'est le format vectoriel que le brief réclame pour les logos.
+ *
+ * ⚠️ Si un jour un asset doit être affiché en ligne (aperçu <img>), il faudra
+ * un second chemin restreint aux formats non interprétables (png, jpg, webp) —
+ * pas retirer ce `download`.
+ */
 export async function signAssetUrl(storagePath: string): Promise<string | null> {
   if (DEMO) return null;
   const { ASSETS_BUCKET, SIGNED_URL_TTL } = await import('./supabase');
 
   const { data, error } = await supabaseAdmin()
     .storage.from(ASSETS_BUCKET)
-    .createSignedUrl(storagePath, SIGNED_URL_TTL);
+    .createSignedUrl(storagePath, SIGNED_URL_TTL, { download: true });
 
   if (error) return null;
   return data?.signedUrl ?? null;

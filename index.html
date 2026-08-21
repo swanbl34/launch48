@@ -1,15 +1,6 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BE27RNS6K0');
-    </script>
     <script>
       // Les reveals ne sont masqués que si JS répond. Si le module ne démarre
       // pas (erreur, réseau), on retire la classe et tout redevient visible.
@@ -22,6 +13,9 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>Launch48 | Votre site pro en ligne en 48h, à partir de 590 €</title>
     <meta name="description" content="Un site internet professionnel livré en 48h. Prix fixe tout compris à partir de 590 €, nom de domaine offert. Pour artisans, restaurants, santé et commerces locaux." />
@@ -36,9 +30,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/opengraph.jpg" />
     <meta name="theme-color" content="#091019" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="/previews/home/site-photo-wide.webp" fetchpriority="high" />
     <script type="application/ld+json">
       {
@@ -930,6 +921,12 @@
             <form class="audit__form" action="https://formspree.io/f/xbdpgvgj" method="POST">
               <input type="hidden" name="_subject" value="Demande d'audit gratuit (home Launch48)" />
               <input type="hidden" name="origine" value="home-audit" />
+              <!-- Piège à robots : un humain ne voit pas ce champ, un robot le
+                   remplit, et Formspree jette la soumission. -->
+              <div class="form-gotcha" aria-hidden="true">
+                <label for="audit-gotcha">Ne rien saisir</label>
+                <input id="audit-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+              </div>
               <div class="audit__fields">
                 <div class="field">
                   <label for="audit-url">Adresse de votre site</label>
@@ -944,8 +941,16 @@
                 </button>
               </div>
               <p class="audit__note">Réponse sous 24h. Aucune relance commerciale.</p>
+              <p class="form-legal">
+                Votre email et l'adresse de votre site servent uniquement à préparer et
+                vous envoyer cet audit. Ils sont transmis à notre prestataire de
+                formulaires (Formspree, États-Unis) et conservés 3 ans. Vous pouvez
+                demander leur suppression à tout moment.
+                <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+              </p>
               <p class="form-status" role="status" aria-live="polite"></p>
             </form>
+          </div>
         </div>
       </section>
 
@@ -1192,6 +1197,11 @@
           <a href="/mentions-legales.html">Mentions légales</a>
           <a href="/politique-confidentialite.html">Politique de confidentialité</a>
           <a href="/cgv.html">CGV</a>
+          <!-- Le pied de page de la home est en dur (les autres pages passent
+               par shell.js) : ce bouton doit donc être dupliqué ici. Il rouvre
+               la bannière pour revenir sur son choix ; l'écouteur vient de
+               consent.js. -->
+          <button class="footer__legal-btn" type="button" data-consent-open>Cookies</button>
         </nav>
         <p class="footer__note">
           Domaine offert pour un nom disponible à l'enregistrement, non premium et non vendu par un tiers.

@@ -1,20 +1,15 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BE27RNS6K0"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-BE27RNS6K0');
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
     <link rel="icon" type="image/svg+xml" href="/favicon-fusee.svg" />
     <title>Mentions légales | Launch48</title>
     <meta name="description" content="Mentions légales de Launch48." />
+    <link rel="canonical" href="https://launch48.fr/mentions-legales.html" />
   </head>
   <body class="legal-page">
     <header class="site-header legal-header">
@@ -50,24 +45,49 @@
         <article class="legal-card">
           <a class="legal-back" href="/">← Retour au site</a>
           <div class="legal-prose">
+            <!--
+              Contenu aligné sur l'article 6-III de la LCEN, qui impose pour un
+              entrepreneur individuel : nom, prénom, domicile, téléphone,
+              numéro d'immatriculation, et pour l'hébergeur : dénomination,
+              adresse et téléphone. Seul le téléphone de l'éditeur est
+              volontairement absent — voir la note plus bas.
+            -->
             <section>
               <h2>Éditeur du site</h2>
-              <p><strong>Nom commercial:</strong> Launch48</p>
-              <p><strong>Responsable de publication:</strong> Swan Badol</p>
-              <p><strong>Email:</strong> contact@launch48.fr</p>
-              <p><strong>SIRET:</strong> 87970255300014</p>
+              <p><strong>Nom commercial&nbsp;:</strong> Launch48</p>
+              <p><strong>Éditeur&nbsp;:</strong> Swan Badol&nbsp;— Entrepreneur individuel (EI)</p>
+              <p><strong>Responsable de la publication&nbsp;:</strong> Swan Badol</p>
+              <p><strong>Adresse&nbsp;:</strong> 86 chemin Daubert, 97232 Le Lamentin, Martinique</p>
+              <!--
+                Pas de téléphone affiché, par choix. À savoir : l'article 6-III-1
+                de la LCEN le range parmi les mentions obligatoires pour un
+                entrepreneur individuel. L'adresse et l'email permettent le
+                contact, ce qui couvre l'essentiel de l'intention du texte, mais
+                l'omission reste une non-conformité formelle.
+              -->
+              <p><strong>Email&nbsp;:</strong> <a href="mailto:contact@launch48.fr">contact@launch48.fr</a></p>
+              <p><strong>SIRET&nbsp;:</strong> 87970255300014</p>
+              <p><strong>Immatriculation&nbsp;:</strong> Registre National des Entreprises (RNE)</p>
+              <p><strong>TVA&nbsp;:</strong> TVA non applicable, article 293&nbsp;B du CGI</p>
             </section>
 
             <section>
               <h2>Hébergement</h2>
-              <p><strong>Hébergeur:</strong> Vercel Inc.</p>
-              <p><strong>Adresse:</strong> 440 N Barranca Ave #4133, Covina, CA 91723, USA</p>
-              <p><strong>Site:</strong> <a href="https://vercel.com" target="_blank" rel="noreferrer">vercel.com</a></p>
+              <p><strong>Hébergeur&nbsp;:</strong> Vercel Inc.</p>
+              <p><strong>Adresse&nbsp;:</strong> 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</p>
+              <p><strong>Téléphone&nbsp;:</strong> +1 559 288 7060</p>
+              <p><strong>Site&nbsp;:</strong> <a href="https://vercel.com" target="_blank" rel="noreferrer">vercel.com</a></p>
+              <p class="legal-aside">
+                L'espace client (suivi de projet) est hébergé par Vercel et ses données
+                sont stockées chez Supabase. Le détail figure dans la
+                <a href="/politique-confidentialite.html">politique de confidentialité</a>.
+              </p>
             </section>
 
             <section>
               <h2>Propriété intellectuelle</h2>
               <p>Les contenus, visuels, marques et éléments graphiques du site sont protégés. Toute reproduction ou diffusion sans autorisation préalable est interdite.</p>
+              <p>Les sites livrés aux clients font l'objet d'une cession de droits d'usage définie au devis et dans les <a href="/cgv.html">conditions générales de vente</a>.</p>
             </section>
 
             <section>
@@ -76,9 +96,21 @@
             </section>
 
             <section>
-              <h2>Contact</h2>
-              <p>Pour toute question: <a href="mailto:contact@launch48.fr">contact@launch48.fr</a></p>
+              <h2>Données personnelles et cookies</h2>
+              <p>
+                Le traitement de vos données et l'usage des cookies sont décrits dans la
+                <a href="/politique-confidentialite.html">politique de confidentialité</a>.
+                Vous pouvez revenir sur votre choix concernant la mesure d'audience à tout
+                moment via le lien «&nbsp;Cookies&nbsp;» en bas de page.
+              </p>
             </section>
+
+            <section>
+              <h2>Contact</h2>
+              <p>Pour toute question&nbsp;: <a href="mailto:contact@launch48.fr">contact@launch48.fr</a></p>
+            </section>
+
+            <p class="legal-updated">Dernière mise à jour&nbsp;: 21 août 2026</p>
           </div>
         </article>
       </div>

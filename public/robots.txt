@@ -1,0 +1,15 @@
+# Launch48 — https://launch48.fr
+# Le site est public et indexable, à deux exceptions près.
+
+User-agent: *
+Allow: /
+
+# Page partenaire : contenu réservé, déjà en noindex dans le HTML.
+# On le redit ici pour les robots qui ne rendent pas la page.
+Disallow: /partenaires/
+
+# Espace client (sous-domaine séparé) : rien à indexer, jamais.
+Disallow: /espace/
+Disallow: /admin/
+
+Sitemap: https://launch48.fr/sitemap.xml

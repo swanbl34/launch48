@@ -1,0 +1,50 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "//": [
+    "Headers de sécurité du site vitrine. Volontairement pas de cleanUrls ni de",
+    "trailingSlash : les pages légales vivent en /xxx.html et le reste en /xxx/,",
+    "activer l'un ou l'autre ferait basculer toutes les URLs en 308 et",
+    "désaccorderait les balises canonical.",
+    "",
+    "La CSP autorise exactement ce que le site utilise, rien de plus :",
+    "  script-src  'unsafe-inline' est nécessaire (amorce gtag, ld+json, classe",
+    "              .js dans le <head>) — un nonce est impossible en statique.",
+    "  frame-src   calendar.google.com pour le widget de réservation.",
+    "  form-action formspree.io, endpoint des trois formulaires.",
+    "  font-src    'self' seulement : les polices sont auto-hébergées.",
+    "Si tu ajoutes un outil tiers, il faut l'ajouter ici sinon il sera bloqué.",
+    "Les mêmes en-têtes sont rejoués par vite.config.js en dev, pour ne pas",
+    "découvrir un blocage seulement en production."
+  ],
+
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; font-src 'self'; connect-src 'self' https://formspree.io https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-src https://calendar.google.com; form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(sitemap.xml|robots.txt)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+    }
+  ]
+}

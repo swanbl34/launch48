@@ -1,6 +1,10 @@
 import './shell.css';
 import './home.css';
 import { initShell, reduceMotion } from './shell.js';
+import { initConsent } from './consent.js';
+
+/* Bannière de consentement : aucune requête vers Google avant un accord. */
+initConsent();
 
 /* Launch48 — interactions de la home.
    Règle: chaque effet guide l'œil vers le contenu ou le CTA. Rien de bloquant,

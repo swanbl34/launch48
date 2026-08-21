@@ -1,6 +1,10 @@
 import './partenaires.css';
 import './shell.css';
 import { initShell, mountShell } from './shell.js';
+import { initConsent } from './consent.js';
+
+/* Bannière de consentement : aucune requête vers Google avant un accord. */
+initConsent();
 
 const STORAGE_KEY = 'launch48-partner-access';
 const FORM_ENDPOINT = 'https://formspree.io/f/xbdpgvgj';
@@ -17,6 +21,7 @@ const setupPartnerGate = () => {
   const form = document.getElementById('partner-gate-form');
   const input = document.getElementById('partner-email');
   const status = document.getElementById('partner-gate-status');
+  const gotcha = document.getElementById('partner-gotcha');
 
   if (!gate || !form || !input || !status) return;
 
@@ -57,20 +62,27 @@ const setupPartnerGate = () => {
     status.classList.remove('is-error');
     status.textContent = '';
 
-    const payload = new FormData();
-    payload.append('email', input.value.trim());
-    payload.append('_subject', 'Accès à la page partenaire');
-    payload.append('origine', 'porte-partenaire');
+    /* Champ piège rempli → c'est un robot. On n'envoie rien et on ouvre quand
+       même : la page n'a rien à cacher, et un faux positif ne doit pas bloquer
+       un vrai visiteur (extension de remplissage automatique, par exemple). */
+    const isBot = Boolean(gotcha?.value);
 
-    try {
-      await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        body: payload,
-        headers: { Accept: 'application/json' },
-      });
-    } catch {
-      // L'envoi a échoué, mais l'adresse a été saisie : rien ne justifie de
-      // refuser l'accès pour un problème de réseau de notre côté.
+    if (!isBot) {
+      const payload = new FormData();
+      payload.append('email', input.value.trim());
+      payload.append('_subject', 'Accès à la page partenaire');
+      payload.append('origine', 'porte-partenaire');
+
+      try {
+        await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          body: payload,
+          headers: { Accept: 'application/json' },
+        });
+      } catch {
+        // L'envoi a échoué, mais l'adresse a été saisie : rien ne justifie de
+        // refuser l'accès pour un problème de réseau de notre côté.
+      }
     }
 
     sessionStorage.setItem(STORAGE_KEY, 'granted');
@@ -88,41 +100,7 @@ const setupPartnerGate = () => {
   });
 };
 
-const setupPartnerForm = () => {
-  const form = document.getElementById('partners-form');
-  const feedback = document.getElementById('partners-form-feedback');
-
-  if (!form || !feedback) {
-    return;
-  }
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(form);
-    const name = String(formData.get('name') || '').trim();
-    const email = String(formData.get('email') || '').trim();
-    const whatsapp = String(formData.get('whatsapp') || '').trim();
-
-    const subject = encodeURIComponent('Programme partenaire Launch48');
-    const body = encodeURIComponent(
-      [
-        'Bonjour Launch48,',
-        '',
-        "Je souhaite rejoindre le programme partenaire.",
-        '',
-        `Nom : ${name}`,
-        `Email : ${email}`,
-        `WhatsApp : ${whatsapp}`
-      ].join('\n')
-    );
-
-    feedback.textContent = 'Ouverture de votre email...';
-    window.location.href = `mailto:contact@launch48.fr?subject=${subject}&body=${body}`;
-  });
-};
 setupPartnerGate();
-setupPartnerForm();
 
 /* Header et footer de l'ancienne maquette remplacés par ceux du socle. */
 mountShell();

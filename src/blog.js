@@ -1,6 +1,10 @@
 import './blog.css';
 import './shell.css';
 import { initShell, mountShell } from './shell.js';
+import { initConsent } from './consent.js';
+
+/* Bannière de consentement : aucune requête vers Google avant un accord. */
+initConsent();
 
 
 const setupMobileNav = () => {

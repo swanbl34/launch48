@@ -1438,7 +1438,15 @@
     color: var(--cyan);
     background: color-mix(in srgb, var(--cyan), transparent 92%);
   }
-  .pc--featured .pc__cta:hover { color: #04121a; filter: brightness(1.08); }
+  /* Offre mise en avant : le bouton est un aplat cyan, avec du texte sombre au
+     repos. Au survol, on ne peut pas simplement éclaircir le texte — du clair
+     sur ce cyan serait illisible. Le fond bascule donc en bleu profond, ce qui
+     permet un texte clair franc tout en gardant un bouton plein. */
+  .pc--featured .pc__cta:hover {
+    background: color-mix(in srgb, var(--blue), #04121a 62%);
+    border-color: var(--cyan);
+    color: var(--text);
+  }
   .pc__cta:hover .arrow { transform: translateX(3px); }
 }
 .pc__cta .arrow { transition: transform 0.2s var(--ease); }
@@ -1909,9 +1917,10 @@
    comme le contenu garde sa propre largeur, il ne se remet jamais en page —
    seule la boîte du panneau change.
 
-   Réservé au desktop : sur téléphone le panneau occupe déjà presque toute la
-   largeur, l'ouverture ne se verrait pas et coûterait trois écrans de scroll. */
-@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+   Actif aussi sur téléphone, avec trois réglages propres (voir plus bas) : une
+   course plus courte, un contenu de largeur figée et un agrandissement plus
+   sobre.                                                                    */
+@media (prefers-reduced-motion: no-preference) {
   .final { padding-block: 0; }
 
   .final__track { position: relative; height: 300svh; }
@@ -1948,6 +1957,28 @@
   /* Le chiffre suit l'ouverture, sinon il rapetisse à vue d'œil dans un cadre
      qui grandit. */
   .final__mark { font-size: calc(clamp(10rem, 30vw, 24rem) * (1 + 0.3 * var(--expand, 0))); }
+}
+
+/* ── L'ouverture sur téléphone ───────────────────────────────────────────
+   Trois écarts par rapport au desktop, chacun nécessaire.
+
+   1. Le contenu reçoit une largeur figée, exprimée en vw et non en % : sur un
+      grand écran, .final__inner est bridé par son max-width de 48ch et ne
+      bouge donc jamais. Sur téléphone il est fluide — il suivrait la largeur du
+      panneau pendant l'ouverture et le titre se remettrait en page, ligne par
+      ligne, en pleine animation. En vw, la largeur ne dépend plus du panneau.
+   2. Course ramenée à 240svh : trois écrans de scroll pour un seul bloc, c'est
+      long au pouce.
+   3. Agrandissement du contenu réduit : à 1,1 il frôlait les bords une fois le
+      panneau ouvert.                                                        */
+@media (max-width: 899px) and (prefers-reduced-motion: no-preference) {
+  .final__track { height: 240svh; }
+
+  .final__content {
+    width: calc(100vw - 3rem - 2 * clamp(1.35rem, 5vw, 3.5rem));
+    margin-inline: auto;
+    transform: scale(calc(1 + 0.06 * var(--expand, 0)));
+  }
 }
 
 /* ── Tablette ────────────────────────────────────────────────────────────── */
@@ -2131,12 +2162,24 @@
      bas du hero et on laisse le visuel occuper toute la hauteur restante,
      c'est son bord inférieur qui fait la coupe. */
   .hero { padding-bottom: 0; align-content: stretch; }
-  .hero__inner { grid-template-rows: auto 1fr; }
-  /* Plancher : sur les écrans courts, le visuel se réduisait à 82px et le
-     téléphone n'était plus qu'un liseré. Le bandeau passe alors légèrement
-     sous la ligne de flottaison, ce qui reste préférable. */
-  .hero__visual { min-height: 140px; }
+
+  /* Le visuel prend sa hauteur propre, et c'est le bloc texte qui récupère la
+     place restante — puis s'y centre. Dans l'autre sens (texte en `auto`,
+     visuel en `1fr`), le texte se collait sous le header, tout en haut. */
+  .hero__inner { grid-template-rows: 1fr auto; }
+  .hero__content { align-self: center; }
+  /* Plancher et plafond : sous 200px le téléphone n'est plus qu'un liseré,
+     au-delà de 280px il mange la place du titre. */
+  .hero__visual { height: clamp(200px, 30svh, 280px); }
   .scene { height: 100%; min-height: 0; }
+
+  /* Les trois arguments du hero disparaissent ici : « domaine offert », « prix
+     affiché = prix payé » et « à partir de 590 € » sont déjà, mot pour mot,
+     dans le bandeau défilant juste en dessous. C'était 82px de doublon à un
+     écran d'intervalle, et c'est cette accumulation qui écrasait le titre en
+     haut de page. Sur desktop la liste reste : il n'y a pas de concurrence,
+     le bandeau est hors du champ initial. */
+  .hero .reassurance { display: none; }
 
   /* ── Bloc texte du hero : moins d'objets, plus de hiérarchie ─────────── */
   .hero h1 { font-size: 2rem; line-height: 1.06; }
@@ -2284,73 +2327,6 @@
 
 
   /* Footer : deux colonnes dès les petits écrans, ça divise sa hauteur. */
-}
-
-/* ── Barre d'action en zone de pouce ─────────────────────────────────────── */
-.thumb-bar { display: none; }
-
-@media (max-width: 767px) {
-  .thumb-bar {
-    position: fixed;
-    z-index: 90;
-    /* Largeur intrinsèque et centrée, plutôt qu'un bandeau d'un bord à l'autre :
-       la barre se lit comme une action flottante posée sur la page, pas comme
-       un pied de page qui la coupe en deux. `translate` (et non `transform`)
-       porte le centrage, pour laisser `transform` à l'animation d'entrée. */
-    left: 50%;
-    translate: -50% 0;
-    width: max-content;
-    max-width: calc(100% - 1.5rem);
-    bottom: max(0.75rem, env(safe-area-inset-bottom));
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--bg-soft), transparent 12%);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: inset 0 1px 0 rgba(243, 239, 231, 0.07),
-      0 16px 40px rgba(2, 8, 18, 0.6);
-    /* Animée depuis le bas : elle ne surgit pas d'un coup. */
-    transform: translateY(140%);
-    opacity: 0;
-    /* visibility évite qu'on tabule dans des liens hors écran. */
-    visibility: hidden;
-    transition: transform 0.4s var(--ease-soft), opacity 0.3s var(--ease),
-      visibility 0s linear 0.4s;
-  }
-  .thumb-bar.is-visible {
-    transform: none;
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
-  }
-
-  /* 44px : plancher de cible tactile, on descend la hauteur sans passer sous
-     le seuil posé lors de la passe mobile. */
-  .thumb-bar .btn {
-    flex: 0 0 auto;
-    min-height: 44px;
-    padding: 0.6rem 1.15rem;
-    font-size: 0.93rem;
-  }
-
-  .thumb-bar__second {
-    display: grid;
-    place-content: center;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 auto;
-    border: 1px solid var(--border-strong);
-    border-radius: 50%;
-    font-size: 1rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .thumb-bar { transition: none; }
 }
 
 /* ── prefers-reduced-motion ──────────────────────────────────────────────── */

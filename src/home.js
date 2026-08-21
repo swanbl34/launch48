@@ -215,9 +215,8 @@ const setupFinalExpand = () => {
   const track = document.querySelector('.final__track');
   if (!section || !track) return;
 
-  // Mêmes conditions que la règle CSS : sous 900px la course de scroll ne se
-  // justifie pas, et on respecte la limitation d'animations.
-  const wide = window.matchMedia('(min-width: 900px)');
+  // Seule condition restante : la limitation d'animations. L'ouverture vaut
+  // aussi sur téléphone, avec ses propres réglages côté CSS.
   const clamp = (value) => Math.min(1, Math.max(0, value));
   // Adoucit les deux extrémités : en linéaire, le départ et l'arrivée
   // s'aperçoivent comme des ruptures.
@@ -231,7 +230,7 @@ const setupFinalExpand = () => {
   const update = () => {
     ticking = false;
 
-    if (reduceMotion.matches || !wide.matches) {
+    if (reduceMotion.matches) {
       section.style.removeProperty('--expand');
       return;
     }
@@ -264,7 +263,6 @@ const setupFinalExpand = () => {
   update();
   window.addEventListener('scroll', request, { passive: true });
   window.addEventListener('resize', request, { passive: true });
-  wide.addEventListener('change', request);
   reduceMotion.addEventListener?.('change', request);
 };
 
@@ -287,32 +285,6 @@ const setupFaq = () => {
       setState(button, !open);
     });
   });
-};
-
-/* ── Barre d'action mobile : visible entre le hero et le formulaire ─────── */
-const setupThumbBar = () => {
-  const bar = document.querySelector('.thumb-bar');
-  if (!bar || !('IntersectionObserver' in window)) return;
-
-  // Zones où la barre s'efface : le hero (les CTA y sont déjà) et la fin de
-  // page (audit + CTA final + footer), pour ne pas doubler l'appel à l'action.
-  const mutes = ['.hero', '#audit', '.final', '.footer']
-    .map((selector) => document.querySelector(selector))
-    .filter(Boolean);
-  if (!mutes.length) return;
-
-  const visible = new Set();
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) visible.add(entry.target);
-        else visible.delete(entry.target);
-      });
-      bar.classList.toggle('is-visible', visible.size === 0);
-    },
-    { threshold: 0 }
-  );
-  mutes.forEach((node) => observer.observe(node));
 };
 
 /* ── Formulaire d'audit : envoi sans quitter la page ─────────────────────── */
@@ -362,7 +334,6 @@ setupBackgroundGradient();
 setupProcessProgress();
 setupFinalExpand();
 setupFaq();
-setupThumbBar();
 setupAuditForm();
 
 // Signale au garde-fou du <head> que le module a bien démarré.

@@ -12,7 +12,7 @@ import { globalProgress } from '@/lib/progress';
 import { computeMissing } from '@/lib/missing';
 import { PACKS } from '@/lib/task-templates';
 import { STATUS_LABELS, isOnboarding } from '@/lib/types';
-import { deleteProject, setProjectStatus, updateProject } from '../../actions';
+import { deleteProject, rotateToken, setProjectStatus, updateProject } from '../../actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export default async function FichePage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string; created?: string; e?: string; phase?: string }>;
+  searchParams: Promise<{ saved?: string; created?: string; e?: string; phase?: string; rotated?: string }>;
 }) {
   if (!(await isAdmin())) notFound();
 
@@ -53,6 +53,17 @@ export default async function FichePage({
       {sp.e === 'confirm' ? (
         <div className="banner banner--error">
           Suppression annulée : le nom saisi ne correspond pas.
+        </div>
+      ) : null}
+      {sp.e === 'rotate-confirm' ? (
+        <div className="banner banner--error">
+          Lien inchangé : le nom saisi ne correspond pas.
+        </div>
+      ) : null}
+      {sp.rotated ? (
+        <div className="banner">
+          Nouveau lien généré. L&apos;ancien ne fonctionne plus — pense à envoyer celui-ci au
+          client.
         </div>
       ) : null}
       {sp.e === 'demo' ? (
@@ -150,6 +161,34 @@ export default async function FichePage({
             Ouvrir
           </a>
         </div>
+
+        {/* Ce lien EST le mot de passe de l'espace client : il n'expire pas et
+            se transfère aussi facilement qu'il se copie. S'il a circulé au
+            mauvais endroit, il faut pouvoir le changer — d'où ce bouton. Le nom
+            de l'entreprise est redemandé, comme pour la suppression, parce que
+            l'ancien lien meurt instantanément. */}
+        <details className="stack" style={{ gap: '0.5rem' }}>
+          <summary className="tiny muted" style={{ cursor: 'pointer' }}>
+            Régénérer le lien (révoque l&apos;ancien)
+          </summary>
+          <p className="tiny muted" style={{ margin: 0 }}>
+            À faire si le lien a été transmis à la mauvaise personne ou publié par erreur.
+            Les données du projet sont conservées&nbsp;; seul le lien change, et il faudra
+            renvoyer le nouveau au client.
+          </p>
+          <form action={rotateToken} className="row" style={{ alignItems: 'flex-end' }}>
+            <input type="hidden" name="id" value={project.id} />
+            <div className="field" style={{ flex: '1 1 14rem' }}>
+              <label className="field__label tiny" htmlFor="rotate-confirm">
+                Nom de l&apos;entreprise
+              </label>
+              <input id="rotate-confirm" name="confirm" type="text" required autoComplete="off" />
+            </div>
+            <button className="btn btn--ghost btn--small" type="submit">
+              Régénérer
+            </button>
+          </form>
+        </details>
       </section>
 
       <section className="card stack" style={{ gap: '0.9rem' }}>

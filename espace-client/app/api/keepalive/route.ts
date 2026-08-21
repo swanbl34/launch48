@@ -1,3 +1,5 @@
+import { timingSafeEqual } from 'node:crypto';
+
 import { supabaseAdmin } from '@/lib/supabase';
 
 /**
@@ -26,7 +28,13 @@ export async function GET(request: Request) {
     return Response.json({ ok: false, reason: 'CRON_SECRET absent' }, { status: 503 });
   }
 
-  if (request.headers.get('authorization') !== `Bearer ${secret}`) {
+  // Comparaison à temps constant : `!==` s'arrête au premier octet différent et
+  // laisse fuiter le préfixe correct, octet par octet. Le risque est théorique
+  // sur une route de ping, la correction est gratuite.
+  const provided = Buffer.from(request.headers.get('authorization') ?? '');
+  const expected = Buffer.from(`Bearer ${secret}`);
+
+  if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) {
     return new Response('Unauthorized', { status: 401 });
   }
 

@@ -362,6 +362,77 @@ h2 + .lead { margin-top: 1.1rem; }
 
 .header__actions { display: flex; align-items: center; gap: 0.5rem; }
 
+/* ── Bouton d'appel à l'action de la barre ───────────────────────────────
+   Sur téléphone, il naît en pastille ronde avec un combiné, et se déplie en
+   bouton texte une fois le hero passé. Deux raisons : en haut de page le hero
+   porte déjà ses propres CTA, un troisième bouton texte dans la barre fait
+   redondant ; passé le hero, il n'y a plus rien à l'écran pour agir, le libellé
+   reprend alors tout son sens.
+
+   L'icône est masquée sur grand écran : la barre y a la place, le libellé est
+   toujours visible.                                                        */
+.header__cta-icon { display: none; }
+
+@media (max-width: 767px) {
+  .header__cta {
+    /* Pastille ronde à l'état replié. min-width tient le cercle alors que le
+       remplissage horizontal est à zéro. */
+    min-width: 42px;
+    padding-inline: 0;
+    gap: 0;
+    transition: padding-inline 0.5s var(--ease-soft);
+  }
+
+  .header__cta-icon {
+    display: block;
+    width: 19px;
+    height: 19px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* La largeur, et non l'échelle : l'icône doit céder sa place au libellé,
+       pas se superposer à lui. */
+    transition: width 0.42s var(--ease-soft), opacity 0.22s var(--ease),
+      rotate 0.5s var(--ease-soft);
+  }
+
+  .header__cta-label {
+    /* max-width et overflow plutôt que display: none — le texte reste dans
+       l'arbre d'accessibilité, donc le bouton garde le même nom accessible
+       (« Lancer mon site ») qu'il soit replié ou déplié. */
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    transition: max-width 0.5s var(--ease-soft), opacity 0.3s var(--ease) 0.08s;
+  }
+
+  /* Déplié, une fois le hero passé. L'icône part la première en pivotant, le
+     libellé arrive juste derrière : c'est ce léger décalage qui donne le
+     sentiment d'une transformation et non d'une permutation. */
+  .header.is-past-hero .header__cta { padding-inline: 1.05rem; }
+  .header.is-past-hero .header__cta-icon {
+    width: 0;
+    opacity: 0;
+    rotate: -28deg;
+  }
+  .header.is-past-hero .header__cta-label {
+    max-width: 14ch;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  /* Le changement d'état reste, la mise en mouvement disparaît. */
+  .header__cta,
+  .header__cta-icon,
+  .header__cta-label { transition: none; }
+  .header.is-past-hero .header__cta-icon { rotate: none; }
+}
+
 .burger {
   width: 44px;
   height: 44px;
@@ -694,7 +765,13 @@ h1[data-reveal-words] { --reveal-base: 120ms; --reveal-step: 46ms; }
 /* ── Très petits écrans ──────────────────────────────────────────────────── */
 @media (max-width: 420px) {
   .header__inner { padding-left: 0.85rem; }
-  .header__inner .btn--sm { padding-inline: 0.85rem; font-size: 0.85rem; }
+  /* Le bouton d'appel à l'action est exclu : il gère lui-même son remplissage,
+     qui doit tomber à zéro quand il se replie en pastille. Cette règle, plus
+     spécifique, l'en empêchait et la pastille restait un ovale. */
+  .header__inner .btn--sm:not(.header__cta) { padding-inline: 0.85rem; font-size: 0.85rem; }
+  .header__cta { font-size: 0.85rem; }
+  /* Déplié sur un très petit écran, il doit tenir entre le logo et le menu. */
+  .header.is-past-hero .header__cta { padding-inline: 0.85rem; }
   .brand__logo { height: 1.3rem; }
 }
 

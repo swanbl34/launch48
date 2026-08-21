@@ -10,22 +10,38 @@ const setupHeader = () => {
   const header = document.querySelector('.header');
   if (!header) return;
 
+  /* Deux seuils distincts. `is-scrolled` se déclenche au moindre défilement et
+     resserre la barre en capsule. `is-past-hero` attend qu'on ait quitté le
+     premier écran : c'est lui qui déplie le bouton d'appel à l'action sur
+     téléphone. Sur les pages sans hero, on se rabat sur une demi-hauteur
+     d'écran. */
+  const hero = document.querySelector('.hero');
+
+  const pastHero = () => {
+    if (hero) {
+      // Le bas du hero est passé sous la barre de navigation.
+      return hero.getBoundingClientRect().bottom <= header.offsetHeight;
+    }
+    return window.scrollY > window.innerHeight * 0.45;
+  };
+
   let ticking = false;
   const update = () => {
     header.classList.toggle('is-scrolled', window.scrollY > 8);
+    header.classList.toggle('is-past-hero', pastHero());
     ticking = false;
   };
 
+  const request = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+
   update();
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(update);
-    },
-    { passive: true }
-  );
+  window.addEventListener('scroll', request, { passive: true });
+  // La hauteur du hero change avec la largeur : le seuil doit suivre.
+  window.addEventListener('resize', request, { passive: true });
 };
 
 /* ── Menu central : indicateur coulissant + section en cours ─────────────── */
@@ -486,7 +502,7 @@ export const renderShellHeader = () => `
         ${NAV_LINKS.map((l) => `<a href="${l.href}">${l.label}</a>`).join('')}
       </nav>
       <div class="header__actions">
-        <a class="btn btn--primary btn--sm" href="/devis/">Lancer mon site</a>
+        <a class="btn btn--primary btn--sm header__cta" href="/devis/"><svg class="header__cta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.6 3.4h3l1.5 3.8-2 1.4a10.8 10.8 0 0 0 5.3 5.3l1.4-2 3.8 1.5v3a1.9 1.9 0 0 1-2.1 1.9A15.6 15.6 0 0 1 4.7 5.5a1.9 1.9 0 0 1 1.9-2.1Z" /></svg><span class="header__cta-label">Lancer mon site</span></a>
         <button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Ouvrir le menu">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>

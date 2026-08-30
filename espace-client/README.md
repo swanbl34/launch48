@@ -23,11 +23,18 @@ Les tokens de design (`#091019`, `#46e4ff`, Sora, Space Grotesk…) sont repris
 
 ### 1. Supabase
 
-Crée un projet Supabase, puis colle `supabase/migration.sql` dans **SQL Editor**
-et exécute-le. Ça crée les 4 tables, le bucket privé `client-assets`, active RLS
-partout et retire les droits du rôle `anon`.
+Crée un projet Supabase, puis colle dans **SQL Editor**, **dans cet ordre** :
 
-> Le fichier est idempotent : tu peux le relancer sans casse.
+1. `supabase/migration.sql` — les 4 tables, le bucket privé `client-assets`,
+   RLS partout, et les droits du rôle `anon` retirés.
+2. `supabase/migration-002-taches.sql` — ce qui transforme une tâche en demande
+   adressée au client : explication, livrable attendu, dossier de dépôt,
+   échéance, jalon, mot du client, et le statut `review` (« à valider »).
+
+> Les deux fichiers sont idempotents : tu peux les relancer sans casse. Sur une
+> base déjà en production, la 002 s'applique à chaud — elle n'ajoute que des
+> colonnes nullables et n'élargit la contrainte de statut que dans le sens
+> permissif.
 
 ### 2. Variables d'environnement
 
@@ -80,7 +87,7 @@ Actions se contentent de naviguer, rien n'est écrit.
 
 ---
 
-## Les 3 usages
+## Le quotidien
 
 ### Créer un projet
 
@@ -94,6 +101,61 @@ Sur la fiche projet, bouton **Copier le lien** :
 passe côté client. Un token inconnu ou mal formé renvoie un 404, et toute l'app
 est en `noindex, nofollow` (`app/robots.ts` + metadata du layout).
 
+### Envoyer des tâches au client
+
+Onglet **Tâches** de la fiche projet. Trois façons d'alimenter la liste :
+
+- **Envoyer une tâche** — un formulaire complet en bas de page : l'intitulé, le
+  *pourquoi* (lu tel quel par le client), le **livrable attendu**, la phase, le
+  jalon, l'échéance. Elle apparaît dans son espace immédiatement.
+- **Importer un lot** — les listes prêtes à l'emploi de `lib/task-packs.ts`.
+  L'import est idempotent par intitulé : réimporter un lot enrichi n'engendre
+  pas de doublons.
+- **Le seed du pack** à la création du projet, comme avant.
+
+Le champ **livrable attendu** est ce qui change tout. Rempli, la tâche affiche
+côté client le bouton de dépôt et passe par `review` (« à valider ») au lieu
+d'être terminée sur parole. Vide, c'est une simple décision à prendre — le
+client la coche, elle est finie.
+
+Le bouton **Prévenir le client** rédige l'e-mail listant les tâches ouvertes et
+l'ouvre dans ton client mail. Pas de service transactionnel à payer, et le
+message part de ta vraie adresse, dans ton vrai fil de discussion.
+
+### Le dossier de dépôt Google Drive
+
+Les livrables ne transitent pas par l'app : 100 fiches produits en photo se
+comptent en gigaoctets, très au-delà du bucket Supabase et de la limite de corps
+des Server Actions.
+
+1. Crée un dossier Drive et partage-le **en écriture** avec l'adresse du client.
+2. Colle son lien dans **Fiche → Dossier de dépôt (Google Drive)**.
+3. Optionnel : une tâche peut avoir son propre sous-dossier, saisi sur la tâche.
+   Sans lui, elle retombe sur le dossier du projet.
+
+Seul `https:` est accepté, à l'écriture comme à l'affichage (`lib/drive.ts`) :
+le lien est rendu cliquable dans l'espace client, une faute de frappe ne doit
+pas pouvoir produire un `javascript:`.
+
+Sans dossier renseigné, rien ne casse — les tâches à livrable affichent « le
+dossier de dépôt n'est pas encore ouvert », et l'onglet Tâches te le rappelle.
+
+### La boucle complète
+
+```
+   toi                        le client                     toi
+ ────────────────────────────────────────────────────────────────────
+ crée la tâche       →   la lit, dépose sur Drive,   →   « à valider »
+ (+ livrable)            clique « j'ai déposé »          dans l'admin
+                                                          ↓
+                                            valides  ──→  terminé
+                                            ou renvoies ─→  à faire
+```
+
+Une tâche sans livrable saute l'étape de validation : le client la coche, c'est
+terminé. Il peut revenir sur sa déclaration tant que tu n'as rien validé ; une
+fois validée par toi, seul l'admin peut la rouvrir.
+
 ### Suivre l'avancement
 
 - `/admin` : tableau de tous les projets — pack, statut, % d'avancement, nombre
@@ -102,13 +164,20 @@ est en `noindex, nofollow` (`app/robots.ts` + metadata du layout).
   les fichiers (URL signée 1 h), éditer / ajouter / réordonner / supprimer les
   tâches, changer les statuts.
 
-Côté client, `/espace/<token>` affiche en lecture seule la progression, les
-éléments manquants, la timeline et le détail des tâches — sauf les tâches
-`owner = client`, qu'il peut cocher lui-même.
+Côté client, trois écrans :
+
+| | |
+| --- | --- |
+| `/espace/<token>` | l'accueil : un message, une action |
+| `…/suivi` | le dashboard — avancement segmenté (validé / rendu / en cours / bloqué), la répartition « notre part » vs « ta part », les 3 tâches les plus urgentes, les manquants du brief, les étapes, le détail |
+| `…/taches` | sa part à lui, groupée par ce qui bloque : l'ouverture, la mise en ligne, puis le reste |
+
+Tout ce qui est à nous est en lecture seule. Ses propres tâches sont
+actionnables : il rend, laisse un mot, ou revient sur sa déclaration.
 
 ---
 
-## Les deux fichiers à éditer
+## Les trois fichiers à éditer
 
 ### `lib/brief-schema.ts` — le questionnaire
 
@@ -124,6 +193,22 @@ dans `form_answers.data` et dans `assets.field_key`.
 `STANDARD` est la référence ; `light` et `pousse` en dérivent par filtrage /
 ajout, pour éviter la duplication. Modifier un template **ne touche pas** les
 projets existants : le seed n'a lieu qu'à la création.
+
+`PHASES` vit ici aussi. Elle couvre les deux moitiés du projet — ce qu'on
+construit (cadrage, design, intégration, boutique, recette, mise en ligne) et ce
+que le client rassemble (identité, contenus, photographies, textes légaux,
+stock, logistique). Ajouter une phase ne pollue aucun projet existant :
+`phaseViews()` ne montre que celles où le projet a réellement des tâches.
+
+### `lib/task-packs.ts` — les lots à envoyer en cours de route
+
+Un *pack* est le squelette de production, créé une fois à l'ouverture. Un *lot*
+est un paquet de demandes qu'on pousse au client quand il devient pertinent —
+le contenu, le stock, le légal — et qu'on importe depuis l'onglet Tâches.
+
+Chaque tâche d'un lot porte son `description`, son `deliverable`, son
+`milestone` et, pour les acquis, `status: 'done'` : c'est ce qui permet
+d'alimenter d'un coup les tâches achevées d'un projet déjà bien avancé.
 
 ---
 
@@ -251,23 +336,33 @@ espace-client/
 │   ├── robots.ts                      disallow: /
 │   ├── _components/                   Brand, Bar, CopyButton
 │   ├── espace/[token]/
-│   │   ├── page.tsx                   dashboard client
-│   │   ├── actions.ts                 save, upload, delete, toggle task
+│   │   ├── page.tsx                   écran d'accueil
+│   │   ├── suivi/page.tsx             dashboard d'avancement
+│   │   ├── taches/page.tsx            « Mes tâches » : la part du client
+│   │   ├── _TaskCard.tsx              la carte d'une tâche (partagée)
+│   │   ├── actions.ts                 save, upload, delete, rendre une tâche
 │   │   └── brief/page.tsx             questionnaire 6 étapes + récap
 │   └── admin/
 │       ├── page.tsx                   login + liste des projets
-│       ├── actions.ts                 login, CRUD projets & tâches
-│       └── projet/[id]/page.tsx       fiche projet
+│       ├── actions.ts                 login, CRUD projets & tâches, import
+│       └── projet/[id]/
+│           ├── page.tsx               fiche projet + dossier de dépôt
+│           └── taches/page.tsx        file « à valider », envoi, édition
 ├── lib/
 │   ├── brief-schema.ts     ← à éditer  définition des 52 champs
-│   ├── task-templates.ts   ← à éditer  tâches par pack
+│   ├── task-templates.ts   ← à éditer  phases et tâches par pack
+│   ├── task-packs.ts       ← à éditer  lots importables
+│   ├── drive.ts                       liens de dépôt (https uniquement)
+│   ├── notify.ts                      l'e-mail d'annonce des tâches
 │   ├── missing.ts                     calcul des manquants
-│   ├── progress.ts                    % global et état des phases
+│   ├── progress.ts                    % global, stats, charge du client
 │   ├── auth.ts                        cookie admin signé HMAC
 │   ├── supabase.ts                    client service_role
 │   ├── data.ts                        lectures
 │   ├── brief-values.ts                FormData ↔ jsonb
 │   ├── format.ts                      dates, prix, tailles
 │   └── types.ts
-└── supabase/migration.sql
+└── supabase/
+    ├── migration.sql                  tables, bucket, RLS
+    └── migration-002-taches.sql       livrables, jalons, statut « à valider »
 ```

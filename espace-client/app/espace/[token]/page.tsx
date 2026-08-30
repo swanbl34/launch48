@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { getAssets, getFormAnswers, getProjectByToken, getTasks } from '@/lib/data';
 import { formatDate } from '@/lib/format';
 import { countMissingRequired } from '@/lib/missing';
-import { globalProgress } from '@/lib/progress';
+import { clientLoad, globalProgress } from '@/lib/progress';
 import { isOnboarding } from '@/lib/types';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -43,6 +43,7 @@ export default async function WelcomePage({
   const missing = countMissingRequired(answers.data, assets);
   const started = answers.last_step > 1 || !!answers.submitted_at;
   const progress = globalProgress(tasks);
+  const load = clientLoad(tasks);
 
   return (
     <main className="welcome">
@@ -98,10 +99,29 @@ export default async function WelcomePage({
               <a className="btn btn--xl" href={`/espace/${token}/suivi`}>
                 Voir mon projet · {progress}% →
               </a>
+              {load.open.length > 0 ? (
+                <a className="btn btn--ghost" href={`/espace/${token}/taches`}>
+                  Mes tâches · {load.open.length}
+                </a>
+              ) : null}
               <a className="btn btn--ghost" href={`/espace/${token}/brief`}>
                 Mon brief{missing > 0 ? ` · ${missing} manquants` : ''}
               </a>
             </div>
+
+            {load.blocking.length > 0 ? (
+              <p className="welcome__hint">
+                <strong>{load.blocking.length}</strong> point
+                {load.blocking.length > 1 ? 's' : ''} qui bloque
+                {load.blocking.length > 1 ? 'nt' : ''} l&apos;ouverture attend
+                {load.blocking.length > 1 ? 'ent' : ''} de ton côté.
+              </p>
+            ) : null}
+            {load.open.length === 0 && load.submitted.length > 0 ? (
+              <p className="welcome__hint">
+                Tout ce qu&apos;on t&apos;a demandé est arrivé. On vérifie.
+              </p>
+            ) : null}
           </>
         )}
 

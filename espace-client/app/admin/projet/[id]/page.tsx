@@ -225,6 +225,18 @@ export default async function FichePage({
               defaultValue={project.delivery_date ?? ''}
             />
           </div>
+
+          {/* Le dossier de dépôt commun. C'est lui qui alimente le bouton
+              « Déposer les fichiers » de chaque tâche à livrable : sans lui,
+              le client lit « le dossier n'est pas encore ouvert ». */}
+          <Input
+            name="drive_url"
+            label="Dossier de dépôt (Google Drive)"
+            type="url"
+            defaultValue={project.drive_url ?? ''}
+            placeholder="https://drive.google.com/drive/folders/…"
+            help="Partage-le en écriture avec l'adresse du client. https uniquement — une saisie non conforme est effacée à l'enregistrement."
+          />
           <div>
             <button className="btn" type="submit">
               Enregistrer

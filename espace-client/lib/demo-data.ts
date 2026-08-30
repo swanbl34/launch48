@@ -20,6 +20,7 @@ export const DEMO_PROJECT: Project = {
   kickoff_date: '2026-08-14',
   delivery_date: '2026-08-29',
   created_at: '2026-08-12T09:00:00Z',
+  drive_url: 'https://drive.google.com/drive/folders/DEMO-atelier-vermeil',
 };
 
 export const DEMO_ANSWERS: FormAnswers = {
@@ -92,12 +93,14 @@ export const DEMO_ASSETS: Asset[] = [
   { id: 'a3', project_id: DEMO_PROJECT.id, field_key: 'photos_ambiance', file_name: 'atelier-02.jpg', storage_path: 'demo/3', size: 1_800_000, created_at: '2026-08-15T10:02:00Z' },
 ];
 
+/** Fabrique une tâche de démo. Les champs riches sont optionnels. */
 const t = (
   phase: string,
   label: string,
   status: Task['status'],
   owner: Task['owner'],
   order_index: number,
+  extra: Partial<Task> = {},
 ): Task => ({
   id: `${phase}-${order_index}`,
   project_id: DEMO_PROJECT.id,
@@ -107,35 +110,83 @@ const t = (
   order_index,
   owner,
   done_at: status === 'done' ? '2026-08-16T12:00:00Z' : null,
+  description: null,
+  deliverable: null,
+  drive_url: null,
+  due_date: null,
+  milestone: null,
+  client_note: null,
+  submitted_at: status === 'review' ? '2026-08-18T09:30:00Z' : null,
+  created_at: '2026-08-14T08:00:00Z',
+  ...extra,
 });
 
 export const DEMO_TASKS: Task[] = [
   t('cadrage', 'Brief validé', 'done', 'client', 10),
-  t('cadrage', 'Accès Shopify', 'blocked', 'client', 20),
+  t('cadrage', 'Accès Shopify', 'todo', 'client', 20, {
+    milestone: 'ouverture',
+    description:
+      "Sans cet accès je ne peux ni créer les collections, ni importer les produits. C'est le premier domino : tout le reste attend derrière.",
+  }),
   t('cadrage', 'Accès domaine', 'done', 'client', 30),
   t('cadrage', 'Specs validées', 'done', 'launch48', 40),
-  t('design', 'Direction graphique', 'done', 'launch48', 50),
-  t('design', 'Maquette home', 'doing', 'launch48', 60),
-  t('design', 'Maquette page produit', 'todo', 'launch48', 70),
-  t('design', 'Validation client', 'todo', 'client', 80),
-  t('integration', 'Setup Next.js', 'todo', 'launch48', 90),
-  t('integration', 'Home', 'todo', 'launch48', 100),
-  t('integration', 'Pages vitrine', 'todo', 'launch48', 110),
-  t('integration', 'Pages légales', 'todo', 'launch48', 120),
-  t('integration', 'Responsive', 'todo', 'launch48', 130),
-  t('boutique', 'Storefront API', 'todo', 'launch48', 140),
-  t('boutique', 'Grille produits', 'todo', 'launch48', 150),
-  t('boutique', 'Page produit + variantes', 'todo', 'launch48', 160),
-  t('boutique', 'Panier', 'todo', 'launch48', 170),
-  t('boutique', 'Redirect checkout', 'todo', 'launch48', 180),
-  t('recette', 'Tests mobile', 'todo', 'launch48', 190),
-  t('recette', "Tests parcours d'achat", 'todo', 'launch48', 200),
-  t('recette', 'SEO technique', 'todo', 'launch48', 210),
-  t('recette', 'Performance', 'todo', 'launch48', 220),
-  t('recette', 'Retours client', 'todo', 'client', 230),
-  t('mise_en_ligne', 'Domaine', 'todo', 'launch48', 240),
-  t('mise_en_ligne', 'DNS', 'todo', 'launch48', 250),
-  t('mise_en_ligne', 'Analytics', 'todo', 'launch48', 260),
-  t('mise_en_ligne', 'Commande test', 'todo', 'launch48', 270),
-  t('mise_en_ligne', 'Livraison', 'todo', 'launch48', 280),
+
+  t('identite', 'Le logo en fichier vectoriel', 'review', 'client', 50, {
+    milestone: 'livraison',
+    description: "Aujourd'hui le nom s'affiche en texte dans l'en-tête.",
+    deliverable: 'Le logo en .svg, .ai ou .eps — pas un JPEG.',
+    client_note: "J'ai déposé le .ai et une version .svg exportée par le graphiste.",
+  }),
+
+  t('design', 'Direction graphique', 'done', 'launch48', 60),
+  t('design', 'Maquette home', 'doing', 'launch48', 70),
+  t('design', 'Maquette page produit', 'todo', 'launch48', 80),
+  t('design', 'Validation client', 'todo', 'client', 90, {
+    description: 'Je t’enverrai un lien de prévisualisation dès que la home est prête.',
+  }),
+
+  t('contenu', 'Votre histoire', 'todo', 'client', 100, {
+    milestone: 'livraison',
+    description:
+      "Face à une marque que personne ne connaît, l'histoire de l'atelier est un argument que la concurrence n'a pas. Je n'ai pas voulu l'inventer : la page attend ton récit.",
+    deliverable: 'Le texte de la page « Notre histoire », même brut.',
+  }),
+
+  t('photos', 'Photographier les 18 pièces, plusieurs angles', 'todo', 'client', 110, {
+    milestone: 'ouverture',
+    due_date: '2026-09-05',
+    description:
+      'Y compris le défaut quand il y en a un : le montrer fait vendre, le cacher génère des retours.',
+    deliverable: 'Un dossier par pièce, 3 angles minimum, fond neutre.',
+  }),
+
+  t('legal', 'Mentions légales, CGV, confidentialité, retours', 'todo', 'client', 120, {
+    milestone: 'ouverture',
+    description: 'Obligatoires pour vendre en ligne. À faire relire par un professionnel.',
+    deliverable: 'Les quatre textes, en document modifiable.',
+  }),
+
+  t('integration', 'Setup Next.js', 'done', 'launch48', 130),
+  t('integration', 'Home', 'doing', 'launch48', 140),
+  t('integration', 'Pages vitrine', 'todo', 'launch48', 150),
+  t('integration', 'Pages légales', 'todo', 'launch48', 160),
+  t('integration', 'Responsive', 'todo', 'launch48', 170),
+
+  t('boutique', 'Storefront API', 'todo', 'launch48', 180),
+  t('boutique', 'Grille produits', 'todo', 'launch48', 190),
+  t('boutique', 'Page produit + variantes', 'todo', 'launch48', 200),
+  t('boutique', 'Panier', 'todo', 'launch48', 210),
+  t('boutique', 'Redirect checkout', 'blocked', 'launch48', 220),
+
+  t('recette', 'Tests mobile', 'todo', 'launch48', 230),
+  t('recette', "Tests parcours d'achat", 'todo', 'launch48', 240),
+  t('recette', 'SEO technique', 'todo', 'launch48', 250),
+  t('recette', 'Performance', 'todo', 'launch48', 260),
+  t('recette', 'Retours client', 'todo', 'client', 270),
+
+  t('mise_en_ligne', 'Domaine', 'todo', 'launch48', 280),
+  t('mise_en_ligne', 'DNS', 'todo', 'launch48', 290),
+  t('mise_en_ligne', 'Analytics', 'todo', 'launch48', 300),
+  t('mise_en_ligne', 'Commande test', 'todo', 'launch48', 310),
+  t('mise_en_ligne', 'Livraison', 'todo', 'launch48', 320),
 ];

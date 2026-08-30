@@ -178,6 +178,7 @@ a:hover { text-decoration: underline; }
 .dot--doing { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent), transparent 82%); }
 .dot--blocked { background: var(--danger); }
 .dot--todo { background: color-mix(in srgb, var(--muted), transparent 55%); }
+.dot--review { background: var(--accent-4); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-4), transparent 85%); }
 
 /* ── Header ──────────────────────────────────────────────────────────────── */
 .topbar {
@@ -198,16 +199,28 @@ a:hover { text-decoration: underline; }
 
 /* ── Barre de progression ────────────────────────────────────────────────── */
 .bar {
+  position: relative;
   height: 5px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--muted), transparent 82%);
   overflow: hidden;
 }
-.bar__fill {
-  height: 100%;
+/* Les deux segments se superposent : le rendu-en-attente dessous, le validé
+   par-dessus. En flux normal ils s'empileraient l'un sous l'autre. */
+.bar__fill,
+.bar__pending {
+  position: absolute;
+  inset: 0 auto 0 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.bar__fill { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.bar__pending {
+  background: repeating-linear-gradient(
+    115deg,
+    color-mix(in srgb, var(--accent), transparent 62%) 0 5px,
+    color-mix(in srgb, var(--accent), transparent 84%) 5px 10px
+  );
 }
 .bar--thin { height: 3px; }
 
@@ -227,6 +240,15 @@ a:hover { text-decoration: underline; }
 .timeline__item[data-state='doing'] .timeline__label { color: var(--accent); }
 .timeline__item[data-state='blocked'] .timeline__label { color: var(--danger); }
 .timeline__item[data-state='todo'] .timeline__label { color: var(--muted); }
+.timeline__item[data-state='review'] .timeline__label { color: var(--accent-4); }
+/* La timeline passe de 3 à 4 colonnes : la barre de phase s'intercale entre
+   le libellé et le compteur. */
+.timeline__item { grid-template-columns: auto 1fr minmax(3rem, 6rem) auto; }
+.timeline__bar { display: block; }
+@media (max-width: 560px) {
+  .timeline__item { grid-template-columns: auto 1fr auto; }
+  .timeline__bar { display: none; }
+}
 
 /* ── Éléments manquants ──────────────────────────────────────────────────── */
 .missing-list { display: grid; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
@@ -271,9 +293,11 @@ a.missing-item:hover { text-decoration: none; transform: translateX(2px); border
   padding: 0.55rem 0;
   border-top: 1px solid color-mix(in srgb, var(--line), transparent 55%);
 }
-.task__label { flex: 1; min-width: 0; }
+.task__label { flex: 1; min-width: 0; color: var(--text); }
+a.task__label:hover { color: var(--accent); }
 .task[data-status='done'] .task__label { color: var(--muted); text-decoration: line-through; }
 .task[data-status='blocked'] .task__label { color: var(--danger); }
+.task[data-status='review'] .task__label { color: var(--accent-4); }
 
 /* ── Formulaire ──────────────────────────────────────────────────────────── */
 .field { display: grid; gap: 0.35rem; }
@@ -476,24 +500,13 @@ tbody tr:hover { background: var(--surface); }
 /* Grille 2 colonnes des formulaires admin. */
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.9rem; }
 .grid-2 > .field + .field { margin-top: 0; }
-.admin-task {
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  gap: 0.4rem;
-  align-items: center;
-  padding: 0.4rem 0;
-  border-top: 1px solid color-mix(in srgb, var(--line), transparent 55%);
-}
-.admin-task input[type='text'], .admin-task select { padding: 0.45rem 0.6rem; font-size: 0.86rem; border-radius: 9px; }
 .icon-btn {
   border: 1px solid var(--line); background: var(--surface); color: var(--muted);
   border-radius: 8px; cursor: pointer; padding: 0.35rem 0.5rem;
   font-family: inherit; font-size: 0.8rem; line-height: 1;
 }
 .icon-btn:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent), transparent 50%); }
-@media (max-width: 640px) {
-  .admin-task { grid-template-columns: 1fr auto; }
-}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    « Je ne sais pas encore » — échappatoire sur les questions bloquantes.
@@ -924,14 +937,6 @@ tbody tr:hover { background: var(--surface); }
   td:first-child strong { font-size: 1.05rem; }
   td:empty { display: none; }
 
-  /* ── Admin : lignes de tâches ───────────────────────────────────────────
-     Quatre colonnes ne tiennent pas. L'édition passe sur deux rangées. */
-  .admin-task { grid-template-columns: 1fr auto auto auto; gap: 0.3rem; }
-  .admin-task > form:first-child { grid-column: 1 / -1; flex-wrap: wrap; }
-  .admin-task input[type='text'],
-  .admin-task select { font-size: 1rem; min-height: 40px; }
-  .admin-task input[type='text'] { flex: 1 1 100%; }
-
   .sidebar__nav { overflow-x: auto; scrollbar-width: none; }
   .sidebar__nav::-webkit-scrollbar { display: none; }
 }
@@ -942,4 +947,209 @@ tbody tr:hover { background: var(--surface); }
   .appbar__title { font-size: 0.88rem; }
   .appbar__right .pill:not(:last-child) { display: none; }
   td::before { flex-basis: 6rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SYSTÈME DE TÂCHES
+   Une tâche n'est plus une ligne dans une liste : c'est une demande adressée
+   à quelqu'un, avec son pourquoi, son livrable et son bouton d'action. Elle a
+   donc besoin de la place d'une carte.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Bloc d'avancement du dashboard ──────────────────────────────────────── */
+.progress-hero__figure {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  @supports not (background-clip: text) { color: var(--accent); }
+}
+.progress-hero__unit { font-size: 0.45em; margin-left: 0.1em; }
+
+.statgrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+.stat {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 25%);
+  text-align: center;
+}
+.stat__value {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.stat__label { font-size: 0.7rem; color: var(--muted); }
+/* Un compteur à zéro ne mérite pas de couleur : il n'appelle aucune action. */
+.stat[data-tone='ok'] .stat__value { color: var(--accent-3); }
+.stat[data-tone='accent'] .stat__value { color: var(--accent); }
+.stat[data-tone='danger'] .stat__value { color: var(--danger); }
+.stat[data-tone='none'] .stat__value { color: color-mix(in srgb, var(--muted), transparent 35%); }
+
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.split__side { display: grid; gap: 0.35rem; align-content: start; }
+
+@media (max-width: 560px) {
+  .statgrid { grid-template-columns: repeat(2, 1fr); }
+  .split { grid-template-columns: 1fr; gap: 0.7rem; }
+}
+
+/* ── La carte d'une tâche client ─────────────────────────────────────────── */
+.tcards { display: grid; gap: 0.6rem; }
+
+.tcard {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid color-mix(in srgb, var(--muted), transparent 60%);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 12%);
+  /* Le lien d'ancre #tache-<id> arrive sous la barre collante sans ça. */
+  scroll-margin-top: 6rem;
+}
+.tcard[data-status='review'] { border-left-color: var(--accent-4); }
+.tcard[data-status='done'] { border-left-color: var(--accent-3); opacity: 0.72; }
+.tcard[data-status='blocked'] { border-left-color: var(--danger); }
+/* Une tâche qui bloque l'ouverture se voit de loin, statut mis à part. */
+.tcard:has(.pill--danger) { border-left-color: var(--danger); }
+
+.tcard__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+.tcard__head > .dot { margin-top: 0.45rem; }
+.tcard__title {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+.tcard__tags { display: flex; gap: 0.3rem; flex-wrap: wrap; align-items: center; }
+
+.tcard__why { color: var(--muted); font-size: 0.9rem; line-height: 1.55; text-wrap: pretty; }
+.tcard__due { color: var(--muted); }
+.tcard__due--late { color: var(--danger); }
+
+.tcard__note {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border-left: 2px solid color-mix(in srgb, var(--accent), transparent 50%);
+  background: color-mix(in srgb, var(--accent), transparent 94%);
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+}
+
+.tcard__state { font-size: 0.86rem; display: flex; align-items: center; gap: 0.4rem; }
+.tcard__state--review { color: var(--accent-4); }
+.tcard__state--done { color: var(--accent-3); }
+
+.tcard__actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.tcard__notebox { flex: 1 1 100%; }
+.tcard__notebox > summary { cursor: pointer; list-style: none; width: fit-content; }
+.tcard__notebox > summary::-webkit-details-marker { display: none; }
+.tcard__notebox > summary::before { content: '✎ '; }
+.tcard__notebox > summary:hover { color: var(--text); }
+.tcard__notebox textarea { min-height: 5rem; font-size: 1rem; }
+
+/* Ce qu'on attend en retour, encadré : c'est l'information qui déclenche
+   l'action, elle ne doit pas se fondre dans le paragraphe d'explication. */
+.deliverable {
+  display: grid;
+  gap: 0.45rem;
+  justify-items: start;
+  padding: 0.75rem 0.85rem;
+  border: 1px dashed color-mix(in srgb, var(--accent), transparent 55%);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent), transparent 95%);
+}
+
+/* ── Admin : la tâche dépliable ──────────────────────────────────────────── */
+.admin-task {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 25%);
+  scroll-margin-top: 6rem;
+}
+.admin-task + .admin-task { margin-top: 0.4rem; }
+.admin-task > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 0.8rem;
+  min-height: 44px;
+}
+.admin-task > summary::-webkit-details-marker { display: none; }
+.admin-task > summary:hover { background: var(--surface); border-radius: 12px; }
+.admin-task[open] > summary { border-bottom: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+.admin-task__label {
+  flex: 1 1 10rem;
+  min-width: 0;
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-task__pills { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; }
+.admin-task__body { display: grid; gap: 0.9rem; padding: 0.9rem 0.8rem; }
+.admin-task__tools {
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--line), transparent 55%);
+}
+
+/* ── Admin : la file « à valider » ───────────────────────────────────────── */
+.review-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 15%);
+}
+.review-row > .stack { flex: 1 1 16rem; min-width: 0; }
+
+.mailpreview {
+  margin: 0.5rem 0 0;
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bg), white 2%);
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--muted);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .tcard { padding: 0.9rem 0.8rem; }
+  .tcard__actions > .btn { flex: 1 1 auto; }
+  .admin-task__pills .pill { padding: 0.2rem 0.45rem; font-size: 0.68rem; }
+  /* Sur mobile, seul l'état compte dans le repli : le reste se lit déplié. */
+  .admin-task__pills .pill:not(:last-child) { display: none; }
+  .review-row > .row { width: 100%; }
+  .review-row .btn { flex: 1 1 auto; }
 }

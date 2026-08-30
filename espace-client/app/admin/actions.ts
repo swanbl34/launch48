@@ -12,9 +12,11 @@ import { redirect } from 'next/navigation';
 
 import { ADMIN_COOKIE, checkPassword, createSessionValue, isAdmin, newToken } from '@/lib/auth';
 import { checkRateLimit, clearFailures, clientKey, recordFailure } from '@/lib/rate-limit';
-import { seedTasksForPack, type Pack } from '@/lib/task-templates';
+import { normaliseDepositUrl } from '@/lib/drive';
+import { findPack } from '@/lib/task-packs';
+import { rowsFromTemplates, seedTasksForPack, type Pack } from '@/lib/task-templates';
 import { ASSETS_BUCKET, supabaseAdmin } from '@/lib/supabase';
-import type { ProjectStatus, TaskStatus } from '@/lib/types';
+import type { ProjectStatus, TaskMilestone, TaskStatus } from '@/lib/types';
 
 /** En mode démo, aucune écriture : les actions renvoient sur la page d'origine. */
 const DEMO = process.env.DEMO_MODE === '1';
@@ -133,6 +135,7 @@ export async function updateProject(formData: FormData) {
       status: asStatus(String(formData.get('status') ?? '')),
       kickoff_date: String(formData.get('kickoff_date') ?? '') || null,
       delivery_date: String(formData.get('delivery_date') ?? '') || null,
+      drive_url: normaliseDepositUrl(String(formData.get('drive_url') ?? '')),
     })
     .eq('id', id);
 
@@ -236,38 +239,98 @@ export async function setProjectStatus(formData: FormData) {
 /* ── Tâches ──────────────────────────────────────────────────────────────── */
 
 const asTaskStatus = (v: string): TaskStatus =>
-  v === 'doing' || v === 'blocked' || v === 'done' ? v : 'todo';
+  v === 'doing' || v === 'blocked' || v === 'review' || v === 'done' ? v : 'todo';
+
+const asMilestone = (v: string): TaskMilestone | null =>
+  v === 'ouverture' || v === 'livraison' ? v : null;
+
+const asOwner = (v: string) => (v === 'client' ? 'client' : 'launch48');
+
+/** Champ texte optionnel : vide → null, pour ne pas stocker des chaînes vides. */
+const orNull = (fd: FormData, key: string, max = 4000): string | null => {
+  const v = String(fd.get(key) ?? '').trim();
+  return v ? v.slice(0, max) : null;
+};
+
+/**
+ * Les horodatages dérivés du statut.
+ *
+ * `done_at` marque la validation, `submitted_at` le moment où le client a
+ * déclaré avoir rendu. Renvoyer une tâche à `todo` efface les deux : sinon
+ * elle réapparaîtrait chez le client avec un « rendu le 18 août » qui ne veut
+ * plus rien dire. Passer à `done` depuis `review` conserve `submitted_at`,
+ * c'est la trace de qui a bougé en premier.
+ */
+function stampsFor(
+  status: TaskStatus,
+  previous: { submitted_at: string | null; done_at: string | null },
+) {
+  const now = new Date().toISOString();
+  // `?? now` et non `now` : corriger une faute de frappe sur une tâche déjà
+  // validée ne doit pas déplacer sa date de validation au jour même.
+  if (status === 'done') {
+    return { done_at: previous.done_at ?? now, submitted_at: previous.submitted_at };
+  }
+  if (status === 'review') {
+    return { done_at: null, submitted_at: previous.submitted_at ?? now };
+  }
+  return { done_at: null, submitted_at: null };
+}
 
 export async function updateTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
+  const projectId = String(formData.get('projectId') ?? '');
+  blockIfDemo(`/admin/projet/${projectId}/taches?e=demo`);
 
   const id = String(formData.get('taskId') ?? '');
-  const projectId = String(formData.get('projectId') ?? '');
   const status = asTaskStatus(String(formData.get('status') ?? ''));
   const label = String(formData.get('label') ?? '').trim();
-  const owner = String(formData.get('owner') ?? '') === 'client' ? 'client' : 'launch48';
+  const phase = String(formData.get('phase') ?? '').trim();
 
-  await supabaseAdmin()
+  const db = supabaseAdmin();
+
+  // On relit la tâche pour connaître son submitted_at, et pour vérifier au
+  // passage qu'elle appartient bien à ce projet.
+  const { data: current } = await db
+    .from('tasks')
+    .select('id, submitted_at, done_at')
+    .eq('id', id)
+    .eq('project_id', projectId)
+    .maybeSingle();
+
+  if (!current) redirect(`/admin/projet/${projectId}/taches`);
+
+  const driveRaw = String(formData.get('drive_url') ?? '').trim();
+
+  await db
     .from('tasks')
     .update({
       status,
-      owner,
-      done_at: status === 'done' ? new Date().toISOString() : null,
+      owner: asOwner(String(formData.get('owner') ?? '')),
+      description: orNull(formData, 'description'),
+      deliverable: orNull(formData, 'deliverable', 600),
+      drive_url: driveRaw ? normaliseDepositUrl(driveRaw) : null,
+      due_date: String(formData.get('due_date') ?? '') || null,
+      milestone: asMilestone(String(formData.get('milestone') ?? '')),
+      ...stampsFor(status, {
+        submitted_at: current.submitted_at ?? null,
+        done_at: current.done_at ?? null,
+      }),
       ...(label ? { label } : {}),
+      ...(phase ? { phase } : {}),
     })
     .eq('id', id)
     .eq('project_id', projectId);
 
   revalidatePath(`/admin/projet/${projectId}`, 'layout');
-  redirect(`/admin/projet/${projectId}/taches`);
+  redirect(`/admin/projet/${projectId}/taches?saved=1#tache-${id}`);
 }
 
 export async function addTask(formData: FormData) {
   await guard();
-  blockIfDemo(`/admin/projet/${String(formData.get('projectId') ?? '')}/taches?e=demo`);
-
   const projectId = String(formData.get('projectId') ?? '');
+  blockIfDemo(`/admin/projet/${projectId}/taches?e=demo`);
+
   const label = String(formData.get('label') ?? '').trim();
   const phase = String(formData.get('phase') ?? '').trim();
   if (!label || !phase) redirect(`/admin/projet/${projectId}/taches`);
@@ -283,17 +346,113 @@ export async function addTask(formData: FormData) {
     .order('order_index', { ascending: false })
     .limit(1);
 
+  const driveRaw = String(formData.get('drive_url') ?? '').trim();
+
   await db.from('tasks').insert({
     project_id: projectId,
     phase,
     label,
-    owner: String(formData.get('owner') ?? '') === 'client' ? 'client' : 'launch48',
+    owner: asOwner(String(formData.get('owner') ?? '')),
     status: 'todo',
     order_index: (last?.[0]?.order_index ?? 0) + 5,
+    description: orNull(formData, 'description'),
+    deliverable: orNull(formData, 'deliverable', 600),
+    drive_url: driveRaw ? normaliseDepositUrl(driveRaw) : null,
+    due_date: String(formData.get('due_date') ?? '') || null,
+    milestone: asMilestone(String(formData.get('milestone') ?? '')),
   });
 
   revalidatePath(`/admin/projet/${projectId}`, 'layout');
-  redirect(`/admin/projet/${projectId}/taches`);
+  redirect(`/admin/projet/${projectId}/taches?ajout=1`);
+}
+
+/**
+ * Importe un lot de tâches préparé dans lib/task-packs.ts.
+ *
+ * Idempotent par intitulé : on ne crée que ce qui manque. C'est ce qui permet
+ * d'enrichir un lot dans le code et de le réimporter sans se retrouver avec
+ * deux fois « Photographier chaque pièce ».
+ */
+export async function importTaskPack(formData: FormData) {
+  await guard();
+  const projectId = String(formData.get('projectId') ?? '');
+  blockIfDemo(`/admin/projet/${projectId}/taches?e=demo`);
+
+  const pack = findPack(String(formData.get('pack') ?? ''));
+  if (!pack) redirect(`/admin/projet/${projectId}/taches?e=lot`);
+
+  const db = supabaseAdmin();
+
+  const { data: existing } = await db
+    .from('tasks')
+    .select('label, order_index')
+    .eq('project_id', projectId);
+
+  const seen = new Set((existing ?? []).map((t) => normaliseLabel(t.label)));
+  const maxIndex = (existing ?? []).reduce((m, t) => Math.max(m, t.order_index ?? 0), 0);
+
+  const fresh = pack.tasks.filter((t) => !seen.has(normaliseLabel(t.label)));
+
+  if (fresh.length === 0) {
+    redirect(`/admin/projet/${projectId}/taches?importe=0`);
+  }
+
+  await db.from('tasks').insert(rowsFromTemplates(fresh, projectId, maxIndex));
+
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches?importe=${fresh.length}`);
+}
+
+/** Comparaison d'intitulés tolérante à la casse, aux accents et aux espaces. */
+function normaliseLabel(label: string): string {
+  return label
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+/**
+ * Validation en un clic depuis la file « à valider ».
+ *
+ * `decision = ok` valide, `decision = retour` renvoie la tâche au client. Le
+ * second cas efface `submitted_at` : la tâche redevient franchement à faire,
+ * plutôt que de rester dans un entre-deux illisible côté client.
+ */
+export async function reviewTask(formData: FormData) {
+  await guard();
+  const projectId = String(formData.get('projectId') ?? '');
+  blockIfDemo(`/admin/projet/${projectId}/taches?e=demo`);
+
+  const id = String(formData.get('taskId') ?? '');
+  const accepted = String(formData.get('decision') ?? '') === 'ok';
+  const status: TaskStatus = accepted ? 'done' : 'todo';
+
+  const db = supabaseAdmin();
+  const { data: current } = await db
+    .from('tasks')
+    .select('submitted_at, done_at')
+    .eq('id', id)
+    .eq('project_id', projectId)
+    .maybeSingle();
+
+  if (current) {
+    await db
+      .from('tasks')
+      .update({
+        status,
+        ...stampsFor(status, {
+          submitted_at: current.submitted_at ?? null,
+          done_at: current.done_at ?? null,
+        }),
+      })
+      .eq('id', id)
+      .eq('project_id', projectId);
+  }
+
+  revalidatePath(`/admin/projet/${projectId}`, 'layout');
+  redirect(`/admin/projet/${projectId}/taches?${accepted ? 'valide' : 'renvoye'}=1`);
 }
 
 export async function deleteTask(formData: FormData) {
@@ -351,5 +510,5 @@ export async function moveTask(formData: FormData) {
   }
 
   revalidatePath(`/admin/projet/${projectId}`, 'layout');
-  redirect(`/admin/projet/${projectId}/taches`);
+  redirect(`/admin/projet/${projectId}/taches#tache-${taskId}`);
 }

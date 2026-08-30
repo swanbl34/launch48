@@ -262,37 +262,89 @@ export async function deleteAsset(formData: FormData) {
   redirect(`/espace/${token}/brief?step=${step}`);
 }
 
-/** Le client coche/décoche une tâche dont il est le porteur. */
-export async function toggleClientTask(formData: FormData) {
+/**
+ * Le client rend une tâche, la reprend, ou laisse un mot dessus.
+ *
+ * Trois intentions, portées par le bouton cliqué (`_intent`) :
+ *
+ *   submit  « c'est fait » / « j'ai déposé les fichiers ». Une tâche qui
+ *           attend un livrable passe en `review` et non en `done` : personne
+ *           ne peut vérifier à notre place que le dossier de dépôt est bien
+ *           rempli, et faire semblant du contraire ferait afficher « terminé »
+ *           sur un dossier vide. Une tâche sans livrable — trancher un nom,
+ *           relire un texte — est terminée sur parole, elle passe en `done`.
+ *
+ *   reopen  le client revient sur sa déclaration. Autorisé tant que NOUS
+ *           n'avons rien validé : sur une tâche encore en `review`, ou sur une
+ *           tâche sans livrable qu'il avait cochée lui-même. Une fois la
+ *           validation posée de notre côté, seul l'admin peut rouvrir — sinon
+ *           un travail accepté pourrait redevenir « à faire » sans que
+ *           personne ne s'en aperçoive.
+ *
+ *   note    il nous écrit un mot sans changer le statut : « je bloque sur les
+ *           tarifs postaux », « il manque 12 pièces ». C'est l'échappatoire
+ *           qui évite qu'une tâche reste muette pendant trois semaines.
+ */
+const MAX_NOTE = 600;
+
+/** Les deux écrans qui portent le formulaire. Filtré : ça finit dans un redirect. */
+const BACK_PATHS = new Set(['taches', 'suivi']);
+
+export async function submitClientTask(formData: FormData) {
   const token = String(formData.get('token') ?? '');
   const taskId = String(formData.get('taskId') ?? '');
-  const project = await requireProject(token);
+  const intent = String(formData.get('_intent') ?? 'submit');
+  const note = String(formData.get('note') ?? '').trim().slice(0, MAX_NOTE);
 
-  if (DEMO) redirect(`/espace/${token}/suivi`);
+  const backRaw = String(formData.get('back') ?? 'taches');
+  const back = BACK_PATHS.has(backRaw) ? backRaw : 'taches';
+
+  const project = await requireProject(token);
+  const destination = `/espace/${token}/${back}#tache-${taskId}`;
+
+  if (DEMO) redirect(destination);
 
   const db = supabaseAdmin();
 
-  // owner = 'client' est vérifié en base : le client ne peut pas cocher
+  // owner = 'client' est vérifié en base : le client ne peut pas toucher
   // une tâche Launch48 en forgeant un id.
   const { data: task } = await db
     .from('tasks')
-    .select('id, status')
+    .select('id, status, deliverable')
     .eq('id', taskId)
     .eq('project_id', project.id)
     .eq('owner', 'client')
     .maybeSingle();
 
   if (task) {
-    const done = task.status === 'done';
-    await db
-      .from('tasks')
-      .update({
-        status: done ? 'todo' : 'done',
-        done_at: done ? null : new Date().toISOString(),
-      })
-      .eq('id', task.id);
+    const now = new Date().toISOString();
+    const patch: Record<string, unknown> = { client_note: note || null };
+
+    if (intent === 'submit') {
+      const next = task.deliverable ? 'review' : 'done';
+      patch.status = next;
+      patch.submitted_at = now;
+      patch.done_at = next === 'done' ? now : null;
+    } else if (intent === 'reopen' && canReopen(task.status, task.deliverable)) {
+      patch.status = 'todo';
+      patch.submitted_at = null;
+      patch.done_at = null;
+    }
+    // intent === 'note' : seul le mot change.
+
+    await db.from('tasks').update(patch).eq('id', task.id).eq('project_id', project.id);
   }
 
+  revalidatePath(`/espace/${token}`);
   revalidatePath(`/espace/${token}/suivi`);
-  redirect(`/espace/${token}/suivi`);
+  revalidatePath(`/espace/${token}/taches`);
+  redirect(destination);
+}
+
+/** Le client peut-il revenir sur cette tâche, ou est-ce déjà validé par nous ? */
+function canReopen(status: string, deliverable: string | null): boolean {
+  if (status === 'review') return true;
+  // Une tâche sans livrable a été cochée par le client lui-même : il peut la
+  // décocher. Avec livrable, `done` signifie « validé par Launch48 ».
+  return status === 'done' && !deliverable;
 }

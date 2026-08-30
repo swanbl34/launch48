@@ -12,7 +12,8 @@ import {
   type BriefField,
 } from '@/lib/brief-schema';
 import { displayValue } from '@/lib/brief-values';
-import { getAssets, getFormAnswers, getProjectByToken } from '@/lib/data';
+import { getAssets, getFormAnswers, getProjectByToken, getTasks } from '@/lib/data';
+import { clientLoad } from '@/lib/progress';
 import { formatDate, formatSize } from '@/lib/format';
 import {
   countMissingRequired,
@@ -25,6 +26,7 @@ import {
 import { isOnboarding, type AnswerMap, type AnswerValue, type Asset } from '@/lib/types';
 import { ACCEPT_ATTRIBUTE, parseRejections, rejectionMessage } from '@/lib/upload-guard';
 import { deleteAsset, saveBriefStep } from '../actions';
+import { clientTabs } from '../_tabs';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -45,10 +47,14 @@ export default async function BriefPage({
   const project = await getProjectByToken(token);
   if (!project) notFound();
 
-  const [answers, assets] = await Promise.all([
+  const [answers, assets, tasks] = await Promise.all([
     getFormAnswers(project.id),
     getAssets(project.id),
+    getTasks(project.id),
   ]);
+
+  // Sert la pastille de l'onglet « Mes tâches ».
+  const openTasks = clientLoad(tasks).open.length;
 
   // Reprise automatique à last_step si aucune étape n'est demandée.
   const requested = sp.step ? Number(sp.step) : answers.last_step;
@@ -75,15 +81,7 @@ export default async function BriefPage({
         tabs={
           isOnboarding(project.status)
             ? undefined
-            : [
-                { href: `/espace/${token}`, label: 'Suivi' },
-                {
-                  href: `/espace/${token}/brief`,
-                  label: 'Mon brief',
-                  badge: missingCount,
-                  tone: 'danger',
-                },
-              ]
+            : clientTabs(token, { tasks: openTasks, brief: missingCount })
         }
       />
 

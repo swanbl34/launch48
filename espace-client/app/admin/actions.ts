@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation';
 import { ADMIN_COOKIE, checkPassword, createSessionValue, isAdmin, newToken } from '@/lib/auth';
 import { checkRateLimit, clearFailures, clientKey, recordFailure } from '@/lib/rate-limit';
 import { normaliseDepositUrl } from '@/lib/drive';
-import { findPack } from '@/lib/task-packs';
+import { findPack } from '@/lib/packs';
 import { rowsFromTemplates, seedTasksForPack, type Pack } from '@/lib/task-templates';
 import { ASSETS_BUCKET, supabaseAdmin } from '@/lib/supabase';
 import type { ProjectStatus, TaskMilestone, TaskStatus } from '@/lib/types';
@@ -367,7 +367,7 @@ export async function addTask(formData: FormData) {
 }
 
 /**
- * Importe un lot de tâches préparé dans lib/task-packs.ts.
+ * Importe un lot de tâches préparé dans lib/packs/.
  *
  * Idempotent par intitulé : on ne crée que ce qui manque. C'est ce qui permet
  * d'enrichir un lot dans le code et de le réimporter sans se retrouver avec

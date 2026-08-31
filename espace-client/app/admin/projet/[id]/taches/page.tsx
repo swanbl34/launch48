@@ -9,7 +9,7 @@ import { getProjectById, getTasks } from '@/lib/data';
 import { depositUrlFor, safeDepositUrl } from '@/lib/drive';
 import { buildTaskEmail, mailtoLink } from '@/lib/notify';
 import { clientLoad, phaseViews } from '@/lib/progress';
-import { TASK_PACKS } from '@/lib/task-packs';
+import { TASK_PACKS } from '@/lib/packs';
 import { addTask, importTaskPack } from '../../../actions';
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -190,7 +190,7 @@ export default async function TachesPage({
       <section className="card stack" style={{ gap: '0.7rem' }}>
         <h2>Importer un lot</h2>
         <p className="small muted">
-          Des listes prêtes à l&apos;emploi, définies dans <code>lib/task-packs.ts</code>. Seules
+          Des listes prêtes à l&apos;emploi, définies dans <code>lib/packs/</code>. Seules
           les tâches absentes du projet sont créées : réimporter un lot enrichi n&apos;engendre
           pas de doublons.
         </p>

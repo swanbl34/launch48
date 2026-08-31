@@ -12,7 +12,7 @@
  * owner: 'launch48'→ lecture seule côté client.
  *
  * Les lots prêts à l'emploi (contenus, stock, légal…) vivent dans
- * lib/task-packs.ts et s'importent dans un projet existant.
+ * lib/packs/ et s'importent dans un projet existant.
  */
 import type { TaskMilestone, TaskStatus } from './types';
 

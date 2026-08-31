@@ -77,7 +77,7 @@ echo "DEMO_MODE=1" >> .env.local && npm run dev
 ```
 
 Un projet fictif est servi depuis `lib/demo-data.ts`. **Ses tâches sont
-générées depuis le premier lot de `lib/task-packs.ts`** : ce qu'on regarde en
+générées depuis le premier lot de `lib/packs/`** : ce qu'on regarde en
 démo est exactement ce qui sera importé en vrai, et enrichir un lot met
 l'aperçu à jour tout seul. Quelques tâches sont forcées dans un autre statut
 pour que l'interface montre ses cinq états plutôt que deux.
@@ -113,7 +113,7 @@ Onglet **Tâches** de la fiche projet. Trois façons d'alimenter la liste :
 - **Envoyer une tâche** — un formulaire complet en bas de page : l'intitulé, le
   *pourquoi* (lu tel quel par le client), le **livrable attendu**, la phase, le
   jalon, l'échéance. Elle apparaît dans son espace immédiatement.
-- **Importer un lot** — les listes prêtes à l'emploi de `lib/task-packs.ts`.
+- **Importer un lot** — les listes prêtes à l'emploi de `lib/packs/`.
   L'import est idempotent par intitulé : réimporter un lot enrichi n'engendre
   pas de doublons.
 - **Le seed du pack** à la création du projet, comme avant.
@@ -220,15 +220,53 @@ que le client rassemble (identité, contenus, photographies, textes légaux,
 stock, logistique). Ajouter une phase ne pollue aucun projet existant :
 `phaseViews()` ne montre que celles où le projet a réellement des tâches.
 
-### `lib/task-packs.ts` — les lots à envoyer en cours de route
+### `lib/packs/` — les lots à envoyer en cours de route
 
 Un *pack* est le squelette de production, créé une fois à l'ouverture. Un *lot*
 est un paquet de demandes qu'on pousse au client quand il devient pertinent —
 le contenu, le stock, le légal — et qu'on importe depuis l'onglet Tâches.
 
-Chaque tâche d'un lot porte son `description`, son `deliverable`, son
-`milestone` et, pour les acquis, `status: 'done'` : c'est ce qui permet
-d'alimenter d'un coup les tâches achevées d'un projet déjà bien avancé.
+```
+lib/packs/
+├── commun.ts       les briques réutilisables + ajuste() / sans()
+├── _modele.ts   ←  à copier pour chaque client. Contient les 6 règles d'écriture
+├── index.ts        le catalogue : c'est ici qu'un lot devient visible en admin
+└── <client>.ts     un fichier par client
+```
+
+**Un lot se compose, il ne s'écrit pas.** Le socle légal, le logo, l'histoire de
+la marque, les tarifs de livraison sont les mêmes demandes d'un client à
+l'autre — et la formulation qui explique *pourquoi* on les demande a plus de
+valeur que le temps qu'on met à la retaper. `commun.ts` les tient prêtes,
+`ajuste()` les personnalise, `sans()` retire ce qui ne s'applique pas.
+
+```ts
+...ajuste(CATALOGUE, {
+  'Rassembler le stock de départ': {
+    label: 'Rassembler 80 à 100 pièces minimum',
+    description: "En dessous, la boutique a l'air abandonnée.",
+  },
+}),
+...sans(LOGISTIQUE, ['La politique de retours']),
+```
+
+`ajuste()` et `sans()` **lèvent** si l'intitulé visé n'existe pas. Une faute de
+frappe casse le build au lieu de produire silencieusement un lot dont la
+personnalisation a disparu — ce qu'on ne découvrirait que sur l'écran du client.
+
+### Un nouveau client, en pratique
+
+```bash
+cp lib/packs/_modele.ts lib/packs/<client>.ts
+```
+
+Puis les six règles en tête du modèle, puis une entrée dans `index.ts`.
+
+Ou, plus court : **l'agent `nouveau-client`** (`.claude/agents/`). On lui donne
+ses notes de rendez-vous, il écrit le fichier, l'enregistre, vérifie que ça
+compile — et surtout il rend **la liste des questions à reposer au client**, qui
+est le vrai livrable. Il ne touche ni à la base ni à l'admin : la création du
+projet, le dossier Drive et l'import restent des gestes manuels.
 
 ---
 
@@ -373,7 +411,7 @@ espace-client/
 ├── lib/
 │   ├── brief-schema.ts     ← à éditer  définition des 52 champs
 │   ├── task-templates.ts   ← à éditer  phases (+ libellés client) et packs
-│   ├── task-packs.ts       ← à éditer  lots importables
+│   ├── packs/              ← à éditer  lots importables (voir plus haut)
 │   ├── drive.ts                       liens de dépôt (https uniquement)
 │   ├── notify.ts                      l'e-mail d'annonce des tâches
 │   ├── missing.ts                     calcul des manquants

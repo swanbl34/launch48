@@ -6,7 +6,7 @@
  * Ne JAMAIS activer DEMO_MODE en production.
  */
 import { rowsFromTemplates } from './task-templates';
-import { TASK_PACKS } from './task-packs';
+import { TASK_PACKS } from './packs';
 import type { Asset, FormAnswers, Project, Task } from './types';
 
 export const DEMO_PROJECT: Project = {
@@ -100,7 +100,7 @@ export const DEMO_ASSETS: Asset[] = [
  *
  * Écrire un jeu de démo à la main, c'est garantir qu'il divergera du vrai : on
  * finit par valider une maquette qui ne ressemble plus à ce que le client voit.
- * Ici, la démo EST le lot — enrichir lib/task-packs.ts met l'aperçu à jour tout
+ * Ici, la démo EST le lot — enrichir lib/packs/ met l'aperçu à jour tout
  * seul, et ce qu'on regarde est exactement ce qui sera importé.
  *
  * Seules quelques tâches sont forcées dans un autre état, pour que l'interface

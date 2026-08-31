@@ -10,7 +10,6 @@ export function AppBar({
   title,
   meta,
   tabs,
-  active,
   action,
 }: {
   brandHref: string;
@@ -18,7 +17,6 @@ export function AppBar({
   /** Pastilles de contexte (pack, statut…). */
   meta?: React.ReactNode;
   tabs?: TabItem[];
-  active?: string;
   /** Bouton aligné à droite (déconnexion, retour…). */
   action?: React.ReactNode;
 }) {
@@ -32,7 +30,7 @@ export function AppBar({
           {action}
         </div>
       </div>
-      {tabs?.length ? <Tabs items={tabs} active={active ?? ''} /> : null}
+      {tabs?.length ? <Tabs items={tabs} /> : null}
     </header>
   );
 }

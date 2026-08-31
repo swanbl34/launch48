@@ -366,13 +366,109 @@ const BOUTIQUE_CLIENTE: TaskTemplate[] = [
   },
 ];
 
+
+/** Ce qu'il me reste à faire. Visible par la cliente : elle voit à quoi je passe
+ *  mon temps, et pourquoi certaines de ses tâches débloquent les miennes. */
+const BOUTIQUE_MON_COTE: TaskTemplate[] = [
+  {
+    phase: 'boutique',
+    label: "Créer l'application Shopify avec droits d'écriture",
+    owner: 'launch48',
+    status: 'blocked',
+    description:
+      "En attente de la double authentification. Ce jeton débloque d'un coup la création des 5 catégories et l'import des articles en masse — les outils sont écrits et prêts, ils n'attendent que lui. Tant qu'il manque, les trois tâches suivantes ne peuvent pas commencer.",
+  },
+  {
+    phase: 'boutique',
+    label: 'Créer les 5 catégories de la boutique',
+    owner: 'launch48',
+    description: 'Seconde main, neuf, vêtements, éveil & repas, aquatique.',
+  },
+  {
+    phase: 'boutique',
+    label: 'Importer les articles et poser les étiquettes',
+    owner: 'launch48',
+    description:
+      "En vérifiant au passage que chaque produit a bien son état, son univers, sa taille et son niveau d'état. Sans étiquettes, ni badge seconde main, ni filtres, ni catégories.",
+  },
+  {
+    phase: 'boutique',
+    label: 'Vérifier que le diagnostic passe au vert',
+    owner: 'launch48',
+    description: "Étiquettes, catégories, textes des images : tout doit être au vert avant d'ouvrir.",
+  },
+
+  {
+    phase: 'recette',
+    label: 'Passer une vraie commande de bout en bout',
+    owner: 'launch48',
+    description:
+      "Puis l'annuler. C'est le seul moyen de vérifier que le secteur et le jour de retrait choisis remontent bien sur la commande.",
+  },
+  {
+    phase: 'recette',
+    label: 'Vérifier un produit à plusieurs tailles',
+    owner: 'launch48',
+    description:
+      "Le sélecteur de taille est écrit mais n'a jamais rencontré de vrai produit à variantes.",
+  },
+  {
+    phase: 'recette',
+    label: 'Simuler un article vendu pendant la navigation',
+    owner: 'launch48',
+    description:
+      "Vérifier que la fiche reste accessible, qu'elle passe en « déjà adopté » et que l'ajout au panier échoue proprement — c'est le cas normal pour des pièces uniques.",
+  },
+  {
+    phase: 'recette',
+    label: 'Contrôler la vitesse et le confort de lecture',
+    owner: 'launch48',
+    description: "Sur téléphone en priorité : c'est là que se fera l'essentiel du trafic.",
+  },
+  {
+    phase: 'recette',
+    label: 'Déclarer le site à Google',
+    owner: 'launch48',
+    description:
+      "Et soumettre le plan du site. Le référencement met des mois à s'installer : plus tôt il démarre, mieux c'est.",
+  },
+
+  {
+    phase: 'mise_en_ligne',
+    label: 'Héberger le site',
+    owner: 'launch48',
+    description:
+      "Tout est versionné sur mon poste, rien n'est encore en ligne. Il faut aussi reporter les réglages et remplacer l'adresse locale par l'adresse définitive, sinon le plan du site pointerait vers mon ordinateur.",
+  },
+  {
+    phase: 'mise_en_ligne',
+    label: 'Acheter le domaine et le brancher',
+    owner: 'launch48',
+    description:
+      "Sur l'hébergeur et sur Shopify, pour que le passage en caisse reste sur la même adresse. À faire une fois le nom de la marque tranché.",
+  },
+  {
+    phase: 'mise_en_ligne',
+    label: 'Habiller la page de paiement Shopify',
+    owner: 'launch48',
+    description:
+      "Logo, couleurs, favicon. Sans ça, le visiteur a l'impression de changer de site au moment de sortir sa carte — c'est là qu'on perd des ventes.",
+  },
+  {
+    phase: 'mise_en_ligne',
+    label: 'Retirer le mot de passe de la boutique',
+    owner: 'launch48',
+    description: "En dernier. C'est le geste qui ouvre officiellement.",
+  },
+];
+
 export const TASK_PACKS: TaskPack[] = [
   {
     key: 'boutique-seconde-main',
     label: 'Boutique seconde main — ce que j’attends de la cliente',
     summary:
-      "27 demandes à la cliente — dont 10 qui bloquent l'ouverture et 16 qui attendent des fichiers — plus 12 tâches déjà livrées de notre côté. Reprises du point d'étape du 30 août 2026.",
-    tasks: [...BOUTIQUE_ACQUIS, ...BOUTIQUE_CLIENTE],
+      "Le point d'étape du 30 août 2026, en entier : 27 demandes à la cliente (10 bloquent l'ouverture, 16 attendent des fichiers), 13 tâches qu'il me reste, et 12 déjà livrées.",
+    tasks: [...BOUTIQUE_ACQUIS, ...BOUTIQUE_CLIENTE, ...BOUTIQUE_MON_COTE],
   },
 ];
 

@@ -62,7 +62,6 @@ export default async function ProjectLayout({
             </button>
           </form>
         }
-        active={base}
         tabs={[
           { href: base, label: 'Fiche' },
           {

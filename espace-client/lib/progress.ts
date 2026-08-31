@@ -1,6 +1,6 @@
 /** Avancement global et état des phases, dérivés des tâches. */
-import { PHASES, phaseRank } from './task-templates';
-import { MILESTONE_ORDER, type Task, type TaskStatus } from './types';
+import { PHASES, phaseRank, type IconName } from './task-templates';
+import { MILESTONE_ORDER, type Task, type TaskOwner, type TaskStatus } from './types';
 
 export type PhaseState = 'todo' | 'doing' | 'blocked' | 'review' | 'done';
 
@@ -63,17 +63,24 @@ export function taskStats(tasks: Task[]): TaskStats {
 }
 
 /**
- * Ce qui reste dans le camp du client — la seule vue qui l'intéresse vraiment.
+ * Ce qui reste dans un camp — le client, ou nous.
  *
- * `open` compte ce qu'il lui reste à faire : les tâches rendues (`review`) n'y
- * sont pas, sinon on lui redemanderait éternellement du travail déjà livré.
+ * Le tableau de bord répond à une seule question : à qui est la balle. Il
+ * faut donc le même décompte des deux côtés, pas seulement du côté client,
+ * sinon « ça avance » ne veut rien dire.
  */
-export type ClientLoad = {
+export type SideLoad = {
   all: Task[];
+  /** Ce qu'il reste à faire de ce côté. Les tâches rendues n'y sont plus. */
   open: Task[];
+  /** Rendu, en attente de relecture. N'a de sens que côté client. */
   submitted: Task[];
   done: Task[];
-  /** Les tâches ouvertes qui bloquent l'ouverture. */
+  /** Ce qui est en cours, pour montrer que quelque chose bouge. */
+  doing: Task[];
+  /** Ce qui est à l'arrêt en attendant autre chose. */
+  blocked: Task[];
+  /** Les tâches ouvertes qui empêchent l'ouverture. */
   blocking: Task[];
   /** Les tâches ouvertes dont l'échéance est passée. */
   overdue: Task[];
@@ -94,8 +101,8 @@ export function compareTasks(a: Task, b: Task): number {
   return a.order_index - b.order_index;
 }
 
-export function clientLoad(tasks: Task[], now = new Date()): ClientLoad {
-  const all = tasks.filter((t) => t.owner === 'client').sort(compareTasks);
+export function sideLoad(tasks: Task[], owner: TaskOwner, now = new Date()): SideLoad {
+  const all = tasks.filter((t) => t.owner === owner).sort(compareTasks);
 
   const open = all.filter((t) => t.status !== 'done' && t.status !== 'review');
   const today = now.toISOString().slice(0, 10);
@@ -109,11 +116,48 @@ export function clientLoad(tasks: Task[], now = new Date()): ClientLoad {
     open,
     submitted: all.filter((t) => t.status === 'review'),
     done: all.filter((t) => t.status === 'done'),
+    doing: all.filter((t) => t.status === 'doing'),
+    blocked: all.filter((t) => t.status === 'blocked'),
     blocking: open.filter((t) => t.milestone === 'ouverture'),
     overdue: dated.filter((t) => t.due_date! < today),
     nextDue: dated.find((t) => t.due_date! >= today) ?? null,
     stats: taskStats(all),
   };
+}
+
+export const clientLoad = (tasks: Task[], now = new Date()) => sideLoad(tasks, 'client', now);
+export const ourLoad = (tasks: Task[], now = new Date()) => sideLoad(tasks, 'launch48', now);
+
+/**
+ * Regroupe des tâches par thème, dans l'ordre des phases.
+ *
+ * Sert les trois blocs du tableau de bord : une liste de vingt-six demandes
+ * en vrac décourage, les mêmes rangées sous « Le stock », « Les photos »,
+ * « Les pages légales » se traitent thème par thème.
+ */
+export type PhaseGroup = {
+  key: string;
+  label: string;
+  clientLabel: string;
+  icon: IconName;
+  tasks: Task[];
+  done: number;
+  total: number;
+};
+
+export function groupByPhase(tasks: Task[]): PhaseGroup[] {
+  return PHASES.filter((p) => tasks.some((t) => t.phase === p.key)).map((p) => {
+    const group = tasks.filter((t) => t.phase === p.key).sort(compareTasks);
+    return {
+      key: p.key,
+      label: p.label,
+      clientLabel: p.clientLabel,
+      icon: p.icon,
+      tasks: group,
+      done: group.filter((t) => t.status === 'done').length,
+      total: group.length,
+    };
+  });
 }
 
 /**

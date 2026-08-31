@@ -76,9 +76,14 @@ sans brancher de base :
 echo "DEMO_MODE=1" >> .env.local && npm run dev
 ```
 
-Un projet fictif « Atelier Vermeil » est servi depuis `lib/demo-data.ts`, avec
-des manquants et des tâches à tous les statuts. **Lecture seule** : les Server
-Actions se contentent de naviguer, rien n'est écrit.
+Un projet fictif est servi depuis `lib/demo-data.ts`. **Ses tâches sont
+générées depuis le premier lot de `lib/task-packs.ts`** : ce qu'on regarde en
+démo est exactement ce qui sera importé en vrai, et enrichir un lot met
+l'aperçu à jour tout seul. Quelques tâches sont forcées dans un autre statut
+pour que l'interface montre ses cinq états plutôt que deux.
+
+**Lecture seule** : les Server Actions se contentent de naviguer, rien n'est
+écrit.
 
 - Espace client : `/espace/22222222-2222-4222-8222-222222222222`
 - Admin : `/admin` (mot de passe = ton `ADMIN_PASSWORD`)
@@ -169,11 +174,26 @@ Côté client, trois écrans :
 | | |
 | --- | --- |
 | `/espace/<token>` | l'accueil : un message, une action |
-| `…/suivi` | le dashboard — avancement segmenté (validé / rendu / en cours / bloqué), la répartition « notre part » vs « ta part », les 3 tâches les plus urgentes, les manquants du brief, les étapes, le détail |
-| `…/taches` | sa part à lui, groupée par ce qui bloque : l'ouverture, la mise en ligne, puis le reste |
+| `…/suivi` | le tableau de bord — l'anneau d'avancement, puis **trois blocs** |
+| `…/taches` | sa liste à lui, dépliée, groupée par urgence. C'est le lien qu'on met dans l'e-mail |
 
-Tout ce qui est à nous est en lecture seule. Ses propres tâches sont
-actionnables : il rend, laisse un mot, ou revient sur sa déclaration.
+Le tableau de bord tient en trois blocs, et rien d'autre :
+
+1. **Ce que j'attends de toi** — rangé par thème (le stock, les photos, les
+   pages légales…), cartes repliées, dépliables là où il veut agir.
+2. **Ce sur quoi je travaille** — notre part, en lecture seule. Elle est là
+   pour qu'il sache à quoi on passe notre temps, et pourquoi telle de ses
+   tâches débloque telle des nôtres.
+3. **Ce qui est déjà fait** — l'acquis des deux côtés, replié par thème.
+
+Chaque bloc a sa couleur — ambre, cyan, vert — et elle ne sert qu'à ça :
+répondre à « à qui est la balle » avant qu'un mot ait été lu.
+
+Le vocabulaire y est traduit. `PHASES` porte un `clientLabel` à côté du
+libellé métier : « Intégration front » devient « Les pages du site »,
+« Connexion boutique » devient « La boutique et le panier ». Le pack et le
+statut interne du projet ne sont pas affichés du tout — ils ne veulent rien
+dire pour quelqu'un qui monte une boutique.
 
 ---
 
@@ -335,11 +355,13 @@ espace-client/
 │   ├── layout.tsx                     fonts + noindex global
 │   ├── robots.ts                      disallow: /
 │   ├── _components/                   Brand, Bar, CopyButton
+│   ├── _components/                   Brand, Bar, Ring, PhaseIcon, Tabs…
 │   ├── espace/[token]/
 │   │   ├── page.tsx                   écran d'accueil
-│   │   ├── suivi/page.tsx             dashboard d'avancement
+│   │   ├── suivi/page.tsx             tableau de bord — les trois blocs
 │   │   ├── taches/page.tsx            « Mes tâches » : la part du client
-│   │   ├── _TaskCard.tsx              la carte d'une tâche (partagée)
+│   │   ├── _TaskCard.tsx              la carte d'une tâche (dépliée ou repliable)
+│   │   ├── _tabs.ts                   les onglets client, définis une fois
 │   │   ├── actions.ts                 save, upload, delete, rendre une tâche
 │   │   └── brief/page.tsx             questionnaire 6 étapes + récap
 │   └── admin/
@@ -350,7 +372,7 @@ espace-client/
 │           └── taches/page.tsx        file « à valider », envoi, édition
 ├── lib/
 │   ├── brief-schema.ts     ← à éditer  définition des 52 champs
-│   ├── task-templates.ts   ← à éditer  phases et tâches par pack
+│   ├── task-templates.ts   ← à éditer  phases (+ libellés client) et packs
 │   ├── task-packs.ts       ← à éditer  lots importables
 │   ├── drive.ts                       liens de dépôt (https uniquement)
 │   ├── notify.ts                      l'e-mail d'annonce des tâches

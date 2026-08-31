@@ -1153,3 +1153,258 @@ tbody tr:hover { background: var(--surface); }
   .review-row > .row { width: 100%; }
   .review-row .btn { flex: 1 1 auto; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLEAU DE BORD CLIENT — la refonte.
+
+   Trois idées la gouvernent :
+     · trois blocs, trois couleurs, jamais mélangées — à toi (ambre), de mon
+       côté (cyan), déjà fait (vert). La couleur porte l'information « à qui
+       est la balle » avant même qu'on ait lu un mot ;
+     · un repère visuel par thème, pour balayer vingt-six demandes du regard
+       au lieu de les lire ligne à ligne ;
+     · de l'air. La densité d'un outil interne est illisible pour quelqu'un
+       qui ouvre la page une fois par semaine.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.picto { flex: none; opacity: 0.9; }
+
+/* ── L'anneau d'avancement ───────────────────────────────────────────────── */
+.ring { flex: none; }
+.ring__figure {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  letter-spacing: -0.04em;
+  fill: var(--text);
+}
+.ring__pending { opacity: 0.45; }
+
+/* ── L'en-tête « où on en est » ──────────────────────────────────────────── */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse 70% 120% at 0% 50%, color-mix(in srgb, var(--accent), transparent 92%), transparent 70%),
+    color-mix(in srgb, var(--surface-solid), transparent 8%);
+}
+.hero__text { flex: 1 1 18rem; display: grid; gap: 0.5rem; min-width: 0; }
+.hero__text h1 { font-size: clamp(1.7rem, 5vw, 2.3rem); }
+.hero__line {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.6vw, 1.15rem);
+  line-height: 1.35;
+  color: var(--accent-4);
+  text-wrap: pretty;
+}
+.hero__meta { font-size: 0.95rem; color: var(--muted); }
+.hero__meta strong { color: var(--text); font-size: 1.05rem; }
+.hero__date { font-size: 0.82rem; color: var(--muted); }
+
+/* ── Les trois blocs, en raccourci ───────────────────────────────────────── */
+.buckets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.bucket {
+  display: grid;
+  gap: 0.1rem;
+  padding: 1rem 0.9rem;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--muted);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 18%);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), border-color 200ms ease;
+}
+.bucket:hover { text-decoration: none; transform: translateY(-2px); }
+.bucket__count {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.bucket__label {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+.bucket__note { font-size: 0.76rem; color: var(--muted); }
+
+.bucket--you { border-top-color: var(--warn); }
+.bucket--you .bucket__count, .bucket--you .bucket__label { color: var(--warn); }
+.bucket--us { border-top-color: var(--accent); }
+.bucket--us .bucket__count, .bucket--us .bucket__label { color: var(--accent); }
+.bucket--done { border-top-color: var(--accent-3); }
+.bucket--done .bucket__count, .bucket--done .bucket__label { color: var(--accent-3); }
+
+/* ── Les trois grands titres ─────────────────────────────────────────────── */
+.block-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--line);
+  /* L'ancre #a-toi ne doit pas passer sous la barre collante. */
+  scroll-margin-top: 6rem;
+}
+.block-head h2 { flex: 1; min-width: 0; }
+.block-head--you { border-bottom-color: color-mix(in srgb, var(--warn), transparent 55%); }
+.block-head--you h2 { color: var(--warn); }
+.block-head--us { border-bottom-color: color-mix(in srgb, var(--accent), transparent 55%); }
+.block-head--us h2 { color: var(--accent); }
+.block-head--done { border-bottom-color: color-mix(in srgb, var(--accent-3), transparent 55%); }
+.block-head--done h2 { color: var(--accent-3); }
+.block-head--danger { border-bottom-color: color-mix(in srgb, var(--danger), transparent 50%); }
+.block-head--danger h2 { color: var(--danger); }
+.block-head--warn { border-bottom-color: color-mix(in srgb, var(--warn), transparent 55%); }
+.block-head--warn h2 { color: var(--warn); }
+
+.block-lead {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.6;
+  max-width: 44rem;
+  text-wrap: pretty;
+}
+.block-lead strong { color: var(--text); }
+
+/* ── Un thème : icône, nom humain, compteur ──────────────────────────────── */
+.theme { display: grid; gap: 0.6rem; }
+.theme__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.15rem 0;
+  color: var(--accent-4);
+}
+.theme__head h3 { flex: 1; min-width: 0; font-size: 1rem; color: var(--text); }
+.theme__count {
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.theme--us .theme__head { color: var(--accent); }
+.theme--review .theme__head { color: var(--accent-4); }
+.theme--done > .theme__head { color: var(--accent-3); cursor: pointer; list-style: none; }
+.theme--done > .theme__head::-webkit-details-marker { display: none; }
+.theme--done { padding: 0.15rem 0; border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 50%); }
+.theme--done > .theme__head::after { content: '▾'; color: var(--muted); font-size: 0.8rem; }
+.theme--done[open] > .theme__head::after { content: '▴'; }
+
+/* ── Ma part du travail, et l'acquis : des lignes, pas des cartes ────────── */
+.worklist { display: grid; gap: 0.15rem; margin: 0; padding: 0; list-style: none; }
+.workrow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0.15rem 0.6rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 30%);
+  font-size: 0.93rem;
+}
+.workrow__label { min-width: 0; }
+.workrow__why {
+  grid-column: 2 / -1;
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.workrow__tick { color: var(--accent-3); font-weight: 700; }
+.workrow[data-status='done'] .workrow__label { color: var(--muted); }
+.workrow[data-status='blocked'] .workrow__label { color: var(--danger); }
+.workrow[data-status='doing'] .workrow__label { color: var(--text); font-weight: 600; }
+
+/* ── Renvoi vers le questionnaire ────────────────────────────────────────── */
+.callout {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-solid), transparent 20%);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.callout:hover { text-decoration: none; border-color: color-mix(in srgb, var(--accent), transparent 45%); }
+.callout__count {
+  flex: none;
+  min-width: 2.4rem;
+  text-align: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--muted);
+}
+.callout__arrow { margin-left: auto; color: var(--muted); flex: none; }
+.callout--danger {
+  border-color: color-mix(in srgb, var(--danger), transparent 55%);
+  background: color-mix(in srgb, var(--danger), transparent 93%);
+}
+.callout--danger .callout__count { color: var(--danger); }
+
+@media (max-width: 760px) {
+  .hero { padding: 1.1rem; gap: 1.1rem; justify-content: center; text-align: center; }
+  .hero__text { justify-items: center; }
+  .hero__line { max-width: 22rem; }
+}
+@media (max-width: 560px) {
+  /* Trois colonnes tiennent encore à 375px si on retire le commentaire. */
+  .buckets { gap: 0.4rem; }
+  .bucket { padding: 0.8rem 0.5rem; text-align: center; justify-items: center; }
+  .bucket__note { display: none; }
+  .bucket__label { font-size: 0.7rem; letter-spacing: 0.05em; }
+  .callout__count { min-width: 2rem; font-size: 1.25rem; }
+  .workrow { grid-template-columns: auto 1fr; padding: 0.6rem 0.65rem; }
+}
+
+/* ── La carte repliée ────────────────────────────────────────────────────── */
+.tcard--fold { padding: 0; gap: 0; }
+.tcard--fold > .tcard__head {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  min-height: 48px;
+  border-radius: 14px;
+}
+.tcard--fold > .tcard__head::-webkit-details-marker { display: none; }
+.tcard--fold > .tcard__head:hover { background: var(--surface); }
+.tcard--fold[open] > .tcard__head { border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 40%); border-radius: 14px 14px 0 0; }
+.tcard--fold .tcard__body { display: grid; gap: 0.6rem; padding: 0.9rem 1rem 1rem; }
+/* Le chevron marque que la carte s'ouvre — sans lui elle a l'air inerte. */
+.tcard--fold > .tcard__head::after {
+  content: '▾';
+  color: var(--muted);
+  font-size: 0.75rem;
+  flex: none;
+  margin-left: 0.1rem;
+}
+.tcard--fold[open] > .tcard__head::after { content: '▴'; }
+
+/* Le trombone : dit « cette tâche attend des fichiers » sans ouvrir la carte. */
+.tcard__clip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 55%);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+}

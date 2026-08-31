@@ -70,7 +70,6 @@ export default async function BriefPage({
       <AppBar
         brandHref={`/espace/${token}`}
         title={project.company}
-        active={`/espace/${token}/brief`}
         action={
           isOnboarding(project.status) ? (
             <a className="btn btn--ghost btn--small" href={`/espace/${token}`}>

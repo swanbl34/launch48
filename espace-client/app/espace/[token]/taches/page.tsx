@@ -51,7 +51,7 @@ export default async function TachesPage({
   const groups: { key: string; title: string; hint: string; tasks: Task[]; tone?: string }[] = [
     {
       key: 'ouverture',
-      title: "Ça bloque l'ouverture",
+      title: "À faire en priorité",
       hint: "Sans ces éléments, la boutique ne peut pas ouvrir. C'est ici qu'il faut mettre l'énergie en premier.",
       tasks: load.open.filter((t) => t.milestone === 'ouverture'),
       tone: 'danger',
@@ -76,7 +76,6 @@ export default async function TachesPage({
       <AppBar
         brandHref={`/espace/${token}`}
         title={project.company}
-        active={`/espace/${token}/taches`}
         tabs={clientTabs(token, { tasks: load.open.length, brief: briefMissing })}
       />
 
@@ -134,15 +133,11 @@ export default async function TachesPage({
       {/* ── Ce qu'il reste à faire, par urgence ──────────────────────────── */}
       {groups.map((g) => (
         <section className="stack" style={{ gap: '0.7rem' }} key={g.key}>
-          <div className="row row--between">
-            <span className="section-title">{g.title}</span>
-            <span className={g.tone ? `pill pill--${g.tone} tiny` : 'pill tiny'}>
-              {g.tasks.length}
-            </span>
-          </div>
-          <p className="small muted" style={{ marginTop: '-0.35rem' }}>
-            {g.hint}
-          </p>
+          <header className={`block-head block-head--${g.tone ?? 'plain'}`}>
+            <h2>{g.title}</h2>
+            <span className={g.tone ? `pill pill--${g.tone}` : 'pill'}>{g.tasks.length}</span>
+          </header>
+          <p className="block-lead">{g.hint}</p>
           <div className="tcards">
             {g.tasks.map((task) => (
               <TaskCard key={task.id} task={task} project={project} token={token} />
@@ -154,12 +149,12 @@ export default async function TachesPage({
       {/* ── Rendu, en attente de notre validation ────────────────────────── */}
       {load.submitted.length > 0 ? (
         <section className="stack" style={{ gap: '0.7rem' }}>
-          <div className="row row--between">
-            <span className="section-title">Chez nous, en vérification</span>
-            <span className="pill pill--accent tiny">{load.submitted.length}</span>
-          </div>
-          <p className="small muted" style={{ marginTop: '-0.35rem' }}>
-            Tu as rendu, on relit. Si quelque chose manque, on te le dit ici même.
+          <header className="block-head block-head--us">
+            <h2>Reçu, je vérifie</h2>
+            <span className="pill pill--accent">{load.submitted.length}</span>
+          </header>
+          <p className="block-lead">
+            Tu as envoyé, je regarde. S&apos;il manque quelque chose, je te le dis ici même.
           </p>
           <div className="tcards">
             {load.submitted.map((task) => (
@@ -174,7 +169,7 @@ export default async function TachesPage({
         <details className="accordion">
           <summary>
             <span className="dot dot--done" aria-hidden />
-            Ce qui est bouclé
+            Ce que tu as déjà bouclé
             <span className="accordion__count">{load.done.length}</span>
           </summary>
           <div className="accordion__body">

@@ -3,28 +3,33 @@
  *
  * C'est la brique qui porte tout le système : l'intitulé, le pourquoi, ce
  * qu'on attend en retour, où le déposer, et le bouton qui nous renvoie la
- * balle. Partagée par « Mes tâches » et le dashboard de suivi.
+ * balle.
  *
- * Aucun JavaScript : un formulaire par carte, POST + redirect. La carte reste
- * utilisable sur un téléphone en 3G au fond d'un entrepôt de tri — ce qui est
- * exactement le contexte dans lequel un client coche « c'est déposé ».
+ * Deux formes, pour deux moments :
+ *
+ *   dépliée (`/taches`)  — on traite sa liste, tout est sous les yeux.
+ *   repliable (`/suivi`) — on prend la température. Vingt-quatre cartes
+ *     dépliées faisaient dix mille pixels de page : personne ne fait défiler
+ *     ça, et l'essentiel — combien, lesquelles sont urgentes — se noyait dans
+ *     le détail. En repli, le même bloc tient sur un écran et s'ouvre là où on
+ *     veut agir.
+ *
+ * Aucun JavaScript : un formulaire par carte, POST + redirect, et le repli est
+ * un <details> natif. La carte reste utilisable sur un téléphone en 3G au fond
+ * d'un entrepôt de tri — ce qui est exactement le contexte dans lequel on
+ * coche « c'est déposé ».
  */
 import { depositLabel, depositUrlFor } from '@/lib/drive';
 import { formatDate, formatDateTime } from '@/lib/format';
-import { phaseLabel } from '@/lib/task-templates';
-import {
-  MILESTONE_LABELS,
-  MILESTONE_TONE,
-  type Project,
-  type Task,
-} from '@/lib/types';
+import { phaseClientLabel } from '@/lib/task-templates';
+import { MILESTONE_LABELS, MILESTONE_TONE, type Project, type Task } from '@/lib/types';
 import { submitClientTask } from './actions';
 
 /** Le client peut-il revenir sur sa déclaration ? Miroir de canReopen() côté action. */
 const canReopen = (task: Task) =>
   task.status === 'review' || (task.status === 'done' && !task.deliverable);
 
-/** Une échéance dépassée, pour la tâche encore ouverte. */
+/** Une échéance dépassée, sur une tâche encore ouverte. */
 const isOverdue = (task: Task) =>
   !!task.due_date &&
   task.status !== 'done' &&
@@ -36,34 +41,53 @@ export function TaskCard({
   project,
   token,
   back = 'taches',
+  showTheme = true,
+  collapsible = false,
 }: {
   task: Task;
   project: Project;
   token: string;
   /** Écran vers lequel revenir après l'action. */
   back?: 'taches' | 'suivi';
+  /**
+   * Afficher le thème sur la carte.
+   *
+   * Faux quand les cartes sont déjà rangées sous un en-tête de thème : répéter
+   * « Ta marque » sur les quatre cartes du bloc « Ta marque » n'apprend rien.
+   */
+  showTheme?: boolean;
+  /** Replier le détail derrière l'intitulé. */
+  collapsible?: boolean;
 }) {
   const deposit = depositUrlFor(task, project);
   const submitted = task.status === 'review';
   const done = task.status === 'done';
   const overdue = isOverdue(task);
 
-  return (
-    <article className="tcard" id={`tache-${task.id}`} data-status={task.status}>
-      {/* ── En-tête ──────────────────────────────────────────────────────── */}
-      <header className="tcard__head">
-        <span className={`dot dot--${task.status}`} aria-hidden />
-        <h3 className="tcard__title">{task.label}</h3>
-        <span className="tcard__tags">
-          {task.milestone && !done && !submitted ? (
-            <span className={`pill pill--${MILESTONE_TONE[task.milestone]} tiny`}>
-              {MILESTONE_LABELS[task.milestone]}
-            </span>
-          ) : null}
-          <span className="pill tiny muted">{phaseLabel(task.phase)}</span>
-        </span>
-      </header>
+  const head = (
+    <>
+      <span className={`dot dot--${task.status}`} aria-hidden />
+      <h3 className="tcard__title">{task.label}</h3>
+      <span className="tcard__tags">
+        {task.deliverable && !done ? (
+          <span className="tcard__clip" title="Attend des fichiers" aria-hidden>
+            ↑
+          </span>
+        ) : null}
+        {task.milestone && !done && !submitted ? (
+          <span className={`pill pill--${MILESTONE_TONE[task.milestone]} tiny`}>
+            {MILESTONE_LABELS[task.milestone]}
+          </span>
+        ) : null}
+        {showTheme ? (
+          <span className="pill tiny muted">{phaseClientLabel(task.phase)}</span>
+        ) : null}
+      </span>
+    </>
+  );
 
+  const body = (
+    <>
       {task.description ? <p className="tcard__why">{task.description}</p> : null}
 
       {task.due_date && !done && !submitted ? (
@@ -73,10 +97,10 @@ export function TaskCard({
         </p>
       ) : null}
 
-      {/* ── Le livrable et son dossier de dépôt ──────────────────────────── */}
+      {/* Ce qu'on attend en retour, et où le déposer. */}
       {task.deliverable ? (
         <div className="deliverable">
-          <span className="section-title">À nous envoyer</span>
+          <span className="section-title">Ce que tu m&apos;envoies</span>
           <p className="small">{task.deliverable}</p>
 
           {deposit ? (
@@ -85,27 +109,25 @@ export function TaskCard({
             </a>
           ) : (
             <p className="tiny muted">
-              Le dossier de dépôt n&apos;est pas encore ouvert. On te l&apos;envoie très vite —
+              Le dossier où déposer n&apos;est pas encore ouvert. Je te l&apos;envoie très vite —
               en attendant, rien ne t&apos;empêche de préparer les fichiers.
             </p>
           )}
         </div>
       ) : null}
 
-      {/* ── Le mot laissé par le client ──────────────────────────────────── */}
       {task.client_note ? (
         <p className="tcard__note">
-          <span className="section-title">Ton mot</span>
+          <span className="section-title">Ce que tu m&apos;as écrit</span>
           {task.client_note}
         </p>
       ) : null}
 
-      {/* ── État et actions ──────────────────────────────────────────────── */}
       {submitted ? (
         <p className="tcard__state tcard__state--review">
-          <span aria-hidden>◔</span> Reçu{' '}
-          {task.submitted_at ? `le ${formatDateTime(task.submitted_at)}` : ''} — on vérifie et on
-          te confirme.
+          <span aria-hidden>◔</span> Bien reçu{' '}
+          {task.submitted_at ? `le ${formatDateTime(task.submitted_at)}` : ''}. Je regarde et je te
+          confirme.
         </p>
       ) : null}
 
@@ -127,12 +149,7 @@ export function TaskCard({
         ) : null}
 
         {canReopen(task) ? (
-          <button
-            className="btn btn--ghost btn--small"
-            type="submit"
-            name="_intent"
-            value="reopen"
-          >
+          <button className="btn btn--ghost btn--small" type="submit" name="_intent" value="reopen">
             Finalement, non
           </button>
         ) : null}
@@ -153,13 +170,34 @@ export function TaskCard({
               aria-label={`Un mot sur : ${task.label}`}
             />
             <div>
-              <button className="btn btn--ghost btn--small" type="submit" name="_intent" value="note">
+              <button
+                className="btn btn--ghost btn--small"
+                type="submit"
+                name="_intent"
+                value="note"
+              >
                 Envoyer le mot
               </button>
             </div>
           </div>
         </details>
       </form>
+    </>
+  );
+
+  if (collapsible) {
+    return (
+      <details className="tcard tcard--fold" id={`tache-${task.id}`} data-status={task.status}>
+        <summary className="tcard__head">{head}</summary>
+        <div className="tcard__body">{body}</div>
+      </details>
+    );
+  }
+
+  return (
+    <article className="tcard" id={`tache-${task.id}`} data-status={task.status}>
+      <header className="tcard__head">{head}</header>
+      {body}
     </article>
   );
 }

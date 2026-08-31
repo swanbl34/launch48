@@ -110,7 +110,7 @@ export default async function DashboardPage({
           </p>
           {project.delivery_date ? (
             <p className="hero__date">
-              Ouverture visée le <strong>{formatDate(project.delivery_date)}</strong>
+              Site livré le <strong>{formatDate(project.delivery_date)}</strong>
               {activity ? <> · dernier mouvement le {formatDate(activity)}</> : null}
             </p>
           ) : null}

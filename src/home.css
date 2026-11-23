@@ -2905,6 +2905,28 @@
   .vision__card .btn { width: 100%; }
 }
 
+/* Téléphone : l'image a sa propre bande en haut (rue, épingles, passante),
+   le texte commence dessous. Sans cette réserve, le texte recouvrait presque
+   toute l'image et la bulle masquait les épingles. Le voile est calé en
+   pixels sur cette bande : transparent sur la scène, sombre sous le texte. */
+@media (max-width: 899px) {
+  .vision__card {
+    min-height: 0;
+    padding-top: 235px;
+  }
+  .vision__img { object-position: 50% 0%; }
+  .vision__card::after {
+    background: linear-gradient(
+      180deg,
+      transparent 0,
+      rgba(6, 11, 19, 0.15) 130px,
+      rgba(6, 11, 19, 0.88) 250px,
+      rgba(6, 11, 19, 0.96) 100%
+    );
+  }
+  .vision__ask { top: 0.85rem; right: 0.85rem; max-width: calc(100% - 1.7rem); font-size: 0.8rem; padding: 0.5rem 0.8rem; }
+}
+
 @media (min-width: 900px) {
   .vision__card {
     align-content: center;
@@ -2921,10 +2943,13 @@
       transparent 100%
     );
   }
+  /* Coin bas droit, sur la terrasse du café : à côté de la passante, sans
+     couvrir la scène. */
   .vision__ask {
     top: auto;
-    right: clamp(2rem, 5vw, 4rem);
-    bottom: clamp(2rem, 5vw, 4rem);
-    font-size: 0.95rem;
+    right: 1.75rem;
+    bottom: 1.75rem;
+    max-width: 16rem;
+    font-size: 0.9rem;
   }
 }

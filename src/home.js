@@ -159,13 +159,31 @@ const setupScenePointer = () => {
   });
 };
 
-/* ── Process : barre de progression + fusée + cartes qui s'activent ──────── */
+/* Ne fait tourner un effet lié au scroll que lorsque sa section est à l'écran
+   (avec une marge) : ailleurs sur la page, le scroll ne coûte plus rien. */
+const whileNear = (element, onChange) => {
+  if (!('IntersectionObserver' in window)) {
+    onChange(true);
+    return;
+  }
+  new IntersectionObserver((entries) => onChange(entries[0].isIntersecting), {
+    rootMargin: '50% 0px'
+  }).observe(element);
+};
+
+/* ── Process : barre de progression + fusée + cartes qui s'activent ────────
+   La barre et la fusée ne bougent qu'en transform (scaleX, translateX), jamais
+   en `left` : sur Safari iOS, `left` relançait la mise en page et le dessin de
+   l'ombre portée à chaque image, d'où les saccades. Quand le navigateur sait
+   lier l'animation au scroll (voir home.css), il anime seul barre et fusée ; le
+   script n'allume plus que les cartes. */
 const setupProcessProgress = () => {
   const section = document.querySelector('.process');
   const fill = document.querySelector('.process-progress__fill');
+  const runner = document.querySelector('.process-progress__runner');
   const rocket = document.querySelector('.process-progress__rocket');
   const steps = Array.from(document.querySelectorAll('.step'));
-  if (!section || !fill || !rocket || !steps.length) return;
+  if (!section || !fill || !runner || !rocket || !steps.length) return;
 
   // Sans animation : on montre l'état d'arrivée, rien ne bouge au scroll.
   if (reduceMotion.matches) {
@@ -175,40 +193,61 @@ const setupProcessProgress = () => {
     return;
   }
 
+  const cssDriven = window.CSS?.supports?.('animation-timeline: view()') ?? false;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   let ticking = false;
+  let near = false;
+  let lastProgress = -1;
+  let lastIndex = -2;
 
   const update = () => {
     ticking = false;
 
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
-    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-    const sectionHeight = section.offsetHeight || 1;
-    const start = sectionTop - viewportHeight * 0.72;
-    const end = sectionTop + sectionHeight - viewportHeight * 0.32;
-    const progress = clamp((window.scrollY - start) / Math.max(1, end - start), 0, 1);
+    const rect = section.getBoundingClientRect();
+    // Mêmes bornes qu'avant, exprimées depuis la position à l'écran : départ
+    // quand le haut de la section passe à 72 % de l'écran, arrivée quand son
+    // bas passe à 32 %.
+    const start = rect.top - viewportHeight * 0.72;
+    const end = rect.top + rect.height - viewportHeight * 0.32;
+    const progress = clamp(-start / Math.max(1, end - start), 0, 1);
 
-    fill.style.transform = `scaleX(${progress.toFixed(4)})`;
-    rocket.style.left = `${clamp(2 + progress * 96, 2, 98).toFixed(2)}%`;
+    if (!cssDriven && Math.abs(progress - lastProgress) > 0.0005) {
+      lastProgress = progress;
+      fill.style.transform = `scaleX(${progress.toFixed(4)})`;
+      runner.style.transform = `translate3d(${(progress * 96).toFixed(3)}%, 0, 0)`;
+    }
 
     const currentIndex = Math.min(steps.length - 1, Math.floor(progress * steps.length));
-    steps.forEach((step, index) => step.classList.toggle('is-active', index <= currentIndex));
+    if (currentIndex !== lastIndex) {
+      lastIndex = currentIndex;
+      steps.forEach((step, index) => step.classList.toggle('is-active', index <= currentIndex));
+    }
   };
 
-  update();
   const request = () => {
-    if (ticking) return;
+    if (ticking || !near) return;
     ticking = true;
     window.requestAnimationFrame(update);
   };
+
+  // En sortant de la zone, un dernier calcul fige l'état exact (barre pleine
+  // ou vide), même après un défilement très rapide. Le premier appel de
+  // l'observateur sert aussi de rendu initial.
+  whileNear(section, (isNear) => {
+    near = isNear;
+    if (isNear) request();
+    else update();
+  });
   window.addEventListener('scroll', request, { passive: true });
   window.addEventListener('resize', request, { passive: true });
 };
 
 /* ── CTA final : ouverture en plein écran au scroll ──────────────────────
    On ne pose qu'une variable, --expand, de 0 à 1 : tout le rendu est décidé en
-   CSS. Le JS ne touche ni à une taille ni à une position, donc rien ne peut
-   partir de travers si la feuille de style change.
+   CSS (un clip-path qui s'élargit, des transformations). Le JS ne touche ni à
+   une taille ni à une position, donc rien ne peut partir de travers si la
+   feuille de style change.
 
    Le découpage de la course : on ouvre sur le premier tiers, on tient plein
    écran sur le tiers du milieu, on referme sur le dernier. Sans ce palier
@@ -217,10 +256,9 @@ const setupProcessProgress = () => {
 const setupFinalExpand = () => {
   const section = document.querySelector('.final');
   const track = document.querySelector('.final__track');
-  if (!section || !track) return;
+  const box = document.querySelector('.final__box');
+  if (!section || !track || !box) return;
 
-  // Seule condition restante : la limitation d'animations. L'ouverture vaut
-  // aussi sur téléphone, avec ses propres réglages côté CSS.
   const clamp = (value) => Math.min(1, Math.max(0, value));
   // Adoucit les deux extrémités : en linéaire, le départ et l'arrivée
   // s'aperçoivent comme des ruptures.
@@ -230,12 +268,23 @@ const setupFinalExpand = () => {
   const HOLD_UNTIL = 0.66;
 
   let ticking = false;
+  let near = false;
+  let last = '';
+
+  // La variable est posée sur la boîte et non sur la section : seul ce
+  // sous-arbre est recalculé, et seulement quand la valeur change.
+  const write = (value) => {
+    if (value === last) return;
+    last = value;
+    if (value === null) box.style.removeProperty('--expand');
+    else box.style.setProperty('--expand', value);
+  };
 
   const update = () => {
     ticking = false;
 
     if (reduceMotion.matches) {
-      section.style.removeProperty('--expand');
+      write(null);
       return;
     }
 
@@ -245,7 +294,7 @@ const setupFinalExpand = () => {
     // pendant laquelle le bloc collé reste à l'écran.
     const distance = rect.height - viewportHeight;
     if (distance <= 0) {
-      section.style.setProperty('--expand', '0');
+      write('0');
       return;
     }
 
@@ -255,19 +304,37 @@ const setupFinalExpand = () => {
     else if (progress < HOLD_UNTIL) expand = 1;
     else expand = 1 - (progress - HOLD_UNTIL) / (1 - HOLD_UNTIL);
 
-    section.style.setProperty('--expand', ease(clamp(expand)).toFixed(4));
+    write(ease(clamp(expand)).toFixed(4));
   };
 
   const request = () => {
-    if (ticking) return;
+    if (ticking || !near) return;
     ticking = true;
     window.requestAnimationFrame(update);
   };
 
-  update();
+  whileNear(track, (isNear) => {
+    near = isNear;
+    if (isNear) request();
+    else update();
+  });
   window.addEventListener('scroll', request, { passive: true });
   window.addEventListener('resize', request, { passive: true });
-  reduceMotion.addEventListener?.('change', request);
+  reduceMotion.addEventListener?.('change', () => {
+    near = true;
+    request();
+  });
+};
+
+/* ── Encart « présence digitale » : image facultative ─────────────────────
+   Tant que l'image n'est pas livrée (ou si elle ne charge pas), on retire la
+   balise : l'encart garde son fond en dégradé au lieu d'un cadre vide. */
+const setupVisionImage = () => {
+  document.querySelectorAll('.vision__img').forEach((img) => {
+    const drop = () => img.closest('.vision__media')?.remove();
+    if (img.complete && img.naturalWidth === 0 && img.currentSrc) drop();
+    else img.addEventListener('error', drop, { once: true });
+  });
 };
 
 /* ── FAQ : accordéon accessible ──────────────────────────────────────────── */
@@ -337,6 +404,7 @@ setupScenePointer();
 setupBackgroundGradient();
 setupProcessProgress();
 setupFinalExpand();
+setupVisionImage();
 setupFaq();
 setupAuditForm();
 

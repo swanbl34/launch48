@@ -1332,11 +1332,12 @@
 .demo:focus-within { border-color: var(--cyan); }
 .demo__cta .arrow { transition: transform 0.2s var(--ease); }
 
-/* ── 6. Tarifs ───────────────────────────────────────────────────────────── */
-/* Bloc repris de l'ancienne home : kicker + cartes tarifaires détaillées
-   (prix, liste de features, tags secteurs) + carte « Sur mesure » pleine largeur. */
-.pricing-head { margin-bottom: var(--space-block); max-width: 44ch; }
-.pricing-head h2 { margin-top: 0.6rem; }
+/* ── 6. Tarifs : bento signature ─────────────────────────────────────────
+   L'offre 3 pages occupe les deux rangées à gauche. Les deux autres formats
+   restent visibles à droite ; sur téléphone, l'offre principale vient en
+   premier, sans carrousel ni formule cachée hors de l'écran. */
+.pricing-head { margin-bottom: var(--space-block); max-width: 45rem; }
+.pricing-head h2 { margin-top: 0.6rem; max-width: 26ch; }
 
 .kicker {
   display: inline-flex;
@@ -1347,173 +1348,143 @@
   text-transform: uppercase;
 }
 
-.pricing-cards {
+.pricing-bento {
   display: grid;
-  gap: clamp(0.75rem, 2vw, 1rem);
-  align-items: start;
+  gap: 0.85rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.pc {
+.pricing-offer {
   display: flex;
   flex-direction: column;
-  padding: clamp(1.2rem, 3vw, 1.75rem);
+  min-width: 0;
+  gap: 1.1rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--surface);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg-soft), var(--text) 2%);
 }
 
-.pc--featured {
-  border-color: color-mix(in srgb, var(--cyan) 62%, var(--border));
-  background: linear-gradient(180deg, rgba(70, 228, 255, 0.09), var(--surface) 55%);
-  box-shadow: 0 20px 60px rgba(70, 228, 255, 0.1);
-}
-
-@media (hover: hover) {
-  .pc { transition: border-color 0.22s var(--ease), transform 0.22s var(--ease); }
-  .pc:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--cyan), var(--border) 55%); }
-  .pc--featured:hover { border-color: var(--cyan); }
-}
-
-.pc__badge {
-  width: fit-content;
-  margin-bottom: 1rem;
-  padding: 0.28rem 0.7rem;
-  border: 1px solid color-mix(in srgb, var(--cyan), transparent 60%);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cyan), transparent 80%);
-  color: var(--cyan);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.pc__name {
-  font-family: var(--font-heading);
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
+.pricing-offer h3 {
+  font-size: clamp(1.2rem, 2.3vw, 1.5rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
+  line-height: 1.25;
 }
 
-.pc__sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.2rem; }
-
-.pc__price-label { color: var(--muted); font-size: 0.74rem; margin-bottom: 0.2rem; }
-
-.pc__price {
-  font-family: var(--font-heading);
-  font-size: clamp(1.9rem, 5vw, 2.6rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 0.3rem;
-}
-
-.pc__price-note { color: var(--muted); font-size: 0.74rem; margin-bottom: 1.2rem; }
-
-.pc__divider { border: 0; border-top: 1px solid var(--border); margin-bottom: 1.1rem; }
-
-.pc__features { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
-
-.pc__feat {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.55rem;
-  color: color-mix(in srgb, var(--text), var(--muted) 28%);
-  font-size: 0.86rem;
-  line-height: 1.4;
-}
-.pc__feat::before {
-  content: '✓';
-  color: var(--cyan);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.pc__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
-
-.pc__tag {
-  padding: 0.25rem 0.65rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface-2);
+.pricing-offer__description {
+  margin-top: 0.45rem;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 38ch;
 }
 
-.pc__cta {
+.pricing-offer__from {
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.pricing-offer__price {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+}
+
+.pricing-offer__cta {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 48px;
   width: 100%;
-  min-height: 46px;
-  margin-top: 1.4rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-align: center;
-  transition: border-color 0.22s var(--ease), background-color 0.22s var(--ease),
-    color 0.22s var(--ease);
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg-soft), var(--text) 4%);
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+.pricing-offer__cta .arrow { flex-shrink: 0; transition: transform 0.2s var(--ease); }
+
+.pricing-offer--featured {
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  padding: clamp(1.5rem, 3.3vw, 2.5rem);
+  border-color: color-mix(in srgb, var(--cyan) 52%, var(--border));
+  background: linear-gradient(145deg, #143240, #101b28 72%);
+}
+.pricing-offer--featured h3 { font-size: clamp(1.6rem, 3vw, 2rem); }
+.pricing-offer--featured .pricing-offer__price { font-size: clamp(3.5rem, 7vw, 5.5rem); }
+.pricing-offer--featured .pricing-offer__cta {
+  border-color: var(--cyan);
+  background: var(--cyan);
+  color: #04121a;
+  font-size: 1rem;
+  min-height: 52px;
 }
 
-.pc--featured .pc__cta {
-  background: var(--cyan);
-  border-color: transparent;
-  color: #04121a;
+.pricing-offer__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg-soft), var(--cyan) 7%);
+  color: var(--cyan);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
+.pricing-offer__badge span { font-size: 1.15rem; line-height: 1; }
+
+.pricing-offer__investment { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem 1rem; }
+.pricing-offer__delivery { color: var(--muted); font-size: 0.875rem; }
+
+.pricing-offer__features { display: grid; gap: 0.75rem; list-style: none; }
+.pricing-offer__features li { display: flex; align-items: baseline; gap: 0.65rem; }
+.pricing-offer__features li::before { content: '✓'; color: var(--cyan); flex-shrink: 0; }
+
+.pricing-included {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.9rem 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.pricing-included h3 { font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; letter-spacing: 0; }
+.pricing-included ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1.35rem; list-style: none; }
+.pricing-included li { display: flex; align-items: baseline; gap: 0.45rem; color: var(--muted); font-size: 0.875rem; }
+.pricing-included li::before { content: '✓'; color: var(--cyan); }
+
+.pricing-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1rem 2rem; margin-top: 1.25rem; }
+.pricing-footer .note { font-size: 0.8125rem; }
+.pricing-custom { display: inline-flex; align-items: center; gap: 0.5rem; padding-block: 0.6rem; border-bottom: 1px solid var(--border-strong); font-size: 0.875rem; }
 
 @media (hover: hover) {
-  .pc__cta:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    background: color-mix(in srgb, var(--cyan), transparent 92%);
-  }
-  /* Offre mise en avant : le bouton est un aplat cyan, avec du texte sombre au
-     repos. Au survol, on ne peut pas simplement éclaircir le texte — du clair
-     sur ce cyan serait illisible. Le fond bascule donc en bleu profond, ce qui
-     permet un texte clair franc tout en gardant un bouton plein. */
-  .pc--featured .pc__cta:hover {
-    background: color-mix(in srgb, var(--blue), #04121a 62%);
-    border-color: var(--cyan);
-    color: var(--text);
-  }
-  .pc__cta:hover .arrow { transform: translateX(3px); }
+  .pricing-offer__cta:hover { border-color: var(--cyan); background: color-mix(in srgb, var(--bg-soft), var(--cyan) 12%); }
+  .pricing-offer--featured .pricing-offer__cta:hover { background: color-mix(in srgb, var(--cyan), var(--text) 18%); color: #04121a; }
+  .pricing-offer__cta:hover .arrow { transform: translate(2px, -2px); }
+  .pricing-custom:hover { color: var(--cyan); border-color: var(--cyan); }
 }
-.pc__cta .arrow { transition: transform 0.2s var(--ease); }
 
-.pc--custom {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-top: 0.25rem;
+@media (min-width: 480px) {
+  .pricing-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pricing-offer--featured { grid-column: 1 / -1; }
 }
-.pc--custom .pc__body { flex: 1; }
-.pc--custom .pc__sub { margin-bottom: 0; }
-.pc--custom .pc__cta { margin-top: 0; }
 
-.included { margin-top: 1.5rem; padding: 1.5rem 1.35rem; }
-.included h3 { margin-bottom: 0.9rem; }
-.included ul { list-style: none; display: grid; gap: 0.55rem; }
-.included li {
-  position: relative;
-  padding-left: 1.6rem;
-  color: var(--muted);
-  font-size: 0.95rem;
+@media (min-width: 768px) {
+  .pricing-bento { grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); gap: 1rem; }
+  .pricing-offer--featured { grid-column: 1; grid-row: 1 / span 2; }
 }
-.included li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--cyan);
-  font-weight: 700;
-}
-.included .note { margin-top: 1.1rem; }
 
 /* ── 7. Audit ────────────────────────────────────────────────────────────
    Un panneau unique, posé sur le fond de la home : pas de bande pleine largeur
@@ -2072,16 +2043,6 @@
   .steps { grid-template-columns: repeat(3, 1fr); }
   .demos { grid-template-columns: repeat(2, 1fr); }
   .demo--hero { grid-column: 1 / -1; }
-  .pricing-cards { grid-template-columns: repeat(3, 1fr); }
-  .pc--custom {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-  }
-  .pc--custom .pc__cta { width: auto; white-space: nowrap; flex-shrink: 0; padding-inline: 1.6rem; }
-  .included ul { grid-template-columns: repeat(2, 1fr); }
 
 }
 
@@ -2123,7 +2084,6 @@
 
 
 
-  .included ul { grid-template-columns: repeat(3, 1fr); }
 
   /* Desktop : le tableau redevient un vrai tableau. */
   .compare {
@@ -2333,8 +2293,7 @@
 
   /* Carrousels : la carte suivante dépasse volontairement de 14 % pour que
      le geste soit évident sans avoir à l'expliquer. */
-  .demos,
-  .pricing-cards {
+  .demos {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 78%;
@@ -2350,20 +2309,16 @@
     margin-inline: calc(50% - 50vw);
     scrollbar-width: none;
   }
-  .demos::-webkit-scrollbar,
-  .pricing-cards::-webkit-scrollbar { display: none; }
+  .demos::-webkit-scrollbar { display: none; }
 
-  .demo,
-  .pc { scroll-snap-align: start; }
+  .demo { scroll-snap-align: start; }
   /* En carrousel, toutes les cartes ont la largeur d'une diapo : on annule
      l'agrandissement des cartes mises en avant, sinon elles débordent. */
   .demo--hero { grid-column: auto; }
-  .pc--custom { grid-column: auto; }
 
   /* Dans un carrousel, l'apparition au scroll n'a pas de sens : les cartes
      hors écran horizontal ne croiseraient jamais le viewport. */
-  .js .demos [data-reveal],
-  .js .pricing-cards [data-reveal] {
+  .js .demos [data-reveal] {
     opacity: 1;
     transform: none;
     scale: 1;
@@ -2378,18 +2333,7 @@
   .step__label { margin-bottom: 0.55rem; }
   .steps { gap: 0.7rem; margin-top: 0.9rem; }
 
-  /* Formules : les tags secteurs sont redondants avec la phrase d'accroche,
-     on les retire pour que la carte tienne dans l'écran. */
-  .pc__tags { display: none; }
-  .pc__sub { margin-bottom: 0.9rem; }
-  .pc__price-note { margin-bottom: 0.9rem; }
-  .pc__divider { margin-bottom: 0.9rem; }
 
-  /* Inclus : liste plus dense. */
-  .included { margin-top: 1.25rem; padding: 1.2rem 1.1rem; }
-  .included ul { gap: 0.45rem; }
-  .included li { font-size: 0.9rem; padding-left: 1.45rem; }
-  .included h3 { margin-bottom: 0.7rem; }
 
   /* Comparatif : blocs plus compacts, c'est un tableau de lecture rapide. */
   .compare tr { padding: 0.85rem 1rem; margin-bottom: 0.65rem; }
@@ -2922,7 +2866,8 @@
 
 @media (max-width: 639px) {
   .local__card .btn { width: 100%; }
-  .local__img { object-position: 50% 12%; }
+  .local__img { object-position: 88% 20%; }
+  .local__ask { top: 1rem; bottom: auto; }
 }
 @media (min-width: 900px) {
   .local__body { padding: 2.5rem clamp(2rem, 4vw, 3.5rem) 3rem; }

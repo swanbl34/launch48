@@ -2935,19 +2935,23 @@
   }
   .vision__img { object-position: 70% 50%; }
   .vision__card::after {
+    /* Voile plus long que la stricte colonne de texte : les façades claires
+       de l'image passent sous le chapô et le rendraient difficile à lire. */
     background: linear-gradient(
       90deg,
       rgba(6, 11, 19, 0.94) 0%,
-      rgba(6, 11, 19, 0.78) 38%,
-      rgba(6, 11, 19, 0.15) 68%,
+      rgba(6, 11, 19, 0.86) 34%,
+      rgba(6, 11, 19, 0.55) 52%,
+      rgba(6, 11, 19, 0.1) 72%,
       transparent 100%
     );
   }
-  /* Coin bas droit, sur la terrasse du café : à côté de la passante, sans
-     couvrir la scène. */
+  /* Sur la chaussée vide, entre le texte et la passante : ni sur elle, ni
+     sur le titre. */
   .vision__ask {
     top: auto;
-    right: 1.75rem;
+    right: auto;
+    left: 41%;
     bottom: 1.75rem;
     max-width: 16rem;
     font-size: 0.9rem;

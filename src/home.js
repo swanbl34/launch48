@@ -410,3 +410,11 @@ setupAuditForm();
 
 // Signale au garde-fou du <head> que le module a bien démarré.
 document.documentElement.dataset.homeReady = '1';
+
+/* Bandeau du parcours client : même repli que l'encart du bas tant que
+   l'image n'est pas livrée. */
+document.querySelectorAll('.local__img').forEach((img) => {
+  const drop = () => img.closest('.local__media')?.remove();
+  if (img.complete && img.naturalWidth === 0 && img.currentSrc) drop();
+  else img.addEventListener('error', drop, { once: true });
+});

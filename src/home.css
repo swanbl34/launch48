@@ -2259,7 +2259,7 @@
   .hero__visual { height: clamp(200px, 30svh, 280px); }
   .scene { height: 100%; min-height: 0; }
 
-  /* Les trois arguments du hero disparaissent ici : « domaine offert », « prix
+  /* Les trois arguments du hero disparaissent ici : « livré en 48h », « prix
      affiché = prix payé » et « à partir de 590 € » sont déjà, mot pour mot,
      dans le bandeau défilant juste en dessous. C'était 82px de doublon à un
      écran d'intervalle, et c'est cette accumulation qui écrasait le titre en
@@ -2836,3 +2836,97 @@
     font-size: 0.9rem;
   }
 }
+
+/* ── Pourquoi un site : bandeau image + parcours du client ──────────────
+   Un bandeau photo (la question posée à l'IA), puis le message et les trois
+   temps du client avant d'appeler : trouver, demander, choisir. Aucun effet
+   au scroll. Sans image, le bandeau garde un fond en dégradé.              */
+.local__card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: clamp(22px, 3.2vw, 36px);
+  background: var(--bg-soft);
+}
+.local__band {
+  position: relative;
+  isolation: isolate;
+  height: clamp(220px, 32vw, 360px);
+  background:
+    radial-gradient(60% 60% at 70% 30%, rgba(70, 228, 255, 0.25), transparent 70%),
+    linear-gradient(180deg, #0d1a2a, var(--bg-soft));
+}
+.local__media, .local__img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; }
+.local__img { object-fit: cover; object-position: 60% 55%; color: transparent; }
+.local__band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(0deg, var(--bg-soft) 0%, rgba(13, 22, 34, 0.35) 40%, transparent 70%);
+}
+.local__ask {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: fit-content;
+  margin-left: auto;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(243, 239, 231, 0.18);
+  border-radius: 18px 18px 4px 18px;
+  background: rgba(9, 16, 25, 0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.local__ask-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+
+.local__body { display: grid; gap: 1.75rem; padding: 1.5rem 1.25rem 1.75rem; }
+.local__kicker { margin-bottom: 0.8rem; color: var(--cyan); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.local h2 { font-size: clamp(1.9rem, 7vw, 3.1rem); line-height: 1.04; letter-spacing: -0.04em; }
+.local h2 em { font-style: normal; background: linear-gradient(90deg, var(--cyan), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.local__lead { margin: 0.9rem 0 1.4rem; max-width: 46ch; color: var(--muted); line-height: 1.55; }
+.local__punch { margin: 1rem 0 1.4rem; font-family: var(--font-heading); font-weight: 700; }
+
+.local__steps { list-style: none; display: grid; gap: 0.75rem; margin: 0; padding: 0; }
+.local__steps li {
+  display: flex;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.local__num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(70, 228, 255, 0.12);
+  color: var(--cyan);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+.local__steps b { display: block; margin-bottom: 0.2rem; font-family: var(--font-heading); }
+.local__steps p { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+
+@media (max-width: 639px) {
+  .local__card .btn { width: 100%; }
+  .local__img { object-position: 50% 12%; }
+}
+@media (min-width: 900px) {
+  .local__body { padding: 2.5rem clamp(2rem, 4vw, 3.5rem) 3rem; }
+  .local__ask { right: 1.75rem; bottom: 1.75rem; font-size: 0.92rem; }
+}
+
+/* Bloc du haut : texte seul, centré sous le bandeau. */
+.local__body { justify-items: center; text-align: center; }
+.local__text { max-width: 40rem; }
+.local__lead { margin-inline: auto; }
+.local h2 em { display: inline; }

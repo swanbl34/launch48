@@ -127,10 +127,6 @@ export const renderShellFooter = () => `
              une courtoisie. L'écouteur est posé par consent.js. -->
         <button class="footer__legal-btn" type="button" data-consent-open>Cookies</button>
       </nav>
-      <p class="footer__note">
-        Domaine offert pour un nom disponible à l'enregistrement, non premium et non vendu par un tiers.
-        Hébergement inclus la 1<sup>re</sup> année, puis renouvelable au tarif annoncé dès le départ.
-      </p>
     </div>
   </footer>
 `;

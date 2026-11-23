@@ -1,23 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-
-  "//": [
-    "Headers de sécurité du site vitrine. Volontairement pas de cleanUrls ni de",
-    "trailingSlash : les pages légales vivent en /xxx.html et le reste en /xxx/,",
-    "activer l'un ou l'autre ferait basculer toutes les URLs en 308 et",
-    "désaccorderait les balises canonical.",
-    "",
-    "La CSP autorise exactement ce que le site utilise, rien de plus :",
-    "  script-src  'unsafe-inline' est nécessaire (amorce gtag, ld+json, classe",
-    "              .js dans le <head>) — un nonce est impossible en statique.",
-    "  frame-src   calendar.google.com pour le widget de réservation.",
-    "  form-action formspree.io, endpoint des trois formulaires.",
-    "  font-src    'self' seulement : les polices sont auto-hébergées.",
-    "Si tu ajoutes un outil tiers, il faut l'ajouter ici sinon il sera bloqué.",
-    "Les mêmes en-têtes sont rejoués par vite.config.js en dev, pour ne pas",
-    "découvrir un blocage seulement en production."
-  ],
-
   "headers": [
     {
       "source": "/(.*)",

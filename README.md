@@ -55,6 +55,27 @@ Si `content.html` ne charge pas, le site affiche un fallback minimal et un messa
    - Output: `dist`
 5. Déployer.
 
+### En-têtes de sécurité (`vercel.json`)
+
+`vercel.json` ne doit contenir que des clés connues de Vercel : une clé de
+commentaire comme `"//"` fait échouer la validation et bloque tout déploiement.
+Les explications vivent donc ici.
+
+> Headers de sécurité du site vitrine. Volontairement pas de cleanUrls ni de
+> trailingSlash : les pages légales vivent en /xxx.html et le reste en /xxx/,
+> activer l'un ou l'autre ferait basculer toutes les URLs en 308 et
+> désaccorderait les balises canonical.
+>
+> La CSP autorise exactement ce que le site utilise, rien de plus :
+>   script-src  'unsafe-inline' est nécessaire (amorce gtag, ld+json, classe
+>               .js dans le <head>) — un nonce est impossible en statique.
+>   frame-src   calendar.google.com pour le widget de réservation.
+>   form-action formspree.io, endpoint des trois formulaires.
+>   font-src    'self' seulement : les polices sont auto-hébergées.
+> Si tu ajoutes un outil tiers, il faut l'ajouter ici sinon il sera bloqué.
+> Les mêmes en-têtes sont rejoués par vite.config.js en dev, pour ne pas
+> découvrir un blocage seulement en production.
+
 ## Remplacer CTA, email, réseaux
 
 Dans `public/content.html`, édite :

@@ -2855,14 +2855,18 @@
     radial-gradient(60% 60% at 70% 30%, rgba(70, 228, 255, 0.25), transparent 70%),
     linear-gradient(180deg, #0d1a2a, var(--bg-soft));
 }
-.local__media, .local__img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; }
+.local__card { position: relative; }
+/* L'image déborde sous le texte et s'y fond lentement. */
+.local__media { position: absolute; inset: 0 0 auto; z-index: -2; width: 100%; height: calc(100% + clamp(180px, 22vw, 300px)); }
+.local__img { display: block; width: 100%; height: 100%; }
 .local__img { object-fit: cover; object-position: 60% 55%; color: transparent; }
 .local__band::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 0 0 auto;
   z-index: -1;
-  background: linear-gradient(0deg, var(--bg-soft) 0%, rgba(13, 22, 34, 0.35) 40%, transparent 70%);
+  height: calc(100% + clamp(180px, 22vw, 300px) + 2px);
+  background: linear-gradient(180deg, transparent 0%, transparent 30%, rgba(13, 22, 34, 0.45) 55%, rgba(13, 22, 34, 0.82) 75%, var(--bg-soft) 100%);
 }
 .local__ask {
   position: absolute;
@@ -2885,7 +2889,7 @@
 }
 .local__ask-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
 
-.local__body { display: grid; gap: 1.75rem; padding: 1.5rem 1.25rem 1.75rem; }
+.local__body { position: relative; display: grid; gap: 1.75rem; padding: 1.5rem 1.25rem 1.75rem; }
 .local__kicker { margin-bottom: 0.8rem; color: var(--cyan); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
 .local h2 { font-size: clamp(1.9rem, 7vw, 3.1rem); line-height: 1.04; letter-spacing: -0.04em; }
 .local h2 em { font-style: normal; background: linear-gradient(90deg, var(--cyan), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
